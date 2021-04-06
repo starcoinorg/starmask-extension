@@ -1,0 +1,17 @@
+{
+  "gasPricesBasic": {
+    "average": 85,
+    "fast": 200,
+    "safeLow": 80
+  },
+  "metametrics": {
+    "mockMetaMetricsResponse": true
+  },
+  "swaps": {
+    "featureFlag": {
+      "status": {
+        "active": true
+      }
+    }
+  }
+}
