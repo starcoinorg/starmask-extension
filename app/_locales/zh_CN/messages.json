@@ -47,7 +47,7 @@
     "message": "添加一个账户"
   },
   "addAcquiredTokens": {
-    "message": "在 MetaMask 上添加获得的代币"
+    "message": "在 StarMask 上添加获得的代币"
   },
   "addAlias": {
     "message": "添加别名"
@@ -134,11 +134,11 @@
     "message": "数额："
   },
   "appDescription": {
-    "message": "以太坊浏览器插件",
+    "message": "Starcoin浏览器插件",
     "description": "The description of the application"
   },
   "appName": {
-    "message": "MetaMask",
+    "message": "StarMask",
     "description": "The name of the application"
   },
   "approvalAndAggregatorTxFeeCost": {
@@ -182,7 +182,7 @@
     "message": "自动锁定定时（分钟）"
   },
   "autoLockTimeLimitDescription": {
-    "message": "请设置 MetaMask 自动锁定前的空闲时间（单位：分钟）"
+    "message": "请设置 StarMask 自动锁定前的空闲时间（单位：分钟）"
   },
   "average": {
     "message": "平均值"
@@ -194,7 +194,7 @@
     "message": "返回全部"
   },
   "backupApprovalInfo": {
-    "message": "如果不慎丢失个人设备，忘记密码，或者需要重新安装 MetaMask，亦或是需在另一台设备上打开钱包，请使用该保密码恢复个人钱包数据。"
+    "message": "如果不慎丢失个人设备，忘记密码，或者需要重新安装 StarMask，亦或是需在另一台设备上打开钱包，请使用该保密码恢复个人钱包数据。"
   },
   "backupApprovalNotice": {
     "message": "请备份您的账户助记词，保证您的钱包和资金安全。"
@@ -234,7 +234,7 @@
     "message": "使用 Wyre 购买 ETH"
   },
   "buyWithWyreDescription": {
-    "message": "您可以通过 Wyre 使用信用卡将 ETH 存入您的 MetaMask 账户。"
+    "message": "您可以通过 Wyre 使用信用卡将 ETH 存入您的 StarMask 账户。"
   },
   "bytes": {
     "message": "字节"
@@ -255,7 +255,7 @@
     "message": "链 ID"
   },
   "chromeRequiredForHardwareWallets": {
-    "message": "您需要在谷歌浏览器（Google Chrome）上使用 MetaMask 才能连接到您的硬件钱包。"
+    "message": "您需要在谷歌浏览器（Google Chrome）上使用 StarMask 才能连接到您的硬件钱包。"
   },
   "clickToRevealSeed": {
     "message": "点击此处显示密语"
@@ -311,7 +311,7 @@
     "description": "$1 is the number of accounts to which the web3 site/application is asking to connect; this will substitute $1 in connectToMultiple"
   },
   "connectWithMetaMask": {
-    "message": "使用 MetaMask 连接"
+    "message": "使用 StarMask 连接"
   },
   "connectedAccountsDescriptionPlural": {
     "message": "您有 $1 个账户连接到了该网站。",
@@ -321,7 +321,7 @@
     "message": "您有 1 个账户连接到了该网站。"
   },
   "connectedAccountsEmptyDescription": {
-    "message": "MetaMask 没有连接这个网站。要连接到 web3 网站，请在他们的网站上找到连接按钮。"
+    "message": "StarMask 没有连接这个网站。要连接到 web3 网站，请在他们的网站上找到连接按钮。"
   },
   "connectedSites": {
     "message": "已连接的网站"
@@ -431,7 +431,7 @@
     "message": "自定义代币"
   },
   "dataBackupFoundInfo": {
-    "message": "您的部分账户数据已在之前安装的 MetaMask 时备份。其中可能包括您的设置、联系人和代币。您现在想恢复这些数据吗？"
+    "message": "您的部分账户数据已在之前安装的 StarMask 时备份。其中可能包括您的设置、联系人和代币。您现在想恢复这些数据吗？"
   },
   "decimal": {
     "message": "小数精度"
@@ -557,13 +557,13 @@
     "message": "不向任何任何人分享该账户助记词。"
   },
   "endOfFlowMessage5": {
-    "message": "谨防网络钓鱼！MetaMask 绝不会主动要求您提供个人账户助记词。"
+    "message": "谨防网络钓鱼！StarMask 绝不会主动要求您提供个人账户助记词。"
   },
   "endOfFlowMessage6": {
     "message": "如果您需要再次备份账户助记词，请通过设置 -> 安全选项完成该操作。"
   },
   "endOfFlowMessage8": {
-    "message": "MetaMask 无法恢复您的账户助记词。"
+    "message": "StarMask 无法恢复您的账户助记词。"
   },
   "endOfFlowMessage9": {
     "message": "了解详情。"
@@ -607,7 +607,7 @@
     "description": "Displayed error name for debugging purposes. $1 is the error name"
   },
   "errorPageTitle": {
-    "message": "MetaMask 遇到了一个错误",
+    "message": "StarMask 遇到了一个错误",
     "description": "Title of generic error page"
   },
   "errorStack": {
@@ -756,7 +756,7 @@
     "message": "连接硬件钱包"
   },
   "hardwareWalletsMsg": {
-    "message": "选择希望用于 MetaMask 的硬件钱包"
+    "message": "选择希望用于 StarMask 的硬件钱包"
   },
   "havingTroubleConnecting": {
     "message": "连接出现问题？"
@@ -789,7 +789,7 @@
     "message": "导入账户"
   },
   "importAccountMsg": {
-    "message": "导入的账户将不会与最初创建的 MetaMask 账户助记词相关联。了解更多有关导入账户的信息 。"
+    "message": "导入的账户将不会与最初创建的 StarMask 账户助记词相关联。了解更多有关导入账户的信息 。"
   },
   "importAccountSeedPhrase": {
     "message": "使用账户助记词导入账户"
@@ -799,6 +799,9 @@
   },
   "importWallet": {
     "message": "导入钱包"
+  },
+  "importYourExisting": {
+    "message": "使用账户助记词导入钱包"
   },
   "imported": {
     "message": "已导入",
@@ -940,7 +943,7 @@
     "message": "消息"
   },
   "metaMaskConnectStatusParagraphOne": {
-    "message": "现在您可在 MetaMask 中对账户连接进行更多的控制。"
+    "message": "现在您可在 StarMask 中对账户连接进行更多的控制。"
   },
   "metaMaskConnectStatusParagraphThree": {
     "message": "点击管理连接的账户。"
@@ -952,10 +955,10 @@
     "message": "将您与 Ethereum 和去中心化网络连接起来。"
   },
   "metamaskSwapsOfflineDescription": {
-    "message": "MetaMask Swaps 正在进行维护。请稍后访问。"
+    "message": "StarMask Swaps 正在进行维护。请稍后访问。"
   },
   "metamaskVersion": {
-    "message": "MetaMask 版本"
+    "message": "StarMask 版本"
   },
   "metametricsCommitmentsAllowOptOut": {
     "message": "始终允许您通过设置选择退出"
@@ -965,7 +968,7 @@
     "description": "This string is localized separately from some of the commitments so that we can bold it"
   },
   "metametricsCommitmentsIntro": {
-    "message": "MetaMask……"
+    "message": "StarMask……"
   },
   "metametricsCommitmentsNeverCollectIP": {
     "message": "$1收集您的完整IP地址",
@@ -983,10 +986,10 @@
     "message": "发送匿名的点击和页面浏览事件信息"
   },
   "metametricsHelpImproveMetaMask": {
-    "message": "帮助我们让 MetaMask 变得更好"
+    "message": "帮助我们让 StarMask 变得更好"
   },
   "metametricsOptInDescription": {
-    "message": "MetaMask 希望收集使用数据，以更好地了解我们的用户如何与扩展进行互动。这些数据将被用于持续改进我们产品和 Ethereum 生态系统的可用性和用户体验。"
+    "message": "StarMask 希望收集使用数据，以更好地了解我们的用户如何与扩展进行互动。这些数据将被用于持续改进我们产品和 Ethereum 生态系统的可用性和用户体验。"
   },
   "mobileSyncText": {
     "message": "请输入密码确认个人身份！"
@@ -1001,10 +1004,10 @@
     "message": "我的钱包账户"
   },
   "myWalletAccountsDescription": {
-    "message": "所有创建的 MetaMask 账户将自动添加到此部分。"
+    "message": "所有创建的 StarMask 账户将自动添加到此部分。"
   },
   "needEtherInWallet": {
-    "message": "使用 MetaMask 与分布式应用交互，需要您的钱包里需要有 Ether。"
+    "message": "使用 StarMask 与分布式应用交互，需要您的钱包里需要有 Ether。"
   },
   "needImportFile": {
     "message": "必须选择一个文件来导入。",
@@ -1051,7 +1054,7 @@
     "message": "新密码（至少 8 个字符）"
   },
   "newToMetaMask": {
-    "message": "第一次使用 MetaMask？"
+    "message": "第一次使用 StarMask？"
   },
   "newTotal": {
     "message": "新总额"
@@ -1064,7 +1067,7 @@
   },
   "nextNonceWarning": {
     "message": "Nonce 高于建议的 nouce 值 $1",
-    "description": "The next nonce according to MetaMask's internal logic"
+    "description": "The next nonce according to StarMask's internal logic"
   },
   "noAccountsFound": {
     "message": "没找到查询的账户"
@@ -1149,7 +1152,7 @@
     "message": "加入 MetaMetrics"
   },
   "participateInMetaMetricsDescription": {
-    "message": "加入 MetaMetrics ，帮助我们改善 MetaMask 服务"
+    "message": "加入 MetaMetrics ，帮助我们改善 StarMask 服务"
   },
   "password": {
     "message": "密码"
@@ -1384,7 +1387,7 @@
     "message": "选择一个账户"
   },
   "selectAnAccountHelp": {
-    "message": "选择在 MetaMask 中查看的账户"
+    "message": "选择在 StarMask 中查看的账户"
   },
   "selectEachPhrase": {
     "message": "请选择每个单词，以确保其正确性。"
@@ -1512,7 +1515,7 @@
     "message": "检索状态日志时出错。"
   },
   "stateLogFileName": {
-    "message": "MetaMask 状态日志"
+    "message": "StarMask 状态日志"
   },
   "stateLogs": {
     "message": "状态日志"
@@ -1600,7 +1603,7 @@
     "message": "修改限制"
   },
   "swapEnableDescription": {
-    "message": "这是必须的，并且允许 MetaMask 兑换您的 $1。",
+    "message": "这是必须的，并且允许 StarMask 兑换您的 $1。",
     "description": "Gives the user info about the required approval transaction for swaps. $1 will be the symbol of a token being approved for swaps."
   },
   "swapEstimatedNetworkFee": {
@@ -1638,13 +1641,13 @@
     "message": "想了解更多信息？"
   },
   "swapIntroLearnMoreLink": {
-    "message": "了解更多关于 MetaMask Swap（兑换）"
+    "message": "了解更多关于 StarMask Swap（兑换）"
   },
   "swapIntroLiquiditySourcesLabel": {
     "message": "流动资金来源包括："
   },
   "swapIntroPopupSubTitle": {
-    "message": "现在您可以直接在 MetaMask 钱包中兑换代币。MetaMask Swaps（兑换）结合了多个去中心化交易所聚合商、专业做市商和个人 DEX，确保 MetaMask 用户始终以最低的网络费用获得最佳价格。"
+    "message": "现在您可以直接在 StarMask 钱包中兑换代币。StarMask Swaps（兑换）结合了多个去中心化交易所聚合商、专业做市商和个人 DEX，确保 StarMask 用户始终以最低的网络费用获得最佳价格。"
   },
   "swapIntroPopupTitle": {
     "message": "代币兑换来了！"
@@ -1666,10 +1669,10 @@
     "message": "最大滑点"
   },
   "swapMetaMaskFee": {
-    "message": "MetaMask 手续费"
+    "message": "StarMask 手续费"
   },
   "swapMetaMaskFeeDescription": {
-    "message": "我们每次都能从顶级流动性资源中找到最好的价格。每次报价都会自动收取1%的手续费用，以支持 MetaMask 的持续发展，使其更加完善。",
+    "message": "我们每次都能从顶级流动性资源中找到最好的价格。每次报价都会自动收取1%的手续费用，以支持 StarMask 的持续发展，使其更加完善。",
     "description": "Provides information about the fee that metamask takes for swaps. $1 is a decimal number."
   },
   "swapNQuotes": {
@@ -1677,7 +1680,7 @@
     "description": "$1 is the number of quotes that the user can select from when opening the list of quotes on the 'view quote' screen"
   },
   "swapNetworkFeeSummary": {
-    "message": "网络手续费包括处理您的兑换和在以太坊（Ethereum）网络上存储的成本。MetaMask 不从这笔费用中获利。"
+    "message": "网络手续费包括处理您的兑换和在以太坊（Ethereum）网络上存储的成本。StarMask 不从这笔费用中获利。"
   },
   "swapNewQuoteIn": {
     "message": "$1 后更新报价",
@@ -1711,7 +1714,7 @@
     "message": "如果在您下订单和确认订单之间的价格发生了变化，这就叫做\"滑点\"。如果滑点超过您的\"最大滑点\"设置，您的兑换将自动取消。"
   },
   "swapQuoteIncludesRate": {
-    "message": "报价包含 $1% MetaMask 手续费",
+    "message": "报价包含 $1% StarMask 手续费",
     "description": "Provides information about the fee that metamask takes for swaps. $1 is a decimal number."
   },
   "swapQuoteNofN": {
@@ -1853,16 +1856,16 @@
     "message": "扫描这个代码时，请确保附近没有其他人在看您的屏幕。"
   },
   "syncWithMobileComplete": {
-    "message": "您的数据已同步成功。尽情体验 MetaMask 应用程序！"
+    "message": "您的数据已同步成功。尽情体验 StarMask 应用程序！"
   },
   "syncWithMobileDesc": {
-    "message": "您可以使用个人移动设备同步个人账户与信息。打开 MetaMask 移动应用程序，进入“设置”选项，点击“通过浏览器扩展程序同步”"
+    "message": "您可以使用个人移动设备同步个人账户与信息。打开 StarMask 移动应用程序，进入“设置”选项，点击“通过浏览器扩展程序同步”"
   },
   "syncWithMobileDescNewUsers": {
-    "message": "如果您是首次启用 MetaMask 移动应用程序，请通过个人手机完成如下操作。"
+    "message": "如果您是首次启用 StarMask 移动应用程序，请通过个人手机完成如下操作。"
   },
   "syncWithMobileScanThisCode": {
-    "message": "使用 MetaMask 应用程序扫描代码"
+    "message": "使用 StarMask 应用程序扫描代码"
   },
   "syncWithMobileTitle": {
     "message": "使用移动设备进行同步"
@@ -1983,7 +1986,7 @@
     "message": "重试"
   },
   "typePassword": {
-    "message": "输入您的 MetaMask 密码"
+    "message": "输入您的 StarMask 密码"
   },
   "unapproved": {
     "message": "未批准"
@@ -2069,7 +2072,7 @@
     "description": "$1 is a clickable link."
   },
   "welcome": {
-    "message": "欢迎使用 MetaMask"
+    "message": "欢迎使用 StarMask"
   },
   "welcomeBack": {
     "message": "欢迎回来！"
