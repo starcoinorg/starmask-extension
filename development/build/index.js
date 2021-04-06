@@ -11,6 +11,7 @@ const {
   detectAndRunEntryTask,
 } = require('./task');
 const createManifestTasks = require('./manifest');
+const createScriptTasks = require('./scripts');
 const createStyleTasks = require('./styles');
 const createStaticAssetTasks = require('./static');
 const createOtherTasks = require('./other');
@@ -35,6 +36,7 @@ function defineAllTasks() {
   const staticTasks = createStaticAssetTasks({ livereload, browserPlatforms });
   const manifestTasks = createManifestTasks({ browserPlatforms });
   const styleTasks = createStyleTasks({ livereload });
+  const scriptTasks = createScriptTasks({ livereload, browserPlatforms });
   const { clean, reload, zip } = createOtherTasks({
     livereload,
     browserPlatforms,
@@ -47,6 +49,7 @@ function defineAllTasks() {
       clean,
       styleTasks.dev,
       composeParallel(
+        scriptTasks.dev,
         staticTasks.dev,
         manifestTasks.dev,
         reload,
@@ -61,6 +64,7 @@ function defineAllTasks() {
       clean,
       styleTasks.dev,
       composeParallel(
+        scriptTasks.testDev,
         staticTasks.dev,
         manifestTasks.testDev,
         reload,
@@ -74,7 +78,7 @@ function defineAllTasks() {
     composeSeries(
       clean,
       styleTasks.prod,
-      composeParallel(staticTasks.prod, manifestTasks.prod),
+      composeParallel(scriptTasks.prod, staticTasks.prod, manifestTasks.prod),
       zip,
     ),
   );
@@ -85,11 +89,21 @@ function defineAllTasks() {
     composeSeries(
       clean,
       styleTasks.prod,
-      composeParallel(staticTasks.prod, manifestTasks.test),
+      composeParallel(scriptTasks.test, staticTasks.prod, manifestTasks.test),
       zip,
     ),
   );
 
   // special build for minimal CI testing
   createTask('styles', styleTasks.prod);
+
+  createTask(
+    'scripts:dev',
+    composeSeries(clean, composeParallel(scriptTasks.test)),
+  );
+
+  createTask(
+    'scripts:prod',
+    composeSeries(clean, composeParallel(scriptTasks.prod)),
+  );
 }

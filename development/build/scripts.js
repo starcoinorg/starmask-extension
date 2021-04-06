@@ -15,7 +15,7 @@ const pify = require('pify');
 const endOfStream = pify(require('end-of-stream'));
 const labeledStreamSplicer = require('labeled-stream-splicer').obj;
 
-const metamaskrc = require('rc')('metamask', {
+const starmaskrc = require('rc')('starmask', {
   INFURA_PROJECT_ID: process.env.INFURA_PROJECT_ID,
   SEGMENT_HOST: process.env.SEGMENT_HOST,
   SEGMENT_WRITE_KEY: process.env.SEGMENT_WRITE_KEY,
@@ -41,7 +41,6 @@ const materialUIDependencies = ['@material-ui/core'];
 const reactDepenendencies = dependencies.filter((dep) => dep.match(/react/u));
 
 const externalDependenciesMap = {
-  background: ['3box'],
   ui: [...materialUIDependencies, ...reactDepenendencies],
 };
 
@@ -76,11 +75,11 @@ function createScriptTasks({ browserPlatforms, livereload }) {
 
   // high level tasks
 
-  const prod = composeParallel(deps.background, deps.ui, core.prod);
+  const prod = composeParallel(deps.ui, core.prod);
 
   const { dev, testDev } = core;
 
-  const test = composeParallel(deps.background, deps.ui, core.test);
+  const test = composeParallel(deps.ui, core.test);
 
   return { prod, dev, testDev, test };
 
@@ -429,25 +428,25 @@ function getEnvironmentVariables({ devMode, testing }) {
     IN_TEST: testing ? 'true' : false,
     PUBNUB_SUB_KEY: process.env.PUBNUB_SUB_KEY || '',
     PUBNUB_PUB_KEY: process.env.PUBNUB_PUB_KEY || '',
-    CONF: devMode ? metamaskrc : {},
+    CONF: devMode ? starmaskrc : {},
     SENTRY_DSN: process.env.SENTRY_DSN,
     INFURA_PROJECT_ID: testing
       ? '00000000000000000000000000000000'
-      : metamaskrc.INFURA_PROJECT_ID,
-    SEGMENT_HOST: metamaskrc.SEGMENT_HOST,
+      : starmaskrc.INFURA_PROJECT_ID,
+    SEGMENT_HOST: starmaskrc.SEGMENT_HOST,
     // When we're in the 'production' environment we will use a specific key only set in CI
-    // Otherwise we'll use the key from .metamaskrc or from the environment variable. If
+    // Otherwise we'll use the key from .starmaskrc or from the environment variable. If
     // the value of SEGMENT_WRITE_KEY that we envify is undefined then no events will be tracked
     // in the build. This is intentional so that developers can contribute to MetaMask without
     // inflating event volume.
     SEGMENT_WRITE_KEY:
       environment === 'production'
         ? process.env.SEGMENT_PROD_WRITE_KEY
-        : metamaskrc.SEGMENT_WRITE_KEY,
+        : starmaskrc.SEGMENT_WRITE_KEY,
     SEGMENT_LEGACY_WRITE_KEY:
       environment === 'production'
         ? process.env.SEGMENT_PROD_LEGACY_WRITE_KEY
-        : metamaskrc.SEGMENT_LEGACY_WRITE_KEY,
+        : starmaskrc.SEGMENT_LEGACY_WRITE_KEY,
   };
 }
 

@@ -5,3 +5,5 @@ node_modules
 builds
 dist
 ui/app/css/output/*
+
+.starmaskrc
