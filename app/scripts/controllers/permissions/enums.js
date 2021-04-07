@@ -34,6 +34,7 @@ export const LOG_METHOD_TYPES = {
 export const LOG_LIMIT = 100;
 
 export const SAFE_METHODS = [
+  'chain.id',
   'eth_blockNumber',
   'eth_call',
   'eth_chainId',

@@ -208,6 +208,9 @@
   "balanceOutdated": {
     "message": "余额可能已过期"
   },
+  "barnard": {
+    "message": "Barnard 测试网络"
+  },
   "basic": {
     "message": "基本"
   },
@@ -340,14 +343,23 @@
   "connectingTo": {
     "message": "正在连接 $1"
   },
+  "connectingToBarnard": {
+    "message": "正在连接 Barnard 测试网络"
+  },
   "connectingToGoerli": {
     "message": "正在连接 Goerli 测试网络"
+  },
+  "connectingToHalley": {
+    "message": "正在连接 Halley 测试网络"
   },
   "connectingToKovan": {
     "message": "正在连接到 Kovan 测试网络"
   },
   "connectingToMainnet": {
-    "message": "正在连接到以太坊 Starcoin 主网"
+    "message": "正在连接到 Starcoin 主网"
+  },
+  "connectingToPrxima": {
+    "message": "正在连接 Prxima 测试网络"
   },
   "connectingToRinkeby": {
     "message": "正在连接到 Rinkeby 测试网络"
@@ -460,7 +472,7 @@
     "message": "解密请求"
   },
   "defaultNetwork": {
-    "message": "默认以太坊（Ether）交易网络为主网。"
+    "message": "默认Starcoin交易网络为主网。"
   },
   "delete": {
     "message": "删除"
@@ -560,17 +572,21 @@
     "message": "谨防网络钓鱼！StarMask 绝不会主动要求您提供个人账户助记词。"
   },
   "endOfFlowMessage6": {
-    "message": "如果您需要再次备份账户助记词，请通过设置 -> 安全选项完成该操作。"
+    "message": "如果您需secretBackupPhraseWarning要再次备份账户助记词，请通过设置 -> 安全选项完成该操作。"
+  },
+  "endOfFlowMessage7": {
+    "message": "如果您有任何疑问或发现任何可疑之处，请联系我们的技术支持 $1.",
+    "description": "$1 is a clickable link with text defined by the 'here' key. The link will open to a form where users can file support tickets."
   },
   "endOfFlowMessage8": {
-    "message": "StarMask 无法恢复您的账户助记词。"
+    "message": "- StarMask 无法恢复您的账户助记词?"
   },
   "endOfFlowMessage9": {
     "message": "了解详情。"
   },
   "endpointReturnedDifferentChainId": {
     "message": "RPC 端点使用链不同的链 ID: $1",
-    "description": "$1 is the return value of eth_chainId from an RPC endpoint"
+    "description": "$1 is the return value of chain.id from an RPC endpoint"
   },
   "ensNotFoundOnCurrentNetwork": {
     "message": "未在当前网络找到 ENS 名称。请尝试切换至主以太坊网络。"
@@ -742,6 +758,9 @@
   },
   "goerli": {
     "message": "Goerli 测试网络"
+  },
+  "halley": {
+    "message": "Halley 测试网络"
   },
   "happyToSeeYou": {
     "message": "我们很高兴见到您。"
@@ -928,7 +947,7 @@
     "message": "锁定时间过长"
   },
   "mainnet": {
-    "message": "以太坊 Starcoin 主网络"
+    "message": "Starcoin 主网络"
   },
   "max": {
     "message": "最大"
@@ -1214,6 +1233,9 @@
   "provide": {
     "message": "提供"
   },
+  "proxima": {
+    "message": "Proxima 测试网络"
+  },
   "queue": {
     "message": "队列"
   },
@@ -1358,6 +1380,9 @@
   },
   "secretBackupPhraseWarning": {
     "message": "警告：切勿向他人透露您的账户助记词。任何人一旦持有该账户助记词，即可控制您的 Ether。"
+  },
+  "secretPhrase": {
+    "message": "输入 12 个单词组成的账户助记词恢复您的账户."
   },
   "securityAndPrivacy": {
     "message": "安全与隐私"
@@ -2065,6 +2090,9 @@
     "message": "我们的硬件钱包连接指南"
   },
   "walletSeed": {
+    "message": "账户助记词"
+  },
+  "walletSeedRestore": {
     "message": "账户助记词"
   },
   "web3ShimUsageNotification": {

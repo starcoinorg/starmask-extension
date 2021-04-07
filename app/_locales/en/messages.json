@@ -228,6 +228,9 @@
   "balanceOutdated": {
     "message": "Balance may be outdated"
   },
+  "barnard": {
+    "message": "Barnard Test Network"
+  },
   "basic": {
     "message": "Basic"
   },
@@ -375,14 +378,23 @@
   "connectingTo": {
     "message": "Connecting to $1"
   },
+  "connectingToBarnard": {
+    "message": "Connecting to Barnard Test Network"
+  },
   "connectingToGoerli": {
     "message": "Connecting to Goerli Test Network"
+  },
+  "connectingToHalley": {
+    "message": "Connecting to Halley Test Network"
   },
   "connectingToKovan": {
     "message": "Connecting to Kovan Test Network"
   },
   "connectingToMainnet": {
     "message": "Connecting to Starcoin Mainnet"
+  },
+  "connectingToPrxima": {
+    "message": "Connecting to Prxima Test Network"
   },
   "connectingToRinkeby": {
     "message": "Connecting to Rinkeby Test Network"
@@ -614,14 +626,14 @@
     "description": "$1 is a clickable link with text defined by the 'here' key. The link will open to a form where users can file support tickets."
   },
   "endOfFlowMessage8": {
-    "message": "StarMask cannot recover your seedphrase."
+    "message": "- StarMask cannot recover your seedphrase?"
   },
   "endOfFlowMessage9": {
     "message": "Learn more."
   },
   "endpointReturnedDifferentChainId": {
     "message": "The endpoint returned a different chain ID: $1",
-    "description": "$1 is the return value of eth_chainId from an RPC endpoint"
+    "description": "$1 is the return value of chain.id from an RPC endpoint"
   },
   "ensNotFoundOnCurrentNetwork": {
     "message": "ENS name not found on the current network. Try switching to Starcoin Mainnet."
@@ -807,6 +819,9 @@
   },
   "goerli": {
     "message": "Goerli Test Network"
+  },
+  "halley": {
+    "message": "Halley Test Network"
   },
   "happyToSeeYou": {
     "message": "We’re happy to see you."
@@ -1308,6 +1323,9 @@
   },
   "provide": {
     "message": "Provide"
+  },
+  "proxima": {
+    "message": "Proxima Test Network"
   },
   "queue": {
     "message": "Queue"

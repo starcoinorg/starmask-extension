@@ -31,6 +31,9 @@ export const COLORS = {
   KOVAN: 'kovan',
   RINKEBY: 'rinkeby',
   GOERLI: 'goerli',
+  BARNARD: 'barnard',
+  PROXIMA: 'proxima',
+  HALLEY: 'halley',
   TRANSPARENT: 'transparent',
 };
 
