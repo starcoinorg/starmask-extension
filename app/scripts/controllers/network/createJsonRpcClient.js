@@ -36,7 +36,7 @@ export default function createJsonRpcClient({ rpcUrl, chainId }) {
 
 function createChainIdMiddleware(chainId) {
   return (req, res, next, end) => {
-    if (req.method === 'eth_chainId') {
+    if (req.method === 'chain.id') {
       res.result = chainId;
       return end();
     }

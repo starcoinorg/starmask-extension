@@ -341,7 +341,7 @@ export default class NetworkForm extends PureComponent {
   };
 
   /**
-   * Validates the chain ID by checking it against the `eth_chainId` return
+   * Validates the chain ID by checking it against the `chain.id` return
    * value from the given RPC URL.
    * Assumes that all strings are non-empty and correctly formatted.
    *
@@ -353,16 +353,17 @@ export default class NetworkForm extends PureComponent {
   validateChainIdOnSubmit = async (formChainId, parsedChainId, rpcUrl) => {
     const { t } = this.context;
     let errorMessage;
+    let endpointChain;
     let endpointChainId;
     let providerError;
 
     try {
-      endpointChainId = await jsonRpcRequest(rpcUrl, 'eth_chainId');
+      endpointChain = await jsonRpcRequest(rpcUrl, 'chain.id');
     } catch (err) {
       log.warn('Failed to fetch the chainId from the endpoint.', err);
       providerError = err;
     }
-
+    endpointChainId = endpointChain && endpointChain.id && `0x${endpointChain.id.toString(16)}`;
     if (providerError || typeof endpointChainId !== 'string') {
       errorMessage = t('failedToFetchChainId');
     } else if (parsedChainId !== endpointChainId) {

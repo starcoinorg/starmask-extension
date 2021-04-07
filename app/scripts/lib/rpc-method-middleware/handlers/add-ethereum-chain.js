@@ -152,11 +152,11 @@ async function addEthereumChainHandler(
   let endpointChainId;
 
   try {
-    endpointChainId = await jsonRpcRequest(firstValidRPCUrl, 'eth_chainId');
+    endpointChainId = await jsonRpcRequest(firstValidRPCUrl, 'chain.id');
   } catch (err) {
     return end(
       ethErrors.rpc.internal({
-        message: `Request for method 'eth_chainId on ${firstValidRPCUrl} failed`,
+        message: `Request for method 'chain.id' on ${firstValidRPCUrl} failed`,
         data: { networkErr: err },
       }),
     );
