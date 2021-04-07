@@ -347,7 +347,7 @@
     "message": "正在连接到 Kovan 测试网络"
   },
   "connectingToMainnet": {
-    "message": "正在连接到以太坊 Ethereum 主网"
+    "message": "正在连接到以太坊 Starcoin 主网"
   },
   "connectingToRinkeby": {
     "message": "正在连接到 Rinkeby 测试网络"
@@ -622,7 +622,7 @@
     "description": "The description for the `eth_accounts` permission"
   },
   "ethereumPublicAddress": {
-    "message": "以太坊 Ethereum 公开地址"
+    "message": "以太坊 Starcoin 公开地址"
   },
   "etherscan": {
     "message": "Etherscan（以太坊浏览器）"
@@ -928,7 +928,7 @@
     "message": "锁定时间过长"
   },
   "mainnet": {
-    "message": "以太坊 Ethereum 主网络"
+    "message": "以太坊 Starcoin 主网络"
   },
   "max": {
     "message": "最大"
@@ -952,7 +952,7 @@
     "message": "连接状态按钮显示所访问的网站是否与您当前选择的账户连接。"
   },
   "metamaskDescription": {
-    "message": "将您与 Ethereum 和去中心化网络连接起来。"
+    "message": "将您与 Starcoin 和去中心化网络连接起来。"
   },
   "metamaskSwapsOfflineDescription": {
     "message": "StarMask Swaps 正在进行维护。请稍后访问。"
@@ -989,7 +989,7 @@
     "message": "帮助我们让 StarMask 变得更好"
   },
   "metametricsOptInDescription": {
-    "message": "StarMask 希望收集使用数据，以更好地了解我们的用户如何与扩展进行互动。这些数据将被用于持续改进我们产品和 Ethereum 生态系统的可用性和用户体验。"
+    "message": "StarMask 希望收集使用数据，以更好地了解我们的用户如何与扩展进行互动。这些数据将被用于持续改进我们产品和 Starcoin 生态系统的可用性和用户体验。"
   },
   "mobileSyncText": {
     "message": "请输入密码确认个人身份！"
@@ -1680,7 +1680,7 @@
     "description": "$1 is the number of quotes that the user can select from when opening the list of quotes on the 'view quote' screen"
   },
   "swapNetworkFeeSummary": {
-    "message": "网络手续费包括处理您的兑换和在以太坊（Ethereum）网络上存储的成本。StarMask 不从这笔费用中获利。"
+    "message": "网络手续费包括处理您的兑换和在以太坊（Starcoin）网络上存储的成本。StarMask 不从这笔费用中获利。"
   },
   "swapNewQuoteIn": {
     "message": "$1 后更新报价",
@@ -2031,7 +2031,7 @@
     "message": "使用网络钓鱼检测"
   },
   "usePhishingDetectionDescription": {
-    "message": "显示针对 Ethereum 用户钓鱼域名的警告。"
+    "message": "显示针对 Starcoin 用户钓鱼域名的警告。"
   },
   "usedByClients": {
     "message": "可用于各种不同的客户端"

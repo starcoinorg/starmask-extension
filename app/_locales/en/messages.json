@@ -382,7 +382,7 @@
     "message": "Connecting to Kovan Test Network"
   },
   "connectingToMainnet": {
-    "message": "Connecting to Ethereum Mainnet"
+    "message": "Connecting to Starcoin Mainnet"
   },
   "connectingToRinkeby": {
     "message": "Connecting to Rinkeby Test Network"
@@ -624,7 +624,7 @@
     "description": "$1 is the return value of eth_chainId from an RPC endpoint"
   },
   "ensNotFoundOnCurrentNetwork": {
-    "message": "ENS name not found on the current network. Try switching to Ethereum Mainnet."
+    "message": "ENS name not found on the current network. Try switching to Starcoin Mainnet."
   },
   "ensRegistrationError": {
     "message": "Error in ENS name registration"
@@ -681,7 +681,7 @@
     "description": "The description for the `eth_accounts` permission"
   },
   "ethereumPublicAddress": {
-    "message": "Ethereum Public Address"
+    "message": "Starcoin Public Address"
   },
   "etherscan": {
     "message": "Etherscan"
@@ -1000,7 +1000,7 @@
     "message": "Lock time is too great"
   },
   "mainnet": {
-    "message": "Ethereum Mainnet"
+    "message": "Starcoin Mainnet"
   },
   "max": {
     "message": "Max"
@@ -1024,7 +1024,7 @@
     "message": "The connection status button shows if the website you’re visiting is connected to your currently selected account."
   },
   "metamaskDescription": {
-    "message": "Connecting you to Ethereum and the Decentralized Web."
+    "message": "Connecting you to Starcoin and the Decentralized Web."
   },
   "metamaskSwapsOfflineDescription": {
     "message": "StarMask Swaps is undergoing maintenance. Please check back later."
@@ -1061,7 +1061,7 @@
     "message": "Help Us Improve StarMask"
   },
   "metametricsOptInDescription": {
-    "message": "StarMask would like to gather usage data to better understand how our users interact with the extension. This data will be used to continually improve the usability and user experience of our product and the Ethereum ecosystem."
+    "message": "StarMask would like to gather usage data to better understand how our users interact with the extension. This data will be used to continually improve the usability and user experience of our product and the Starcoin ecosystem."
   },
   "mismatchedChain": {
     "message": "The network details for this chain ID do not match our records. We recommend that you $1 before proceeding.",
@@ -1646,7 +1646,7 @@
     "message": "3. Start using web3 sites and more!"
   },
   "step3HardwareWalletMsg": {
-    "message": "Use your hardware account like you would with any Ethereum account. Connect to web3 sites, send ETH, buy and store ERC20 tokens and non-fungible tokens like CryptoKitties."
+    "message": "Use your hardware account like you would with any Starcoin account. Connect to web3 sites, send ETH, buy and store ERC20 tokens and non-fungible tokens like CryptoKitties."
   },
   "storePhrase": {
     "message": "Store this phrase in a password manager like 1Password."
@@ -1785,7 +1785,7 @@
     "description": "$1 is the number of quotes that the user can select from when opening the list of quotes on the 'view quote' screen"
   },
   "swapNetworkFeeSummary": {
-    "message": "The network fee covers the cost of processing your swap and storing it on the Ethereum network. StarMask does not profit from this fee."
+    "message": "The network fee covers the cost of processing your swap and storing it on the Starcoin network. StarMask does not profit from this fee."
   },
   "swapNewQuoteIn": {
     "message": "New quotes in $1",
@@ -2180,7 +2180,7 @@
     "message": "Use Phishing Detection"
   },
   "usePhishingDetectionDescription": {
-    "message": "Display a warning for phishing domains targeting Ethereum users"
+    "message": "Display a warning for phishing domains targeting Starcoin users"
   },
   "usedByClients": {
     "message": "Used by a variety of different clients"
