@@ -10,13 +10,13 @@ import {
 } from 'swappable-obj-proxy';
 import EthQuery from 'eth-query';
 import {
-  RINKEBY,
+  BARNARD,
   MAINNET,
   INFURA_PROVIDER_TYPES,
   NETWORK_TYPE_RPC,
   NETWORK_TYPE_TO_ID_MAP,
   MAINNET_CHAIN_ID,
-  RINKEBY_CHAIN_ID,
+  BARNARD_CHAIN_ID,
 } from '../../../../shared/constants/network';
 import {
   isPrefixedFormattedHexString,
@@ -32,18 +32,18 @@ let defaultProviderConfigOpts;
 if (process.env.IN_TEST === 'true') {
   defaultProviderConfigOpts = {
     type: NETWORK_TYPE_RPC,
-    rpcUrl: 'http://localhost:8545',
-    chainId: '0x539',
-    nickname: 'Localhost 8545',
+    rpcUrl: 'http://localhost:9850',
+    chainId: '0xfe',
+    nickname: 'Localhost 9850',
   };
 } else if (process.env.METAMASK_DEBUG || env === 'test') {
-  defaultProviderConfigOpts = { type: RINKEBY, chainId: RINKEBY_CHAIN_ID };
+  defaultProviderConfigOpts = { type: BARNARD, chainId: BARNARD_CHAIN_ID };
 } else {
   defaultProviderConfigOpts = { type: MAINNET, chainId: MAINNET_CHAIN_ID };
 }
 
 const defaultProviderConfig = {
-  ticker: 'ETH',
+  ticker: 'STC',
   ...defaultProviderConfigOpts,
 };
 
@@ -170,7 +170,7 @@ export default class NetworkController extends EventEmitter {
     return NETWORK_TYPE_TO_ID_MAP[type]?.chainId || configChainId;
   }
 
-  setRpcTarget(rpcUrl, chainId, ticker = 'ETH', nickname = '', rpcPrefs) {
+  setRpcTarget(rpcUrl, chainId, ticker = 'STC', nickname = '', rpcPrefs) {
     assert.ok(
       isPrefixedFormattedHexString(chainId),
       `Invalid chain ID "${chainId}": invalid hex string.`,
@@ -189,7 +189,7 @@ export default class NetworkController extends EventEmitter {
     });
   }
 
-  async setProviderType(type, rpcUrl = '', ticker = 'ETH', nickname = '') {
+  async setProviderType(type, rpcUrl = '', ticker = 'STC', nickname = '') {
     assert.notStrictEqual(
       type,
       NETWORK_TYPE_RPC,
