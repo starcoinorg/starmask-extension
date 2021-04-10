@@ -9,7 +9,7 @@ const STARMASK_DEBUG = process.env.STARMASK_DEBUG;
 const STARMASK_ENVIRONMENT = process.env.STARMASK_ENVIRONMENT;
 /* eslint-enable prefer-destructuring */
 const SENTRY_DSN_DEV =
-  'https://f59f3dd640d2429d9d0e2445a87ea8e1@sentry.io/273496';
+  'https://c504129d14e9408eb04be2e966bd2566@o568661.ingest.sentry.io/5713932';
 
 // This describes the subset of Redux state attached to errors sent to Sentry
 // These properties have some potential to be useful for debugging, and they do
