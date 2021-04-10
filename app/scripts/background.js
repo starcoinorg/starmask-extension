@@ -38,7 +38,7 @@ import setupEnsIpfsResolver from './lib/ens-ipfs/setup';
 const { sentry } = global;
 const firstTimeState = { ...rawFirstTimeState };
 
-log.setDefaultLevel(process.env.METAMASK_DEBUG ? 'debug' : 'warn');
+log.setDefaultLevel(process.env.STARMASK_DEBUG ? 'debug' : 'warn');
 
 const platform = new ExtensionPlatform();
 
@@ -56,7 +56,7 @@ const inTest = process.env.IN_TEST === 'true';
 const localStore = inTest ? new ReadOnlyNetworkStore() : new LocalStore();
 let versionedData;
 
-if (inTest || process.env.METAMASK_DEBUG) {
+if (inTest || process.env.STARMASK_DEBUG) {
   global.metamaskGetState = localStore.get.bind(localStore);
 }
 
@@ -499,7 +499,7 @@ async function openPopup() {
 extension.runtime.onInstalled.addListener(({ reason }) => {
   if (
     reason === 'install' &&
-    !(process.env.METAMASK_DEBUG || process.env.IN_TEST)
+    !(process.env.STARMASK_DEBUG || process.env.IN_TEST)
   ) {
     platform.openExtensionInBrowser();
   }

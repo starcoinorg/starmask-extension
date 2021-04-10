@@ -36,7 +36,7 @@ if (process.env.IN_TEST === 'true') {
     chainId: '0xfe',
     nickname: 'Localhost 9850',
   };
-} else if (process.env.METAMASK_DEBUG || env === 'test') {
+} else if (process.env.STARMASK_DEBUG || env === 'test') {
   defaultProviderConfigOpts = { type: BARNARD, chainId: BARNARD_CHAIN_ID };
 } else {
   defaultProviderConfigOpts = { type: MAINNET, chainId: MAINNET_CHAIN_ID };

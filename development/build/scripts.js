@@ -421,7 +421,7 @@ function getEnvironmentVariables({ devMode, testing }) {
     throw new Error('Missing SENTRY_DSN environment variable');
   }
   return {
-    METAMASK_DEBUG: devMode,
+    STARMASK_DEBUG: devMode,
     METAMASK_ENVIRONMENT: environment,
     METAMASK_VERSION: baseManifest.version,
     NODE_ENV: devMode ? 'development' : 'production',

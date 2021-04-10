@@ -8,7 +8,7 @@ export default function configureStore(initialState) {
     name: 'MetaMask',
     hostname: 'localhost',
     port: 8000,
-    realtime: Boolean(process.env.METAMASK_DEBUG),
+    realtime: Boolean(process.env.STARMASK_DEBUG),
   });
   return createStore(
     rootReducer,

@@ -5,7 +5,7 @@ import extractEthjsErrorMessage from './extractEthjsErrorMessage';
 
 /* eslint-disable prefer-destructuring */
 // Destructuring breaks the inlining of the environment variables
-const METAMASK_DEBUG = process.env.METAMASK_DEBUG;
+const STARMASK_DEBUG = process.env.STARMASK_DEBUG;
 const METAMASK_ENVIRONMENT = process.env.METAMASK_ENVIRONMENT;
 /* eslint-enable prefer-destructuring */
 const SENTRY_DSN_DEV =
@@ -70,7 +70,7 @@ export const SENTRY_STATE = {
 export default function setupSentry({ release, getState }) {
   let sentryTarget;
 
-  if (METAMASK_DEBUG) {
+  if (STARMASK_DEBUG) {
     return undefined;
   } else if (METAMASK_ENVIRONMENT === 'production') {
     if (!process.env.SENTRY_DSN) {
@@ -91,7 +91,7 @@ export default function setupSentry({ release, getState }) {
 
   Sentry.init({
     dsn: sentryTarget,
-    debug: METAMASK_DEBUG,
+    debug: STARMASK_DEBUG,
     environment: METAMASK_ENVIRONMENT,
     integrations: [new Dedupe(), new ExtraErrorData()],
     release,

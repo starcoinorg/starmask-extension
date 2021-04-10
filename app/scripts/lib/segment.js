@@ -1,7 +1,7 @@
 import Analytics from 'analytics-node';
 
 const isDevOrTestEnvironment = Boolean(
-  process.env.METAMASK_DEBUG || process.env.IN_TEST,
+  process.env.STARMASK_DEBUG || process.env.IN_TEST,
 );
 const SEGMENT_WRITE_KEY = process.env.SEGMENT_WRITE_KEY ?? null;
 const SEGMENT_LEGACY_WRITE_KEY = process.env.SEGMENT_LEGACY_WRITE_KEY ?? null;
