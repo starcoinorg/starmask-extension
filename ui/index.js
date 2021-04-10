@@ -26,8 +26,8 @@ import {
   getUnconnectedAccountAlertShown,
 } from './app/ducks/metamask/metamask';
 
+global.STARMASK_DEBUG = process.env.STARMASK_DEBUG;
 log.setLevel(global.STARMASK_DEBUG ? 'debug' : 'warn');
-
 export default function launchMetamaskUi(opts, cb) {
   const { backgroundConnection } = opts;
   actions._setBackgroundConnection(backgroundConnection);
