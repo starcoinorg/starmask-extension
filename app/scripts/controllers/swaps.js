@@ -114,7 +114,7 @@ export default class SwapsController {
       }
     });
 
-    this._setupSwapsLivenessFetching();
+    // this._setupSwapsLivenessFetching();
   }
 
   // Sets the refresh rate for quote updates from the MetaSwap API
