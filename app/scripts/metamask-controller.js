@@ -141,7 +141,7 @@ export default class MetamaskController extends EventEmitter {
         this.networkController,
       ),
       version: this.platform.getVersion(),
-      environment: process.env.METAMASK_ENVIRONMENT,
+      environment: process.env.STARMASK_ENVIRONMENT,
       initState: initState.MetaMetricsController,
     });
 

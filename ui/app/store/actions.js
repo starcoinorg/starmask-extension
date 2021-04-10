@@ -1671,7 +1671,7 @@ export function editRpc(
   };
 }
 
-export function setRpcTarget(newRpc, chainId, ticker = 'ETH', nickname) {
+export function setRpcTarget(newRpc, chainId, ticker = 'STC', nickname) {
   return async (dispatch) => {
     log.debug(
       `background.setRpcTarget: ${newRpc} ${chainId} ${ticker} ${nickname}`,

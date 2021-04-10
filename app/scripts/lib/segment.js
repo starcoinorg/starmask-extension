@@ -13,7 +13,7 @@ const SEGMENT_HOST = process.env.SEGMENT_HOST ?? null;
 // see events in real time for debugging, so this is set to 1 to disable the
 // queueing mechanism.
 const SEGMENT_FLUSH_AT =
-  process.env.METAMASK_ENVIRONMENT === 'production' ? undefined : 1;
+  process.env.STARMASK_ENVIRONMENT === 'production' ? undefined : 1;
 
 // flushInterval controls how frequently the queue is flushed to segment.
 // This happens regardless of the size of the queue. The default setting is

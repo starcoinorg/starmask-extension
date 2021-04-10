@@ -6,7 +6,7 @@ import extractEthjsErrorMessage from './extractEthjsErrorMessage';
 /* eslint-disable prefer-destructuring */
 // Destructuring breaks the inlining of the environment variables
 const STARMASK_DEBUG = process.env.STARMASK_DEBUG;
-const METAMASK_ENVIRONMENT = process.env.METAMASK_ENVIRONMENT;
+const STARMASK_ENVIRONMENT = process.env.STARMASK_ENVIRONMENT;
 /* eslint-enable prefer-destructuring */
 const SENTRY_DSN_DEV =
   'https://f59f3dd640d2429d9d0e2445a87ea8e1@sentry.io/273496';
@@ -72,19 +72,19 @@ export default function setupSentry({ release, getState }) {
 
   if (STARMASK_DEBUG) {
     return undefined;
-  } else if (METAMASK_ENVIRONMENT === 'production') {
+  } else if (STARMASK_ENVIRONMENT === 'production') {
     if (!process.env.SENTRY_DSN) {
       throw new Error(
         `Missing SENTRY_DSN environment variable in production environment`,
       );
     }
     console.log(
-      `Setting up Sentry Remote Error Reporting for '${METAMASK_ENVIRONMENT}': SENTRY_DSN`,
+      `Setting up Sentry Remote Error Reporting for '${STARMASK_ENVIRONMENT}': SENTRY_DSN`,
     );
     sentryTarget = process.env.SENTRY_DSN;
   } else {
     console.log(
-      `Setting up Sentry Remote Error Reporting for '${METAMASK_ENVIRONMENT}': SENTRY_DSN_DEV`,
+      `Setting up Sentry Remote Error Reporting for '${STARMASK_ENVIRONMENT}': SENTRY_DSN_DEV`,
     );
     sentryTarget = SENTRY_DSN_DEV;
   }
@@ -92,7 +92,7 @@ export default function setupSentry({ release, getState }) {
   Sentry.init({
     dsn: sentryTarget,
     debug: STARMASK_DEBUG,
-    environment: METAMASK_ENVIRONMENT,
+    environment: STARMASK_ENVIRONMENT,
     integrations: [new Dedupe(), new ExtraErrorData()],
     release,
     beforeSend: (report) => rewriteReport(report),
