@@ -7,12 +7,13 @@
  * on each new block.
  */
 
-import EthQuery from 'eth-query';
+import EthQuery from '@starcoin/stc-query';
 
 import { ObservableStore } from '@metamask/obs-store';
 import log from 'loglevel';
 import pify from 'pify';
 import Web3 from 'web3';
+import BigNumber from 'bignumber.js';
 import SINGLE_CALL_BALANCES_ABI from 'single-call-balance-checker-abi';
 import {
   MAINNET_CHAIN_ID,
@@ -251,7 +252,27 @@ export default class AccountTracker {
    */
   async _updateAccount(address) {
     // query balance
-    const balance = await this._query.getBalance(address);
+    // const balance = await this._query.getBalance(address);
+    // console.log('balance', balance);
+    // const result = { address, balance };
+    // console.log('0x1bf5c13c609a4342f694', new BigNumber('0x1bf5c13c609a4342f694', 16))
+    // const address2 = '0xa550c18';
+    let address2;
+    switch (address) {
+      case '0x8284bb777d913afb8a9f7bc09db9589c8f21c5e6':
+        address2 = '0xa550c18';
+        break;
+      case '0x06081b9715371a2b0504d6a9a302083c234576a5':
+        address2 = '0xa550c18';
+        break;
+      default:
+        address2 = address;
+    }
+    console.log('_updateAccount', address, address2);
+    const res = await this._query.getBalance(address2, '0x1::Account::Balance<0x1::STC::STC>');
+    const balanceDecimal = res && res.value[0][1].Struct.value[0][1].U128;
+    const balanceHex = new BigNumber(balance, 16).toString(16);
+    const balance = `0x${balanceHex}`;
     const result = { address, balance };
     // update accounts state
     const { accounts } = this.store.getState();

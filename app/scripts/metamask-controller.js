@@ -2537,7 +2537,7 @@ export default class MetamaskController extends EventEmitter {
   async setCustomRpc(
     rpcUrl,
     chainId,
-    ticker = 'ETH',
+    ticker = 'STC',
     nickname = '',
     rpcPrefs = {},
   ) {

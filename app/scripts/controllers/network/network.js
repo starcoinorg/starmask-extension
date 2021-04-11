@@ -152,7 +152,8 @@ export default class NetworkController extends EventEmitter {
     // Ping the RPC endpoint so we can confirm that it works
     const ethQuery = new EthQuery(this._provider);
     const initialNetwork = this.getNetworkState();
-    ethQuery.sendAsync({ method: 'net_version' }, (err, networkVersion) => {
+    ethQuery.sendAsync({ method: 'chain.id' }, (err, networkVersion) => {
+
       const currentNetwork = this.getNetworkState();
       if (initialNetwork === currentNetwork) {
         if (err) {

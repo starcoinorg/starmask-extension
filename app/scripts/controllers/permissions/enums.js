@@ -35,6 +35,7 @@ export const LOG_LIMIT = 100;
 
 export const SAFE_METHODS = [
   'chain.id',
+  'chain.info',
   'eth_blockNumber',
   'eth_call',
   'eth_chainId',
