@@ -94,6 +94,7 @@
     "@metamask/logo": "^2.5.0",
     "@metamask/obs-store": "^5.0.0",
     "@starcoin/stc-block-tracker": "^0.1.0",
+    "@starcoin/stc-keyring-controller": "^0.1.0",
     "@starcoin/stc-query": "^0.1.0",
     "@popperjs/core": "^2.4.0",
     "@reduxjs/toolkit": "^1.5.0",
