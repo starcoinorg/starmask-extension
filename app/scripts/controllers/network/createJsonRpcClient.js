@@ -8,7 +8,7 @@ import providerFromMiddleware from 'eth-json-rpc-middleware/providerFromMiddlewa
 import { PollingBlockTracker } from '@starcoin/stc-block-tracker';
 
 const inTest = process.env.IN_TEST === 'true';
-const blockTrackerOpts = inTest ? { pollingInterval: 1000 } : {};
+const blockTrackerOpts = inTest ? { pollingInterval: 30000 } : {};
 const getTestMiddlewares = () => {
   return inTest ? [createEstimateGasDelayTestMiddleware()] : [];
 };
