@@ -41,6 +41,7 @@ class PrivateKeyImportView extends Component {
 
     importNewAccount('Private Key', [privateKey])
       .then(({ selectedAddress }) => {
+        console.log('selectedAddress', selectedAddress);
         if (selectedAddress) {
           this.context.metricsEvent({
             eventOpts: {
