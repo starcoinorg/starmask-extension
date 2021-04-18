@@ -28,9 +28,8 @@ const accountImporter = {
       //   throw new Error('Cannot import invalid private key.');
       // }
 
-      // const stripped = ethUtil.stripHexPrefix(prefixed);
-      // return stripped;
-      return privateKey;
+      const stripped = ethUtil.stripHexPrefix(privateKey);
+      return stripped;
     },
     'JSON File': (input, password) => {
       let wallet;
