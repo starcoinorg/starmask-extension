@@ -26,6 +26,14 @@ export default class NewAccount extends PureComponent {
     termsChecked: false,
   };
 
+  // state = {
+  //   password: '11111111',
+  //   confirmPassword: '11111111',
+  //   passwordError: '',
+  //   confirmPasswordError: '',
+  //   termsChecked: true,
+  // };
+
   isValid() {
     const {
       password,
