@@ -252,11 +252,18 @@ export default class AccountTracker {
    */
   async _updateAccount(address) {
     // query balance
-    const balance = await this._query.getBalance(address);
+    // const balance = await this._query.getBalance(address);
     // const res = await this._query.getBalance(address, '0x1::Account::Balance<0x1::STC::STC>');
-    // const balanceDecimal = res && res.value[0][1].Struct.value[0][1].U128;
-    // const balanceHex = new BigNumber(balance, 16).toString(16);
-    // const balance = `0x${balanceHex}`;
+
+    // only 0xa550c18 can return balance for demo
+    let queryAddress = address
+    if (address.length < 40) {
+      queryAddress = '0x0000000000000000000000000a550c18';
+    }
+    const res = await this._query.getBalance(queryAddress, '0x1::Account::Balance<0x1::STC::STC>');
+    const balanceDecimal = res && res.value[0][1].Struct.value[0][1].U128;
+    const balanceHex = new BigNumber(balanceDecimal, 16).toString(16);
+    const balance = `0x${balanceHex}`;
     const result = { address, balance };
     // update accounts state
     const { accounts } = this.store.getState();
