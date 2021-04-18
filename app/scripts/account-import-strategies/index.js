@@ -21,15 +21,16 @@ const accountImporter = {
         throw new Error('Cannot import an empty key.');
       }
 
-      const prefixed = addHexPrefix(privateKey);
-      const buffer = ethUtil.toBuffer(prefixed);
 
-      if (!ethUtil.isValidPrivate(buffer)) {
-        throw new Error('Cannot import invalid private key.');
-      }
+      // const prefixed = addHexPrefix(privateKey);
+      // const buffer = ethUtil.toBuffer(prefixed);
+      // if (!ethUtil.isValidPrivate(buffer)) {
+      //   throw new Error('Cannot import invalid private key.');
+      // }
 
-      const stripped = ethUtil.stripHexPrefix(prefixed);
-      return stripped;
+      // const stripped = ethUtil.stripHexPrefix(prefixed);
+      // return stripped;
+      return privateKey;
     },
     'JSON File': (input, password) => {
       let wallet;

@@ -10,7 +10,7 @@ import createSubscriptionManager from 'eth-json-rpc-filters/subscriptionManager'
 import providerAsMiddleware from 'eth-json-rpc-middleware/providerAsMiddleware';
 import KeyringController from '@starcoin/stc-keyring-controller';
 import { Mutex } from 'await-semaphore';
-import ethUtil from 'ethereumjs-util';
+import * as ethUtil from '@starcoin/stc-util';
 import log from 'loglevel';
 import TrezorKeyring from 'eth-trezor-keyring';
 import LedgerBridgeKeyring from '@metamask/eth-ledger-bridge-keyring';
@@ -1457,9 +1457,11 @@ export default class MetamaskController extends EventEmitter {
    */
   async importAccountWithStrategy(strategy, args) {
     const privateKey = await accountImporter.importAccount(strategy, args);
+    const publicKeyBuff = await ethUtil.privateToPublicED(privateKey);
+    const publicKey = publicKeyBuff.toString('hex');
     const keyring = await this.keyringController.addNewKeyring(
       'Simple Key Pair',
-      [privateKey],
+      [{ privateKey, publicKey }],
     );
     const accounts = await keyring.getAccounts();
     // update accounts in preferences controller
