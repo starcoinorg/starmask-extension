@@ -29,6 +29,7 @@ import {
   SINGLE_CALL_BALANCES_ADDRESS_KOVAN,
 } from '../constants/contracts';
 import { bnToHex } from './util';
+import * as ethUtil from '@starcoin/stc-util';
 
 /**
  * This module is responsible for tracking any number of accounts and caching their current balances & transaction
@@ -180,7 +181,6 @@ export default class AccountTracker {
    */
   async _updateForBlock(blockNumber) {
     this._currentBlockNumber = blockNumber;
-
     // block gasLimit polling shouldn't be in account-tracker shouldn't be here...
     const currentBlock = await this._query.getBlockByNumber(blockNumber, false);
     if (!currentBlock) {
@@ -253,17 +253,17 @@ export default class AccountTracker {
   async _updateAccount(address) {
     // query balance
     // const balance = await this._query.getBalance(address);
-    // const res = await this._query.getBalance(address, '0x1::Account::Balance<0x1::STC::STC>');
-
-    // only 0xa550c18 can return balance for demo
-    let queryAddress = address
-    if (address.length < 40) {
-      queryAddress = '0x0000000000000000000000000a550c18';
+    let balanceDecimal
+    try {
+      const res = await this._query.getBalance(address, '0x1::Account::Balance<0x1::STC::STC>');
+      balanceDecimal = res && res.value[0][1].Struct.value[0][1].U128 || 0;
+    } catch (error) {
+      console.log(error);
+      // HD account will get error: Invalid params: unable to parse AccoutAddress
+      balanceDecimal = 0;
     }
-    const res = await this._query.getBalance(queryAddress, '0x1::Account::Balance<0x1::STC::STC>');
-    const balanceDecimal = res && res.value[0][1].Struct.value[0][1].U128;
     const balanceHex = new BigNumber(balanceDecimal, 16).toString(16);
-    const balance = `0x${balanceHex}`;
+    const balance = ethUtil.addHexPrefix(balanceHex);
     const result = { address, balance };
     // update accounts state
     const { accounts } = this.store.getState();
@@ -273,6 +273,7 @@ export default class AccountTracker {
     }
     accounts[address] = result;
     this.store.updateState({ accounts });
+
   }
 
   /**
