@@ -262,7 +262,7 @@ export default class AccountTracker {
       // HD account will get error: Invalid params: unable to parse AccoutAddress
       balanceDecimal = 0;
     }
-    const balanceHex = new BigNumber(balanceDecimal, 16).toString(16);
+    const balanceHex = new BigNumber(balanceDecimal, 10).toString(16);
     const balance = ethUtil.addHexPrefix(balanceHex);
     const result = { address, balance };
     // update accounts state

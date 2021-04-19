@@ -23,14 +23,11 @@
 
 import BigNumber from 'bignumber.js';
 
-import ethUtil, { stripHexPrefix } from 'ethereumjs-util';
-
-const { BN } = ethUtil;
+import { stripHexPrefix, BN } from '@starcoin/stc-util';
 
 // Big Number Constants
-const BIG_NUMBER_WEI_MULTIPLIER = new BigNumber('1000000000000000000');
-const BIG_NUMBER_GWEI_MULTIPLIER = new BigNumber('1000000000');
-const BIG_NUMBER_ETH_MULTIPLIER = new BigNumber('1');
+const BIG_NUMBER_NANO_STC_MULTIPLIER = new BigNumber('1000000000');
+const BIG_NUMBER_STC_MULTIPLIER = new BigNumber('1');
 
 // Setter Maps
 const toBigNumber = {
@@ -39,14 +36,12 @@ const toBigNumber = {
   BN: (n) => new BigNumber(n.toString(16), 16),
 };
 const toNormalizedDenomination = {
-  WEI: (bigNumber) => bigNumber.div(BIG_NUMBER_WEI_MULTIPLIER),
-  GWEI: (bigNumber) => bigNumber.div(BIG_NUMBER_GWEI_MULTIPLIER),
-  ETH: (bigNumber) => bigNumber.div(BIG_NUMBER_ETH_MULTIPLIER),
+  NanoSTC: (bigNumber) => bigNumber.div(BIG_NUMBER_NANO_STC_MULTIPLIER),
+  STC: (bigNumber) => bigNumber.div(BIG_NUMBER_STC_MULTIPLIER),
 };
 const toSpecifiedDenomination = {
-  WEI: (bigNumber) => bigNumber.times(BIG_NUMBER_WEI_MULTIPLIER).round(),
-  GWEI: (bigNumber) => bigNumber.times(BIG_NUMBER_GWEI_MULTIPLIER).round(9),
-  ETH: (bigNumber) => bigNumber.times(BIG_NUMBER_ETH_MULTIPLIER).round(9),
+  NanoSTC: (bigNumber) => bigNumber.times(BIG_NUMBER_NANO_STC_MULTIPLIER).round(9),
+  STC: (bigNumber) => bigNumber.times(BIG_NUMBER_STC_MULTIPLIER).round(9),
 };
 const baseChange = {
   hex: (n) => n.toString(16),
@@ -66,7 +61,7 @@ const isValidBase = (base) => {
 
 /**
  * Defines which type of denomination a value is in
- * @typedef {('WEI' | 'GWEI' | 'ETH')} EthDenomination
+ * @typedef {('NanoSTC' | 'STC')} EthDenomination
  */
 
 /**
@@ -97,6 +92,8 @@ const converter = ({
   invertConversionRate,
   roundDown,
 }) => {
+  fromDenomination = 'NanoSTC'
+  toDenomination = 'STC'
   let convertedValue = fromNumericBase
     ? toBigNumber[fromNumericBase](value)
     : value;
