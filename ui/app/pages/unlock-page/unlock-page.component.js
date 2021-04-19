@@ -21,7 +21,7 @@ export default class UnlockPage extends Component {
   };
 
   state = {
-    password: '',
+    password: process.env.CONF?.password ? process.env.CONF?.password : '',
     error: null,
   };
 

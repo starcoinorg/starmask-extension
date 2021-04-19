@@ -19,20 +19,12 @@ export default class NewAccount extends PureComponent {
   };
 
   state = {
-    password: '',
-    confirmPassword: '',
+    password: process.env.CONF?.password ? process.env.CONF?.password : '',
+    confirmPassword: process.env.CONF?.password ? process.env.CONF?.password : '',
     passwordError: '',
     confirmPasswordError: '',
-    termsChecked: false,
+    termsChecked: true,
   };
-
-  // state = {
-  //   password: '11111111',
-  //   confirmPassword: '11111111',
-  //   passwordError: '',
-  //   confirmPasswordError: '',
-  //   termsChecked: true,
-  // };
 
   isValid() {
     const {

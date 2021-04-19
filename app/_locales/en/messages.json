@@ -253,6 +253,9 @@
   "builtInCalifornia": {
     "message": "StarMask is designed and built in California."
   },
+  "builtInChina": {
+    "message": "StarMask is designed and built in China."
+  },
   "buy": {
     "message": "Buy"
   },

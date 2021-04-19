@@ -230,6 +230,9 @@
   "builtInCalifornia": {
     "message": "MetaMask在加利福尼亚设计和制造。"
   },
+  "builtInChina": {
+    "message": "StarMask在中国设计和制造。"
+  },
   "buy": {
     "message": "购买"
   },
