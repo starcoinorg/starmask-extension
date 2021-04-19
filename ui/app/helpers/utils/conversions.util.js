@@ -135,12 +135,12 @@ export function decGWEIToHexWEI(decGWEI) {
   });
 }
 
-export function hexWEIToDecGWEI(decGWEI) {
+export function hexNanoSTCToDecSTC(decGWEI) {
   return conversionUtil(decGWEI, {
     fromNumericBase: 'hex',
     toNumericBase: 'dec',
-    fromDenomination: 'WEI',
-    toDenomination: 'GWEI',
+    fromDenomination: 'NANOSTC',
+    toDenomination: 'STC',
   });
 }
 

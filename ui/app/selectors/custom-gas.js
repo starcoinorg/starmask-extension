@@ -30,14 +30,14 @@ export function getBasicGasEstimateLoadingStatus(state) {
   return state.gas.basicEstimateIsLoading;
 }
 
-export function getAveragePriceEstimateInHexWEI(state) {
+export function getAveragePriceEstimateInHexNanoSTC(state) {
   const averagePriceEstimate = state.gas.basicEstimates.average;
-  return getGasPriceInHexWei(averagePriceEstimate || '0x0');
+  return getGasPriceInHexNanoSTC(averagePriceEstimate || '0x0');
 }
 
-export function getFastPriceEstimateInHexWEI(state) {
+export function getFastPriceEstimateInHexNanoSTC(state) {
   const fastPriceEstimate = getFastPriceEstimate(state);
-  return getGasPriceInHexWei(fastPriceEstimate || '0x0');
+  return getGasPriceInHexNanoSTC(fastPriceEstimate || '0x0');
 }
 
 export function getDefaultActiveButtonIndex(
@@ -167,22 +167,22 @@ export function getRenderableConvertedCurrencyFee(
   return formatCurrency(feeInCurrency, convertedCurrency);
 }
 
-export function priceEstimateToWei(priceEstimate) {
+export function priceEstimateToNanoSTC(priceEstimate) {
   return conversionUtil(priceEstimate, {
     fromNumericBase: 'hex',
     toNumericBase: 'hex',
-    fromDenomination: 'GWEI',
-    toDenomination: 'WEI',
+    fromDenomination: 'STC',
+    toDenomination: 'NANOSTC',
     numberOfDecimals: 9,
   });
 }
 
-export function getGasPriceInHexWei(price) {
+export function getGasPriceInHexNanoSTC(price) {
   const value = conversionUtil(price, {
     fromNumericBase: 'dec',
     toNumericBase: 'hex',
   });
-  return addHexPrefix(priceEstimateToWei(value));
+  return addHexPrefix(priceEstimateToNanoSTC(value));
 }
 
 export function getRenderableGasButtonData(
@@ -211,7 +211,7 @@ export function getRenderableGasButtonData(
           conversionRate,
         )
       : '',
-    priceInHexWei: getGasPriceInHexWei(safeLow),
+    priceInHexWei: getGasPriceInHexNanoSTC(safeLow),
   };
   const averageEstimateData = {
     gasEstimateType: GAS_ESTIMATE_TYPES.AVERAGE,
@@ -229,7 +229,7 @@ export function getRenderableGasButtonData(
           conversionRate,
         )
       : '',
-    priceInHexWei: getGasPriceInHexWei(average),
+    priceInHexWei: getGasPriceInHexNanoSTC(average),
   };
   const fastEstimateData = {
     gasEstimateType: GAS_ESTIMATE_TYPES.FAST,
@@ -247,7 +247,7 @@ export function getRenderableGasButtonData(
           conversionRate,
         )
       : '',
-    priceInHexWei: getGasPriceInHexWei(fast),
+    priceInHexWei: getGasPriceInHexNanoSTC(fast),
   };
 
   return {
@@ -317,7 +317,7 @@ export function getRenderableEstimateDataForSmallButtonsFromGWEI(state) {
         gasLimit,
         NUMBER_OF_DECIMALS_SM_BTNS,
       ),
-      priceInHexWei: getGasPriceInHexWei(safeLow, true),
+      priceInHexWei: getGasPriceInHexNanoSTC(safeLow, true),
     },
     {
       gasEstimateType: GAS_ESTIMATE_TYPES.AVERAGE,
@@ -334,7 +334,7 @@ export function getRenderableEstimateDataForSmallButtonsFromGWEI(state) {
         gasLimit,
         NUMBER_OF_DECIMALS_SM_BTNS,
       ),
-      priceInHexWei: getGasPriceInHexWei(average, true),
+      priceInHexWei: getGasPriceInHexNanoSTC(average, true),
     },
     {
       gasEstimateType: GAS_ESTIMATE_TYPES.FAST,
@@ -351,7 +351,7 @@ export function getRenderableEstimateDataForSmallButtonsFromGWEI(state) {
         gasLimit,
         NUMBER_OF_DECIMALS_SM_BTNS,
       ),
-      priceInHexWei: getGasPriceInHexWei(fast, true),
+      priceInHexWei: getGasPriceInHexNanoSTC(fast, true),
     },
   ];
 }

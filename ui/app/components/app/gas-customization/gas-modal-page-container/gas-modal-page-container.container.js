@@ -36,14 +36,14 @@ import {
   isCustomPriceSafe,
   getTokenBalance,
   getSendMaxModeState,
-  getAveragePriceEstimateInHexWEI,
+  getAveragePriceEstimateInHexNanoSTC,
   isCustomPriceExcessive,
 } from '../../../../selectors';
 
 import {
   addHexes,
   subtractHexWEIsToDec,
-  hexWEIToDecGWEI,
+  hexNanoSTCToDecSTC,
   getValueFromWeiHex,
   sumHexWEIsToRenderableFiat,
 } from '../../../../helpers/utils/conversions.util';
@@ -73,7 +73,7 @@ const mapStateToProps = (state, ownProps) => {
     ? selectedTransaction.txParams
     : {
         gas: send.gasLimit || '0x5208',
-        gasPrice: send.gasPrice || getAveragePriceEstimateInHexWEI(state, true),
+        gasPrice: send.gasPrice || getAveragePriceEstimateInHexNanoSTC(state, true),
         value: sendToken ? '0x0' : send.amount,
       };
 
@@ -323,7 +323,7 @@ function isConfirm(state) {
 }
 
 function calcCustomGasPrice(customGasPriceInHex) {
-  return Number(hexWEIToDecGWEI(customGasPriceInHex));
+  return Number(hexNanoSTCToDecSTC(customGasPriceInHex));
 }
 
 function calcCustomGasLimit(customGasLimitInHex) {

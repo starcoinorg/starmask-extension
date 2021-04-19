@@ -39,7 +39,7 @@ import {
   decimalToHex,
   getValueFromWeiHex,
   decGWEIToHexWEI,
-  hexWEIToDecGWEI,
+  hexNanoSTCToDecSTC,
 } from '../../helpers/utils/conversions.util';
 import { conversionLessThan } from '../../helpers/utils/conversion-util';
 import { calcTokenAmount } from '../../helpers/utils/token-util';
@@ -648,7 +648,7 @@ export const signAndSendTransactions = (history, metaMetricsEvent) => {
       gas_fees: gasEstimateTotalInUSD,
       estimated_gas: estimatedGasLimit.toString(10),
       suggested_gas_price: fastGasEstimate,
-      used_gas_price: hexWEIToDecGWEI(usedGasPrice),
+      used_gas_price: hexNanoSTCToDecSTC(usedGasPrice),
       average_savings: usedQuote.savings?.total,
       performance_savings: usedQuote.savings?.performance,
       fee_savings: usedQuote.savings?.fee,
@@ -759,7 +759,7 @@ export function fetchMetaSwapsGasPriceEstimates() {
 
       try {
         const gasPrice = await global.ethQuery.gasPrice();
-        const gasPriceInDecGWEI = hexWEIToDecGWEI(gasPrice.toString(10));
+        const gasPriceInDecGWEI = hexNanoSTCToDecSTC(gasPrice.toString(10));
 
         dispatch(retrievedFallbackSwapsGasPrice(gasPriceInDecGWEI));
         return null;
