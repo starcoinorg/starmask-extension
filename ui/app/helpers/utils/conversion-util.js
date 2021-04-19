@@ -36,11 +36,11 @@ const toBigNumber = {
   BN: (n) => new BigNumber(n.toString(16), 16),
 };
 const toNormalizedDenomination = {
-  NanoSTC: (bigNumber) => bigNumber.div(BIG_NUMBER_NANO_STC_MULTIPLIER),
+  NANOSTC: (bigNumber) => bigNumber.div(BIG_NUMBER_NANO_STC_MULTIPLIER),
   STC: (bigNumber) => bigNumber.div(BIG_NUMBER_STC_MULTIPLIER),
 };
 const toSpecifiedDenomination = {
-  NanoSTC: (bigNumber) => bigNumber.times(BIG_NUMBER_NANO_STC_MULTIPLIER).round(9),
+  NANOSTC: (bigNumber) => bigNumber.times(BIG_NUMBER_NANO_STC_MULTIPLIER).round(9),
   STC: (bigNumber) => bigNumber.times(BIG_NUMBER_STC_MULTIPLIER).round(9),
 };
 const baseChange = {
@@ -61,7 +61,7 @@ const isValidBase = (base) => {
 
 /**
  * Defines which type of denomination a value is in
- * @typedef {('NanoSTC' | 'STC')} EthDenomination
+ * @typedef {('NANOSTC' | 'STC')} EthDenomination
  */
 
 /**
@@ -92,8 +92,6 @@ const converter = ({
   invertConversionRate,
   roundDown,
 }) => {
-  fromDenomination = 'NanoSTC'
-  toDenomination = 'STC'
   let convertedValue = fromNumericBase
     ? toBigNumber[fromNumericBase](value)
     : value;

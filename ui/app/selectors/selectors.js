@@ -466,7 +466,7 @@ export function getSwapsDefaultToken(state) {
     string: getValueFromWeiHex({
       value: balance,
       numberOfDecimals: 4,
-      toDenomination: 'ETH',
+      toDenomination: 'STC',
     }),
   };
 }

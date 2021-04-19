@@ -74,7 +74,7 @@ export function getValueFromWeiHex({
     fromCurrency,
     toCurrency,
     numberOfDecimals,
-    fromDenomination: 'WEI',
+    fromDenomination: 'NANOSTC',
     toDenomination,
     conversionRate,
   });

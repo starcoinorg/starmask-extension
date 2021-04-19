@@ -1,4 +1,4 @@
-import { ETH, GWEI, WEI } from '../constants/common';
+import { ETH, GWEI, WEI, NANOSTC } from '../constants/common';
 import { addHexPrefix } from '../../../../app/scripts/lib/util';
 import {
   conversionUtil,
@@ -68,7 +68,7 @@ export function getValueFromWeiHex({
     fromCurrency,
     toCurrency,
     numberOfDecimals,
-    fromDenomination: WEI,
+    fromDenomination: NANOSTC,
     toDenomination,
     conversionRate,
   });
