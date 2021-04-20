@@ -130,8 +130,8 @@ export function decGWEIToHexWEI(decGWEI) {
   return conversionUtil(decGWEI, {
     fromNumericBase: 'dec',
     toNumericBase: 'hex',
-    fromDenomination: 'GWEI',
-    toDenomination: 'WEI',
+    fromDenomination: 'NANOSTC',
+    toDenomination: 'STC',
   });
 }
 
