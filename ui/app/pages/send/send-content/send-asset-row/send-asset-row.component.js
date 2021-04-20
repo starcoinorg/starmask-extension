@@ -4,7 +4,7 @@ import SendRowWrapper from '../send-row-wrapper';
 import Identicon from '../../../../components/ui/identicon/identicon.component';
 import TokenBalance from '../../../../components/ui/token-balance';
 import UserPreferencedCurrencyDisplay from '../../../../components/app/user-preferenced-currency-display';
-import { ERC20, ETH, PRIMARY } from '../../../../helpers/constants/common';
+import { ERC20, STC, PRIMARY } from '../../../../helpers/constants/common';
 
 export default class SendAssetRow extends Component {
   static propTypes = {
@@ -121,7 +121,7 @@ export default class SendAssetRow extends Component {
         <div className="send-v2__asset-dropdown__asset-icon">
           <Identicon
             diameter={36}
-            address={nativeCurrency === ETH ? undefined : nativeCurrency}
+            address={nativeCurrency === STC ? undefined : nativeCurrency}
           />
         </div>
         <div className="send-v2__asset-dropdown__asset-data">
