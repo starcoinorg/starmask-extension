@@ -129,7 +129,7 @@ export function basicPriceEstimateToETHTotal(
   return conversionUtil(calcGasTotal(gasLimit, estimate), {
     fromNumericBase: 'hex',
     toNumericBase: 'dec',
-    fromDenomination: 'GWEI',
+    fromDenomination: 'NANOSTC',
     numberOfDecimals,
   });
 }
@@ -138,7 +138,7 @@ export function getRenderableEthFee(
   estimate,
   gasLimit,
   numberOfDecimals = 9,
-  nativeCurrency = 'ETH',
+  nativeCurrency = 'STC',
 ) {
   const value = conversionUtil(estimate, {
     fromNumericBase: 'dec',
