@@ -6,7 +6,7 @@ import PortStream from 'extension-port-stream';
 import extension from 'extensionizer';
 
 import Eth from 'ethjs';
-import EthQuery from 'eth-query';
+import EthQuery from '@starcoin/stc-query';
 import StreamProvider from 'web3-stream-provider';
 import log from 'loglevel';
 import launchMetaMaskUi from '../../ui';
