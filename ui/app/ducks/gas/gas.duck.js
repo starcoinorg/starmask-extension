@@ -5,6 +5,7 @@ import { getStorageItem, setStorageItem } from '../../../lib/storage-helpers';
 import {
   decGWEIToHexWEI,
   getValueFromWeiHex,
+  decimalToHex
 } from '../../helpers/utils/conversions.util';
 import { getIsMainnet, getCurrentChainId } from '../../selectors';
 import fetchWithCache from '../../helpers/utils/fetch-with-cache';
@@ -104,7 +105,6 @@ async function basicGasPriceQuery() {
 }
 
 export function fetchBasicGasEstimates() {
-  console.log('fetchBasicGasEstimates')
   return async (dispatch, getState) => {
     const isMainnet = getIsMainnet(getState());
 
@@ -112,13 +112,10 @@ export function fetchBasicGasEstimates() {
 
     let basicEstimates;
     if (isMainnet || process.env.IN_TEST) {
-      console.log(1)
       basicEstimates = await fetchExternalBasicGasEstimates();
     } else {
-      console.log(2)
       basicEstimates = await fetchEthGasPriceEstimates(getState());
     }
-    console.log('basicEstimates', basicEstimates)
     dispatch(setBasicGasEstimateData(basicEstimates));
     dispatch(basicGasEstimatesLoadingFinished());
 
@@ -158,18 +155,19 @@ async function fetchEthGasPriceEstimates(state) {
   if (cachedBasicEstimates && Date.now() - timeLastRetrieved < 75000) {
     return cachedBasicEstimates;
   }
-  // TODO: txpool.gas_price is not implemented in starcoin yet, will always return 1(NanoSTC)
-  const gasPrice = await (new Promise(async (resolve) => {
-    try {
-      const gasPrice = await global.eth.gasPrice();
-      resolve(gasPrice)
-    } catch (error) {
-      console.log('gasPrice in fetchEthGasPriceEstimates',error)
-      resolve('0x1')
-    }
-  }));
+  const gasPrice = await new Promise((resolve, reject) => {
+    return global.ethQuery.sendAsync(
+      { method: 'txpool.gas_price' },
+      (error, result) => {
+        if (error) {
+          return reject(error);
+        }
+        return resolve(result);
+      },
+    );
+  });
   const averageGasPriceInDecGWEI = getValueFromWeiHex({
-    value: gasPrice.toString(16),
+    value: decimalToHex(parseInt(gasPrice, 10)),
     numberOfDecimals: 4,
     toDenomination: 'STC',
   });
