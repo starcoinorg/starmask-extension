@@ -204,9 +204,16 @@ async function estimateGasForSend({
 
   // if recipient has no code, gas is 21k max:
   if (!sendToken && !data) {
-    const code = Boolean(to) && (await global.eth.getCode(to));
-    // Geth will return '0x', and ganache-core v2.2.1 will return '0x0'
-    const codeIsEmpty = !code || code === '0x' || code === '0x0';
+    const code = await new Promise((resolve, reject) => {
+      return global.ethQuery.getCode('0x1::Account', (error, result) => {
+        if (error) {
+          return reject(error);
+        }
+        return resolve(result);
+      });
+    });
+
+    const codeIsEmpty = !code;
     if (codeIsEmpty) {
       return SIMPLE_GAS_COST;
     }
