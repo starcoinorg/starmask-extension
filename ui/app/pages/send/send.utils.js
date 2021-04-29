@@ -260,7 +260,9 @@ async function estimateGasForSend({
 
   // run tx
   try {
-    const estimatedGas = await estimateGasMethod(paramsForGasEstimate);
+    // const estimatedGas = await estimateGasMethod(paramsForGasEstimate);
+    // TODO: use contract.dry_run 
+    const estimatedGas = SIMPLE_GAS_COST;
     const estimateWithBuffer = addGasBuffer(
       estimatedGas.toString(16),
       blockGasLimit,
