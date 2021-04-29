@@ -6,7 +6,7 @@ import createInflightMiddleware from 'eth-json-rpc-middleware/inflight-cache';
 import createBlockTrackerInspectorMiddleware from 'eth-json-rpc-middleware/block-tracker-inspector';
 import providerFromMiddleware from 'eth-json-rpc-middleware/providerFromMiddleware';
 import createInfuraMiddleware from 'eth-json-rpc-infura';
-import { PollingBlockTracker } from 'eth-block-tracker';
+import { PollingBlockTracker } from '@starcoin/stc-block-tracker';
 
 import { NETWORK_TYPE_TO_ID_MAP } from '../../../../shared/constants/network';
 

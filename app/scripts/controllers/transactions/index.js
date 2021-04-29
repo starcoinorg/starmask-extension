@@ -2,7 +2,7 @@ import EventEmitter from 'safe-event-emitter';
 import { ObservableStore } from '@metamask/obs-store';
 import ethUtil from 'ethereumjs-util';
 import Transaction from 'ethereumjs-tx';
-import EthQuery from 'ethjs-query';
+import EthQuery from '@starcoin/stc-query';
 import { ethErrors } from 'eth-rpc-errors';
 import abi from 'human-standard-token-abi';
 import { ethers } from 'ethers';

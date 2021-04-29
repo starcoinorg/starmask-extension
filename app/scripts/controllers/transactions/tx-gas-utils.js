@@ -1,6 +1,6 @@
-import EthQuery from 'ethjs-query';
+import EthQuery from '@starcoin/stc-query';
 import log from 'loglevel';
-import ethUtil from 'ethereumjs-util';
+import ethUtil from '@starcoin/stc-util';
 import { cloneDeep } from 'lodash';
 import { hexToBn, BnMultiplyByFraction, bnToHex } from '../../lib/util';
 

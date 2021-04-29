@@ -14,7 +14,7 @@ import * as ethUtil from '@starcoin/stc-util';
 import log from 'loglevel';
 import TrezorKeyring from 'eth-trezor-keyring';
 import LedgerBridgeKeyring from '@metamask/eth-ledger-bridge-keyring';
-import EthQuery from 'eth-query';
+import EthQuery from '@starcoin/stc-query';
 import nanoid from 'nanoid';
 import contractMap from '@metamask/contract-metadata';
 import {
@@ -1101,15 +1101,15 @@ export default class MetamaskController extends EventEmitter {
         filteredAccountTokens[checksummedAddress][chainId] =
           chainId === MAINNET_CHAIN_ID
             ? accountTokens[address][chainId].filter(
-                ({ address: tokenAddress }) => {
-                  const checksumAddress = ethUtil.toChecksumAddress(
-                    tokenAddress,
-                  );
-                  return contractMap[checksumAddress]
-                    ? contractMap[checksumAddress].erc20
-                    : true;
-                },
-              )
+              ({ address: tokenAddress }) => {
+                const checksumAddress = ethUtil.toChecksumAddress(
+                  tokenAddress,
+                );
+                return contractMap[checksumAddress]
+                  ? contractMap[checksumAddress].erc20
+                  : true;
+              },
+            )
             : accountTokens[address][chainId];
       });
     });
@@ -1330,9 +1330,8 @@ export default class MetamaskController extends EventEmitter {
     this.preferencesController.setAddresses(newAccounts);
     newAccounts.forEach((address) => {
       if (!oldAccounts.includes(address)) {
-        const label = `${deviceName[0].toUpperCase()}${deviceName.slice(1)} ${
-          parseInt(index, 10) + 1
-        } ${hdPathDescription || ''}`.trim();
+        const label = `${deviceName[0].toUpperCase()}${deviceName.slice(1)} ${parseInt(index, 10) + 1
+          } ${hdPathDescription || ''}`.trim();
         // Set the account label to Trezor 1 /  Ledger 1, etc
         this.preferencesController.setAccountLabel(address, label);
         // Select the account

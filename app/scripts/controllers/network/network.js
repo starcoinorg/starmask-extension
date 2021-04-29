@@ -8,7 +8,7 @@ import {
   createSwappableProxy,
   createEventEmitterProxy,
 } from 'swappable-obj-proxy';
-import EthQuery from 'eth-query';
+import EthQuery from '@starcoin/stc-query';
 import {
   BARNARD,
   MAINNET,
