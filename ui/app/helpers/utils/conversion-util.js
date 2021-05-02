@@ -92,13 +92,15 @@ const converter = ({
   invertConversionRate,
   roundDown,
 }) => {
-  console.log('converter', 'fromDenomination=', fromDenomination, 'toDenomination=', toDenomination)
+  // console.log('converter', 'fromDenomination=', fromDenomination, 'toDenomination=', toDenomination)
   let convertedValue = fromNumericBase
     ? toBigNumber[fromNumericBase](value)
     : value;
 
-  if (fromDenomination) {
+  if (fromDenomination && toNormalizedDenomination[fromDenomination]) {
     convertedValue = toNormalizedDenomination[fromDenomination](convertedValue);
+  } else {
+    console.log('fromDenomination is not defined', fromDenomination);
   }
 
   if (fromCurrency !== toCurrency) {
@@ -114,8 +116,10 @@ const converter = ({
     convertedValue = convertedValue.times(rate);
   }
 
-  if (toDenomination) {
+  if (toDenomination && toSpecifiedDenomination[toDenomination]) {
     convertedValue = toSpecifiedDenomination[toDenomination](convertedValue);
+  } else {
+    console.log('toDenomination is not defined', toDenomination);
   }
 
   if (numberOfDecimals) {
