@@ -788,7 +788,7 @@
     "message": "Gas Price Extremely Low"
   },
   "gasPriceInfoTooltipContent": {
-    "message": "Gas price specifies the amount of Ether you are willing to pay for each unit of gas."
+    "message": "Gas price specifies the amount of STC you are willing to pay for each unit of gas."
   },
   "gasUsed": {
     "message": "Gas Used"

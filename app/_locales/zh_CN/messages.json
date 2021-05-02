@@ -727,7 +727,7 @@
     "message": "燃料价格极低"
   },
   "gasPriceInfoTooltipContent": {
-    "message": "燃料价格规定了您愿意为每单位燃料支付的 Ether 数量。"
+    "message": "燃料价格规定了您愿意为每单位燃料支付的 STC 数量。"
   },
   "gasUsed": {
     "message": "燃料使用"

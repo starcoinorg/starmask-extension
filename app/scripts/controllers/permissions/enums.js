@@ -36,6 +36,12 @@ export const LOG_LIMIT = 100;
 export const SAFE_METHODS = [
   'chain.id',
   'chain.info',
+  'chain.get_block_by_number',
+  'contract.get_code',
+  'contract.get_resource',
+  'txpool.gas_price',
+  'txpool.submit_hex_transaction',
+  'contract.dry_run',
   'eth_blockNumber',
   'eth_call',
   'eth_chainId',
