@@ -144,7 +144,14 @@ export function getLatestSubmittedTxWithNonce(
 }
 
 export async function isSmartContractAddress(address) {
-  const code = await global.eth.getCode(address);
+  const code = await new Promise((resolve, reject) => {
+    return global.ethQuery.getCode('0x1::Account', (error, result) => {
+      if (error) {
+        return reject(error);
+      }
+      return resolve(result);
+    });
+  });
   // Geth will return '0x', and ganache-core v2.2.1 will return '0x0'
   const codeIsEmpty = !code || code === '0x' || code === '0x0';
   return !codeIsEmpty;
