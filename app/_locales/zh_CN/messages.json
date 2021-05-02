@@ -721,7 +721,7 @@
     "description": "$1 is the custom gas limit, in decimal."
   },
   "gasPrice": {
-    "message": "燃料价格（NANOSTC）"
+    "message": "燃料价格（NanoSTC）"
   },
   "gasPriceExtremelyLow": {
     "message": "燃料价格极低"

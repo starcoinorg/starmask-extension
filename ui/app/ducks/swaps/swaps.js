@@ -39,7 +39,7 @@ import {
   decimalToHex,
   getValueFromWeiHex,
   decGWEIToHexWEI,
-  hexNanoSTCToDecSTC,
+  hexWEIToDecGWEI,
 } from '../../helpers/utils/conversions.util';
 import { conversionLessThan } from '../../helpers/utils/conversion-util';
 import { calcTokenAmount } from '../../helpers/utils/token-util';
@@ -201,8 +201,8 @@ export function shouldShowCustomPriceTooLowWarning(state) {
     {
       value: customGasPrice,
       fromNumericBase: 'hex',
-      fromDenomination: 'WEI',
-      toDenomination: 'GWEI',
+      fromDenomination: 'NANOSTC',
+      toDenomination: 'MILLISTC',
     },
     { value: average, fromNumericBase: 'dec' },
   );
@@ -390,7 +390,7 @@ export const fetchQuotesAndSetQuoteState = (
     const swapsDefaultToken = getSwapsDefaultToken(state);
     const fetchParamsFromToken =
       fetchParams?.metaData?.sourceTokenInfo?.symbol ===
-      swapsDefaultToken.symbol
+        swapsDefaultToken.symbol
         ? swapsDefaultToken
         : fetchParams?.metaData?.sourceTokenInfo;
     const selectedFromToken = getFromToken(state) || fetchParamsFromToken || {};
@@ -648,7 +648,8 @@ export const signAndSendTransactions = (history, metaMetricsEvent) => {
       gas_fees: gasEstimateTotalInUSD,
       estimated_gas: estimatedGasLimit.toString(10),
       suggested_gas_price: fastGasEstimate,
-      used_gas_price: hexNanoSTCToDecSTC(usedGasPrice),
+      used_gas_price: hexWEIToDecGWEI(usedGasPrice),
+      // used_gas_price: usedGasPrice,
       average_savings: usedQuote.savings?.total,
       performance_savings: usedQuote.savings?.performance,
       fee_savings: usedQuote.savings?.fee,
@@ -759,7 +760,8 @@ export function fetchMetaSwapsGasPriceEstimates() {
 
       try {
         const gasPrice = await global.ethQuery.gasPrice();
-        const gasPriceInDecGWEI = hexNanoSTCToDecSTC(gasPrice.toString(10));
+        const gasPriceInDecGWEI = hexWEIToDecGWEI(gasPrice.toString(10));
+        // const gasPriceInDecGWEI = gasPrice.toString(10);
 
         dispatch(retrievedFallbackSwapsGasPrice(gasPriceInDecGWEI));
         return null;

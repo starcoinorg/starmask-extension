@@ -30,14 +30,14 @@ export function getBasicGasEstimateLoadingStatus(state) {
   return state.gas.basicEstimateIsLoading;
 }
 
-export function getAveragePriceEstimateInHexNanoSTC(state) {
+export function getAveragePriceEstimateInHexWEI(state) {
   const averagePriceEstimate = state.gas.basicEstimates.average;
-  return getGasPriceInHexNanoSTC(averagePriceEstimate || '0x0');
+  return getGasPriceInHexWei(averagePriceEstimate || '0x0');
 }
 
-export function getFastPriceEstimateInHexNanoSTC(state) {
+export function getFastPriceEstimateInHexWEI(state) {
   const fastPriceEstimate = getFastPriceEstimate(state);
-  return getGasPriceInHexNanoSTC(fastPriceEstimate || '0x0');
+  return getGasPriceInHexWei(fastPriceEstimate || '0x0');
 }
 
 export function getDefaultActiveButtonIndex(
@@ -87,8 +87,8 @@ export function isCustomPriceSafe(state) {
     {
       value: customGasPrice,
       fromNumericBase: 'hex',
-      fromDenomination: 'WEI',
-      toDenomination: 'GWEI',
+      fromDenomination: 'NANOSTC',
+      toDenomination: 'MILLISTC',
     },
     { value: safeLow, fromNumericBase: 'dec' },
   );
@@ -109,8 +109,8 @@ export function isCustomPriceExcessive(state, checkSend = false) {
     {
       value: customPrice,
       fromNumericBase: 'hex',
-      fromDenomination: 'WEI',
-      toDenomination: 'GWEI',
+      fromDenomination: 'NANOSTC',
+      toDenomination: 'MILLISTC',
     },
     {
       fromNumericBase: 'dec',
@@ -129,7 +129,7 @@ export function basicPriceEstimateToETHTotal(
   return conversionUtil(calcGasTotal(gasLimit, estimate), {
     fromNumericBase: 'hex',
     toNumericBase: 'dec',
-    fromDenomination: 'NANOSTC',
+    fromDenomination: 'MILLISTC',
     numberOfDecimals,
   });
 }
@@ -167,7 +167,7 @@ export function getRenderableConvertedCurrencyFee(
   return formatCurrency(feeInCurrency, convertedCurrency);
 }
 
-export function priceEstimateToNanoSTC(priceEstimate) {
+export function priceEstimateToWei(priceEstimate) {
   return conversionUtil(priceEstimate, {
     fromNumericBase: 'hex',
     toNumericBase: 'hex',
@@ -177,12 +177,12 @@ export function priceEstimateToNanoSTC(priceEstimate) {
   });
 }
 
-export function getGasPriceInHexNanoSTC(price) {
+export function getGasPriceInHexWei(price) {
   const value = conversionUtil(price, {
     fromNumericBase: 'dec',
     toNumericBase: 'hex',
   });
-  return addHexPrefix(priceEstimateToNanoSTC(value));
+  return addHexPrefix(priceEstimateToWei(value));
 }
 
 export function getRenderableGasButtonData(
@@ -205,13 +205,13 @@ export function getRenderableGasButtonData(
     ),
     feeInSecondaryCurrency: showFiat
       ? getRenderableConvertedCurrencyFee(
-          safeLow,
-          gasLimit,
-          currentCurrency,
-          conversionRate,
-        )
+        safeLow,
+        gasLimit,
+        currentCurrency,
+        conversionRate,
+      )
       : '',
-    priceInHexWei: getGasPriceInHexNanoSTC(safeLow),
+    priceInHexWei: getGasPriceInHexWei(safeLow),
   };
   const averageEstimateData = {
     gasEstimateType: GAS_ESTIMATE_TYPES.AVERAGE,
@@ -223,13 +223,13 @@ export function getRenderableGasButtonData(
     ),
     feeInSecondaryCurrency: showFiat
       ? getRenderableConvertedCurrencyFee(
-          average,
-          gasLimit,
-          currentCurrency,
-          conversionRate,
-        )
+        average,
+        gasLimit,
+        currentCurrency,
+        conversionRate,
+      )
       : '',
-    priceInHexWei: getGasPriceInHexNanoSTC(average),
+    priceInHexWei: getGasPriceInHexWei(average),
   };
   const fastEstimateData = {
     gasEstimateType: GAS_ESTIMATE_TYPES.FAST,
@@ -241,13 +241,13 @@ export function getRenderableGasButtonData(
     ),
     feeInSecondaryCurrency: showFiat
       ? getRenderableConvertedCurrencyFee(
-          fast,
-          gasLimit,
-          currentCurrency,
-          conversionRate,
-        )
+        fast,
+        gasLimit,
+        currentCurrency,
+        conversionRate,
+      )
       : '',
-    priceInHexWei: getGasPriceInHexNanoSTC(fast),
+    priceInHexWei: getGasPriceInHexWei(fast),
   };
 
   return {
@@ -306,52 +306,52 @@ export function getRenderableEstimateDataForSmallButtonsFromGWEI(state) {
       gasEstimateType: GAS_ESTIMATE_TYPES.SLOW,
       feeInSecondaryCurrency: showFiat
         ? getRenderableConvertedCurrencyFee(
-            safeLow,
-            gasLimit,
-            currentCurrency,
-            conversionRate,
-          )
+          safeLow,
+          gasLimit,
+          currentCurrency,
+          conversionRate,
+        )
         : '',
       feeInPrimaryCurrency: getRenderableEthFee(
         safeLow,
         gasLimit,
         NUMBER_OF_DECIMALS_SM_BTNS,
       ),
-      priceInHexWei: getGasPriceInHexNanoSTC(safeLow, true),
+      priceInHexWei: getGasPriceInHexWei(safeLow, true),
     },
     {
       gasEstimateType: GAS_ESTIMATE_TYPES.AVERAGE,
       feeInSecondaryCurrency: showFiat
         ? getRenderableConvertedCurrencyFee(
-            average,
-            gasLimit,
-            currentCurrency,
-            conversionRate,
-          )
+          average,
+          gasLimit,
+          currentCurrency,
+          conversionRate,
+        )
         : '',
       feeInPrimaryCurrency: getRenderableEthFee(
         average,
         gasLimit,
         NUMBER_OF_DECIMALS_SM_BTNS,
       ),
-      priceInHexWei: getGasPriceInHexNanoSTC(average, true),
+      priceInHexWei: getGasPriceInHexWei(average, true),
     },
     {
       gasEstimateType: GAS_ESTIMATE_TYPES.FAST,
       feeInSecondaryCurrency: showFiat
         ? getRenderableConvertedCurrencyFee(
-            fast,
-            gasLimit,
-            currentCurrency,
-            conversionRate,
-          )
+          fast,
+          gasLimit,
+          currentCurrency,
+          conversionRate,
+        )
         : '',
       feeInPrimaryCurrency: getRenderableEthFee(
         fast,
         gasLimit,
         NUMBER_OF_DECIMALS_SM_BTNS,
       ),
-      priceInHexWei: getGasPriceInHexNanoSTC(fast, true),
+      priceInHexWei: getGasPriceInHexWei(fast, true),
     },
   ];
 }

@@ -5,7 +5,7 @@ import {
   getAddressBook,
   getSelectedAccount,
   getTargetAccount,
-  getAveragePriceEstimateInHexNanoSTC,
+  getAveragePriceEstimateInHexWEI,
 } from '.';
 
 export function getBlockGasLimit(state) {
@@ -25,7 +25,7 @@ export function getGasLimit(state) {
 }
 
 export function getGasPrice(state) {
-  return state.metamask.send.gasPrice || getAveragePriceEstimateInHexNanoSTC(state);
+  return state.metamask.send.gasPrice || getAveragePriceEstimateInHexWEI(state);
 }
 
 export function getGasTotal(state) {

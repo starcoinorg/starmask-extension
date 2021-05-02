@@ -548,9 +548,9 @@ export default class SwapsController {
       );
 
       const totalEthCost = conversionUtil(totalWeiCost, {
-        fromCurrency: 'ETH',
-        fromDenomination: 'WEI',
-        toDenomination: 'ETH',
+        fromCurrency: 'STC',
+        fromDenomination: 'NANOSTC',
+        toDenomination: 'STC',
         fromNumericBase: 'BN',
         numberOfDecimals: 6,
       });
@@ -561,15 +561,15 @@ export default class SwapsController {
       // is simply trade.value plus gas fees.
       const ethFee = isSwapsDefaultTokenAddress(sourceToken, chainId)
         ? conversionUtil(
-            totalWeiCost.minus(sourceAmount, 10), // sourceAmount is in wei
-            {
-              fromCurrency: 'ETH',
-              fromDenomination: 'WEI',
-              toDenomination: 'ETH',
-              fromNumericBase: 'BN',
-              numberOfDecimals: 6,
-            },
-          )
+          totalWeiCost.minus(sourceAmount, 10), // sourceAmount is in wei
+          {
+            fromCurrency: 'STC',
+            fromDenomination: 'NANOSTC',
+            toDenomination: 'STC',
+            fromNumericBase: 'BN',
+            numberOfDecimals: 6,
+          },
+        )
         : totalEthCost;
 
       const decimalAdjustedDestinationAmount = calcTokenAmount(

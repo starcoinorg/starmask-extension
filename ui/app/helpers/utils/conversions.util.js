@@ -1,4 +1,4 @@
-import { ETH, GWEI, WEI, NANOSTC, STC } from '../constants/common';
+import { NANOSTC, MILLISTC, STC } from '../constants/common';
 import { addHexPrefix } from '../../../../app/scripts/lib/util';
 import {
   conversionUtil,
@@ -27,11 +27,11 @@ export function decimalToHex(decimal) {
 
 export function getEthConversionFromWeiHex({
   value,
-  fromCurrency = ETH,
+  fromCurrency = STC,
   conversionRate,
   numberOfDecimals = 6,
 }) {
-  const denominations = [fromCurrency, GWEI, WEI];
+  const denominations = [fromCurrency, MILLISTC, NANOSTC];
 
   let nonZeroDenomination;
 
@@ -97,7 +97,7 @@ export function addHexWEIsToDec(aHexWEI, bHexWEI) {
   return addCurrencies(aHexWEI, bHexWEI, {
     aBase: 16,
     bBase: 16,
-    fromDenomination: 'WEI',
+    fromDenomination: 'NANOSTC',
     numberOfDecimals: 6,
   });
 }
@@ -106,7 +106,7 @@ export function subtractHexWEIsToDec(aHexWEI, bHexWEI) {
   return subtractCurrencies(aHexWEI, bHexWEI, {
     aBase: 16,
     bBase: 16,
-    fromDenomination: 'WEI',
+    fromDenomination: 'NANOSTC',
     numberOfDecimals: 6,
   });
 }
@@ -119,7 +119,7 @@ export function decEthToConvertedCurrency(
   return conversionUtil(ethTotal, {
     fromNumericBase: 'dec',
     toNumericBase: 'dec',
-    fromCurrency: 'ETH',
+    fromCurrency: 'STC',
     toCurrency: convertedCurrency,
     numberOfDecimals: 2,
     conversionRate,
@@ -130,17 +130,17 @@ export function decGWEIToHexWEI(decGWEI) {
   return conversionUtil(decGWEI, {
     fromNumericBase: 'dec',
     toNumericBase: 'hex',
-    fromDenomination: 'NANOSTC',
-    toDenomination: 'STC',
+    fromDenomination: 'MILLISTC',
+    toDenomination: 'NANOSTC',
   });
 }
 
-export function hexNanoSTCToDecSTC(decGWEI) {
+export function hexWEIToDecGWEI(decGWEI) {
   return conversionUtil(decGWEI, {
     fromNumericBase: 'hex',
     toNumericBase: 'dec',
     fromDenomination: 'NANOSTC',
-    toDenomination: 'STC',
+    toDenomination: 'MILLISTC',
   });
 }
 
@@ -148,8 +148,8 @@ export function decETHToDecWEI(decEth) {
   return conversionUtil(decEth, {
     fromNumericBase: 'dec',
     toNumericBase: 'dec',
-    fromDenomination: 'ETH',
-    toDenomination: 'WEI',
+    fromDenomination: 'STC',
+    toDenomination: 'NANOSTC',
   });
 }
 
@@ -157,8 +157,8 @@ export function hexWEIToDecETH(hexWEI) {
   return conversionUtil(hexWEI, {
     fromNumericBase: 'hex',
     toNumericBase: 'dec',
-    fromDenomination: 'WEI',
-    toDenomination: 'ETH',
+    fromDenomination: 'NANOSTC',
+    toDenomination: 'STC',
   });
 }
 
@@ -184,7 +184,7 @@ export function sumHexWEIsToUnformattedFiat(
   const convertedTotal = decEthToConvertedCurrency(
     getValueFromWeiHex({
       value: hexWEIsSum,
-      toCurrency: 'ETH',
+      toCurrency: 'STC',
       numberOfDecimals: 4,
     }),
     convertedCurrency,

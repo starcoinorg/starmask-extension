@@ -36,14 +36,14 @@ import {
   isCustomPriceSafe,
   getTokenBalance,
   getSendMaxModeState,
-  getAveragePriceEstimateInHexNanoSTC,
+  getAveragePriceEstimateInHexWEI,
   isCustomPriceExcessive,
 } from '../../../../selectors';
 
 import {
   addHexes,
   subtractHexWEIsToDec,
-  hexNanoSTCToDecSTC,
+  hexWEIToDecGWEI,
   getValueFromWeiHex,
   sumHexWEIsToRenderableFiat,
 } from '../../../../helpers/utils/conversions.util';
@@ -72,10 +72,10 @@ const mapStateToProps = (state, ownProps) => {
   const txParams = selectedTransaction?.txParams
     ? selectedTransaction.txParams
     : {
-        gas: send.gasLimit || '0x5208',
-        gasPrice: send.gasPrice || getAveragePriceEstimateInHexNanoSTC(state, true),
-        value: sendToken ? '0x0' : send.amount,
-      };
+      gas: send.gasLimit || '0x5208',
+      gasPrice: send.gasPrice || getAveragePriceEstimateInHexWEI(state, true),
+      value: sendToken ? '0x0' : send.amount,
+    };
 
   const { gasPrice: currentGasPrice, gas: currentGasLimit } = txParams;
   const value = ownProps.transaction?.txParams?.value || txParams.value;
@@ -127,11 +127,11 @@ const mapStateToProps = (state, ownProps) => {
   const insufficientBalance = maxModeOn
     ? false
     : !isBalanceSufficient({
-        amount: value,
-        gasTotal: customGasTotal,
-        balance,
-        conversionRate,
-      });
+      amount: value,
+      gasTotal: customGasTotal,
+      balance,
+      conversionRate,
+    });
 
   return {
     hideBasic,
@@ -323,7 +323,8 @@ function isConfirm(state) {
 }
 
 function calcCustomGasPrice(customGasPriceInHex) {
-  return Number(hexNanoSTCToDecSTC(customGasPriceInHex));
+  return Number(hexWEIToDecGWEI(customGasPriceInHex));
+  // return Number(customGasPriceInHex);
 }
 
 function calcCustomGasLimit(customGasLimitInHex) {

@@ -33,14 +33,14 @@ const fetchWithTimeout = getFetchWithTimeout(30000);
  * @typedef {Object} EtherscanTransaction
  * @property {string} blockNumber - The number of the block this transaction was found in, in decimal
  * @property {string} from - The hex-prefixed address of the sender
- * @property {string} gas - The gas limit, in decimal WEI
- * @property {string} gasPrice - The gas price, in decimal WEI
+ * @property {string} gas - The gas limit, in decimal NANOSTC
+ * @property {string} gasPrice - The gas price, in decimal NANOSTC
  * @property {string} hash - The hex-prefixed transaction hash
  * @property {string} isError - Whether the transaction was confirmed or failed (0 for confirmed, 1 for failed)
  * @property {string} nonce - The transaction nonce, in decimal
  * @property {string} timeStamp - The timestamp for the transaction, in seconds
  * @property {string} to - The hex-prefixed address of the recipient
- * @property {string} value - The amount of ETH sent in this transaction, in decimal WEI
+ * @property {string} value - The amount of ETH sent in this transaction, in decimal NANOSTC
  */
 
 /**
@@ -185,7 +185,7 @@ export default class IncomingTransactionsController {
         if (
           tx.blockNumber &&
           parseInt(newMostRecentlyFetchedBlock, 10) <
-            parseInt(tx.blockNumber, 10)
+          parseInt(tx.blockNumber, 10)
         ) {
           newMostRecentlyFetchedBlock = parseInt(tx.blockNumber, 10);
         }

@@ -2,12 +2,13 @@ import { connect } from 'react-redux';
 import {
   decGWEIToHexWEI,
   decimalToHex,
-  hexNanoSTCToDecSTC,
+  hexWEIToDecGWEI,
 } from '../../../../helpers/utils/conversions.util';
 import AdvancedGasInputs from './advanced-gas-inputs.component';
 
 function convertGasPriceForInputs(gasPriceInHexWEI) {
-  return Number(hexNanoSTCToDecSTC(gasPriceInHexWEI));
+  return Number(hexWEIToDecGWEI(gasPriceInHexWEI));
+  // return Number(gasPriceInHexWEI);
 }
 
 function convertGasLimitForInputs(gasLimitInHexWEI) {

@@ -62,7 +62,7 @@ export function addFiat(...args) {
 
 export function getValueFromWeiHex({
   value,
-  fromCurrency = 'ETH',
+  fromCurrency = 'STC',
   toCurrency,
   conversionRate,
   numberOfDecimals,
@@ -82,7 +82,7 @@ export function getValueFromWeiHex({
 
 export function getTransactionFee({
   value,
-  fromCurrency = 'ETH',
+  fromCurrency = 'STC',
   toCurrency,
   conversionRate,
   numberOfDecimals,
@@ -90,7 +90,7 @@ export function getTransactionFee({
   return conversionUtil(value, {
     fromNumericBase: 'BN',
     toNumericBase: 'dec',
-    fromDenomination: 'WEI',
+    fromDenomination: 'NANOSTC',
     fromCurrency,
     toCurrency,
     numberOfDecimals,
@@ -103,15 +103,15 @@ export function formatCurrency(value, currencyCode) {
 
   return currencies.find((currency) => currency.code === upperCaseCurrencyCode)
     ? currencyFormatter.format(Number(value), {
-        code: upperCaseCurrencyCode,
-        style: 'currency',
-      })
+      code: upperCaseCurrencyCode,
+      style: 'currency',
+    })
     : value;
 }
 
 export function convertTokenToFiat({
   value,
-  fromCurrency = 'ETH',
+  fromCurrency = 'STC',
   toCurrency,
   conversionRate,
   contractExchangeRate,

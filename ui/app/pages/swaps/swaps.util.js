@@ -630,8 +630,8 @@ export function getSwapsTokensReceivedFromTxMeta(
       {
         aBase: 16,
         bBase: 16,
-        fromDenomination: 'WEI',
-        toDenomination: 'ETH',
+        fromDenomination: 'NANOSTC',
+        toDenomination: 'STC',
         toNumericBase: 'dec',
         numberOfDecimals: 6,
       },

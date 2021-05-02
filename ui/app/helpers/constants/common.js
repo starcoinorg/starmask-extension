@@ -3,6 +3,7 @@ export const GWEI = 'GWEI';
 export const WEI = 'WEI';
 
 export const STC = 'STC';
+export const MILLISTC = 'MILLISTC';
 export const NANOSTC = 'NANOSTC';
 
 export const PRIMARY = 'PRIMARY';

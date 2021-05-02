@@ -10,7 +10,7 @@ import { STC } from '../../../helpers/constants/common';
 
 /**
  * Component that allows user to enter currency values as a number, and props receive a converted
- * hex value in WEI. props.value, used as a default or forced value, should be a hex value, which
+ * hex value in NANOSTC. props.value, used as a default or forced value, should be a hex value, which
  * gets converted into a decimal value depending on the currency (STC or Fiat).
  */
 export default class CurrencyInput extends PureComponent {
@@ -61,16 +61,16 @@ export default class CurrencyInput extends PureComponent {
     const { value: hexValue, currentCurrency, conversionRate } = props;
     const decimalValueString = this.shouldUseFiat()
       ? getValueFromWeiHex({
-          value: hexValue,
-          toCurrency: currentCurrency,
-          conversionRate,
-          numberOfDecimals: 2,
-        })
+        value: hexValue,
+        toCurrency: currentCurrency,
+        conversionRate,
+        numberOfDecimals: 2,
+      })
       : getValueFromWeiHex({
-          value: hexValue,
-          toCurrency: STC,
-          numberOfDecimals: 6,
-        });
+        value: hexValue,
+        toCurrency: STC,
+        numberOfDecimals: 6,
+      });
 
     return Number(decimalValueString) || 0;
   }
@@ -102,17 +102,17 @@ export default class CurrencyInput extends PureComponent {
 
     const hexValue = this.shouldUseFiat()
       ? getWeiHexFromDecimalValue({
-          value: decimalValue,
-          fromCurrency,
-          conversionRate,
-          invertConversionRate: true,
-        })
+        value: decimalValue,
+        fromCurrency,
+        conversionRate,
+        invertConversionRate: true,
+      })
       : getWeiHexFromDecimalValue({
-          value: decimalValue,
-          fromCurrency: STC,
-          fromDenomination: STC,
-          conversionRate,
-        });
+        value: decimalValue,
+        fromCurrency: STC,
+        fromDenomination: STC,
+        conversionRate,
+      });
 
     this.setState({ hexValue, decimalValue });
     onChange(hexValue);

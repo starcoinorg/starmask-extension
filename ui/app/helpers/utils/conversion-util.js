@@ -10,7 +10,7 @@
  * @param {string} [options.toCurrency = 'ETH' | 'USD'] - The desired currency of the result
  * @param {string} [options.fromNumericBase = 'hex' | 'dec' | 'BN'] - The numeric basic of the passed value.
  * @param {string} [options.toNumericBase = 'hex' | 'dec' | 'BN'] - The desired numeric basic of the result.
- * @param {string} [options.fromDenomination = 'WEI'] - The denomination of the passed value
+ * @param {string} [options.fromDenomination = 'NANOSTC'] - The denomination of the passed value
  * @param {string} [options.numberOfDecimals] - The desired number of decimals in the result
  * @param {string} [options.roundDown] - The desired number of decimals to round down to
  * @param {number} [options.conversionRate] - The rate to use to make the fromCurrency -> toCurrency conversion
@@ -27,6 +27,7 @@ import { stripHexPrefix, BN } from '@starcoin/stc-util';
 
 // Big Number Constants
 const BIG_NUMBER_NANO_STC_MULTIPLIER = new BigNumber('1000000000');
+const BIG_NUMBER_MILLI_STC_MULTIPLIER = new BigNumber('1000');
 const BIG_NUMBER_STC_MULTIPLIER = new BigNumber('1');
 
 // Setter Maps
@@ -37,10 +38,12 @@ const toBigNumber = {
 };
 const toNormalizedDenomination = {
   NANOSTC: (bigNumber) => bigNumber.div(BIG_NUMBER_NANO_STC_MULTIPLIER),
+  MILLISTC: (bigNumber) => bigNumber.div(BIG_NUMBER_MILLI_STC_MULTIPLIER),
   STC: (bigNumber) => bigNumber.div(BIG_NUMBER_STC_MULTIPLIER),
 };
 const toSpecifiedDenomination = {
   NANOSTC: (bigNumber) => bigNumber.times(BIG_NUMBER_NANO_STC_MULTIPLIER).round(9),
+  MILLISTC: (bigNumber) => bigNumber.times(BIG_NUMBER_MILLI_STC_MULTIPLIER).round(9),
   STC: (bigNumber) => bigNumber.times(BIG_NUMBER_STC_MULTIPLIER).round(9),
 };
 const baseChange = {
@@ -61,7 +64,7 @@ const isValidBase = (base) => {
 
 /**
  * Defines which type of denomination a value is in
- * @typedef {('NANOSTC' | 'STC')} EthDenomination
+ * @typedef {('NANOSTC' | 'MILLISTC' | 'STC')} EthDenomination
  */
 
 /**
@@ -97,10 +100,12 @@ const converter = ({
     ? toBigNumber[fromNumericBase](value)
     : value;
 
-  if (fromDenomination && toNormalizedDenomination[fromDenomination]) {
-    convertedValue = toNormalizedDenomination[fromDenomination](convertedValue);
-  } else {
-    console.log('fromDenomination is not defined', fromDenomination);
+  if (fromDenomination) {
+    if (toNormalizedDenomination[fromDenomination]) {
+      convertedValue = toNormalizedDenomination[fromDenomination](convertedValue);
+    } else {
+      console.log('fromDenomination is not defined', fromDenomination);
+    }
   }
 
   if (fromCurrency !== toCurrency) {
@@ -116,10 +121,12 @@ const converter = ({
     convertedValue = convertedValue.times(rate);
   }
 
-  if (toDenomination && toSpecifiedDenomination[toDenomination]) {
-    convertedValue = toSpecifiedDenomination[toDenomination](convertedValue);
-  } else {
-    console.log('toDenomination is not defined', toDenomination);
+  if (toDenomination) {
+    if (toSpecifiedDenomination[toDenomination]) {
+      convertedValue = toSpecifiedDenomination[toDenomination](convertedValue);
+    } else {
+      console.log('toDenomination is not defined', toDenomination);
+    }
   }
 
   if (numberOfDecimals) {
