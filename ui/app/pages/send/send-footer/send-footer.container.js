@@ -73,7 +73,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     clearSend: () => dispatch(clearSend()),
-    sign: ({ sendToken, to, amount, from, gas, gasPrice, data }) => {
+    sign: async ({ sendToken, to, amount, from, gas, gasPrice, data }) => {
       const txParams = constructTxParams({
         amount,
         data,
@@ -86,7 +86,7 @@ function mapDispatchToProps(dispatch) {
 
       sendToken
         ? dispatch(signTokenTx(sendToken.address, to, amount, txParams))
-        : dispatch(signTx(txParams));
+        : dispatch(await signTx(txParams));
     },
     update: ({
       amount,

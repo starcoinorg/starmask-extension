@@ -636,12 +636,12 @@ export function signTypedMsg(msgData) {
 }
 
 export function signTx(txData) {
-  return (dispatch) => {
-    global.ethQuery.sendTransaction(txData, (err) => {
-      if (err) {
-        dispatch(displayWarning(err.message));
-      }
-    });
+  return async (dispatch) => {
+    try {
+      await promisifiedBackground.addUnapprovedTransaction(txData, 'metamask');
+    } catch (err) {
+      dispatch(displayWarning(err.message));
+    }
     dispatch(showConfTxPage());
   };
 }
@@ -2264,12 +2264,12 @@ export function setPendingTokens(pendingTokens) {
   const tokens =
     address && symbol && decimals
       ? {
-          ...selectedTokens,
-          [address]: {
-            ...customToken,
-            isCustom: true,
-          },
-        }
+        ...selectedTokens,
+        [address]: {
+          ...customToken,
+          isCustom: true,
+        },
+      }
       : selectedTokens;
 
   Object.keys(tokens).forEach((tokenAddress) => {

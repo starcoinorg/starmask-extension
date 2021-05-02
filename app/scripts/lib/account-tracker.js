@@ -179,9 +179,9 @@ export default class AccountTracker {
    *
    */
   async _updateForBlock(blockNumber) {
-    this._currentBlockNumber = blockNumber;
+    this._currentBlockNumber = parseInt(blockNumber, 10);
     // block gasLimit polling shouldn't be in account-tracker shouldn't be here...
-    const currentBlock = await this._query.getBlockByNumber(blockNumber, false);
+    const currentBlock = await this._query.getBlockByNumber(this._currentBlockNumber, false);
     if (!currentBlock) {
       return;
     }
@@ -254,7 +254,7 @@ export default class AccountTracker {
     // const balance = await this._query.getBalance(address);
     let balanceDecimal
     try {
-      const res = await this._query.getBalance(address, '0x1::Account::Balance<0x1::STC::STC>');
+      const res = await this._query.getResource(address, '0x1::Account::Balance<0x1::STC::STC>');
       balanceDecimal = res && res.value[0][1].Struct.value[0][1].U128 || 0;
     } catch (error) {
       console.log(error);
