@@ -8,7 +8,7 @@
  */
 
 import StcQuery from '@starcoin/stc-query';
-
+import * as ethUtil from '@starcoin/stc-util';
 import { ObservableStore } from '@metamask/obs-store';
 import log from 'loglevel';
 import pify from 'pify';
@@ -29,7 +29,6 @@ import {
   SINGLE_CALL_BALANCES_ADDRESS_KOVAN,
 } from '../constants/contracts';
 import { bnToHex } from './util';
-import * as ethUtil from '@starcoin/stc-util';
 
 /**
  * This module is responsible for tracking any number of accounts and caching their current balances & transaction

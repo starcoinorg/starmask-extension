@@ -60,6 +60,7 @@ import seedPhraseVerifier from './lib/seed-phrase-verifier';
 import MetaMetricsController from './controllers/metametrics';
 import { segment, segmentLegacy } from './lib/segment';
 import createMetaRPCHandler from './lib/createMetaRPCHandler';
+import { hexToDecimal } from '../../ui/app/helpers/utils/conversions.util';
 
 export const METAMASK_CONTROLLER_EVENTS = {
   // Fired after state changes that impact the extension badge (unapproved msg count)
@@ -1895,16 +1896,31 @@ export default class MetamaskController extends EventEmitter {
 
   estimateGas(estimateGasParams) {
     return new Promise((resolve, reject) => {
+      const params = {
+        chain_id: 254,
+        gas_unit_price: 1,
+        sender: estimateGasParams.from,
+        sequence_number: estimateGasParams.sequenceNumber,
+        script: {
+          code: '0x1::TransferScripts::peer_to_peer',
+          type_args: ['0x1::STC::STC'],
+          args: [estimateGasParams.to, 'x""', `${hexToDecimal(estimateGasParams.gas)}u128`]
+        },
+      };
+      if (!estimateGasParams.to) {
+        return resolve(0);
+      }
       return this.txController.txGasUtil.query.estimateGas(
-        estimateGasParams,
+        params,
         (err, res) => {
           if (err) {
             return reject(err);
           }
-
-          return resolve(res);
+          const gas_used = parseInt(res.gas_used, 10);
+          return resolve(gas_used);
         },
       );
+
     });
   }
 

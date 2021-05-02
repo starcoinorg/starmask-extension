@@ -854,7 +854,14 @@ export default class TransactionController extends EventEmitter {
     let code;
     if (!result) {
       try {
-        code = await this.query.getCode(to);
+        code = await new Promise((resolve, reject) => {
+          return global.ethQuery.getCode('0x1::Account', (error, result) => {
+            if (error) {
+              return reject(error);
+            }
+            return resolve(result);
+          });
+        });
       } catch (e) {
         code = null;
         log.warn(e);

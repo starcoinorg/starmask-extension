@@ -200,7 +200,7 @@ async function estimateGasForSend({
   gasPrice,
   estimateGasMethod,
 }) {
-  const paramsForGasEstimate = { from: selectedAddress, value, gasPrice };
+  const paramsForGasEstimate = { from: selectedAddress, to, value, gasPrice };
 
   // if recipient has no code, gas is 21k max:
   if (!sendToken && !data) {
@@ -234,10 +234,6 @@ async function estimateGasForSend({
       paramsForGasEstimate.data = data;
     }
 
-    if (to) {
-      paramsForGasEstimate.to = to;
-    }
-
     if (!value || value === '0') {
       paramsForGasEstimate.value = '0xff';
     }
@@ -260,9 +256,24 @@ async function estimateGasForSend({
 
   // run tx
   try {
-    // const estimatedGas = await estimateGasMethod(paramsForGasEstimate);
-    // TODO: use contract.dry_run 
-    const estimatedGas = SIMPLE_GAS_COST;
+    // get sequence_number from contract.get_resource
+    const sequenceNumber = await new Promise((resolve, reject) => {
+      return global.ethQuery.getResource(
+        paramsForGasEstimate.from,
+        '0x1::Account::Account',
+        (err, res) => {
+          if (err) {
+            return reject(err);
+          }
+
+          const sequence_number = res && res.value[6][1].U64 || 0;
+          return resolve(parseInt(sequence_number, 10));
+        },
+      );
+    });
+    paramsForGasEstimate.sequenceNumber = sequenceNumber;
+    // get gas_used from contract.dry_run
+    const estimatedGas = await estimateGasMethod(paramsForGasEstimate);
     const estimateWithBuffer = addGasBuffer(
       estimatedGas.toString(16),
       blockGasLimit,
