@@ -853,25 +853,26 @@ export default class TransactionController extends EventEmitter {
 
     let code;
     if (!result) {
-      try {
-        code = await new Promise((resolve, reject) => {
-          return global.ethQuery.getCode('0x1::Account', (error, result) => {
-            if (error) {
-              return reject(error);
-            }
-            return resolve(result);
-          });
-        });
-      } catch (e) {
-        code = null;
-        log.warn(e);
-      }
+      // try {
+      //   code = await new Promise((resolve, reject) => {
+      //     return this.query.getCode('0x1::Account', (error, result) => {
+      //       if (error) {
+      //         return reject(error);
+      //       }
+      //       return resolve(result);
+      //     });
+      //   });
+      // } catch (e) {
+      //   code = null;
+      //   log.warn(e);
+      // }
 
-      const codeIsEmpty = !code || code === '0x' || code === '0x0';
+      // const codeIsEmpty = !code || code === '0x' || code === '0x0';
 
-      result = codeIsEmpty
-        ? TRANSACTION_TYPES.SENT_ETHER
-        : TRANSACTION_TYPES.CONTRACT_INTERACTION;
+      // result = codeIsEmpty
+      //   ? TRANSACTION_TYPES.SENT_ETHER
+      //   : TRANSACTION_TYPES.CONTRACT_INTERACTION;
+      result = TRANSACTION_TYPES.SENT_ETHER;
     }
 
     return { type: result, getCodeResponse: code };
