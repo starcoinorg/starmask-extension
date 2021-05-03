@@ -171,9 +171,9 @@ export function priceEstimateToWei(priceEstimate) {
   return conversionUtil(priceEstimate, {
     fromNumericBase: 'hex',
     toNumericBase: 'hex',
-    fromDenomination: 'STC',
+    fromDenomination: 'MILLISTC',
     toDenomination: 'NANOSTC',
-    numberOfDecimals: 9,
+    numberOfDecimals: 6,
   });
 }
 
