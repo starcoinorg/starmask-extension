@@ -6,7 +6,7 @@ import EthQuery from '@starcoin/stc-query';
 import { ethErrors } from 'eth-rpc-errors';
 import abi from 'human-standard-token-abi';
 import { ethers } from 'ethers';
-import NonceTracker from 'nonce-tracker';
+import NonceTracker from '@starcoin/stc-nonce-tracker';
 import log from 'loglevel';
 import BigNumber from 'bignumber.js';
 import cleanErrorStack from '../../lib/cleanErrorStack';
