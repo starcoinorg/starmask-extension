@@ -1,6 +1,7 @@
 import EventEmitter from 'safe-event-emitter';
 import log from 'loglevel';
 import EthQuery from '@starcoin/stc-query';
+import BigNumber from 'bignumber.js';
 import { TRANSACTION_STATUSES } from '../../../../shared/constants/transaction';
 
 /**
@@ -191,8 +192,15 @@ export default class PendingTransactionTracker extends EventEmitter {
     }
 
     try {
-      const transactionReceipt = await this.query.getTransactionReceipt(txHash);
-      if (transactionReceipt?.blockNumber) {
+      const transactionReceipt = await new Promise((resolve, reject) => {
+        return this.query.getTransactionReceipt(txHash, (err, res) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(res);
+        });
+      });
+      if (transactionReceipt?.block_number) {
         this.emit('tx:confirmed', txId, transactionReceipt);
         return;
       }
@@ -222,9 +230,22 @@ export default class PendingTransactionTracker extends EventEmitter {
       hash: txHash,
       txParams: { nonce, from },
     } = txMeta;
-    const networkNextNonce = await this.query.getTransactionCount(from);
+    const networkNextNonce = await new Promise((resolve, reject) => {
+      return this.query.getResource(
+        from,
+        '0x1::Account::Account',
+        (err, res) => {
+          if (err) {
+            return reject(err);
+          }
 
-    if (parseInt(nonce, 16) >= networkNextNonce.toNumber()) {
+          const sequence_number = res && res.value[6][1].U64 || 0;
+          return resolve(new BigNumber(sequence_number, 10).toNumber());
+        },
+      );
+    });
+
+    if (parseInt(nonce, 16) >= networkNextNonce) {
       return false;
     }
 

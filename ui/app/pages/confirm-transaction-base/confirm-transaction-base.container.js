@@ -53,9 +53,9 @@ let customNonceValue = '';
 const customNonceMerge = (txData) =>
   customNonceValue
     ? {
-        ...txData,
-        customNonceValue,
-      }
+      ...txData,
+      customNonceValue,
+    }
     : txData;
 
 const mapStateToProps = (state, ownProps) => {

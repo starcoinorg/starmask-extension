@@ -1,4 +1,5 @@
 import abi from 'ethereumjs-abi';
+import { BigNumber } from 'bignumber.js';
 import {
   addCurrencies,
   conversionUtil,
@@ -267,7 +268,7 @@ async function estimateGasForSend({
           }
 
           const sequence_number = res && res.value[6][1].U64 || 0;
-          return resolve(parseInt(sequence_number, 10));
+          return resolve(new BigNumber(sequence_number, 10).toNumber());
         },
       );
     });

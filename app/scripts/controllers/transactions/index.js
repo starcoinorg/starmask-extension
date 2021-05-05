@@ -563,6 +563,7 @@ export default class TransactionController extends EventEmitter {
     const txParams = { ...txMeta.txParams, chainId };
     // sign tx
     log.info({ txMeta })
+
     const sendAmount = conversionUtil(ethUtil.stripHexPrefix(txParams.value), {
       fromNumericBase: 'hex',
       toNumericBase: 'dec',
@@ -580,7 +581,7 @@ export default class TransactionController extends EventEmitter {
           }
 
           const sequence_number = res && res.value[6][1].U64 || 0;
-          return resolve(parseInt(sequence_number, 10));
+          return resolve(new BigNumber(sequence_number, 10).toNumber());
         },
       );
     });
@@ -685,6 +686,7 @@ export default class TransactionController extends EventEmitter {
    * @returns {Promise<void>}
    */
   async confirmTransaction(txId, txReceipt) {
+    log.info('confirmTransaction', txId, txReceipt)
     // get the txReceipt before marking the transaction confirmed
     // to ensure the receipt is gotten before the ui revives the tx
     const txMeta = this.txStateManager.getTx(txId);
@@ -697,9 +699,9 @@ export default class TransactionController extends EventEmitter {
       // It seems that sometimes the numerical values being returned from
       // this.query.getTransactionReceipt are BN instances and not strings.
       const gasUsed =
-        typeof txReceipt.gasUsed === 'string'
-          ? txReceipt.gasUsed
-          : txReceipt.gasUsed.toString(16);
+        typeof txReceipt.gas_used === 'string'
+          ? txReceipt.gas_used
+          : txReceipt.gas_used.toString(16);
 
       txMeta.txReceipt = {
         ...txReceipt,
@@ -714,7 +716,22 @@ export default class TransactionController extends EventEmitter {
       );
 
       if (txMeta.type === TRANSACTION_TYPES.SWAP) {
-        const postTxBalance = await this.query.getBalance(txMeta.txParams.from);
+        const postTxBalance = await new Promise((resolve, reject) => {
+          return this.query.getResource(
+            txMeta.txParams.from,
+            '0x1::Account::Account',
+            (err, res) => {
+              if (err) {
+                return reject(err);
+              }
+
+              const balanceDecimal = res && res.value[0][1].Struct.value[0][1].U128 || 0;
+              return resolve(new BigNumber(balanceDecimal, 10));
+            },
+          );
+        });
+
+
         const latestTxMeta = this.txStateManager.getTx(txId);
 
         const approvalTxMeta = latestTxMeta.approvalTxId

@@ -181,7 +181,7 @@ export default class AccountTracker {
   async _updateForBlock(blockNumber) {
     this._currentBlockNumber = parseInt(blockNumber, 10);
     // block gasLimit polling shouldn't be in account-tracker shouldn't be here...
-    const currentBlock = await this._query.getBlockByNumber(this._currentBlockNumber, false);
+    const currentBlock = await this._query.getBlockByNumber(this._currentBlockNumber);
     if (!currentBlock) {
       return;
     }
