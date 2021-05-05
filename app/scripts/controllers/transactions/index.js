@@ -563,29 +563,13 @@ export default class TransactionController extends EventEmitter {
     const txParams = { ...txMeta.txParams, chainId };
     // sign tx
     log.info({ txMeta })
-    // const fromAccount = document.getElementById('fromAccountInput').value
-    // const toAccount = document.getElementById('toAccountInput').value
-    const sendAmount = 1000000000;
-    // const sendAmountString = `${sendAmount.toString()}u128`
-    // log.info({ sendAmountString })
+    const sendAmount = conversionUtil(ethUtil.stripHexPrefix(txParams.value), {
+      fromNumericBase: 'hex',
+      toNumericBase: 'dec',
+    });
+
     const senderPrivateKeyHex = '0x33bedc6650a622a3223c0ca391cb2bfe6078a2b254c08fa492ffe334e8c8ac1f'
-    // log.info({ senderPrivateKeyHex })
-    // const txnRequest = {
-    //   script: {
-    //     code: '0x1::TransferScripts::peer_to_peer',
-    //     type_args: ['0x1::STC::STC'],
-    //     args: [toAccount, 'x""', sendAmountString],
-    //   }
-    // }
-    // log.info({ txnRequest })
-    // const txnOutput = await starcoinProvider.dryRun(txnRequest)
-    // log.info({ txnOutput })
-    // sendSTCStatus.innerText = "Sending STC..."
 
-    // const balanceBefore = await starcoinProvider.getBalance(toAccount)
-    // log.info({ balanceBefore })
-
-    // const senderSequenceNumber = await starcoinProvider.getSequenceNumber(fromAccount)
     const senderSequenceNumber = await new Promise((resolve, reject) => {
       return this.query.getResource(
         txParams.from,
@@ -610,11 +594,11 @@ export default class TransactionController extends EventEmitter {
         multiplierBase: 16,
       },
     );
+
     const maxGasAmount = conversionUtil(gasTotal, {
       fromNumericBase: 'hex',
       toNumericBase: 'dec',
     });
-    log.info(txParams.gas, txParams.gasPrice, gasTotal, maxGasAmount)
 
     // because the time system in dev network is relatively static,
     // we should use nodeInfo.now_seconds instead of using new Date().getTime()
