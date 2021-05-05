@@ -18,6 +18,7 @@ import {
   addHexPrefix,
 } from '../../lib/util';
 import { TRANSACTION_NO_CONTRACT_ERROR_KEY } from '../../../../ui/app/helpers/constants/error-keys';
+import { multiplyCurrencies, conversionUtil } from '../../../../ui/app/helpers/utils/conversion-util';
 import { getSwapsTokensReceivedFromTxMeta } from '../../../../ui/app/pages/swaps/swaps.util';
 import {
   TRANSACTION_STATUSES,
@@ -561,7 +562,6 @@ export default class TransactionController extends EventEmitter {
     const chainId = this.getChainId();
     const txParams = { ...txMeta.txParams, chainId };
     // sign tx
-    const fromAddress = txParams.from;
     log.info({ txMeta })
     // const fromAccount = document.getElementById('fromAccountInput').value
     // const toAccount = document.getElementById('toAccountInput').value
@@ -586,16 +586,47 @@ export default class TransactionController extends EventEmitter {
     // log.info({ balanceBefore })
 
     // const senderSequenceNumber = await starcoinProvider.getSequenceNumber(fromAccount)
-    const senderSequenceNumber = 21
+    const senderSequenceNumber = await new Promise((resolve, reject) => {
+      return this.query.getResource(
+        txParams.from,
+        '0x1::Account::Account',
+        (err, res) => {
+          if (err) {
+            return reject(err);
+          }
 
-    // // TODO: generate maxGasAmount from contract.dry_run -> gas_used
-    const maxGasAmount = 124191
+          const sequence_number = res && res.value[6][1].U64 || 0;
+          return resolve(parseInt(sequence_number, 10));
+        },
+      );
+    });
 
-    // // because the time system in dev network is relatively static, 
-    // // we should use nodeInfo.now_secondsinstead of using new Date().getTime()
-    // const nowSeconds = await starcoinProvider.getNowSeconds()
-    const nowSeconds = 4924;
-    // // expired after 12 hours since Unix Epoch
+    const gasTotal = multiplyCurrencies(
+      ethUtil.stripHexPrefix(txParams.gas),
+      ethUtil.stripHexPrefix(txParams.gasPrice),
+      {
+        toNumericBase: 'hex',
+        multiplicandBase: 16,
+        multiplierBase: 16,
+      },
+    );
+    const maxGasAmount = conversionUtil(gasTotal, {
+      fromNumericBase: 'hex',
+      toNumericBase: 'dec',
+    });
+    log.info(txParams.gas, txParams.gasPrice, gasTotal, maxGasAmount)
+
+    // because the time system in dev network is relatively static,
+    // we should use nodeInfo.now_seconds instead of using new Date().getTime()
+    const nowSeconds = await new Promise((resolve, reject) => {
+      return this.query.getNodeInfo((err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(res.now_seconds);
+      });
+    });
+    // expired after 12 hours since Unix Epoch
     const expirationTimestampSecs = nowSeconds + 43200;
 
     log.info(senderPrivateKeyHex, txParams.from, txParams.to, sendAmount, maxGasAmount, senderSequenceNumber, expirationTimestampSecs, chainId);
