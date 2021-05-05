@@ -96,6 +96,7 @@
     "@reduxjs/toolkit": "^1.5.0",
     "@sentry/browser": "^5.26.0",
     "@sentry/integrations": "^5.26.0",
+    "@starcoin/starcoin": "^0.2.1",
     "@starcoin/stc-block-tracker": "^0.1.0",
     "@starcoin/stc-keyring-controller": "^0.1.0",
     "@starcoin/stc-nonce-tracker": "^0.1.0",

@@ -7,6 +7,7 @@ import { ethErrors } from 'eth-rpc-errors';
 import abi from 'human-standard-token-abi';
 import { ethers } from 'ethers';
 import NonceTracker from '@starcoin/stc-nonce-tracker';
+import { utils } from '@starcoin/starcoin';
 import log from 'loglevel';
 import BigNumber from 'bignumber.js';
 import cleanErrorStack from '../../lib/cleanErrorStack';
@@ -515,8 +516,19 @@ export default class TransactionController extends EventEmitter {
       }
       this.txStateManager.updateTx(txMeta, 'transactions#approveTransaction');
       // sign transaction
+      log.info('sign transaction begin')
+      // const hex = await utils.tx.generateSignedUserTransactionHex(senderPrivateKeyHex, fromAccount, toAccount, sendAmount, maxGasAmount, senderSequenceNumber, expirationTimestampSecs, chainId);
+      // log.info(hex)
+
+      // const txn = await starcoinProvider.sendTransaction(hex)
+      // log.info({ 'sendTransactionOutput': txn })
+
+
+      // const txnInfo = await txn.wait(1)
+
       const rawTx = await this.signTransaction(txId);
       await this.publishTransaction(txId, rawTx);
+      log.info('sign transaction end')
       // must set transaction to submitted/failed before releasing lock
       nonceLock.releaseLock();
     } catch (err) {
@@ -543,29 +555,71 @@ export default class TransactionController extends EventEmitter {
     @returns {string} rawTx
   */
   async signTransaction(txId) {
+    log.info('signTransaction', txId)
     const txMeta = this.txStateManager.getTx(txId);
     // add network/chain id
     const chainId = this.getChainId();
     const txParams = { ...txMeta.txParams, chainId };
     // sign tx
     const fromAddress = txParams.from;
-    const ethTx = new Transaction(txParams);
-    await this.signEthTx(ethTx, fromAddress);
+    log.info({ txMeta })
+    // const fromAccount = document.getElementById('fromAccountInput').value
+    // const toAccount = document.getElementById('toAccountInput').value
+    const sendAmount = 1000000000;
+    // const sendAmountString = `${sendAmount.toString()}u128`
+    // log.info({ sendAmountString })
+    const senderPrivateKeyHex = '0x33bedc6650a622a3223c0ca391cb2bfe6078a2b254c08fa492ffe334e8c8ac1f'
+    // log.info({ senderPrivateKeyHex })
+    // const txnRequest = {
+    //   script: {
+    //     code: '0x1::TransferScripts::peer_to_peer',
+    //     type_args: ['0x1::STC::STC'],
+    //     args: [toAccount, 'x""', sendAmountString],
+    //   }
+    // }
+    // log.info({ txnRequest })
+    // const txnOutput = await starcoinProvider.dryRun(txnRequest)
+    // log.info({ txnOutput })
+    // sendSTCStatus.innerText = "Sending STC..."
 
-    // add r,s,v values for provider request purposes see createMetamaskMiddleware
-    // and JSON rpc standard for further explanation
-    txMeta.r = ethUtil.bufferToHex(ethTx.r);
-    txMeta.s = ethUtil.bufferToHex(ethTx.s);
-    txMeta.v = ethUtil.bufferToHex(ethTx.v);
+    // const balanceBefore = await starcoinProvider.getBalance(toAccount)
+    // log.info({ balanceBefore })
 
-    this.txStateManager.updateTx(
-      txMeta,
-      'transactions#signTransaction: add r, s, v values',
-    );
+    // const senderSequenceNumber = await starcoinProvider.getSequenceNumber(fromAccount)
+    const senderSequenceNumber = 21
 
-    // set state to signed
-    this.txStateManager.setTxStatusSigned(txMeta.id);
-    const rawTx = ethUtil.bufferToHex(ethTx.serialize());
+    // // TODO: generate maxGasAmount from contract.dry_run -> gas_used
+    const maxGasAmount = 124191
+
+    // // because the time system in dev network is relatively static, 
+    // // we should use nodeInfo.now_secondsinstead of using new Date().getTime()
+    // const nowSeconds = await starcoinProvider.getNowSeconds()
+    const nowSeconds = 4924;
+    // // expired after 12 hours since Unix Epoch
+    const expirationTimestampSecs = nowSeconds + 43200;
+
+    log.info(senderPrivateKeyHex, txParams.from, txParams.to, sendAmount, maxGasAmount, senderSequenceNumber, expirationTimestampSecs, chainId);
+    const hex = await utils.tx.generateSignedUserTransactionHex(senderPrivateKeyHex, txParams.from, txParams.to, sendAmount, maxGasAmount, senderSequenceNumber, expirationTimestampSecs, chainId);
+    log.info({ hex })
+
+    // const ethTx = new Transaction(txParams);
+    // await this.signEthTx(ethTx, fromAddress);
+
+    // // add r,s,v values for provider request purposes see createMetamaskMiddleware
+    // // and JSON rpc standard for further explanation
+    // txMeta.r = ethUtil.bufferToHex(ethTx.r);
+    // txMeta.s = ethUtil.bufferToHex(ethTx.s);
+    // txMeta.v = ethUtil.bufferToHex(ethTx.v);
+
+    // this.txStateManager.updateTx(
+    //   txMeta,
+    //   'transactions#signTransaction: add r, s, v values',
+    // );
+
+    // // set state to signed
+    // this.txStateManager.setTxStatusSigned(txMeta.id);
+    // const rawTx = ethUtil.bufferToHex(ethTx.serialize());
+    const rawTx = hex;
     return rawTx;
   }
 
@@ -576,6 +630,7 @@ export default class TransactionController extends EventEmitter {
     @returns {Promise<void>}
   */
   async publishTransaction(txId, rawTx) {
+    log.info('publishTransaction', txId, rawTx)
     const txMeta = this.txStateManager.getTx(txId);
     txMeta.rawTx = rawTx;
     if (txMeta.type === TRANSACTION_TYPES.SWAP) {
@@ -585,7 +640,16 @@ export default class TransactionController extends EventEmitter {
     this.txStateManager.updateTx(txMeta, 'transactions#publishTransaction');
     let txHash;
     try {
-      txHash = await this.query.sendRawTransaction(rawTx);
+      txHash = await new Promise((resolve, reject) => {
+        return this.query.sendRawTransaction(rawTx, (err, res) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(res);
+        });
+      });
+      // txHash = await this.query.sendRawTransaction(rawTx);
+      log.info({ txHash })
     } catch (error) {
       if (error.message.toLowerCase().includes('known transaction')) {
         txHash = ethUtil.sha3(addHexPrefix(rawTx)).toString('hex');
@@ -710,6 +774,7 @@ export default class TransactionController extends EventEmitter {
 
   // called once on startup
   async _updatePendingTxsAfterFirstBlock() {
+    log.info('_updatePendingTxsAfterFirstBlock')
     // wait for first block so we know we're ready
     await this.blockTracker.getLatestBlock();
     // get status update for all pending transactions (for the current network)
@@ -892,7 +957,7 @@ export default class TransactionController extends EventEmitter {
     if (!sameNonceTxs.length) {
       return;
     }
-    // mark all same nonce transactions as dropped and give i a replacedBy hash
+    // mark all same nonce transactions as dropped and give it a replacedBy hash
     sameNonceTxs.forEach((otherTxMeta) => {
       if (otherTxMeta.id === txId) {
         return;
