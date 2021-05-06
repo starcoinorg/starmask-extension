@@ -1,7 +1,6 @@
 import EventEmitter from 'safe-event-emitter';
 import { ObservableStore } from '@metamask/obs-store';
 import ethUtil from 'ethereumjs-util';
-import Transaction from 'ethereumjs-tx';
 import EthQuery from '@starcoin/stc-query';
 import { ethErrors } from 'eth-rpc-errors';
 import abi from 'human-standard-token-abi';
@@ -569,8 +568,6 @@ export default class TransactionController extends EventEmitter {
       toNumericBase: 'dec',
     });
 
-    const senderPrivateKeyHex = '0x33bedc6650a622a3223c0ca391cb2bfe6078a2b254c08fa492ffe334e8c8ac1f'
-
     const senderSequenceNumber = await new Promise((resolve, reject) => {
       return this.query.getResource(
         txParams.from,
@@ -614,29 +611,22 @@ export default class TransactionController extends EventEmitter {
     // expired after 12 hours since Unix Epoch
     const expirationTimestampSecs = nowSeconds + 43200;
 
-    log.info(senderPrivateKeyHex, txParams.from, txParams.to, sendAmount, maxGasAmount, senderSequenceNumber, expirationTimestampSecs, chainId);
-    const hex = await utils.tx.generateSignedUserTransactionHex(senderPrivateKeyHex, txParams.from, txParams.to, sendAmount, maxGasAmount, senderSequenceNumber, expirationTimestampSecs, chainId);
-    log.info({ hex })
+    const fromAddress = txParams.from;
+    const rawUserTransaction = utils.tx.generateRawUserTransaction(
+      fromAddress,
+      txParams.to,
+      sendAmount,
+      maxGasAmount,
+      senderSequenceNumber,
+      expirationTimestampSecs,
+      chainId,
+    );
 
-    // const ethTx = new Transaction(txParams);
-    // await this.signEthTx(ethTx, fromAddress);
-
-    // // add r,s,v values for provider request purposes see createMetamaskMiddleware
-    // // and JSON rpc standard for further explanation
-    // txMeta.r = ethUtil.bufferToHex(ethTx.r);
-    // txMeta.s = ethUtil.bufferToHex(ethTx.s);
-    // txMeta.v = ethUtil.bufferToHex(ethTx.v);
-
-    // this.txStateManager.updateTx(
-    //   txMeta,
-    //   'transactions#signTransaction: add r, s, v values',
-    // );
-
-    // // set state to signed
-    // this.txStateManager.setTxStatusSigned(txMeta.id);
-    // const rawTx = ethUtil.bufferToHex(ethTx.serialize());
-    const rawTx = hex;
-    return rawTx;
+    const rawUserTransactionHex = await this.signEthTx(
+      rawUserTransaction,
+      fromAddress,
+    );
+    return rawUserTransactionHex;
   }
 
   /**
