@@ -1,7 +1,7 @@
 export const ROPSTEN = 'ropsten';
 export const RINKEBY = 'rinkeby';
 export const KOVAN = 'kovan';
-export const MAINNET = 'mainnet';
+export const MAINNET = 'main';
 export const GOERLI = 'goerli';
 export const BARNARD = 'barnard';
 export const PROXIMA = 'proxima';
@@ -37,7 +37,7 @@ export const MAX_SAFE_CHAIN_ID = 4503599627370476;
 export const ROPSTEN_DISPLAY_NAME = 'Ropsten';
 export const RINKEBY_DISPLAY_NAME = 'Rinkeby';
 export const KOVAN_DISPLAY_NAME = 'Kovan';
-export const MAINNET_DISPLAY_NAME = 'Ethereum Mainnet';
+export const MAINNET_DISPLAY_NAME = 'Starcoin Mainnet';
 export const GOERLI_DISPLAY_NAME = 'Goerli';
 export const BARNARD_DISPLAY_NAME = 'Barnard';
 export const PROXIMA_DISPLAY_NAME = 'Proxima';

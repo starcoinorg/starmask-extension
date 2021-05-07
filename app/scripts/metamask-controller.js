@@ -1897,7 +1897,9 @@ export default class MetamaskController extends EventEmitter {
   estimateGas(estimateGasParams) {
     return new Promise((resolve, reject) => {
       const network = this.networkController.store.getState().network;
-      const chainId = Number(hexToDecimal(network));
+      // network = 0xfe for `Localhost 9850`
+      // network = { name: XXX, id: XXX_NETWORK_ID } for others
+      const chainId = network.id ? network.id : Number(hexToDecimal(network));
       return this.keyringController.getEncryptionPublicKey(estimateGasParams.from)
         .then((publicKey) => {
           const params = {
