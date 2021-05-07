@@ -78,12 +78,12 @@ const AssetList = ({ onClickAsset }) => {
           selectTokenEvent();
         }}
       />
-      <AddTokenButton
+      {/* <AddTokenButton
         onClick={() => {
           history.push(ADD_TOKEN_ROUTE);
           addTokenEvent();
         }}
-      />
+      /> */}
     </>
   );
 };
