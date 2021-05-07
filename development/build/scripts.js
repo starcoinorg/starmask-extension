@@ -75,11 +75,11 @@ function createScriptTasks({ browserPlatforms, livereload }) {
 
   // high level tasks
 
-  const prod = composeParallel(deps.ui, core.prod);
+  const prod = composeParallel(deps.background, deps.ui, core.prod);
 
   const { dev, testDev } = core;
 
-  const test = composeParallel(deps.ui, core.test);
+  const test = composeParallel(deps.background, deps.ui, core.test);
 
   return { prod, dev, testDev, test };
 

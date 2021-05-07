@@ -36,7 +36,11 @@
   },
   "content_scripts": [
     {
-      "matches": ["file://*/*", "http://*/*", "https://*/*"],
+      "matches": [
+        "file://*/*",
+        "http://*/*",
+        "https://*/*"
+      ],
       "js": [
         "disable-console.js",
         "globalthis.js",
@@ -73,6 +77,9 @@
     "notifications"
   ],
   "short_name": "__MSG_appName__",
-  "version": "0.2.0",
-  "web_accessible_resources": ["inpage.js", "phishing.html"]
+  "version": "0.2.2",
+  "web_accessible_resources": [
+    "inpage.js",
+    "phishing.html"
+  ]
 }

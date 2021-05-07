@@ -516,19 +516,8 @@ export default class TransactionController extends EventEmitter {
       }
       this.txStateManager.updateTx(txMeta, 'transactions#approveTransaction');
       // sign transaction
-      log.info('sign transaction begin')
-      // const hex = await utils.tx.generateSignedUserTransactionHex(senderPrivateKeyHex, fromAccount, toAccount, sendAmount, maxGasAmount, senderSequenceNumber, expirationTimestampSecs, chainId);
-      // log.info(hex)
-
-      // const txn = await starcoinProvider.sendTransaction(hex)
-      // log.info({ 'sendTransactionOutput': txn })
-
-
-      // const txnInfo = await txn.wait(1)
-
       const rawTx = await this.signTransaction(txId);
       await this.publishTransaction(txId, rawTx);
-      log.info('sign transaction end')
       // must set transaction to submitted/failed before releasing lock
       nonceLock.releaseLock();
     } catch (err) {
@@ -555,14 +544,11 @@ export default class TransactionController extends EventEmitter {
     @returns {string} rawTx
   */
   async signTransaction(txId) {
-    log.info('signTransaction', txId)
     const txMeta = this.txStateManager.getTx(txId);
     // add network/chain id
     const chainId = this.getChainId();
     const txParams = { ...txMeta.txParams, chainId };
     // sign tx
-    log.info({ txMeta })
-
     const sendAmount = conversionUtil(ethUtil.stripHexPrefix(txParams.value), {
       fromNumericBase: 'hex',
       toNumericBase: 'dec',
@@ -636,7 +622,6 @@ export default class TransactionController extends EventEmitter {
     @returns {Promise<void>}
   */
   async publishTransaction(txId, rawTx) {
-    log.info('publishTransaction', txId, rawTx)
     const txMeta = this.txStateManager.getTx(txId);
     txMeta.rawTx = rawTx;
     if (txMeta.type === TRANSACTION_TYPES.SWAP) {
@@ -654,8 +639,6 @@ export default class TransactionController extends EventEmitter {
           return resolve(res);
         });
       });
-      // txHash = await this.query.sendRawTransaction(rawTx);
-      log.info({ txHash })
     } catch (error) {
       if (error.message.toLowerCase().includes('known transaction')) {
         txHash = ethUtil.sha3(addHexPrefix(rawTx)).toString('hex');
@@ -676,7 +659,6 @@ export default class TransactionController extends EventEmitter {
    * @returns {Promise<void>}
    */
   async confirmTransaction(txId, txReceipt) {
-    log.info('confirmTransaction', txId, txReceipt)
     // get the txReceipt before marking the transaction confirmed
     // to ensure the receipt is gotten before the ui revives the tx
     const txMeta = this.txStateManager.getTx(txId);
@@ -796,7 +778,6 @@ export default class TransactionController extends EventEmitter {
 
   // called once on startup
   async _updatePendingTxsAfterFirstBlock() {
-    log.info('_updatePendingTxsAfterFirstBlock')
     // wait for first block so we know we're ready
     await this.blockTracker.getLatestBlock();
     // get status update for all pending transactions (for the current network)
