@@ -644,10 +644,10 @@
     "message": "以太坊 Starcoin 公开地址"
   },
   "etherscan": {
-    "message": "Etherscan（以太坊浏览器）"
+    "message": "Starcoin浏览器"
   },
   "etherscanView": {
-    "message": "在 Etherscan（以太坊浏览器）上查看账户"
+    "message": "在Starcoin浏览器上查看账户"
   },
   "expandView": {
     "message": "展开视图"
@@ -2081,7 +2081,7 @@
     "message": "在 $1 查看"
   },
   "viewOnEtherscan": {
-    "message": "在 Etherscan（以太坊浏览器）上查看"
+    "message": "在Starcoin浏览器上查看"
   },
   "viewinExplorer": {
     "message": "在浏览器中查看"

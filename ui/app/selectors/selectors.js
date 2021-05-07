@@ -6,6 +6,7 @@ import {
   TEST_CHAINS,
   NETWORK_TYPE_RPC,
 } from '../../../shared/constants/network';
+import { defaultNetworksData } from '../pages/settings/networks-tab/networks-tab.constants';
 import {
   shortenAddress,
   checksumAddress,
@@ -381,10 +382,18 @@ export function getDomainMetadata(state) {
 
 export function getRpcPrefsForCurrentProvider(state) {
   const { frequentRpcListDetail, provider } = state.metamask;
-  const selectRpcInfo = frequentRpcListDetail.find(
+  let selectRpcInfo = frequentRpcListDetail.find(
     (rpcInfo) => rpcInfo.rpcUrl === provider.rpcUrl,
   );
-  const { rpcPrefs = {} } = selectRpcInfo || {};
+  let rpcPrefs;
+  if (selectRpcInfo) {
+    rpcPrefs = selectRpcInfo.rpcPrefs || {}
+  } else {
+    selectRpcInfo = defaultNetworksData.find(
+      (rpcInfo) => rpcInfo.providerType === provider.type,
+    );
+    rpcPrefs = selectRpcInfo || {};
+  }
   return rpcPrefs;
 }
 

@@ -699,10 +699,10 @@
     "message": "Starcoin Public Address"
   },
   "etherscan": {
-    "message": "Etherscan"
+    "message": "Starcoin Explorer"
   },
   "etherscanView": {
-    "message": "View account on Etherscan"
+    "message": "View account on Starcoin Explorer"
   },
   "expandView": {
     "message": "Expand view"
@@ -2226,7 +2226,7 @@
     "message": "View at $1"
   },
   "viewOnEtherscan": {
-    "message": "View on Etherscan"
+    "message": "View on Starcoin Explorer"
   },
   "viewinExplorer": {
     "message": "View in Explorer"
