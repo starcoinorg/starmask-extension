@@ -522,7 +522,7 @@
     "message": "Decrypt request"
   },
   "defaultNetwork": {
-    "message": "The default network for Ether transactions is Main Net."
+    "message": "The default network for STC transactions is Barnard."
   },
   "delete": {
     "message": "Delete"

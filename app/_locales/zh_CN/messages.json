@@ -475,7 +475,7 @@
     "message": "解密请求"
   },
   "defaultNetwork": {
-    "message": "默认Starcoin交易网络为主网。"
+    "message": "默认STC交易网络为Barnard。"
   },
   "delete": {
     "message": "删除"

@@ -37,13 +37,13 @@ if (process.env.IN_TEST === 'true') {
     nickname: 'Localhost 9850',
   };
 } else if (process.env.STARMASK_DEBUG || env === 'test') {
-  defaultProviderConfigOpts = {
-    type: NETWORK_TYPE_RPC,
-    rpcUrl: 'http://localhost:9850',
-    chainId: '0xfe',
-    nickname: 'Localhost 9850',
-  };
-  // defaultProviderConfigOpts = { type: BARNARD, chainId: BARNARD_CHAIN_ID };
+  // defaultProviderConfigOpts = {
+  //   type: NETWORK_TYPE_RPC,
+  //   rpcUrl: 'http://localhost:9850',
+  //   chainId: '0xfe',
+  //   nickname: 'Localhost 9850',
+  // };
+  defaultProviderConfigOpts = { type: BARNARD, chainId: BARNARD_CHAIN_ID };
 } else {
   defaultProviderConfigOpts = { type: MAINNET, chainId: MAINNET_CHAIN_ID };
 }
