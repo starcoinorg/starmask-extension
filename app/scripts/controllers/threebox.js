@@ -67,7 +67,7 @@ export default class ThreeBoxController {
       ...opts.initState,
       threeBoxAddress: null,
       threeBoxSynced: false,
-      threeBoxDisabled: false,
+      threeBoxDisabled: true,
     };
     this.store = new ObservableStore(initState);
     this.registeringUpdates = false;
