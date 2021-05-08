@@ -1,7 +1,7 @@
 export const ROPSTEN = 'ropsten';
 export const RINKEBY = 'rinkeby';
 export const KOVAN = 'kovan';
-export const MAINNET = 'main';
+export const MAINNET = 'mainnet';
 export const GOERLI = 'goerli';
 export const BARNARD = 'barnard';
 export const PROXIMA = 'proxima';

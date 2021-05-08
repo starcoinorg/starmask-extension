@@ -1215,7 +1215,7 @@
     "message": "主要货币"
   },
   "primaryCurrencySettingDescription": {
-    "message": "请选择“本地”，优先显示当地货币链价值（如 ETH ）。选择“货币”则优先以所选货币作为价值显示单位。"
+    "message": "请选择“本地”，优先显示当地货币链价值（如 STC ）。选择“货币”则优先以所选货币作为价值显示单位。"
   },
   "privacyMsg": {
     "message": "隐私政策"

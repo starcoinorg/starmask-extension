@@ -184,7 +184,7 @@ export default class SettingsTab extends PureComponent {
                   {nativeCurrency}
                 </label>
               </div>
-              <div className="settings-tab__radio-button">
+              {/* <div className="settings-tab__radio-button">
                 <input
                   type="radio"
                   id="fiat-primary-currency"
@@ -199,7 +199,7 @@ export default class SettingsTab extends PureComponent {
                 >
                   {t('fiat')}
                 </label>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

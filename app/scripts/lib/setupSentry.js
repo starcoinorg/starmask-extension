@@ -41,7 +41,7 @@ export const SENTRY_STATE = {
     nativeCurrency: true,
     network: true,
     nextNonce: true,
-    participateInMetaMetrics: true,
+    participateInMetaMetrics: false,
     preferences: true,
     provider: {
       nickname: true,

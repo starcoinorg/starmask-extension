@@ -476,8 +476,8 @@ export default class AdvancedTab extends PureComponent {
         {this.renderShowConversionInTestnets()}
         {this.renderUseNonceOptIn()}
         {this.renderAutoLockTimeLimit()}
-        {this.renderThreeBoxControl()}
-        {this.renderIpfsGatewayControl()}
+        {/* {this.renderThreeBoxControl()} */}
+        {/* {this.renderIpfsGatewayControl()} */}
       </div>
     );
   }
