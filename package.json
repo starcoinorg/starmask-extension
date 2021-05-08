@@ -102,6 +102,7 @@
     "@starcoin/stc-keyring-controller": "^0.1.0",
     "@starcoin/stc-nonce-tracker": "^0.1.0",
     "@starcoin/stc-query": "^0.1.0",
+    "@starcoin/stc-token-tracker": "^0.1.0",
     "@starcoin/stc-util": "^0.2.0",
     "@zxing/library": "^0.8.0",
     "3box": "^1.10.2",
