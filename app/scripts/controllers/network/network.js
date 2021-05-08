@@ -45,7 +45,8 @@ if (process.env.IN_TEST === 'true') {
   // };
   defaultProviderConfigOpts = { type: BARNARD, chainId: BARNARD_CHAIN_ID };
 } else {
-  defaultProviderConfigOpts = { type: MAINNET, chainId: MAINNET_CHAIN_ID };
+  defaultProviderConfigOpts = { type: BARNARD, chainId: BARNARD_CHAIN_ID };
+  // defaultProviderConfigOpts = { type: MAINNET, chainId: MAINNET_CHAIN_ID };
 }
 
 const defaultProviderConfig = {

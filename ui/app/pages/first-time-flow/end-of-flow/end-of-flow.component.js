@@ -88,7 +88,7 @@ export default class EndOfFlowScreen extends PureComponent {
         <div className="end-of-flow__text-3">
           {`• ${t('endOfFlowMessage6')}`}
         </div>
-        <div className="end-of-flow__text-3">
+        {/* <div className="end-of-flow__text-3">
           •{' '}
           {t('endOfFlowMessage7', [
             <a
@@ -102,8 +102,8 @@ export default class EndOfFlowScreen extends PureComponent {
               </span>
             </a>,
           ])}
-        </div>
-        <div className="first-time-flow__text-block end-of-flow__text-4">
+        </div> */}
+        {/* <div className="first-time-flow__text-block end-of-flow__text-4">
           {`*${t('endOfFlowMessage8')}`}&nbsp;
           <a
             href="https://metamask.zendesk.com/hc/en-us/articles/360015489591-Basic-Safety-Tips"
@@ -114,7 +114,7 @@ export default class EndOfFlowScreen extends PureComponent {
               {t('endOfFlowMessage9')}
             </span>
           </a>
-        </div>
+        </div> */}
         <Button
           type="primary"
           className="first-time-flow__button"
