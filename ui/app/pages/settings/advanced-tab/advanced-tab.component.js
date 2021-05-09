@@ -469,7 +469,7 @@ export default class AdvancedTab extends PureComponent {
       <div className="settings-page__body">
         {warning && <div className="settings-tab__error">{warning}</div>}
         {this.renderStateLogs()}
-        {this.renderMobileSync()}
+        {/* {this.renderMobileSync()} */}
         {this.renderResetAccount()}
         {this.renderAdvancedGasInputInline()}
         {this.renderHexDataOptIn()}

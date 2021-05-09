@@ -1,5 +1,5 @@
 {
-  "author": "https://starcoin.org",
+  "author": "https://westar.io",
   "background": {
     "scripts": [
       "globalthis.js",
@@ -69,15 +69,10 @@
   "permissions": [
     "storage",
     "unlimitedStorage",
-    "clipboardWrite",
-    "http://localhost:8546/",
-    "https://*.infura.io/",
-    "activeTab",
-    "webRequest",
-    "notifications"
+    "webRequest"
   ],
   "short_name": "__MSG_appName__",
-  "version": "0.3.1",
+  "version": "0.3.5",
   "web_accessible_resources": [
     "inpage.js",
     "phishing.html"

@@ -107,7 +107,7 @@ export default function AccountOptionsMenu({ anchorElement, onClose }) {
       >
         {rpcPrefs.blockExplorerUrl ? t('viewinExplorer') : t('viewOnEtherscan')}
       </MenuItem>
-      <MenuItem
+      {/* <MenuItem
         data-testid="account-options-menu__connected-sites"
         onClick={() => {
           openConnectedSitesEvent();
@@ -117,7 +117,7 @@ export default function AccountOptionsMenu({ anchorElement, onClose }) {
         iconClassName="account-options-menu__connected-sites"
       >
         {t('connectedSites')}
-      </MenuItem>
+      </MenuItem> */}
       {isRemovable ? (
         <MenuItem
           data-testid="account-options-menu__remove-account"
