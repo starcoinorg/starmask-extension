@@ -65,7 +65,7 @@ export default class InfoTab extends PureComponent {
         <div className="info-tab__link-item">
           <Button
             type="link"
-            href="https://starcoin.org/"
+            href="https://westar.io/"
             target="_blank"
             rel="noopener noreferrer"
             className="info-tab__link-text"
@@ -76,7 +76,7 @@ export default class InfoTab extends PureComponent {
         <div className="info-tab__link-item">
           <Button
             type="link"
-            href="https://starcoin.org/contact.html"
+            href="https://westar.io/about/"
             target="_blank"
             rel="noopener noreferrer"
             className="info-tab__link-text"
