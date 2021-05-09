@@ -11,15 +11,6 @@ import {
 
 const defaultNetworksData = [
   {
-    labelKey: MAINNET,
-    iconColor: '#29B6AF',
-    providerType: MAINNET,
-    rpcUrl: 'https://main-seed.starcoin.org',
-    chainId: MAINNET_CHAIN_ID,
-    ticker: 'STC',
-    blockExplorerUrl: 'http://explorer.starcoin.org/main',
-  },
-  {
     labelKey: BARNARD,
     iconColor: '#FF4A8D',
     providerType: BARNARD,

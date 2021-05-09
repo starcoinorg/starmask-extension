@@ -281,7 +281,7 @@ class NetworkDropdown extends Component {
             {this.context.t('defaultNetwork')}
           </div>
         </div>
-        {this.renderNetworkEntry('mainnet')}
+        {/* {this.renderNetworkEntry('mainnet')} */}
         {this.renderNetworkEntry('barnard')}
         {this.renderNetworkEntry('proxima')}
         {this.renderNetworkEntry('halley')}
