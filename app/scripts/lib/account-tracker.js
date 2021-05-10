@@ -257,7 +257,7 @@ export default class AccountTracker {
       const res = await this._query.getResource(address, '0x1::Account::Balance<0x1::STC::STC>');
       balanceDecimal = res && res.value[0][1].Struct.value[0][1].U128 || 0;
     } catch (error) {
-      console.log(error);
+      log.info('_updateAccount error', error);
       // HD account will get error: Invalid params: unable to parse AccoutAddress
       balanceDecimal = 0;
     }

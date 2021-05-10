@@ -86,7 +86,7 @@ export default class ConfirmSeedPhrase extends PureComponent {
       });
 
       setSeedPhraseBackedUp(true).then(async () => {
-        initializeThreeBox();
+        // initializeThreeBox();
         history.push(INITIALIZE_END_OF_FLOW_ROUTE);
       });
     } catch (error) {

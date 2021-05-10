@@ -99,7 +99,7 @@ class RestoreVaultPage extends Component {
             name: 'onboardingRestoredVault',
           },
         });
-        initializeThreeBox();
+        // initializeThreeBox();
         history.push(DEFAULT_ROUTE);
       },
     );
