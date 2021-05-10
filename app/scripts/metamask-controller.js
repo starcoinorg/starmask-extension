@@ -1065,14 +1065,22 @@ export default class MetamaskController extends EventEmitter {
       if (cached && cached.balance) {
         resolve(cached.balance);
       } else {
-        ethQuery.getBalance(address, (error, balance) => {
-          if (error) {
-            reject(error);
-            log.error(error);
-          } else {
-            resolve(balance || '0x0');
-          }
-        });
+        ethQuery.getResource(
+          address,
+          '0x1::Account::Balance<0x1::STC::STC>',
+          (error, balance) => {
+            if (error) {
+              log.error(error);
+              if (error.message && error.message === 'Invalid params: unable to parse AccoutAddress.') {
+                resolve('0x0');
+              } else {
+                reject(error);
+              }
+            } else {
+              resolve(balance || '0x0');
+            }
+          },
+        );
       }
     });
   }
