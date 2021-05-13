@@ -209,7 +209,7 @@ export default class NewAccount extends PureComponent {
             >
               {termsChecked ? <i className="fa fa-check fa-2x" /> : null}
             </div>
-            {/* <span
+            <span
               id="ftf-chk1-label"
               className="first-time-flow__checkbox-label"
             >
@@ -217,7 +217,7 @@ export default class NewAccount extends PureComponent {
                 <a
                   onClick={(e) => e.stopPropagation()}
                   key="first-time-flow__link-text"
-                  href="https://metamask.io/terms.html"
+                  href="https://westar.io/terms"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -226,7 +226,7 @@ export default class NewAccount extends PureComponent {
                   </span>
                 </a>,
               ])}
-            </span> */}
+            </span>
           </div>
           <Button
             type="primary"
