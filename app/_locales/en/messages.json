@@ -1017,7 +1017,7 @@
   "lockTimeTooGreat": {
     "message": "Lock time is too great"
   },
-  "mainnet": {
+  "main": {
     "message": "Starcoin Mainnet"
   },
   "max": {

@@ -949,7 +949,7 @@
   "lockTimeTooGreat": {
     "message": "锁定时间过长"
   },
-  "mainnet": {
+  "main": {
     "message": "Starcoin 主网络"
   },
   "max": {

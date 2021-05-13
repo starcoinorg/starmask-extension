@@ -368,16 +368,14 @@ export default class Routes extends Component {
     const { provider, providerId } = this.props;
 
     switch (provider.type) {
-      case 'mainnet':
+      case 'main':
         return this.context.t('connectingToMainnet');
-      case 'ropsten':
-        return this.context.t('connectingToRopsten');
-      case 'kovan':
-        return this.context.t('connectingToKovan');
-      case 'rinkeby':
-        return this.context.t('connectingToRinkeby');
-      case 'goerli':
-        return this.context.t('connectingToGoerli');
+      case 'barnard':
+        return this.context.t('connectingToBarnard');
+      case 'halley':
+        return this.context.t('connectingToHalley');
+      case 'proxima':
+        return this.context.t('connectingToProxima');
       default:
         return this.context.t('connectingTo', [providerId]);
     }
@@ -385,16 +383,14 @@ export default class Routes extends Component {
 
   getNetworkName() {
     switch (this.props.provider.type) {
-      case 'mainnet':
-        return this.context.t('mainnet');
-      case 'ropsten':
-        return this.context.t('ropsten');
-      case 'kovan':
-        return this.context.t('kovan');
-      case 'rinkeby':
-        return this.context.t('rinkeby');
-      case 'goerli':
-        return this.context.t('goerli');
+      case 'main':
+        return this.context.t('main');
+      case 'barnard':
+        return this.context.t('barnard');
+      case 'halley':
+        return this.context.t('halley');
+      case 'proxima':
+        return this.context.t('proxima');
       default:
         return this.context.t('unknownNetwork');
     }
