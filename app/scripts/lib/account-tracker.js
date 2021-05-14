@@ -252,15 +252,20 @@ export default class AccountTracker {
   async _updateAccount(address) {
     // query balance
     // const balance = await this._query.getBalance(address);
-    let balanceDecimal
-    try {
-      const res = await this._query.getResource(address, '0x1::Account::Balance<0x1::STC::STC>');
-      balanceDecimal = res && res.value[0][1].Struct.value[0][1].U128 || 0;
-    } catch (error) {
-      log.info('_updateAccount error', error);
-      // HD account will get error: Invalid params: unable to parse AccoutAddress
-      balanceDecimal = 0;
+
+    let balanceDecimal = 0;
+    // do not update HD Key account
+    if (address.length !== 42) {
+      try {
+        const res = await this._query.getResource(address, '0x1::Account::Balance<0x1::STC::STC>');
+        balanceDecimal = res && res.value[0][1].Struct.value[0][1].U128 || 0;
+      } catch (error) {
+        log.info('_updateAccount error', error);
+        // HD account will get error: Invalid params: unable to parse AccoutAddress
+        balanceDecimal = 0;
+      }
     }
+
     const balanceHex = new BigNumber(balanceDecimal, 10).toString(16);
     const balance = ethUtil.addHexPrefix(balanceHex);
     const result = { address, balance };
