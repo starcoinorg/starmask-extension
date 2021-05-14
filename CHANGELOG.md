@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.5.1 2021-05-14
+- fix conflict with metamask-extension in the chrome browser
+
 ## 0.4.0 2021-05-13
 - support MainNet
 
