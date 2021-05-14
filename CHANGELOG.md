@@ -1,6 +1,9 @@
 # Changelog
 
-## 0.3.0 2021-05-08
+## 0.4.0 2021-05-13
+- support MainNet
+
+## 0.3.8 2021-05-09
 - add CHANGELOG.md
 - Replace logo images and colors
 
