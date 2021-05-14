@@ -9,8 +9,8 @@ import SendAssetRow from './send-asset-row.component';
 
 function mapStateToProps(state) {
   return {
-    tokens: state.metamask.tokens,
-    selectedAddress: state.metamask.selectedAddress,
+    tokens: state.starmask.tokens,
+    selectedAddress: state.starmask.selectedAddress,
     sendTokenAddress: getSendTokenAddress(state),
     accounts: getMetaMaskAccounts(state),
     nativeCurrency: getNativeCurrency(state),

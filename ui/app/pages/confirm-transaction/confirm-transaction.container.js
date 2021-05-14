@@ -15,7 +15,7 @@ import ConfirmTransaction from './confirm-transaction.component';
 
 const mapStateToProps = (state, ownProps) => {
   const {
-    metamask: { send, unapprovedTxs },
+    starmask: { send, unapprovedTxs },
   } = state;
   const {
     match: { params = {} },

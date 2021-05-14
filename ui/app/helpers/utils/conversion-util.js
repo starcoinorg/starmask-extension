@@ -1,5 +1,5 @@
 /* Currency Conversion Utility
- * This utility function can be used for converting currency related values within metamask.
+ * This utility function can be used for converting currency related values within starmask.
  * The caller should be able to pass it a value, along with information about the value's
  * numeric base, denomination and currency, and the desired numeric base, denomination and
  * currency. It should return a single value.

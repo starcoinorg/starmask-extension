@@ -3,7 +3,7 @@ import Identicon from './identicon.component';
 
 const mapStateToProps = (state) => {
   const {
-    metamask: { useBlockie },
+    starmask: { useBlockie },
   } = state;
 
   return {

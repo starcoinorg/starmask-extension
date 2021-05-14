@@ -14,16 +14,16 @@ import { transactionMatchesNetwork } from '../../../shared/modules/transaction.u
 import { getCurrentChainId, deprecatedGetCurrentNetworkId } from './selectors';
 import { getNativeCurrency } from '.';
 
-const unapprovedTxsSelector = (state) => state.metamask.unapprovedTxs;
-const unapprovedMsgsSelector = (state) => state.metamask.unapprovedMsgs;
+const unapprovedTxsSelector = (state) => state.starmask.unapprovedTxs;
+const unapprovedMsgsSelector = (state) => state.starmask.unapprovedMsgs;
 const unapprovedPersonalMsgsSelector = (state) =>
-  state.metamask.unapprovedPersonalMsgs;
+  state.starmask.unapprovedPersonalMsgs;
 const unapprovedDecryptMsgsSelector = (state) =>
-  state.metamask.unapprovedDecryptMsgs;
+  state.starmask.unapprovedDecryptMsgs;
 const unapprovedEncryptionPublicKeyMsgsSelector = (state) =>
-  state.metamask.unapprovedEncryptionPublicKeyMsgs;
+  state.starmask.unapprovedEncryptionPublicKeyMsgs;
 const unapprovedTypedMessagesSelector = (state) =>
-  state.metamask.unapprovedTypedMessages;
+  state.starmask.unapprovedTypedMessages;
 
 export const unconfirmedTransactionsListSelector = createSelector(
   unapprovedTxsSelector,
@@ -101,15 +101,15 @@ export const unconfirmedTransactionsHashSelector = createSelector(
   },
 );
 
-const unapprovedMsgCountSelector = (state) => state.metamask.unapprovedMsgCount;
+const unapprovedMsgCountSelector = (state) => state.starmask.unapprovedMsgCount;
 const unapprovedPersonalMsgCountSelector = (state) =>
-  state.metamask.unapprovedPersonalMsgCount;
+  state.starmask.unapprovedPersonalMsgCount;
 const unapprovedDecryptMsgCountSelector = (state) =>
-  state.metamask.unapprovedDecryptMsgCount;
+  state.starmask.unapprovedDecryptMsgCount;
 const unapprovedEncryptionPublicKeyMsgCountSelector = (state) =>
-  state.metamask.unapprovedEncryptionPublicKeyMsgCount;
+  state.starmask.unapprovedEncryptionPublicKeyMsgCount;
 const unapprovedTypedMessagesCountSelector = (state) =>
-  state.metamask.unapprovedTypedMessagesCount;
+  state.starmask.unapprovedTypedMessagesCount;
 
 export const unconfirmedTransactionsCountSelector = createSelector(
   unapprovedTxsSelector,
@@ -146,15 +146,15 @@ export const unconfirmedTransactionsCountSelector = createSelector(
 );
 
 export const currentCurrencySelector = (state) =>
-  state.metamask.currentCurrency;
-export const conversionRateSelector = (state) => state.metamask.conversionRate;
+  state.starmask.currentCurrency;
+export const conversionRateSelector = (state) => state.starmask.conversionRate;
 
 export const txDataSelector = (state) => state.confirmTransaction.txData;
 const tokenDataSelector = (state) => state.confirmTransaction.tokenData;
 const tokenPropsSelector = (state) => state.confirmTransaction.tokenProps;
 
 const contractExchangeRatesSelector = (state) =>
-  state.metamask.contractExchangeRates;
+  state.starmask.contractExchangeRates;
 
 const tokenDecimalsSelector = createSelector(
   tokenPropsSelector,

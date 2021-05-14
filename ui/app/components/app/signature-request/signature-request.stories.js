@@ -2,7 +2,7 @@ import React from 'react';
 import testData from '../../../../../.storybook/test-data';
 import SignatureRequest from './signature-request.component';
 
-const primaryIdentity = Object.values(testData.metamask.identities)[0];
+const primaryIdentity = Object.values(testData.starmask.identities)[0];
 
 const containerStyle = {
   width: '357px',

@@ -61,7 +61,7 @@ class Mock3Box {
 
   static async getConfig(address) {
     const backup = await loadFromMock3Box(`${address}-metamask-metamaskBackup`);
-    return backup ? { spaces: { metamask: {} } } : {};
+    return backup ? { spaces: { starmask: {} } } : {};
   }
 }
 

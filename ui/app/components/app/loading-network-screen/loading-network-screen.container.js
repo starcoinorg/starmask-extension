@@ -6,7 +6,7 @@ import LoadingNetworkScreen from './loading-network-screen.component';
 
 const mapStateToProps = (state) => {
   const { loadingMessage } = state.appState;
-  const { provider } = state.metamask;
+  const { provider } = state.starmask;
   const { rpcUrl, chainId, ticker, nickname, type } = provider;
 
   const setProviderArgs =

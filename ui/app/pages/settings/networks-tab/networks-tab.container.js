@@ -31,7 +31,7 @@ const mapStateToProps = (state, ownProps) => {
   const shouldRenderNetworkForm =
     isFullScreen || Boolean(pathname.match(NETWORKS_FORM_ROUTE));
 
-  const { frequentRpcListDetail, provider } = state.metamask;
+  const { frequentRpcListDetail, provider } = state.starmask;
   const { networksTabSelectedRpcUrl, networksTabIsInAddMode } = state.appState;
 
   const frequentRpcNetworkListDetails = frequentRpcListDetail.map((rpc) => {

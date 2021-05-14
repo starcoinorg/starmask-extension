@@ -20,7 +20,7 @@ import ConfirmEncryptionPublicKey from './confirm-encryption-public-key.componen
 
 function mapStateToProps(state) {
   const {
-    metamask: { domainMetadata = {} },
+    starmask: { domainMetadata = {} },
   } = state;
 
   const unconfirmedTransactions = unconfirmedTransactionsListSelector(state);

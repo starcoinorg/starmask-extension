@@ -6,9 +6,9 @@ import * as actions from '../../../store/actions';
 import AppHeader from './app-header.component';
 
 const mapStateToProps = (state) => {
-  const { appState, metamask } = state;
+  const { appState, starmask } = state;
   const { networkDropdownOpen } = appState;
-  const { selectedAddress, isUnlocked, isAccountMenuOpen } = metamask;
+  const { selectedAddress, isUnlocked, isAccountMenuOpen } = starmask;
 
   return {
     networkDropdownOpen,

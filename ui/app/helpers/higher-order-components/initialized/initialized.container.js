@@ -3,7 +3,7 @@ import Initialized from './initialized.component';
 
 const mapStateToProps = (state) => {
   const {
-    metamask: { completedOnboarding },
+    starmask: { completedOnboarding },
   } = state;
 
   return {

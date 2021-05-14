@@ -19,7 +19,7 @@ import ConfirmDecryptMessage from './confirm-decrypt-message.component';
 
 function mapStateToProps(state) {
   const {
-    metamask: { domainMetadata = {} },
+    starmask: { domainMetadata = {} },
   } = state;
 
   const unconfirmedTransactions = unconfirmedTransactionsListSelector(state);

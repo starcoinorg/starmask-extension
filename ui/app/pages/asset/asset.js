@@ -8,7 +8,7 @@ import NativeAsset from './components/native-asset';
 import TokenAsset from './components/token-asset';
 
 const Asset = () => {
-  const nativeCurrency = useSelector((state) => state.metamask.nativeCurrency);
+  const nativeCurrency = useSelector((state) => state.starmask.nativeCurrency);
   const tokens = useSelector(getTokens);
   const { asset } = useParams();
 

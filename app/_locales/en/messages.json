@@ -333,7 +333,7 @@
   },
   "connectTo": {
     "message": "Connect to $1",
-    "description": "$1 is the name/origin of a web3 site/application that the user can connect to metamask"
+    "description": "$1 is the name/origin of a web3 site/application that the user can connect to starmask"
   },
   "connectToAll": {
     "message": "Connect to all your $1",
@@ -1713,7 +1713,7 @@
   },
   "swapCheckingQuote": {
     "message": "Checking $1",
-    "description": "Shown to the user during quote loading. $1 is the name of an aggregator. The message indicates that metamask is currently checking if that aggregator has a trade/quote for their requested swap."
+    "description": "Shown to the user during quote loading. $1 is the name of an aggregator. The message indicates that starmask is currently checking if that aggregator has a trade/quote for their requested swap."
   },
   "swapCustom": {
     "message": "custom"
@@ -1743,7 +1743,7 @@
   },
   "swapFailedErrorDescriptionWithSupportLink": {
     "message": "Transaction failures happen and we are here to help. If this issue persists, you can reach our customer support at $1 for further assistance.",
-    "description": "This message is shown to a user if their swap fails. The $1 will be replaced by support.metamask.io"
+    "description": "This message is shown to a user if their swap fails. The $1 will be replaced by notices@starmask.io"
   },
   "swapFailedErrorTitle": {
     "message": "Swap failed"
@@ -1799,7 +1799,7 @@
   },
   "swapMetaMaskFeeDescription": {
     "message": "We find the best price from the top liquidity sources, every time. A fee of $1% is automatically factored into this quote.",
-    "description": "Provides information about the fee that metamask takes for swaps. $1 is a decimal number."
+    "description": "Provides information about the fee that starmask takes for swaps. $1 is a decimal number."
   },
   "swapNQuotes": {
     "message": "$1 quotes",
@@ -1844,7 +1844,7 @@
   },
   "swapQuoteIncludesRate": {
     "message": "Quote includes a $1% StarMask fee",
-    "description": "Provides information about the fee that metamask takes for swaps. $1 is a decimal number."
+    "description": "Provides information about the fee that starmask takes for swaps. $1 is a decimal number."
   },
   "swapQuoteNofN": {
     "message": "Quote $1 of $2",

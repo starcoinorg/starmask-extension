@@ -241,7 +241,7 @@ export default class TransactionController extends EventEmitter {
       txParams: normalizedTxParams,
     });
 
-    if (origin === 'metamask') {
+    if (origin === 'starmask') {
       // Assert the from address is the selected address
       if (normalizedTxParams.from !== this.getSelectedAddress()) {
         throw ethErrors.rpc.internal({

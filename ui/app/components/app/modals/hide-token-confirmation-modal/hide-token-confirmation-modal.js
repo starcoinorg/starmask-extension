@@ -8,7 +8,7 @@ import Button from '../../../ui/button';
 function mapStateToProps(state) {
   return {
     token: state.appState.modal.modalState.props.token,
-    assetImages: state.metamask.assetImages,
+    assetImages: state.starmask.assetImages,
   };
 }
 

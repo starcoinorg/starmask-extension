@@ -58,7 +58,7 @@ import { TRANSACTION_STATUSES } from '../../../../../../shared/constants/transac
 import GasModalPageContainer from './gas-modal-page-container.component';
 
 const mapStateToProps = (state, ownProps) => {
-  const { currentNetworkTxList, send } = state.metamask;
+  const { currentNetworkTxList, send } = state.starmask;
   const { modalState: { props: modalProps } = {} } = state.appState.modal || {};
   const { txData = {} } = modalProps || {};
   const { transaction = {}, onSubmit } = ownProps;

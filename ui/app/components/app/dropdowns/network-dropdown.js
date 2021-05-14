@@ -36,8 +36,8 @@ const DROP_DOWN_MENU_ITEM_STYLE = {
 
 function mapStateToProps(state) {
   return {
-    provider: state.metamask.provider,
-    frequentRpcListDetail: state.metamask.frequentRpcListDetail || [],
+    provider: state.starmask.provider,
+    frequentRpcListDetail: state.starmask.frequentRpcListDetail || [],
     networkDropdownOpen: state.appState.networkDropdownOpen,
   };
 }

@@ -212,29 +212,29 @@ export function shouldShowCustomPriceTooLowWarning(state) {
 
 // Background selectors
 
-const getSwapsState = (state) => state.metamask.swapsState;
+const getSwapsState = (state) => state.starmask.swapsState;
 
 export const getSwapsFeatureLiveness = (state) =>
-  state.metamask.swapsState.swapsFeatureIsLive;
+  state.starmask.swapsState.swapsFeatureIsLive;
 
 export const getSwapsQuoteRefreshTime = (state) =>
-  state.metamask.swapsState.swapsQuoteRefreshTime;
+  state.starmask.swapsState.swapsQuoteRefreshTime;
 
 export const getBackgroundSwapRouteState = (state) =>
-  state.metamask.swapsState.routeState;
+  state.starmask.swapsState.routeState;
 
 export const getCustomSwapsGas = (state) =>
-  state.metamask.swapsState.customMaxGas;
+  state.starmask.swapsState.customMaxGas;
 
 export const getCustomSwapsGasPrice = (state) =>
-  state.metamask.swapsState.customGasPrice;
+  state.starmask.swapsState.customGasPrice;
 
-export const getFetchParams = (state) => state.metamask.swapsState.fetchParams;
+export const getFetchParams = (state) => state.starmask.swapsState.fetchParams;
 
-export const getQuotes = (state) => state.metamask.swapsState.quotes;
+export const getQuotes = (state) => state.starmask.swapsState.quotes;
 
 export const getQuotesLastFetched = (state) =>
-  state.metamask.swapsState.quotesLastFetched;
+  state.starmask.swapsState.quotesLastFetched;
 
 export const getSelectedQuote = (state) => {
   const { selectedAggId, quotes } = getSwapsState(state);
@@ -246,19 +246,19 @@ export const getSwapsErrorKey = (state) => getSwapsState(state)?.errorKey;
 export const getShowQuoteLoadingScreen = (state) =>
   state.swaps.showQuoteLoadingScreen;
 
-export const getSwapsTokens = (state) => state.metamask.swapsState.tokens;
+export const getSwapsTokens = (state) => state.starmask.swapsState.tokens;
 
 export const getSwapsWelcomeMessageSeenStatus = (state) =>
-  state.metamask.swapsWelcomeMessageHasBeenShown;
+  state.starmask.swapsWelcomeMessageHasBeenShown;
 
 export const getTopQuote = (state) => {
   const { topAggId, quotes } = getSwapsState(state);
   return quotes[topAggId];
 };
 
-export const getApproveTxId = (state) => state.metamask.swapsState.approveTxId;
+export const getApproveTxId = (state) => state.starmask.swapsState.approveTxId;
 
-export const getTradeTxId = (state) => state.metamask.swapsState.tradeTxId;
+export const getTradeTxId = (state) => state.starmask.swapsState.tradeTxId;
 
 export const getUsedQuote = (state) =>
   getSelectedQuote(state) || getTopQuote(state);
@@ -668,7 +668,7 @@ export const signAndSendTransactions = (history, metaMetricsEvent) => {
       const approveTxMeta = await dispatch(
         addUnapprovedTransaction(
           { ...approveTxParams, amount: '0x0' },
-          'metamask',
+          'starmask',
         ),
       );
       await dispatch(setApproveTxId(approveTxMeta.id));
@@ -692,7 +692,7 @@ export const signAndSendTransactions = (history, metaMetricsEvent) => {
     }
 
     const tradeTxMeta = await dispatch(
-      addUnapprovedTransaction(usedTradeTxParams, 'metamask'),
+      addUnapprovedTransaction(usedTradeTxParams, 'starmask'),
     );
     dispatch(setTradeTxId(tradeTxMeta.id));
 

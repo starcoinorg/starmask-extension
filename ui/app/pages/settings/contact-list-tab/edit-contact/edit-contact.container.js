@@ -26,10 +26,10 @@ const mapStateToProps = (state, ownProps) => {
     : ownProps.match.params.id;
 
   const contact =
-    getAddressBookEntry(state, address) || state.metamask.identities[address];
+    getAddressBookEntry(state, address) || state.starmask.identities[address];
   const { memo, name } = contact || {};
 
-  const { chainId } = state.metamask.provider;
+  const { chainId } = state.starmask.provider;
 
   const showingMyAccounts = Boolean(
     pathname.match(CONTACT_MY_ACCOUNTS_EDIT_ROUTE),

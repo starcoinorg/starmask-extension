@@ -4,8 +4,8 @@ import { compose } from 'redux';
 import { closeWelcomeScreen } from '../../../store/actions';
 import Welcome from './welcome.component';
 
-const mapStateToProps = ({ metamask }) => {
-  const { welcomeScreenSeen, participateInMetaMetrics } = metamask;
+const mapStateToProps = ({ starmask }) => {
+  const { welcomeScreenSeen, participateInMetaMetrics } = starmask;
 
   return {
     welcomeScreenSeen,

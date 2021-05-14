@@ -20,7 +20,7 @@ import { getTokenData, sumHexes } from '../../helpers/utils/transactions.util';
 import { conversionUtil } from '../../helpers/utils/conversion-util';
 
 // Actions
-const createActionType = (action) => `metamask/confirm-transaction/${action}`;
+const createActionType = (action) => `starmask/confirm-transaction/${action}`;
 
 const UPDATE_TX_DATA = createActionType('UPDATE_TX_DATA');
 const UPDATE_TOKEN_DATA = createActionType('UPDATE_TOKEN_DATA');

@@ -14,7 +14,7 @@ import { getCurrentChainId, deprecatedGetCurrentNetworkId } from './selectors';
 import { getSelectedAddress } from '.';
 
 export const incomingTxListSelector = (state) => {
-  const { showIncomingTransactions } = state.metamask.featureFlags;
+  const { showIncomingTransactions } = state.starmask.featureFlags;
   if (!showIncomingTransactions) {
     return [];
   }
@@ -22,25 +22,25 @@ export const incomingTxListSelector = (state) => {
   const {
     network,
     provider: { chainId },
-  } = state.metamask;
+  } = state.starmask;
   const selectedAddress = getSelectedAddress(state);
-  return Object.values(state.metamask.incomingTransactions).filter(
+  return Object.values(state.starmask.incomingTransactions).filter(
     (tx) =>
       tx.txParams.to === selectedAddress &&
       transactionMatchesNetwork(tx, chainId, network),
   );
 };
-export const unapprovedMsgsSelector = (state) => state.metamask.unapprovedMsgs;
+export const unapprovedMsgsSelector = (state) => state.starmask.unapprovedMsgs;
 export const currentNetworkTxListSelector = (state) =>
-  state.metamask.currentNetworkTxList;
+  state.starmask.currentNetworkTxList;
 export const unapprovedPersonalMsgsSelector = (state) =>
-  state.metamask.unapprovedPersonalMsgs;
+  state.starmask.unapprovedPersonalMsgs;
 export const unapprovedDecryptMsgsSelector = (state) =>
-  state.metamask.unapprovedDecryptMsgs;
+  state.starmask.unapprovedDecryptMsgs;
 export const unapprovedEncryptionPublicKeyMsgsSelector = (state) =>
-  state.metamask.unapprovedEncryptionPublicKeyMsgs;
+  state.starmask.unapprovedEncryptionPublicKeyMsgs;
 export const unapprovedTypedMessagesSelector = (state) =>
-  state.metamask.unapprovedTypedMessages;
+  state.starmask.unapprovedTypedMessages;
 
 export const selectedAddressTxListSelector = createSelector(
   getSelectedAddress,
@@ -257,7 +257,7 @@ export const nonceSortedTransactionsSelector = createSelector(
 
         const previousPrimaryIsNetworkFailure =
           nonceProps.primaryTransaction.status ===
-            TRANSACTION_STATUSES.FAILED &&
+          TRANSACTION_STATUSES.FAILED &&
           nonceProps.primaryTransaction?.txReceipt?.status !== '0x0';
         const currentTransactionIsOnChainFailure =
           transaction?.txReceipt?.status === '0x0';

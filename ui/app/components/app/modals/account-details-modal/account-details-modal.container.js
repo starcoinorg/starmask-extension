@@ -11,7 +11,7 @@ const mapStateToProps = (state) => {
   return {
     chainId: getCurrentChainId(state),
     selectedIdentity: getSelectedIdentity(state),
-    keyrings: state.metamask.keyrings,
+    keyrings: state.starmask.keyrings,
     rpcPrefs: getRpcPrefsForCurrentProvider(state),
   };
 };

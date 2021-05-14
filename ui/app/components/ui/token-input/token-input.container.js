@@ -9,7 +9,7 @@ import TokenInput from './token-input.component';
 
 const mapStateToProps = (state) => {
   const {
-    metamask: { currentCurrency },
+    starmask: { currentCurrency },
   } = state;
   const { showFiatInTestnets } = getPreferences(state);
   const isMainnet = getIsMainnet(state);

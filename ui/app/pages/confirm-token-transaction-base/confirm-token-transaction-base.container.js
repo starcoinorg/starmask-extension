@@ -21,7 +21,7 @@ const mapStateToProps = (state, ownProps) => {
   const { id: paramsTransactionId } = params;
   const {
     confirmTransaction,
-    metamask: { currentCurrency, conversionRate, currentNetworkTxList },
+    starmask: { currentCurrency, conversionRate, currentNetworkTxList },
   } = state;
 
   const {

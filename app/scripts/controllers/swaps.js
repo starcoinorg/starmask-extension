@@ -659,7 +659,7 @@ export default class SwapsController {
       savings.metaMaskFee = bestQuote.metaMaskFeeInEth;
 
       // Total savings are calculated as:
-      //   performance savings + fee savings - metamask fee
+      //   performance savings + fee savings - starmask fee
       savings.total = savings.performance
         .plus(savings.fee)
         .minus(savings.metaMaskFee)

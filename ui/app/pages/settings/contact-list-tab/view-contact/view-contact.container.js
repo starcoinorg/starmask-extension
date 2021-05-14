@@ -22,7 +22,7 @@ const mapStateToProps = (state, ownProps) => {
     : ownProps.match.params.id;
 
   const contact =
-    getAddressBookEntry(state, address) || state.metamask.identities[address];
+    getAddressBookEntry(state, address) || state.starmask.identities[address];
   const { memo, name } = contact || {};
 
   const showingMyAccounts = Boolean(

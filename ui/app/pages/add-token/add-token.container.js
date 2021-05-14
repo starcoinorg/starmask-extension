@@ -7,7 +7,7 @@ import AddToken from './add-token.component';
 
 const mapStateToProps = (state) => {
   const {
-    metamask: { identities, tokens, pendingTokens },
+    starmask: { identities, tokens, pendingTokens },
   } = state;
   return {
     identities,

@@ -14,32 +14,32 @@ import { MESSAGE_TYPE } from '../../../../shared/constants/app';
 import { TRANSACTION_STATUSES } from '../../../../shared/constants/transaction';
 
 function mapStateToProps(state) {
-  const { metamask, appState } = state;
+  const { starmask, appState } = state;
   const {
     unapprovedMsgCount,
     unapprovedPersonalMsgCount,
     unapprovedTypedMessagesCount,
-  } = metamask;
+  } = starmask;
   const { txId } = appState;
 
   return {
-    identities: state.metamask.identities,
+    identities: state.starmask.identities,
     mostRecentOverviewPage: getMostRecentOverviewPage(state),
-    unapprovedTxs: state.metamask.unapprovedTxs,
-    unapprovedMsgs: state.metamask.unapprovedMsgs,
-    unapprovedPersonalMsgs: state.metamask.unapprovedPersonalMsgs,
-    unapprovedTypedMessages: state.metamask.unapprovedTypedMessages,
+    unapprovedTxs: state.starmask.unapprovedTxs,
+    unapprovedMsgs: state.starmask.unapprovedMsgs,
+    unapprovedPersonalMsgs: state.starmask.unapprovedPersonalMsgs,
+    unapprovedTypedMessages: state.starmask.unapprovedTypedMessages,
     index: txId,
     warning: state.appState.warning,
-    network: state.metamask.network,
-    chainId: state.metamask.provider.chainId,
-    currentCurrency: state.metamask.currentCurrency,
-    blockGasLimit: state.metamask.currentBlockGasLimit,
+    network: state.starmask.network,
+    chainId: state.starmask.provider.chainId,
+    currentCurrency: state.starmask.currentCurrency,
+    blockGasLimit: state.starmask.currentBlockGasLimit,
     unapprovedMsgCount,
     unapprovedPersonalMsgCount,
     unapprovedTypedMessagesCount,
-    send: state.metamask.send,
-    currentNetworkTxList: state.metamask.currentNetworkTxList,
+    send: state.starmask.send,
+    currentNetworkTxList: state.starmask.currentNetworkTxList,
   };
 }
 

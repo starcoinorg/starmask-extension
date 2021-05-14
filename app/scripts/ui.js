@@ -52,7 +52,7 @@ async function start() {
       }
 
       const state = store.getState();
-      const { metamask: { completedOnboarding } = {} } = state;
+      const { starmask: { completedOnboarding } = {} } = state;
 
       if (!completedOnboarding && windowType !== ENVIRONMENT_TYPE_FULLSCREEN) {
         global.platform.openExtensionInBrowser();

@@ -30,8 +30,8 @@ export default function NetworkDisplay({
 }) {
   const networkIsLoading = useSelector(isNetworkLoading);
   const currentNetwork = useSelector((state) => ({
-    nickname: state.metamask.provider.nickname,
-    type: state.metamask.provider.type,
+    nickname: state.starmask.provider.nickname,
+    type: state.starmask.provider.type,
   }));
   const t = useI18nContext();
 

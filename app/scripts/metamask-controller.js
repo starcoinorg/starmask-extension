@@ -87,7 +87,7 @@ export default class MetamaskController extends EventEmitter {
     this.recordFirstTimeInfo(initState);
 
     // this keeps track of how many "controllerStream" connections are open
-    // the only thing that uses controller connections are open metamask UI instances
+    // the only thing that uses controller connections are open starmask UI instances
     this.activeControllerConnections = 0;
 
     this.getRequestAccountTabIds = opts.getRequestAccountTabIds;
@@ -485,7 +485,7 @@ export default class MetamaskController extends EventEmitter {
       version,
       // account mgmt
       getAccounts: async ({ origin }) => {
-        if (origin === 'metamask') {
+        if (origin === 'starmask') {
           const selectedAddress = this.preferencesController.getSelectedAddress();
           return selectedAddress ? [selectedAddress] : [];
         } else if (this.isUnlocked()) {
@@ -522,7 +522,7 @@ export default class MetamaskController extends EventEmitter {
    * This store is used to make some config info available to Dapps synchronously.
    */
   createPublicConfigStore() {
-    // subset of state for metamask inpage provider
+    // subset of state for starmask inpage provider
     const publicConfigStore = new ObservableStore();
     const { networkController } = this;
 
@@ -587,7 +587,7 @@ export default class MetamaskController extends EventEmitter {
   //=============================================================================
 
   /**
-   * The metamask-state of the various controllers, made available to the UI
+   * The starmask-state of the various controllers, made available to the UI
    *
    * @returns {Object} status
    */
@@ -1993,7 +1993,7 @@ export default class MetamaskController extends EventEmitter {
     const mux = setupMultiplex(connectionStream);
 
     // messages between inpage and background
-    this.setupProviderConnection(mux.createStream('metamask-provider'), sender);
+    this.setupProviderConnection(mux.createStream('starmask-provider'), sender);
 
     // TODO:LegacyProvider: Delete
     // legacy streams
@@ -2071,7 +2071,7 @@ export default class MetamaskController extends EventEmitter {
    * @param {boolean} isInternal - True if this is a connection with an internal process
    */
   setupProviderConnection(outStream, sender, isInternal) {
-    const origin = isInternal ? 'metamask' : new URL(sender.url).origin;
+    const origin = isInternal ? 'starmask' : new URL(sender.url).origin;
     let extensionId;
     if (sender.id !== this.extension.runtime.id) {
       extensionId = sender.id;
@@ -2213,7 +2213,7 @@ export default class MetamaskController extends EventEmitter {
         this.permissionsController.createMiddleware({ origin, extensionId }),
       );
     }
-    // forward to metamask primary provider
+    // forward to starmask primary provider
     engine.push(providerAsMiddleware(provider));
     return engine;
   }
@@ -2241,7 +2241,7 @@ export default class MetamaskController extends EventEmitter {
   }
 
   /**
-   * Adds a reference to a connection by origin. Ignores the 'metamask' origin.
+   * Adds a reference to a connection by origin. Ignores the 'starmask' origin.
    * Caller must ensure that the returned id is stored such that the reference
    * can be deleted later.
    *
@@ -2251,7 +2251,7 @@ export default class MetamaskController extends EventEmitter {
    * @returns {string} The connection's id (so that it can be deleted later)
    */
   addConnection(origin, { engine }) {
-    if (origin === 'metamask') {
+    if (origin === 'starmask') {
       return null;
     }
 

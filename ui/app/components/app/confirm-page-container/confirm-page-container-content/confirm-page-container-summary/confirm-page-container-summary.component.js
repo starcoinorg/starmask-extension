@@ -19,7 +19,7 @@ const ConfirmPageContainerSummary = (props) => {
 
   return (
     <div className={classnames('confirm-page-container-summary', className)}>
-      {origin === 'metamask' ? null : (
+      {origin === 'starmask' ? null : (
         <div className="confirm-page-container-summary__origin">{origin}</div>
       )}
       <div className="confirm-page-container-summary__action-row">

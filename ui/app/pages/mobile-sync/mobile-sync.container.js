@@ -22,7 +22,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
   const {
-    metamask: { selectedAddress },
+    starmask: { selectedAddress },
   } = state;
 
   return {

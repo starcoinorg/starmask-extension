@@ -10,7 +10,7 @@ const firstTimeFlowTypeNameMap = {
 
 const mapStateToProps = (state) => {
   const {
-    metamask: { firstTimeFlowType },
+    starmask: { firstTimeFlowType },
   } = state;
 
   return {

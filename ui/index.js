@@ -68,7 +68,7 @@ async function startApp(metamaskState, backgroundConnection, opts) {
     activeTab: opts.activeTab,
 
     // metamaskState represents the cross-tab state
-    metamask: metamaskState,
+    starmask: metamaskState,
 
     // appState represents the current tab's popup state
     appState: {},
@@ -140,8 +140,8 @@ async function startApp(metamaskState, backgroundConnection, opts) {
     }
   });
 
-  // global metamask api - used by tooling
-  global.metamask = {
+  // global starmask api - used by tooling
+  global.starmask = {
     updateCurrentLocale: (code) => {
       store.dispatch(actions.updateCurrentLocale(code));
     },

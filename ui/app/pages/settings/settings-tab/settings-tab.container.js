@@ -13,7 +13,7 @@ import SettingsTab from './settings-tab.component';
 const mapStateToProps = (state) => {
   const {
     appState: { warning },
-    metamask,
+    starmask,
   } = state;
   const {
     currentCurrency,
@@ -21,7 +21,7 @@ const mapStateToProps = (state) => {
     nativeCurrency,
     useBlockie,
     currentLocale,
-  } = metamask;
+  } = starmask;
   const {
     useNativeCurrencyAsPrimaryCurrency,
     hideZeroBalanceTokens,

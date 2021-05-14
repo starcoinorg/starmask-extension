@@ -137,7 +137,7 @@ export default class ThreeBoxController {
     let backupExists;
     try {
       const threeBoxConfig = await Box.getConfig(this.address);
-      backupExists = threeBoxConfig.spaces && threeBoxConfig.spaces.metamask;
+      backupExists = threeBoxConfig.spaces && threeBoxConfig.spaces.starmask;
     } catch (e) {
       if (e.message.match(/^Error: Invalid response \(404\)/u)) {
         backupExists = false;
@@ -160,7 +160,7 @@ export default class ThreeBoxController {
       try {
         this.box = await Box.openBox(this.address, this.provider);
         await this._waitForOnSyncDone();
-        this.space = await this.box.openSpace('metamask', {
+        this.space = await this.box.openSpace('starmask', {
           onSyncDone: async () => {
             const stateUpdate = {
               threeBoxSynced: true,

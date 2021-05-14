@@ -222,7 +222,7 @@ export default class SelectHardware extends Component {
           {this.context.t('havingTroubleConnecting')}
           <a
             className="hw-connect__footer__link"
-            href="https://support.metamask.io/"
+            href="https://westar.io/about"
             target="_blank"
             rel="noopener noreferrer"
           >

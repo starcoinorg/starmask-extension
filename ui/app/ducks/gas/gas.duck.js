@@ -11,13 +11,13 @@ import fetchWithCache from '../../helpers/utils/fetch-with-cache';
 
 // Actions
 const BASIC_GAS_ESTIMATE_LOADING_FINISHED =
-  'metamask/gas/BASIC_GAS_ESTIMATE_LOADING_FINISHED';
+  'starmask/gas/BASIC_GAS_ESTIMATE_LOADING_FINISHED';
 const BASIC_GAS_ESTIMATE_LOADING_STARTED =
-  'metamask/gas/BASIC_GAS_ESTIMATE_LOADING_STARTED';
-const RESET_CUSTOM_DATA = 'metamask/gas/RESET_CUSTOM_DATA';
-const SET_BASIC_GAS_ESTIMATE_DATA = 'metamask/gas/SET_BASIC_GAS_ESTIMATE_DATA';
-const SET_CUSTOM_GAS_LIMIT = 'metamask/gas/SET_CUSTOM_GAS_LIMIT';
-const SET_CUSTOM_GAS_PRICE = 'metamask/gas/SET_CUSTOM_GAS_PRICE';
+  'starmask/gas/BASIC_GAS_ESTIMATE_LOADING_STARTED';
+const RESET_CUSTOM_DATA = 'starmask/gas/RESET_CUSTOM_DATA';
+const SET_BASIC_GAS_ESTIMATE_DATA = 'starmask/gas/SET_BASIC_GAS_ESTIMATE_DATA';
+const SET_CUSTOM_GAS_LIMIT = 'starmask/gas/SET_CUSTOM_GAS_LIMIT';
+const SET_CUSTOM_GAS_PRICE = 'starmask/gas/SET_CUSTOM_GAS_PRICE';
 
 const initState = {
   customData: {

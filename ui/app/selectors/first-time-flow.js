@@ -5,7 +5,7 @@ import {
 } from '../helpers/constants/routes';
 
 export function getFirstTimeFlowTypeRoute(state) {
-  const { firstTimeFlowType } = state.metamask;
+  const { firstTimeFlowType } = state.starmask;
 
   let nextRoute;
   if (firstTimeFlowType === 'create') {
@@ -20,7 +20,7 @@ export function getFirstTimeFlowTypeRoute(state) {
 }
 
 export const getOnboardingInitiator = (state) => {
-  const { onboardingTabs } = state.metamask;
+  const { onboardingTabs } = state.starmask;
 
   if (!onboardingTabs || Object.keys(onboardingTabs).length !== 1) {
     return null;

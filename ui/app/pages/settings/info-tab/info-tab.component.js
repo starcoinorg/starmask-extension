@@ -20,7 +20,7 @@ export default class InfoTab extends PureComponent {
         {/* <div className="info-tab__link-item">
           <Button
             type="link"
-            href="https://metamask.io/privacy.html"
+            href="https://westar.io/privacy"
             target="_blank"
             rel="noopener noreferrer"
             className="info-tab__link-text"
@@ -28,17 +28,17 @@ export default class InfoTab extends PureComponent {
             {t('privacyMsg')}
           </Button>
         </div> */}
-        {/* <div className="info-tab__link-item">
+        <div className="info-tab__link-item">
           <Button
             type="link"
-            href="https://metamask.io/terms.html"
+            href="https://westar.io/terms"
             target="_blank"
             rel="noopener noreferrer"
             className="info-tab__link-text"
           >
             {t('terms')}
           </Button>
-        </div> */}
+        </div>
         {/* <div className="info-tab__link-item">
           <Button
             type="link"

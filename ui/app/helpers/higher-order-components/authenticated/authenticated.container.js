@@ -3,7 +3,7 @@ import Authenticated from './authenticated.component';
 
 const mapStateToProps = (state) => {
   const {
-    metamask: { isUnlocked, completedOnboarding },
+    starmask: { isUnlocked, completedOnboarding },
   } = state;
 
   return {

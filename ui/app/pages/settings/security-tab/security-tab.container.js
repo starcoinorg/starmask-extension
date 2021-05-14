@@ -11,13 +11,13 @@ import SecurityTab from './security-tab.component';
 const mapStateToProps = (state) => {
   const {
     appState: { warning },
-    metamask,
+    starmask,
   } = state;
   const {
     featureFlags: { showIncomingTransactions } = {},
     participateInMetaMetrics,
     usePhishDetect,
-  } = metamask;
+  } = starmask;
 
   return {
     warning,

@@ -15,7 +15,7 @@ import {
  * @returns {Object} The permissions domains object.
  */
 export function getPermissionDomains(state) {
-  return state.metamask.domains || {};
+  return state.starmask.domains || {};
 }
 
 /**
@@ -25,7 +25,7 @@ export function getPermissionDomains(state) {
  * @returns {Object} The permission domains metadata object.
  */
 export function getPermissionDomainsMetadata(state) {
-  return state.metamask.domainMetadata || {};
+  return state.starmask.domainMetadata || {};
 }
 
 /**
@@ -83,7 +83,7 @@ export function getPermittedAccountsByOrigin(state) {
  * @returns {Array<Object>} An array of connected domain objects.
  */
 export function getConnectedDomainsForSelectedAddress(state) {
-  const { selectedAddress } = state.metamask;
+  const { selectedAddress } = state.starmask;
   const domains = getPermissionDomains(state);
   const domainMetadata = getPermissionDomainsMetadata(state);
 
@@ -132,9 +132,9 @@ export function getAddressConnectedDomainMap(state) {
 
       addressConnectedIconMap[address] = addressConnectedIconMap[address]
         ? {
-            ...addressConnectedIconMap[address],
-            [domainKey]: { icon, name: nameToRender },
-          }
+          ...addressConnectedIconMap[address],
+          [domainKey]: { icon, name: nameToRender },
+        }
         : { [domainKey]: { icon, name: nameToRender } };
     });
   });
@@ -151,8 +151,8 @@ function getAccountsFromDomain(domain) {
 function getAccountsPermissionFromDomain(domain = {}) {
   return Array.isArray(domain.permissions)
     ? domain.permissions.find(
-        (perm) => perm.parentCapability === 'eth_accounts',
-      )
+      (perm) => perm.parentCapability === 'eth_accounts',
+    )
     : {};
 }
 
@@ -173,7 +173,7 @@ function getAccountsCaveatFromPermission(accountsPermission = {}) {
 }
 
 function domainSelector(state, origin) {
-  return origin && state.metamask.domains?.[origin];
+  return origin && state.starmask.domains?.[origin];
 }
 
 export function getAccountToConnectToActiveTab(state) {
@@ -181,7 +181,7 @@ export function getAccountToConnectToActiveTab(state) {
   const connectedAccounts = getPermittedAccountsForCurrentTab(state);
 
   const {
-    metamask: { identities },
+    starmask: { identities },
   } = state;
   const numberOfAccounts = Object.keys(identities).length;
 
@@ -203,7 +203,7 @@ export function getAccountToConnectToActiveTab(state) {
 export function getOrderedConnectedAccountsForActiveTab(state) {
   const {
     activeTab,
-    metamask: { permissionsHistory },
+    starmask: { permissionsHistory },
   } = state;
 
   const permissionsHistoryByAccount =
@@ -234,8 +234,8 @@ export function getOrderedConnectedAccountsForActiveTab(state) {
 }
 
 export function getPermissionsForActiveTab(state) {
-  const { activeTab, metamask } = state;
-  const { domains = {} } = metamask;
+  const { activeTab, starmask } = state;
+  const { domains = {} } = starmask;
 
   return domains[activeTab.origin]?.permissions?.map(({ parentCapability }) => {
     return {
@@ -245,14 +245,14 @@ export function getPermissionsForActiveTab(state) {
 }
 
 export function activeTabHasPermissions(state) {
-  const { activeTab, metamask } = state;
-  const { domains = {} } = metamask;
+  const { activeTab, starmask } = state;
+  const { domains = {} } = starmask;
 
   return Boolean(domains[activeTab.origin]?.permissions?.length > 0);
 }
 
 export function getLastConnectedInfo(state) {
-  const { permissionsHistory = {} } = state.metamask;
+  const { permissionsHistory = {} } = state.starmask;
   return Object.keys(permissionsHistory).reduce((acc, origin) => {
     const ethAccountsHistory = JSON.parse(
       JSON.stringify(permissionsHistory[origin].eth_accounts),
@@ -279,7 +279,7 @@ export function getPermissionsMetadataHostCounts(state) {
 }
 
 export function getPermissionsRequests(state) {
-  return state.metamask.permissionsRequests || [];
+  return state.starmask.permissionsRequests || [];
 }
 
 export function getFirstPermissionRequest(state) {

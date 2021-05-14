@@ -18,7 +18,7 @@ import UnlockPage from './unlock-page.component';
 
 const mapStateToProps = (state) => {
   const {
-    metamask: { isUnlocked },
+    starmask: { isUnlocked },
   } = state;
   return {
     isUnlocked,

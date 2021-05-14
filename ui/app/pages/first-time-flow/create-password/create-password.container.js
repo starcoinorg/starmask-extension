@@ -3,7 +3,7 @@ import CreatePassword from './create-password.component';
 
 const mapStateToProps = (state) => {
   const {
-    metamask: { isInitialized },
+    starmask: { isInitialized },
   } = state;
 
   return {

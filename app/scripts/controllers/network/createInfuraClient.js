@@ -15,7 +15,7 @@ export default function createInfuraClient({ network, projectId }) {
     network,
     projectId,
     maxAttempts: 5,
-    source: 'metamask',
+    source: 'starmask',
   });
   const infuraProvider = providerFromMiddleware(infuraMiddleware);
   const blockTracker = new PollingBlockTracker({ provider: infuraProvider });

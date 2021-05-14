@@ -6,7 +6,7 @@ import Lock from './lock.component';
 
 const mapStateToProps = (state) => {
   const {
-    metamask: { isUnlocked },
+    starmask: { isUnlocked },
   } = state;
 
   return {

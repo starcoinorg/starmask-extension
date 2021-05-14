@@ -42,7 +42,7 @@ import {
 import Home from './home.component';
 
 const mapStateToProps = (state) => {
-  const { metamask, appState } = state;
+  const { starmask, appState } = state;
   const {
     suggestedTokens,
     seedPhraseBackedUp,
@@ -53,7 +53,7 @@ const mapStateToProps = (state) => {
     connectedStatusPopoverHasBeenShown,
     defaultHomeActiveTabName,
     swapsState,
-  } = metamask;
+  } = starmask;
   const accountBalance = getCurrentEthBalance(state);
   const { forgottenPassword, threeBoxLastUpdated } = appState;
   const totalUnapprovedCount = getTotalUnapprovedCount(state);

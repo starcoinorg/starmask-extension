@@ -1,7 +1,7 @@
 import * as actionConstants from '../../store/actionConstants';
 
 // actionConstants
-const SET_THREEBOX_LAST_UPDATED = 'metamask/app/SET_THREEBOX_LAST_UPDATED';
+const SET_THREEBOX_LAST_UPDATED = 'starmask/app/SET_THREEBOX_LAST_UPDATED';
 
 export default function reduceApp(state = {}, action) {
   // default state

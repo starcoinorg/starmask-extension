@@ -5,7 +5,7 @@ import { showModal, createCancelTransaction } from '../../../../store/actions';
 import CancelTransaction from './cancel-transaction.component';
 
 const mapStateToProps = (state, ownProps) => {
-  const { metamask } = state;
+  const { starmask } = state;
   const {
     transactionId,
     originalGasPrice,
@@ -13,7 +13,7 @@ const mapStateToProps = (state, ownProps) => {
     defaultNewGasPrice,
     gasLimit,
   } = ownProps;
-  const { currentNetworkTxList } = metamask;
+  const { currentNetworkTxList } = starmask;
   const transaction = currentNetworkTxList.find(
     ({ id }) => id === transactionId,
   );

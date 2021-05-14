@@ -17,7 +17,7 @@ const SENTRY_DSN_DEV =
 export const SENTRY_STATE = {
   gas: true,
   history: true,
-  metamask: {
+  starmask: {
     alertEnabledness: true,
     completedOnboarding: true,
     connectedStatusPopoverHasBeenShown: true,
@@ -173,6 +173,6 @@ function toMetamaskUrl(origUrl) {
   if (!filePath) {
     return origUrl;
   }
-  const metamaskUrl = `metamask${filePath}`;
+  const metamaskUrl = `starmask${filePath}`;
   return metamaskUrl;
 }

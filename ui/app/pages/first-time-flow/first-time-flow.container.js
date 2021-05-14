@@ -11,7 +11,7 @@ import FirstTimeFlow from './first-time-flow.component';
 
 const mapStateToProps = (state, ownProps) => {
   const {
-    metamask: {
+    starmask: {
       completedOnboarding,
       isInitialized,
       isUnlocked,

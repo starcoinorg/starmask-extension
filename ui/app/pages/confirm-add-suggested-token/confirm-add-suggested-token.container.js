@@ -7,7 +7,7 @@ import ConfirmAddSuggestedToken from './confirm-add-suggested-token.component';
 
 const mapStateToProps = (state) => {
   const {
-    metamask: { pendingTokens, suggestedTokens, tokens },
+    starmask: { pendingTokens, suggestedTokens, tokens },
   } = state;
   const params = { ...pendingTokens, ...suggestedTokens };
 

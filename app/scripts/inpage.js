@@ -45,8 +45,8 @@ log.setDefaultLevel(process.env.STARMASK_DEBUG ? 'debug' : 'warn');
 
 // setup background connection
 const metamaskStream = new LocalMessageDuplexStream({
-  name: 'metamask-inpage',
-  target: 'metamask-contentscript',
+  name: 'starmask-inpage',
+  target: 'starmask-contentscript',
 });
 
 initializeProvider({

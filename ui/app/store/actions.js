@@ -331,7 +331,7 @@ export function importNewAccount(strategy, args) {
 export function addNewAccount() {
   log.debug(`background.addNewAccount`);
   return async (dispatch, getState) => {
-    const oldIdentities = getState().metamask.identities;
+    const oldIdentities = getState().starmask.identities;
     dispatch(showLoadingIndication());
 
     let newIdentities;
@@ -638,7 +638,7 @@ export function signTypedMsg(msgData) {
 export function signTx(txData) {
   return async (dispatch) => {
     try {
-      await promisifiedBackground.addUnapprovedTransaction(txData, 'metamask');
+      await promisifiedBackground.addUnapprovedTransaction(txData, 'starmask');
     } catch (err) {
       dispatch(displayWarning(err.message));
     }
@@ -938,7 +938,7 @@ export function completedTx(id) {
       unapprovedTypedMessages,
       network,
       provider: { chainId },
-    } = state.metamask;
+    } = state.starmask;
     const unconfirmedActions = txHelper(
       unapprovedTxs,
       unapprovedMsgs,
@@ -1212,7 +1212,7 @@ export function unlockSucceeded(message) {
 
 export function updateMetamaskState(newState) {
   return (dispatch, getState) => {
-    const { metamask: currentState } = getState();
+    const { starmask: currentState } = getState();
 
     const { currentLocale, selectedAddress } = currentState;
     const {
@@ -1724,7 +1724,7 @@ export function addToAddressBook(recipient, nickname = '', memo = '') {
   log.debug(`background.addToAddressBook`);
 
   return async (dispatch, getState) => {
-    const { chainId } = getState().metamask.provider;
+    const { chainId } = getState().starmask.provider;
 
     let set;
     try {
@@ -2611,7 +2611,7 @@ export function getContractMethodData(data = '') {
   return (dispatch, getState) => {
     const prefixedData = addHexPrefix(data);
     const fourBytePrefix = prefixedData.slice(0, 10);
-    const { knownMethodData } = getState().metamask;
+    const { knownMethodData } = getState().starmask;
 
     if (
       (knownMethodData &&
@@ -2651,7 +2651,7 @@ export function loadingTokenParamsFinished() {
 
 export function getTokenParams(tokenAddress) {
   return (dispatch, getState) => {
-    const existingTokens = getState().metamask.tokens;
+    const existingTokens = getState().starmask.tokens;
     const existingToken = existingTokens.find(
       ({ address }) => tokenAddress === address,
     );
@@ -2798,7 +2798,7 @@ export function setNextNonce(nextNonce) {
 
 export function getNextNonce() {
   return (dispatch, getState) => {
-    const address = getState().metamask.selectedAddress;
+    const address = getState().starmask.selectedAddress;
     return new Promise((resolve, reject) => {
       background.getNextNonce(address, (err, nextNonce) => {
         if (err) {

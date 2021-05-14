@@ -298,7 +298,7 @@
   },
   "connectTo": {
     "message": "连接到 $1",
-    "description": "$1 is the name/origin of a web3 site/application that the user can connect to metamask"
+    "description": "$1 is the name/origin of a web3 site/application that the user can connect to starmask"
   },
   "connectToAll": {
     "message": "连接到您的全部$1",
@@ -1619,7 +1619,7 @@
   },
   "swapCheckingQuote": {
     "message": "正在检查 $1",
-    "description": "Shown to the user during quote loading. $1 is the name of an aggregator. The message indicates that metamask is currently checking if that aggregator has a trade/quote for their requested swap."
+    "description": "Shown to the user during quote loading. $1 is the name of an aggregator. The message indicates that starmask is currently checking if that aggregator has a trade/quote for their requested swap."
   },
   "swapCustom": {
     "message": "自定义"
@@ -1701,7 +1701,7 @@
   },
   "swapMetaMaskFeeDescription": {
     "message": "我们每次都能从顶级流动性资源中找到最好的价格。每次报价都会自动收取1%的手续费用，以支持 StarMask 的持续发展，使其更加完善。",
-    "description": "Provides information about the fee that metamask takes for swaps. $1 is a decimal number."
+    "description": "Provides information about the fee that starmask takes for swaps. $1 is a decimal number."
   },
   "swapNQuotes": {
     "message": "$1 个报价",
@@ -1743,7 +1743,7 @@
   },
   "swapQuoteIncludesRate": {
     "message": "报价包含 $1% StarMask 手续费",
-    "description": "Provides information about the fee that metamask takes for swaps. $1 is a decimal number."
+    "description": "Provides information about the fee that starmask takes for swaps. $1 is a decimal number."
   },
   "swapQuoteNofN": {
     "message": "报价 $1 / $2",

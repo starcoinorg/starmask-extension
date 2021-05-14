@@ -67,7 +67,7 @@ const mapStateToProps = (state, ownProps) => {
   const { id: paramsTransactionId } = params;
   const { showFiatInTestnets } = getPreferences(state);
   const isMainnet = getIsMainnet(state);
-  const { confirmTransaction, metamask } = state;
+  const { confirmTransaction, starmask } = state;
   const {
     ensResolutionsByAddress,
     conversionRate,
@@ -79,7 +79,7 @@ const mapStateToProps = (state, ownProps) => {
     metaMetricsSendCount,
     nextNonce,
     provider: { chainId },
-  } = metamask;
+  } = starmask;
   const { tokenData, txData, tokenProps, nonce } = confirmTransaction;
   const { txParams = {}, lastGasPrice, id: transactionId, type } = txData;
   const transaction =

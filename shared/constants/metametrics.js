@@ -15,7 +15,7 @@
  */
 
 /**
- * For metamask, this is the dapp that triggered an interaction
+ * For starmask, this is the dapp that triggered an interaction
  * @typedef {Object} MetaMetricsReferrerObject
  * @property {string} [url] - the origin of the dapp issuing the
  *  notification
@@ -35,7 +35,7 @@
  * @property {string} userAgent - the useragent string of the user
  * @property {MetaMetricsPageObject} [page] - an object representing details of
  *  the current page
- * @property {MetaMetricsReferrerObject} [referrer] - for metamask, this is the
+ * @property {MetaMetricsReferrerObject} [referrer] - for starmask, this is the
  *  dapp that triggered an interaction
  */
 

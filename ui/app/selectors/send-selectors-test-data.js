@@ -1,7 +1,7 @@
 import { TRANSACTION_STATUSES } from '../../../shared/constants/transaction';
 
 const state = {
-  metamask: {
+  starmask: {
     isInitialized: true,
     isUnlocked: true,
     featureFlags: { sendHexData: true },

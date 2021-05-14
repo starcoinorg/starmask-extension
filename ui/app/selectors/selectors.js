@@ -24,19 +24,19 @@ import { TEMPLATED_CONFIRMATION_MESSAGE_TYPES } from '../pages/confirmation/temp
 
 /**
  * One of the only remaining valid uses of selecting the network subkey of the
- * metamask state tree is to determine if the network is currently 'loading'.
+ * starmask state tree is to determine if the network is currently 'loading'.
  *
  * This will be used for all cases where this state key is accessed only for that
  * purpose.
  * @param {Object} state - redux state object
  */
 export function isNetworkLoading(state) {
-  return state.metamask.network === 'loading';
+  return state.starmask.network === 'loading';
 }
 
 export function getNetworkIdentifier(state) {
   const {
-    metamask: {
+    starmask: {
       provider: { type, nickname, rpcUrl },
     },
   } = state;
@@ -45,12 +45,12 @@ export function getNetworkIdentifier(state) {
 }
 
 export function getMetricsNetworkIdentifier(state) {
-  const { provider } = state.metamask;
+  const { provider } = state.starmask;
   return provider.type === NETWORK_TYPE_RPC ? provider.rpcUrl : provider.type;
 }
 
 export function getCurrentChainId(state) {
-  const { chainId } = state.metamask.provider;
+  const { chainId } = state.starmask.provider;
   return chainId;
 }
 
@@ -63,7 +63,7 @@ export function getCurrentKeyring(state) {
 
   const simpleAddress = stripHexPrefix(identity.address).toLowerCase();
 
-  const keyring = state.metamask.keyrings.find((kr) => {
+  const keyring = state.starmask.keyrings.find((kr) => {
     return (
       kr.accounts.includes(simpleAddress) ||
       kr.accounts.includes(identity.address)
@@ -98,7 +98,7 @@ export function getAccountType(state) {
  * @param {Object} state - redux state object
  */
 export function deprecatedGetCurrentNetworkId(state) {
-  return state.metamask.network;
+  return state.starmask.network;
 }
 
 export const getMetaMaskAccounts = createSelector(
@@ -126,35 +126,35 @@ export const getMetaMaskAccounts = createSelector(
 );
 
 export function getSelectedAddress(state) {
-  return state.metamask.selectedAddress;
+  return state.starmask.selectedAddress;
 }
 
 export function getSelectedIdentity(state) {
   const selectedAddress = getSelectedAddress(state);
-  const { identities } = state.metamask;
+  const { identities } = state.starmask;
 
   return identities[selectedAddress];
 }
 
 export function getNumberOfAccounts(state) {
-  return Object.keys(state.metamask.accounts).length;
+  return Object.keys(state.starmask.accounts).length;
 }
 
 export function getNumberOfTokens(state) {
-  const { tokens } = state.metamask;
+  const { tokens } = state.starmask;
   return tokens ? tokens.length : 0;
 }
 
 export function getMetaMaskKeyrings(state) {
-  return state.metamask.keyrings;
+  return state.starmask.keyrings;
 }
 
 export function getMetaMaskIdentities(state) {
-  return state.metamask.identities;
+  return state.starmask.identities;
 }
 
 export function getMetaMaskAccountsRaw(state) {
-  return state.metamask.accounts;
+  return state.starmask.accounts;
 }
 
 export function getMetaMaskCachedBalances(state) {
@@ -165,8 +165,8 @@ export function getMetaMaskCachedBalances(state) {
   const network = deprecatedGetCurrentNetworkId(state);
 
   return (
-    state.metamask.cachedBalances[chainId] ??
-    state.metamask.cachedBalances[network]
+    state.starmask.cachedBalances[chainId] ??
+    state.starmask.cachedBalances[network]
   );
 }
 
@@ -192,7 +192,7 @@ export const getMetaMaskAccountsConnected = createSelector(
 
 export function isBalanceCached(state) {
   const selectedAccountBalance =
-    state.metamask.accounts[getSelectedAddress(state)].balance;
+    state.starmask.accounts[getSelectedAddress(state)].balance;
   const cachedBalance = getSelectedAccountCachedBalance(state);
 
   return Boolean(!selectedAccountBalance && cachedBalance);
@@ -218,19 +218,19 @@ export function getTargetAccount(state, targetAddress) {
 }
 
 export const getTokenExchangeRates = (state) =>
-  state.metamask.contractExchangeRates;
+  state.starmask.contractExchangeRates;
 
 export function getAssetImages(state) {
-  const assetImages = state.metamask.assetImages || {};
+  const assetImages = state.starmask.assetImages || {};
   return assetImages;
 }
 
 export function getAddressBook(state) {
   const chainId = getCurrentChainId(state);
-  if (!state.metamask.addressBook[chainId]) {
+  if (!state.starmask.addressBook[chainId]) {
     return [];
   }
-  return Object.values(state.metamask.addressBook[chainId]);
+  return Object.values(state.starmask.addressBook[chainId]);
 }
 
 export function getAddressBookEntry(state, address) {
@@ -243,7 +243,7 @@ export function getAddressBookEntry(state, address) {
 
 export function getAddressBookEntryName(state, address) {
   const entry =
-    getAddressBookEntry(state, address) || state.metamask.identities[address];
+    getAddressBookEntry(state, address) || state.starmask.identities[address];
   return entry && entry.name !== '' ? entry.name : shortenAddress(address);
 }
 
@@ -292,7 +292,7 @@ export function getGasIsLoading(state) {
 }
 
 export function getCurrentCurrency(state) {
-  return state.metamask.currentCurrency;
+  return state.starmask.currentCurrency;
 }
 
 export function getTotalUnapprovedCount(state) {
@@ -303,7 +303,7 @@ export function getTotalUnapprovedCount(state) {
     unapprovedEncryptionPublicKeyMsgCount = 0,
     unapprovedTypedMessagesCount = 0,
     pendingApprovalCount = 0,
-  } = state.metamask;
+  } = state.starmask;
 
   return (
     unapprovedMsgCount +
@@ -318,12 +318,12 @@ export function getTotalUnapprovedCount(state) {
 }
 
 function getUnapprovedTxCount(state) {
-  const { unapprovedTxs = {} } = state.metamask;
+  const { unapprovedTxs = {} } = state.starmask;
   return Object.keys(unapprovedTxs).length;
 }
 
 export function getUnapprovedConfirmations(state) {
-  const { pendingApprovals } = state.metamask;
+  const { pendingApprovals } = state.starmask;
   return Object.values(pendingApprovals);
 }
 
@@ -335,7 +335,7 @@ export function getUnapprovedTemplatedConfirmations(state) {
 }
 
 function getSuggestedTokenCount(state) {
-  const { suggestedTokens = {} } = state.metamask;
+  const { suggestedTokens = {} } = state.starmask;
   return Object.keys(suggestedTokens).length;
 }
 
@@ -349,8 +349,8 @@ export function getIsTestnet(state) {
   return TEST_CHAINS.includes(chainId);
 }
 
-export function getPreferences({ metamask }) {
-  return metamask.preferences;
+export function getPreferences({ starmask }) {
+  return starmask.preferences;
 }
 
 export function getShouldShowFiat(state) {
@@ -365,23 +365,23 @@ export function getShouldHideZeroBalanceTokens(state) {
 }
 
 export function getAdvancedInlineGasShown(state) {
-  return Boolean(state.metamask.featureFlags.advancedInlineGas);
+  return Boolean(state.starmask.featureFlags.advancedInlineGas);
 }
 
 export function getUseNonceField(state) {
-  return Boolean(state.metamask.useNonceField);
+  return Boolean(state.starmask.useNonceField);
 }
 
 export function getCustomNonceValue(state) {
-  return String(state.metamask.customNonceValue);
+  return String(state.starmask.customNonceValue);
 }
 
 export function getDomainMetadata(state) {
-  return state.metamask.domainMetadata;
+  return state.starmask.domainMetadata;
 }
 
 export function getRpcPrefsForCurrentProvider(state) {
-  const { frequentRpcListDetail, provider } = state.metamask;
+  const { frequentRpcListDetail, provider } = state.starmask;
   let selectRpcInfo = frequentRpcListDetail.find(
     (rpcInfo) => rpcInfo.rpcUrl === provider.rpcUrl,
   );
@@ -403,13 +403,13 @@ export function getKnownMethodData(state, data) {
   }
   const prefixedData = addHexPrefix(data);
   const fourBytePrefix = prefixedData.slice(0, 10);
-  const { knownMethodData } = state.metamask;
+  const { knownMethodData } = state.starmask;
 
   return knownMethodData && knownMethodData[fourBytePrefix];
 }
 
 export function getFeatureFlags(state) {
-  return state.metamask.featureFlags;
+  return state.starmask.featureFlags;
 }
 
 export function getOriginOfCurrentTab(state) {
@@ -417,15 +417,15 @@ export function getOriginOfCurrentTab(state) {
 }
 
 export function getIpfsGateway(state) {
-  return state.metamask.ipfsGateway;
+  return state.starmask.ipfsGateway;
 }
 
 export function getUSDConversionRate(state) {
-  return state.metamask.usdConversionRate;
+  return state.starmask.usdConversionRate;
 }
 
 export function getWeb3ShimUsageStateForOrigin(state, origin) {
-  return state.metamask.web3ShimUsageOrigins[origin];
+  return state.starmask.web3ShimUsageOrigins[origin];
 }
 
 /**

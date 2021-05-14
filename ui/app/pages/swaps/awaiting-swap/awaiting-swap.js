@@ -142,11 +142,11 @@ export default function AwaitingSwap({
       <a
         className="awaiting-swap__support-link"
         key="awaiting-swap-support-link"
-        href="https://support.metamask.io"
+        href="https://westar.io/about"
         target="_blank"
         rel="noopener noreferrer"
       >
-        support.metamask.io
+        notices@metamask.io
       </a>,
     ]);
     submitText = t('tryAgain');

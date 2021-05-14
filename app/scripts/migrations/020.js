@@ -1,7 +1,7 @@
 /*
 
 This migration ensures previous installations
-get a `firstTimeInfo` key on the metamask state,
+get a `firstTimeInfo` key on the starmask state,
 so that we can version notices in the future.
 
 */
@@ -29,9 +29,9 @@ export default {
 
 function transformState(state) {
   const newState = state;
-  if ('metamask' in newState && !('firstTimeInfo' in newState.metamask)) {
-    newState.metamask.firstTimeInfo = {
-      version: '3.12.0',
+  if ('starmask' in newState && !('firstTimeInfo' in newState.starmask)) {
+    newState.starmask.firstTimeInfo = {
+      version: '0.5.0',
       date: Date.now(),
     };
   }

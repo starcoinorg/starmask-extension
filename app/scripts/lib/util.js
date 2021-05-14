@@ -36,7 +36,7 @@ const getEnvironmentTypeMemo = memoize((url) => {
  *
  *  - `popup` refers to the extension opened through the browser app icon (in top right corner in chrome and firefox)
  *  - `fullscreen` refers to the main browser window
- *  - `notification` refers to the popup that appears in its own window when taking action outside of metamask
+ *  - `notification` refers to the popup that appears in its own window when taking action outside of starmask
  *  - `background` refers to the background page
  *
  * NOTE: This should only be called on internal URLs.

@@ -9,23 +9,23 @@ import {
 } from '.';
 
 export function getBlockGasLimit(state) {
-  return state.metamask.currentBlockGasLimit;
+  return state.starmask.currentBlockGasLimit;
 }
 
 export function getConversionRate(state) {
-  return state.metamask.conversionRate;
+  return state.starmask.conversionRate;
 }
 
 export function getNativeCurrency(state) {
-  return state.metamask.nativeCurrency;
+  return state.starmask.nativeCurrency;
 }
 
 export function getGasLimit(state) {
-  return state.metamask.send.gasLimit || '0';
+  return state.starmask.send.gasLimit || '0';
 }
 
 export function getGasPrice(state) {
-  return state.metamask.send.gasPrice || getAveragePriceEstimateInHexWEI(state);
+  return state.starmask.send.gasPrice || getAveragePriceEstimateInHexWEI(state);
 }
 
 export function getGasTotal(state) {
@@ -38,7 +38,7 @@ export function getPrimaryCurrency(state) {
 }
 
 export function getSendToken(state) {
-  return state.metamask.send.token;
+  return state.starmask.send.token;
 }
 
 export function getSendTokenAddress(state) {
@@ -53,19 +53,19 @@ export function getSendTokenContract(state) {
 }
 
 export function getSendAmount(state) {
-  return state.metamask.send.amount;
+  return state.starmask.send.amount;
 }
 
 export function getSendHexData(state) {
-  return state.metamask.send.data;
+  return state.starmask.send.data;
 }
 
 export function getSendHexDataFeatureFlagState(state) {
-  return state.metamask.featureFlags.sendHexData;
+  return state.starmask.featureFlags.sendHexData;
 }
 
 export function getSendEditingTransactionId(state) {
-  return state.metamask.send.editingTransactionId;
+  return state.starmask.send.editingTransactionId;
 }
 
 export function getSendErrors(state) {
@@ -77,7 +77,7 @@ export function sendAmountIsInError(state) {
 }
 
 export function getSendFrom(state) {
-  return state.metamask.send.from;
+  return state.starmask.send.from;
 }
 
 export function getSendFromBalance(state) {
@@ -93,15 +93,15 @@ export function getSendFromObject(state) {
 }
 
 export function getSendMaxModeState(state) {
-  return state.metamask.send.maxModeOn;
+  return state.starmask.send.maxModeOn;
 }
 
 export function getSendTo(state) {
-  return state.metamask.send.to;
+  return state.starmask.send.to;
 }
 
 export function getSendToNickname(state) {
-  return state.metamask.send.toNickname;
+  return state.starmask.send.toNickname;
 }
 
 export function getSendToAccounts(state) {
@@ -110,19 +110,19 @@ export function getSendToAccounts(state) {
   return [...fromAccounts, ...addressBookAccounts];
 }
 export function getTokenBalance(state) {
-  return state.metamask.send.tokenBalance;
+  return state.starmask.send.tokenBalance;
 }
 
 export function getSendEnsResolution(state) {
-  return state.metamask.send.ensResolution;
+  return state.starmask.send.ensResolution;
 }
 
 export function getSendEnsResolutionError(state) {
-  return state.metamask.send.ensResolutionError;
+  return state.starmask.send.ensResolutionError;
 }
 
 export function getUnapprovedTxs(state) {
-  return state.metamask.unapprovedTxs;
+  return state.starmask.unapprovedTxs;
 }
 
 export function getQrCodeData(state) {

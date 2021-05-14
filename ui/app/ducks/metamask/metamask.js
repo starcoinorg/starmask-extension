@@ -106,7 +106,7 @@ export default function reduceMetamask(state = {}, action) {
         tokens: action.newTokens,
       };
 
-    // metamask.send
+    // starmask.send
     case actionConstants.UPDATE_GAS_LIMIT:
       return {
         ...metamaskState,
@@ -371,9 +371,9 @@ export default function reduceMetamask(state = {}, action) {
   }
 }
 
-export const getCurrentLocale = (state) => state.metamask.currentLocale;
+export const getCurrentLocale = (state) => state.starmask.currentLocale;
 
-export const getAlertEnabledness = (state) => state.metamask.alertEnabledness;
+export const getAlertEnabledness = (state) => state.starmask.alertEnabledness;
 
 export const getUnconnectedAccountAlertEnabledness = (state) =>
   getAlertEnabledness(state)[ALERT_TYPES.unconnectedAccount];
@@ -382,6 +382,6 @@ export const getWeb3ShimUsageAlertEnabledness = (state) =>
   getAlertEnabledness(state)[ALERT_TYPES.web3ShimUsage];
 
 export const getUnconnectedAccountAlertShown = (state) =>
-  state.metamask.unconnectedAccountAlertShownOrigins;
+  state.starmask.unconnectedAccountAlertShownOrigins;
 
-export const getTokens = (state) => state.metamask.tokens;
+export const getTokens = (state) => state.starmask.tokens;

@@ -18,7 +18,7 @@ import AdvancedTab from './advanced-tab.component';
 export const mapStateToProps = (state) => {
   const {
     appState: { warning },
-    metamask,
+    starmask,
   } = state;
   const {
     featureFlags: { sendHexData, advancedInlineGas } = {},
@@ -26,7 +26,7 @@ export const mapStateToProps = (state) => {
     threeBoxDisabled,
     useNonceField,
     ipfsGateway,
-  } = metamask;
+  } = starmask;
   const { showFiatInTestnets, autoLockTimeLimit } = getPreferences(state);
 
   return {

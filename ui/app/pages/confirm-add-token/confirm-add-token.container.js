@@ -6,7 +6,7 @@ import ConfirmAddToken from './confirm-add-token.component';
 
 const mapStateToProps = (state) => {
   const {
-    metamask: { pendingTokens },
+    starmask: { pendingTokens },
   } = state;
   return {
     mostRecentOverviewPage: getMostRecentOverviewPage(state),

@@ -14,7 +14,7 @@ export default combineReducers({
   [ALERT_TYPES.invalidCustomNetwork]: invalidCustomNetwork,
   [ALERT_TYPES.unconnectedAccount]: unconnectedAccount,
   activeTab: (s) => (s === undefined ? null : s),
-  metamask: metamaskReducer,
+  starmask: metamaskReducer,
   appState: appStateReducer,
   history: historyReducer,
   send: sendReducer,

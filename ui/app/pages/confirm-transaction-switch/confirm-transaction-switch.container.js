@@ -4,7 +4,7 @@ import ConfirmTransactionSwitch from './confirm-transaction-switch.component';
 
 const mapStateToProps = (state, ownProps) => {
   const {
-    metamask: { unapprovedTxs },
+    starmask: { unapprovedTxs },
   } = state;
   const {
     match: { params = {}, url },
