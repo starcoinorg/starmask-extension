@@ -62,6 +62,7 @@
     "48": "images/icon-48.png",
     "64": "images/icon-64.png",
     "128": "images/icon-128.png",
+    "162": "images/icon-162.png",
     "512": "images/icon-512.png"
   },
   "manifest_version": 2,
@@ -72,7 +73,7 @@
     "webRequest"
   ],
   "short_name": "__MSG_appName__",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "web_accessible_resources": [
     "inpage.js",
     "phishing.html"
