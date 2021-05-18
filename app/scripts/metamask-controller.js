@@ -12,8 +12,8 @@ import KeyringController from '@starcoin/stc-keyring-controller';
 import { Mutex } from 'await-semaphore';
 import * as ethUtil from '@starcoin/stc-util';
 import log from 'loglevel';
-import TrezorKeyring from 'eth-trezor-keyring';
-import LedgerBridgeKeyring from '@metamask/eth-ledger-bridge-keyring';
+// import TrezorKeyring from 'eth-trezor-keyring';
+// import LedgerBridgeKeyring from '@metamask/eth-ledger-bridge-keyring';
 import EthQuery from '@starcoin/stc-query';
 import nanoid from 'nanoid';
 import contractMap from '@metamask/contract-metadata';
@@ -235,7 +235,8 @@ export default class MetamaskController extends EventEmitter {
       preferencesController: this.preferencesController,
     });
 
-    const additionalKeyrings = [TrezorKeyring, LedgerBridgeKeyring];
+    // const additionalKeyrings = [TrezorKeyring, LedgerBridgeKeyring];
+    const additionalKeyrings = [];
     this.keyringController = new KeyringController({
       keyringTypes: additionalKeyrings,
       initState: initState.KeyringController,
