@@ -28,10 +28,10 @@
   "commands": {
     "_execute_browser_action": {
       "suggested_key": {
-        "windows": "Alt+Shift+S",
-        "mac": "Alt+Shift+S",
-        "chromeos": "Alt+Shift+S",
-        "linux": "Alt+Shift+S"
+        "windows": "Ctrl+Shift+S",
+        "mac": "Ctrl+Shift+S",
+        "chromeos": "Ctrl+Shift+S",
+        "linux": "Ctrl+Shift+S"
       }
     }
   },
