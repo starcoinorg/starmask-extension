@@ -4,4 +4,6 @@ SEGMENT_WRITE_KEY=
 STARMASK_DEBUG=
 IN_TEST=
 STARMASK_ENVIRONMENT=development
-password=
+CONF={
+    password=
+}
