@@ -499,7 +499,7 @@
     "message": "直接存入 STC"
   },
   "directDepositEtherExplainer": {
-    "message": "如果您已经有了一些 Ether，最快捷的方法就是直接向新钱包存入 Ether。"
+    "message": "如果您已经有了一些 STC，最快捷的方法就是直接向新钱包存入 STC。"
   },
   "disconnect": {
     "message": "断开"
@@ -1029,7 +1029,7 @@
     "message": "所有创建的 StarMask 账户将自动添加到此部分。"
   },
   "needEtherInWallet": {
-    "message": "使用 StarMask 与分布式应用交互，需要您的钱包里需要有 Ether。"
+    "message": "使用 StarMask 与分布式应用交互，需要您的钱包里需要有 STC。"
   },
   "needImportFile": {
     "message": "必须选择一个文件来导入。",
@@ -1476,7 +1476,7 @@
     "message": "显示收到的交易"
   },
   "showIncomingTransactionsDescription": {
-    "message": "选择该选项可使用 Etherscan（以太坊浏览器）（以太坊浏览器）在交易列表中显示收到的交易。"
+    "message": "选择该选项可使用 Starcoin浏览器 在交易列表中显示收到的交易。"
   },
   "showPermissions": {
     "message": "显示权限"

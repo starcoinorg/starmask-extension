@@ -1570,7 +1570,7 @@
     "message": "Show Incoming Transactions"
   },
   "showIncomingTransactionsDescription": {
-    "message": "Select this to use Etherscan to show incoming transactions in the transactions list"
+    "message": "Select this to use Starcoin Explorer to show incoming transactions in the transactions list"
   },
   "showPermissions": {
     "message": "Show permissions"
@@ -1936,7 +1936,7 @@
   },
   "swapTokenVerificationMessage": {
     "message": "Always confirm the token address on $1.",
-    "description": "Points the user to Etherscan as a place they can verify information about a token. $1 is replaced with the translation for \"Etherscan\" followed by an info icon that shows more info on hover."
+    "description": "Points the user to Starcoin Explorer as a place they can verify information about a token. $1 is replaced with the translation for \"Starcoin Explorer\" followed by an info icon that shows more info on hover."
   },
   "swapTokenVerificationNoSource": {
     "message": "This token has not been verified."
