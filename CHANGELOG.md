@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.6.0 2021-05-19
+- fix: created account address length should be 32
+
 ## 0.5.1 2021-05-14
 - fix conflict with metamask-extension in the chrome browser
 
