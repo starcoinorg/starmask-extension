@@ -537,16 +537,16 @@
     "message": "Are you sure you want to delete this network?"
   },
   "depositEther": {
-    "message": "Deposit Ether"
+    "message": "Deposit STC"
   },
   "details": {
     "message": "Details"
   },
   "directDepositEther": {
-    "message": "Directly Deposit Ether"
+    "message": "Directly Deposit STC"
   },
   "directDepositEtherExplainer": {
-    "message": "If you already have some Ether, the quickest way to get Ether in your new wallet by direct deposit."
+    "message": "If you already have some STC, the quickest way to get STC in your new wallet by direct deposit."
   },
   "disconnect": {
     "message": "Disconnect"
@@ -808,11 +808,11 @@
     "message": "Currency conversion, primary currency, language, blockies identicon"
   },
   "getEther": {
-    "message": "Get Ether"
+    "message": "Get STC"
   },
   "getEtherFromFaucet": {
-    "message": "Get Ether from a faucet for the $1",
-    "description": "Displays network name for Ether faucet"
+    "message": "Get STC from a faucet for the $1",
+    "description": "Displays network name for STC faucet"
   },
   "getHelp": {
     "message": "Get Help."
@@ -1105,7 +1105,7 @@
     "message": "All of your StarMask created accounts will automatically be added to this section."
   },
   "needEtherInWallet": {
-    "message": "To interact with decentralized applications using StarMask, you’ll need Ether in your wallet."
+    "message": "To interact with decentralized applications using StarMask, you’ll need STC in your wallet."
   },
   "needImportFile": {
     "message": "You must select a file to import.",
@@ -1473,7 +1473,7 @@
     "message": "Your secret backup phrase makes it easy to back up and restore your account."
   },
   "secretBackupPhraseWarning": {
-    "message": "WARNING: Never disclose your backup phrase. Anyone with this phrase can take your Ether forever."
+    "message": "WARNING: Never disclose your backup phrase. Anyone with this phrase can take your STC forever."
   },
   "secretPhrase": {
     "message": "Enter your secret phrase here to restore your vault."

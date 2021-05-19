@@ -490,13 +490,13 @@
     "message": "是否确认要删除该网络？"
   },
   "depositEther": {
-    "message": "存入 Ether"
+    "message": "存入 STC"
   },
   "details": {
     "message": "详情"
   },
   "directDepositEther": {
-    "message": "直接存入 Ether"
+    "message": "直接存入 STC"
   },
   "directDepositEtherExplainer": {
     "message": "如果您已经有了一些 Ether，最快捷的方法就是直接向新钱包存入 Ether。"
@@ -747,11 +747,11 @@
     "message": "货币转换、主要价格单位、语言和 Blockies Identicon 图标头像"
   },
   "getEther": {
-    "message": "获取 Ether"
+    "message": "获取 STC"
   },
   "getEtherFromFaucet": {
-    "message": "从水管获取 $1 网络的 Ether",
-    "description": "Displays network name for Ether faucet"
+    "message": "从水管获取 $1 网络的 STC",
+    "description": "Displays network name for STC faucet"
   },
   "getHelp": {
     "message": "获取帮助。"
@@ -1382,7 +1382,7 @@
     "message": "您的账户助记词可以帮助您轻松备份和恢复个人账户。"
   },
   "secretBackupPhraseWarning": {
-    "message": "警告：切勿向他人透露您的账户助记词。任何人一旦持有该账户助记词，即可控制您的 Ether。"
+    "message": "警告：切勿向他人透露您的账户助记词。任何人一旦持有该账户助记词，即可控制您的 STC。"
   },
   "secretPhrase": {
     "message": "输入 12 个单词组成的账户助记词恢复您的账户."
