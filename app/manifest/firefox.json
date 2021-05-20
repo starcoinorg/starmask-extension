@@ -1,0 +1,8 @@
+{
+  "applications": {
+    "gecko": {
+      "id": "webextension@westar.io",
+      "strict_min_version": "68.0"
+    }
+  }
+}

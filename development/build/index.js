@@ -27,7 +27,7 @@ require('@babel/preset-env');
 require('@babel/preset-react');
 require('@babel/core');
 
-const browserPlatforms = ['chrome'];
+const browserPlatforms = ['chrome', 'firefox'];
 
 defineAllTasks();
 detectAndRunEntryTask();
