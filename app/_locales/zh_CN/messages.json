@@ -475,7 +475,7 @@
     "message": "解密请求"
   },
   "defaultNetwork": {
-    "message": "默认STC交易网络为Barnard。"
+    "message": "默认STC交易网络为Main。"
   },
   "delete": {
     "message": "删除"
@@ -1150,7 +1150,7 @@
     "description": "Return the user to the site that initiated onboarding"
   },
   "onlyAvailableOnMainnet": {
-    "message": "仅在主网（mainnet）上提供"
+    "message": "仅在主网（main）上提供"
   },
   "onlyConnectTrust": {
     "message": "只连接您信任的网站。"
@@ -1262,6 +1262,9 @@
   },
   "recipientAddressPlaceholder": {
     "message": "查找、公用地址 (0x) 或 ENS"
+  },
+  "receiptIdentifier": {
+    "message": "收款识别码"
   },
   "reject": {
     "message": "拒绝"

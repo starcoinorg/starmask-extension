@@ -394,7 +394,7 @@
     "message": "Connecting to Kovan Test Network"
   },
   "connectingToMainnet": {
-    "message": "Connecting to Starcoin Mainnet"
+    "message": "Connecting to Starcoin Main"
   },
   "connectingToPrxima": {
     "message": "Connecting to Prxima Test Network"
@@ -522,7 +522,7 @@
     "message": "Decrypt request"
   },
   "defaultNetwork": {
-    "message": "The default network for STC transactions is Barnard."
+    "message": "The default network for STC transactions is Main."
   },
   "delete": {
     "message": "Delete"
@@ -639,7 +639,7 @@
     "description": "$1 is the return value of chain.id from an RPC endpoint"
   },
   "ensNotFoundOnCurrentNetwork": {
-    "message": "ENS name not found on the current network. Try switching to Starcoin Mainnet."
+    "message": "ENS name not found on the current network. Try switching to Starcoin Main."
   },
   "ensRegistrationError": {
     "message": "Error in ENS name registration"
@@ -1018,7 +1018,7 @@
     "message": "Lock time is too great"
   },
   "main": {
-    "message": "Starcoin Mainnet"
+    "message": "Starcoin Main"
   },
   "max": {
     "message": "Max"
@@ -1353,6 +1353,9 @@
   },
   "recipientAddressPlaceholder": {
     "message": "Search, public address (0x), or ENS"
+  },
+  "receiptIdentifier": {
+    "message": "ReceiptIdentifier"
   },
   "reject": {
     "message": "Reject"
