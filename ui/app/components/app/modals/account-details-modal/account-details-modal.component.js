@@ -5,6 +5,8 @@ import getAccountLink from '../../../../../lib/account-link';
 import QrView from '../../../ui/qr-code';
 import EditableLabel from '../../../ui/editable-label';
 import Button from '../../../ui/button';
+import ReadOnlyInput from '../../../ui/readonly-input/readonly-input';
+import console from 'console';
 
 export default class AccountDetailsModal extends Component {
   static propTypes = {
@@ -29,7 +31,7 @@ export default class AccountDetailsModal extends Component {
       keyrings,
       rpcPrefs,
     } = this.props;
-    const { name, address } = selectedIdentity;
+    const { name, address, receiptIdentifier } = selectedIdentity;
 
     const keyring = keyrings.find((kr) => {
       return kr.accounts.includes(address);
@@ -39,6 +41,12 @@ export default class AccountDetailsModal extends Component {
     // This feature is disabled for hardware wallets
     if (keyring?.type?.search('Hardware') !== -1) {
       exportPrivateKeyFeatureEnabled = false;
+    }
+
+    let showReceiptIdentifier = false;
+    // This feature is enabled for HD Key Tree wallets
+    if (keyring?.type?.search('HD Key Tree') !== -1) {
+      showReceiptIdentifier = true;
     }
 
     return (
@@ -56,6 +64,19 @@ export default class AccountDetailsModal extends Component {
         />
 
         <div className="account-details-modal__divider" />
+        {showReceiptIdentifier ? (
+          <>
+            <div className="editable-label__value">
+              {this.context.t('receiptIdentifier')}
+            </div>
+
+            <ReadOnlyInput
+              wrapperClass="ellip-address-wrapper"
+              value={receiptIdentifier}
+            />
+          </>
+        ) : null}
+
 
         <Button
           type="secondary"
@@ -68,8 +89,8 @@ export default class AccountDetailsModal extends Component {
         >
           {rpcPrefs.blockExplorerUrl
             ? this.context.t('blockExplorerView', [
-                rpcPrefs.blockExplorerUrl.match(/^https?:\/\/(.+)/u)[1],
-              ])
+              rpcPrefs.blockExplorerUrl.match(/^https?:\/\/(.+)/u)[1],
+            ])
             : this.context.t('viewOnEtherscan')}
         </Button>
 

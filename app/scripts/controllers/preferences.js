@@ -216,6 +216,28 @@ export default class PreferencesController {
   }
 
   /**
+   * add receiptIdentifier in identities
+   *
+   * @param [{string: string}] receiptIdentifiers - An array of  { addresses: receiptIdentifier } object
+   *
+   */
+  setReceiptIdentifiers(receiptIdentifiers) {
+    const oldIdentities = this.store.getState().identities;
+    const identities = receiptIdentifiers.reduce(
+      (ids, { address, receiptIdentifier }) => {
+        const oldId = oldIdentities[address] || {};
+        ids[address] = {
+          receiptIdentifier,
+          ...oldId,
+        };
+        return ids;
+      },
+      {},
+    );
+    this.store.updateState({ identities });
+  }
+
+  /**
    * Removes an address from state
    *
    * @param {string} address - A hex address

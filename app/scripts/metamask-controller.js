@@ -980,6 +980,16 @@ export default class MetamaskController extends EventEmitter {
         );
         const addresses = await this.keyringController.getAccounts();
         this.preferencesController.setAddresses(addresses);
+
+        const primaryKeyring = this.keyringController.getKeyringsByType(
+          'HD Key Tree',
+        )[0];
+        if (!primaryKeyring) {
+          throw new Error('MetamaskController - No HD Key Tree found');
+        }
+        const receiptIdentifiers = await primaryKeyring.getReceiptIdentifiers();
+        this.preferencesController.setReceiptIdentifiers(receiptIdentifiers);
+
         this.selectFirstIdentity();
       }
       return vault;
@@ -1377,6 +1387,10 @@ export default class MetamaskController extends EventEmitter {
     await this.verifySeedPhrase();
 
     this.preferencesController.setAddresses(newAccounts);
+
+    const receiptIdentifier = await primaryKeyring.getReceiptIdentifiers();
+    this.preferencesController.setReceiptIdentifiers(receiptIdentifier);
+
     newAccounts.forEach((address) => {
       if (!oldAccounts.includes(address)) {
         this.preferencesController.setSelectedAddress(address);
