@@ -20,6 +20,7 @@ export default class SendFooter extends Component {
     sign: PropTypes.func,
     to: PropTypes.string,
     toAccounts: PropTypes.array,
+    toReceiptIdentifier: PropTypes.string,
     tokenBalance: PropTypes.string,
     unapprovedTxs: PropTypes.object,
     update: PropTypes.func,
@@ -53,6 +54,7 @@ export default class SendFooter extends Component {
       sendToken,
       sign,
       to,
+      toReceiptIdentifier,
       unapprovedTxs,
       // updateTx,
       update,
@@ -73,17 +75,17 @@ export default class SendFooter extends Component {
     await addToAddressBookIfNew(to, toAccounts);
     const promise = editingTransactionId
       ? update({
-          amount,
-          data,
-          editingTransactionId,
-          from,
-          gas,
-          gasPrice,
-          sendToken,
-          to,
-          unapprovedTxs,
-        })
-      : sign({ data, sendToken, to, amount, from, gas, gasPrice });
+        amount,
+        data,
+        editingTransactionId,
+        from,
+        gas,
+        gasPrice,
+        sendToken,
+        to,
+        unapprovedTxs,
+      })
+      : sign({ data, sendToken, to, toReceiptIdentifier, amount, from, gas, gasPrice });
 
     Promise.resolve(promise).then(() => {
       metricsEvent({

@@ -600,7 +600,7 @@ export default class TransactionController extends EventEmitter {
     const fromAddress = txParams.from;
     const rawUserTransaction = utils.tx.generateRawUserTransaction(
       fromAddress,
-      txParams.to,
+      txParams.toReceiptIdentifier ? txParams.toReceiptIdentifier : txParams.to,
       sendAmount,
       maxGasAmount,
       senderSequenceNumber,

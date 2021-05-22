@@ -7,6 +7,7 @@ export function constructTxParams({
   sendToken,
   data,
   to,
+  toReceiptIdentifier,
   amount,
   from,
   gas,
@@ -25,7 +26,14 @@ export function constructTxParams({
     txParams.to = to;
   }
 
-  return addHexPrefixToObjectValues(txParams);
+  const txParamsFinal = addHexPrefixToObjectValues(txParams);
+
+  if (!sendToken && toReceiptIdentifier) {
+    // receiptIdentifier start with 'stc', should not adding '0x' as prefix.
+    txParamsFinal.toReceiptIdentifier = toReceiptIdentifier;
+  }
+
+  return txParamsFinal;
 }
 
 export function constructUpdatedTx({

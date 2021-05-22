@@ -104,6 +104,12 @@ export function getSendToNickname(state) {
   return state.starmask.send.toNickname;
 }
 
+export function getSendToReceiptIdentifier(state) {
+  const identify = state.starmask.identities[state.starmask.send.to];
+  const receiptIdentifier = identify && identify.receiptIdentifier || '';
+  return receiptIdentifier;
+}
+
 export function getSendToAccounts(state) {
   const fromAccounts = accountsWithSendEtherInfoSelector(state);
   const addressBookAccounts = getAddressBook(state);

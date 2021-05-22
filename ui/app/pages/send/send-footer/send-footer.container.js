@@ -16,6 +16,7 @@ import {
   getSendFromObject,
   getSendTo,
   getSendToAccounts,
+  getSendToReceiptIdentifier,
   getSendHexData,
   getTokenBalance,
   getUnapprovedTxs,
@@ -61,6 +62,7 @@ function mapStateToProps(state) {
     sendToken: getSendToken(state),
     to: getSendTo(state),
     toAccounts: getSendToAccounts(state),
+    toReceiptIdentifier: getSendToReceiptIdentifier(state),
     tokenBalance: getTokenBalance(state),
     unapprovedTxs: getUnapprovedTxs(state),
     sendErrors: getSendErrors(state),
@@ -73,7 +75,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     clearSend: () => dispatch(clearSend()),
-    sign: async ({ sendToken, to, amount, from, gas, gasPrice, data }) => {
+    sign: async ({ sendToken, to, toReceiptIdentifier, amount, from, gas, gasPrice, data }) => {
+      console.log('sign', { sendToken, to, toReceiptIdentifier, amount, from, gas, gasPrice, data });
       const txParams = constructTxParams({
         amount,
         data,
@@ -82,6 +85,7 @@ function mapDispatchToProps(dispatch) {
         gasPrice,
         sendToken,
         to,
+        toReceiptIdentifier,
       });
 
       sendToken

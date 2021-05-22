@@ -7,6 +7,7 @@ const normalizers = {
   from: (from) => addHexPrefix(from),
   to: (to, lowerCase) =>
     lowerCase ? addHexPrefix(to).toLowerCase() : addHexPrefix(to),
+  toReceiptIdentifier: (value) => value,
   nonce: (nonce) => addHexPrefix(nonce),
   value: (value) => addHexPrefix(value),
   data: (data) => addHexPrefix(data),
