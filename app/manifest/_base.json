@@ -74,7 +74,7 @@
     "webRequest"
   ],
   "short_name": "__MSG_appName__",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "web_accessible_resources": [
     "inpage.js",
     "phishing.html"
