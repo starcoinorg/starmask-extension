@@ -1940,6 +1940,7 @@ export default class MetamaskController extends EventEmitter {
             sender: estimateGasParams.from,
             sender_public_key: publicKey,
             sequence_number: estimateGasParams.sequenceNumber,
+            max_gas_amount: 10000000,
             script: {
               code: '0x1::TransferScripts::peer_to_peer',
               type_args: ['0x1::STC::STC'],
