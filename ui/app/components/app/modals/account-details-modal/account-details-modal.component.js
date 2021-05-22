@@ -6,7 +6,6 @@ import QrView from '../../../ui/qr-code';
 import EditableLabel from '../../../ui/editable-label';
 import Button from '../../../ui/button';
 import ReadOnlyInput from '../../../ui/readonly-input/readonly-input';
-import console from 'console';
 
 export default class AccountDetailsModal extends Component {
   static propTypes = {

@@ -11,6 +11,7 @@ import providerAsMiddleware from 'eth-json-rpc-middleware/providerAsMiddleware';
 import KeyringController from '@starcoin/stc-keyring-controller';
 import { Mutex } from 'await-semaphore';
 import * as ethUtil from '@starcoin/stc-util';
+import { encoding } from '@starcoin/starcoin';
 import log from 'loglevel';
 // import TrezorKeyring from 'eth-trezor-keyring';
 // import LedgerBridgeKeyring from '@metamask/eth-ledger-bridge-keyring';
@@ -1923,6 +1924,14 @@ export default class MetamaskController extends EventEmitter {
       // network = 0xfe for `Localhost 9850`
       // network = { name: XXX, id: XXX_NETWORK_ID } for others
       const chainId = network.id ? network.id : Number(hexToDecimal(network));
+
+      let toAuthKey = '';
+      const identities = this.getState().identities;
+      const receiptIdentifier = estimateGasParams.to ? identities[estimateGasParams.to].receiptIdentifier : '';
+      if (receiptIdentifier) {
+        const decodedReciptIdentifier = encoding.decodeReceiptIdentifier(receiptIdentifier);
+        toAuthKey = decodedReciptIdentifier.authKey;
+      }
       return this.keyringController.getEncryptionPublicKey(estimateGasParams.from)
         .then((publicKey) => {
           const params = {
@@ -1934,7 +1943,7 @@ export default class MetamaskController extends EventEmitter {
             script: {
               code: '0x1::TransferScripts::peer_to_peer',
               type_args: ['0x1::STC::STC'],
-              args: [estimateGasParams.to, 'x""', `${hexToDecimal(estimateGasParams.gas)}u128`]
+              args: [estimateGasParams.to, `x"${toAuthKey}"`, `${hexToDecimal(estimateGasParams.gas)}u128`]
             },
           };
           if (!estimateGasParams.to) {
