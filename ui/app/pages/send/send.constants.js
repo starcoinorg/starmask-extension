@@ -37,11 +37,13 @@ const REQUIRED_ERROR = 'required';
 const KNOWN_RECIPIENT_ADDRESS_ERROR = 'knownAddressRecipient';
 const CONTRACT_ADDRESS_ERROR = 'contractAddressError';
 const CONFUSING_ENS_ERROR = 'confusingEnsDomain';
+const ACCOUNT_NOT_EXISTS = 'accountNotExists';
 
 const SIMPLE_GAS_COST = '0x1e51f'; // Hex for 124191, cost of a simple send.
 const BASE_TOKEN_GAS_COST = '0x186a0'; // Hex for 100000, a base estimate for token transfers.
 
 export {
+  ACCOUNT_NOT_EXISTS,
   INSUFFICIENT_FUNDS_ERROR,
   INSUFFICIENT_TOKENS_ERROR,
   INVALID_RECIPIENT_ADDRESS_ERROR,

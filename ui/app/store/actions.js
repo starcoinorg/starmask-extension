@@ -673,6 +673,7 @@ export function updateGasData({
   selectedAddress,
   sendToken,
   to,
+  toReceiptIdentifier,
   value,
   data,
 }) {
@@ -684,6 +685,7 @@ export function updateGasData({
       selectedAddress,
       sendToken,
       to,
+      toReceiptIdentifier,
       value,
       estimateGasPrice: gasPrice,
       data,

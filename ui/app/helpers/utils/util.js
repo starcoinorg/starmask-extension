@@ -90,8 +90,8 @@ export function addressSummary(
   }
   return checked
     ? `${checked.slice(0, firstSegLength)}...${checked.slice(
-        checked.length - lastSegLength,
-      )}`
+      checked.length - lastSegLength,
+    )}`
     : '...';
 }
 
@@ -104,6 +104,23 @@ export function isValidAddress(address) {
     (isAllOneCase(prefixed.slice(2)) && ethUtil.isValidAddress(prefixed)) ||
     ethUtil.isValidChecksumAddress(prefixed)
   );
+}
+
+/**
+ * Checks if the value is a valid receiptIdentifier, more in SIP#22.
+ */
+export function isValidReceiptIdentifier(value) {
+  // prefix is `stc`
+  // totalLength=37: address only
+  // totalLength=88: address + authKey
+  return /^stc[0-9a-z]{34,85}$/i.test(value);
+}
+
+export function isValidReceipt(receipt) {
+  if (receipt.startsWith('stc')) {
+    return isValidReceiptIdentifier(receipt);
+  }
+  return isValidAddress(receipt);
 }
 
 export function isValidDomainName(address) {

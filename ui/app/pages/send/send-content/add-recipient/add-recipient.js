@@ -8,10 +8,11 @@ import {
   INVALID_RECIPIENT_ADDRESS_NOT_ETH_NETWORK_ERROR,
   CONFUSING_ENS_ERROR,
   CONTRACT_ADDRESS_ERROR,
+  ACCOUNT_NOT_EXISTS,
 } from '../../send.constants';
 
 import {
-  isValidAddress,
+  isValidReceipt,
   checkExistingAddresses,
   isValidDomainName,
   isOriginContractAddress,
@@ -22,13 +23,19 @@ export function getToErrorObject(to, sendTokenAddress, chainId) {
   let toError = null;
   if (!to) {
     toError = REQUIRED_ERROR;
-  } else if (!isValidAddress(to)) {
+  } else if (!isValidReceipt(to)) {
     toError = isDefaultMetaMaskChain(chainId)
       ? INVALID_RECIPIENT_ADDRESS_ERROR
       : INVALID_RECIPIENT_ADDRESS_NOT_ETH_NETWORK_ERROR;
   } else if (isOriginContractAddress(to, sendTokenAddress)) {
     toError = CONTRACT_ADDRESS_ERROR;
   }
+
+  // TODO: check account exists on current network
+  // const isExistsOnCurrentNetwork = false;
+  // if (!isExistsOnCurrentNetwork) {
+  //   toError = ACCOUNT_NOT_EXISTS;
+  // }
 
   return { to: toError };
 }

@@ -28,6 +28,9 @@
   "accountName": {
     "message": "账户名称"
   },
+  "accountNotExists": {
+    "message": "帐户地址在当前网络上不存在，请提供帐户收款码。"
+  },
   "accountOptions": {
     "message": "账户选项"
   },

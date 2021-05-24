@@ -28,6 +28,9 @@
   "accountName": {
     "message": "Account Name"
   },
+  "accountNotExists": {
+    "message": "Account Address is not exists on the current network, please provide the Account ReceiptIdentifier."
+  },
   "accountOptions": {
     "message": "Account Options"
   },

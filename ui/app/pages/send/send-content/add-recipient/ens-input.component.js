@@ -11,6 +11,7 @@ import { ellipsify } from '../../send.utils';
 import {
   isValidDomainName,
   isValidAddress,
+  isValidReceipt,
   // isValidAddressHead,
 } from '../../../../helpers/utils/util';
 import { MAINNET_NETWORK_ID } from '../../../../../../shared/constants/network';
@@ -143,7 +144,7 @@ export default class EnsInput extends Component {
 
   onPaste = (event) => {
     event.clipboardData.items[0].getAsString((text) => {
-      if (isValidAddress(text)) {
+      if (isValidReceipt(text)) {
         this.props.onPaste(text);
       }
     });

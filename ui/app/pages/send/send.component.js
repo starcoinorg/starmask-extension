@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ethUtil from 'ethereumjs-util';
 import { debounce } from 'lodash';
 import {
   getAmountErrorObject,
@@ -43,6 +42,7 @@ export default class SendTransactionScreen extends Component {
     sendToken: PropTypes.object,
     showHexData: PropTypes.bool,
     to: PropTypes.string,
+    toReceiptIdentifier: PropTypes.string,
     toNickname: PropTypes.string,
     tokens: PropTypes.array,
     tokenBalance: PropTypes.string,
@@ -135,12 +135,12 @@ export default class SendTransactionScreen extends Component {
       });
       const gasFeeErrorObject = sendToken
         ? getGasFeeErrorObject({
-            balance,
-            conversionRate,
-            gasTotal,
-            primaryCurrency,
-            sendToken,
-          })
+          balance,
+          conversionRate,
+          gasTotal,
+          primaryCurrency,
+          sendToken,
+        })
         : { gasFee: null };
       updateSendErrors(Object.assign(amountErrorObject, gasFeeErrorObject));
     }
@@ -167,25 +167,25 @@ export default class SendTransactionScreen extends Component {
       updateGas = true;
     }
 
-    let scannedAddress;
-    if (qrCodeData) {
-      if (qrCodeData.type === 'address') {
-        scannedAddress = qrCodeData.values.address.toLowerCase();
-        if (ethUtil.isValidAddress(scannedAddress)) {
-          const currentAddress = prevTo?.toLowerCase();
-          if (currentAddress !== scannedAddress) {
-            updateSendTo(scannedAddress);
-            updateGas = true;
-            // Clean up QR code data after handling
-            qrCodeDetected(null);
-          }
-        } else {
-          scannedAddress = null;
-          qrCodeDetected(null);
-          this.setState({ toError: INVALID_RECIPIENT_ADDRESS_ERROR });
-        }
-      }
-    }
+    // let scannedAddress;
+    // if (qrCodeData) {
+    //   if (qrCodeData.type === 'address') {
+    //     scannedAddress = qrCodeData.values.address.toLowerCase();
+    //     if (ethUtil.isValidAddress(scannedAddress)) {
+    //       const currentAddress = prevTo?.toLowerCase();
+    //       if (currentAddress !== scannedAddress) {
+    //         updateSendTo(scannedAddress);
+    //         updateGas = true;
+    //         // Clean up QR code data after handling
+    //         qrCodeDetected(null);
+    //       }
+    //     } else {
+    //       scannedAddress = null;
+    //       qrCodeDetected(null);
+    //       this.setState({ toError: INVALID_RECIPIENT_ADDRESS_ERROR });
+    //     }
+    //   }
+    // }
 
     if (updateGas) {
       if (scannedAddress) {
@@ -270,7 +270,6 @@ export default class SendTransactionScreen extends Component {
 
     const toErrorObject = getToErrorObject(query, sendTokenAddress, chainId);
     const toWarningObject = getToWarningObject(query, tokens, sendToken);
-
     this.setState({
       toError: toErrorObject.to,
       toWarning: toWarningObject.to,
@@ -302,6 +301,7 @@ export default class SendTransactionScreen extends Component {
       selectedAddress,
       sendToken,
       to: currentToAddress,
+      toReceiptIdentifier,
       updateAndSetGasLimit,
     } = this.props;
 
@@ -313,6 +313,7 @@ export default class SendTransactionScreen extends Component {
       selectedAddress,
       sendToken,
       to: getToAddressForGasUpdate(updatedToAddress, currentToAddress),
+      toReceiptIdentifier,
       value: value || amount,
       data,
     });
@@ -321,7 +322,6 @@ export default class SendTransactionScreen extends Component {
   render() {
     const { history, to } = this.props;
     let content;
-
     if (to) {
       content = this.renderSendContent();
     } else {

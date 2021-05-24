@@ -196,12 +196,13 @@ async function estimateGasForSend({
   sendToken,
   blockGasLimit = MIN_GAS_LIMIT_HEX,
   to,
+  toReceiptIdentifier,
   value,
   data,
   gasPrice,
   estimateGasMethod,
 }) {
-  const paramsForGasEstimate = { from: selectedAddress, to, value, gasPrice };
+  const paramsForGasEstimate = { from: selectedAddress, to, toReceiptIdentifier, value, gasPrice };
 
   // if recipient has no code, gas is 21k max:
   if (!sendToken && !data) {

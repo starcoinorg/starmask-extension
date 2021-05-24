@@ -26,6 +26,8 @@ import {
 } from '@metamask/controllers';
 import { TRANSACTION_STATUSES } from '../../shared/constants/transaction';
 import { MAINNET_CHAIN_ID } from '../../shared/constants/network';
+import { hexToDecimal } from '../../ui/app/helpers/utils/conversions.util';
+import { isValidReceiptIdentifier } from '../../ui/app/helpers/utils/util';
 import ComposableObservableStore from './lib/ComposableObservableStore';
 import AccountTracker from './lib/account-tracker';
 import createLoggerMiddleware from './lib/createLoggerMiddleware';
@@ -61,7 +63,6 @@ import seedPhraseVerifier from './lib/seed-phrase-verifier';
 import MetaMetricsController from './controllers/metametrics';
 import { segment, segmentLegacy } from './lib/segment';
 import createMetaRPCHandler from './lib/createMetaRPCHandler';
-import { hexToDecimal } from '../../ui/app/helpers/utils/conversions.util';
 
 export const METAMASK_CONTROLLER_EVENTS = {
   // Fired after state changes that impact the extension badge (unapproved msg count)
@@ -1926,8 +1927,13 @@ export default class MetamaskController extends EventEmitter {
       const chainId = network.id ? network.id : Number(hexToDecimal(network));
 
       let toAuthKey = '';
+      let receiptIdentifier;
       const identities = this.getState().identities;
-      const receiptIdentifier = estimateGasParams.to ? identities[estimateGasParams.to].receiptIdentifier : '';
+      if (estimateGasParams.toReceiptIdentifier && isValidReceiptIdentifier(estimateGasParams.toReceiptIdentifier)) {
+        receiptIdentifier = estimateGasParams.toReceiptIdentifier;
+      } else if (estimateGasParams.to) {
+        receiptIdentifier = identities[estimateGasParams.to].receiptIdentifier;
+      }
       if (receiptIdentifier) {
         const decodedReciptIdentifier = encoding.decodeReceiptIdentifier(receiptIdentifier);
         toAuthKey = decodedReciptIdentifier.authKey;

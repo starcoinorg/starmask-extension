@@ -105,9 +105,13 @@ export function getSendToNickname(state) {
 }
 
 export function getSendToReceiptIdentifier(state) {
+  return state.starmask.send.toReceiptIdentifier;
+}
+
+export function getSendToReceiptIdentifierFromIdentities(state) {
   const identify = state.starmask.identities[state.starmask.send.to];
-  const receiptIdentifier = identify && identify.receiptIdentifier || '';
-  return receiptIdentifier;
+  const receiptIdentifier = identify && identify.receiptIdentifier || undefined;
+  return receiptIdentifier || state.starmask.send.toReceiptIdentifier || '';
 }
 
 export function getSendToAccounts(state) {

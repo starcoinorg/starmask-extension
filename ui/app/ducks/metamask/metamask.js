@@ -1,6 +1,9 @@
+import { encoding } from '@starcoin/starcoin';
+import { addHexPrefix } from '../../../../app/scripts/lib/util';
 import * as actionConstants from '../../store/actionConstants';
 import { ALERT_TYPES } from '../../../../shared/constants/alerts';
 import { NETWORK_TYPE_RPC } from '../../../../shared/constants/network';
+import { isValidReceiptIdentifier } from '../../helpers/utils/util';
 
 export default function reduceMetamask(state = {}, action) {
   const metamaskState = {
@@ -22,6 +25,7 @@ export default function reduceMetamask(state = {}, action) {
       tokenBalance: '0x0',
       from: '',
       to: '',
+      toReceiptIdentifier: null,
       amount: '0',
       memo: '',
       errors: {},
@@ -163,11 +167,19 @@ export default function reduceMetamask(state = {}, action) {
       };
 
     case actionConstants.UPDATE_SEND_TO:
+      let to = action.value.to;
+      let toReceiptIdentifier = null;
+      if (isValidReceiptIdentifier(to)) {
+        const receiptIdentifier = encoding.decodeReceiptIdentifier(to);
+        to = addHexPrefix(receiptIdentifier.accountAddress);
+        toReceiptIdentifier = action.value.to;
+      }
       return {
         ...metamaskState,
         send: {
           ...metamaskState.send,
-          to: action.value.to,
+          to,
+          toReceiptIdentifier,
           toNickname: action.value.nickname,
         },
       };
@@ -259,6 +271,7 @@ export default function reduceMetamask(state = {}, action) {
           tokenBalance: null,
           from: '',
           to: '',
+          toReceiptIdentifier: null,
           amount: '0x0',
           memo: '',
           errors: {},
