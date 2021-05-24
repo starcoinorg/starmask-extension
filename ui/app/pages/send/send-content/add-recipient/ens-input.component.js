@@ -11,7 +11,7 @@ import { ellipsify } from '../../send.utils';
 import {
   isValidDomainName,
   isValidAddress,
-  isValidAddressHead,
+  // isValidAddressHead,
 } from '../../../../helpers/utils/util';
 import { MAINNET_NETWORK_ID } from '../../../../../../shared/constants/network';
 
@@ -151,7 +151,7 @@ export default class EnsInput extends Component {
 
   onChange = (e) => {
     const {
-      network,
+      // network,
       onChange,
       updateEnsResolution,
       updateEnsResolutionError,
@@ -159,7 +159,7 @@ export default class EnsInput extends Component {
       internalSearch,
     } = this.props;
     const input = e.target.value;
-    const networkHasEnsSupport = getNetworkEnsSupport(network);
+    // const networkHasEnsSupport = getNetworkEnsSupport(network);
 
     this.setState({ input }, () => onChange(input));
     if (internalSearch) {
@@ -168,17 +168,17 @@ export default class EnsInput extends Component {
     // Empty ENS state if input is empty
     // maybe scan ENS
 
-    if (
-      !networkHasEnsSupport &&
-      !isValidAddress(input) &&
-      !isValidAddressHead(input)
-    ) {
-      updateEnsResolution('');
-      updateEnsResolutionError(
-        networkHasEnsSupport ? '' : 'Network does not support ENS',
-      );
-      return null;
-    }
+    // if (
+    //   !networkHasEnsSupport &&
+    //   !isValidAddress(input) &&
+    //   !isValidAddressHead(input)
+    // ) {
+    //   updateEnsResolution('');
+    //   updateEnsResolutionError(
+    //     networkHasEnsSupport ? '' : 'Network does not support ENS',
+    //   );
+    //   return null;
+    // }
 
     if (isValidDomainName(input)) {
       this.lookupEnsName(input);
@@ -223,13 +223,14 @@ export default class EnsInput extends Component {
           <button
             className={classnames('ens-input__wrapper__action-icon', {
               'ens-input__wrapper__action-icon--erase': input,
-              'ens-input__wrapper__action-icon--qrcode': !input,
+              // 'ens-input__wrapper__action-icon--qrcode': !input,
+              '': !input,
             })}
             onClick={() => {
               if (input) {
                 this.resetInput();
-              } else {
-                this.props.scanQrCode();
+                // } else {
+                // this.props.scanQrCode();
               }
             }}
           />
