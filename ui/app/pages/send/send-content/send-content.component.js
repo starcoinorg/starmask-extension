@@ -34,7 +34,7 @@ export default class SendContent extends Component {
         <div className="send-v2__form">
           {gasIsExcessive && this.renderError(true)}
           {warning && this.renderWarning()}
-          {this.maybeRenderAddContact()}
+          {/* {this.maybeRenderAddContact()} */}
           <SendAssetRow />
           <SendAmountRow updateGas={this.updateGas} />
           <SendGasRow />
