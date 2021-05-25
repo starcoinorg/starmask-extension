@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { debounce } from 'lodash';
 import {
+  isValidReceipt,
+} from '../../helpers/utils/util';
+import {
   getAmountErrorObject,
   getGasFeeErrorObject,
   getToAddressForGasUpdate,
@@ -71,6 +74,7 @@ export default class SendTransactionScreen extends Component {
     toError: null,
     toWarning: null,
     internalSearch: false,
+    validating: false,
   };
 
   constructor(props) {
@@ -112,7 +116,6 @@ export default class SendTransactionScreen extends Component {
     } = prevProps;
 
     const uninitialized = [prevBalance, prevGasTotal].every((n) => n === null);
-
     const amountErrorRequiresUpdate = doesAmountErrorRequireUpdate({
       balance,
       gasTotal,
@@ -122,7 +125,6 @@ export default class SendTransactionScreen extends Component {
       sendToken,
       tokenBalance,
     });
-
     if (amountErrorRequiresUpdate) {
       const amountErrorObject = getAmountErrorObject({
         amount,
@@ -251,7 +253,7 @@ export default class SendTransactionScreen extends Component {
       }
     }
 
-    this.setState({ query });
+    this.setState({ query, validating: true });
   };
 
   setInternalSearch(internalSearch) {
@@ -264,15 +266,19 @@ export default class SendTransactionScreen extends Component {
     const { internalSearch } = this.state;
 
     if (!query || internalSearch) {
-      this.setState({ toError: '', toWarning: '' });
+      this.setState({ toError: '', toWarning: '', validating: false });
       return;
     }
 
     const toErrorObject = getToErrorObject(query, sendTokenAddress, chainId);
     const toWarningObject = getToWarningObject(query, tokens, sendToken);
-    this.setState({
-      toError: toErrorObject.to,
-      toWarning: toWarningObject.to,
+    const self = this;
+    Promise.resolve(toErrorObject).then((object) => {
+      self.setState({
+        toError: object.to,
+        toWarning: toWarningObject.to,
+        validating: false,
+      });
     });
   }
 
@@ -321,11 +327,14 @@ export default class SendTransactionScreen extends Component {
 
   render() {
     const { history, to } = this.props;
-    let content;
-    if (to) {
-      content = this.renderSendContent();
-    } else {
-      content = this.renderAddRecipient();
+    const { validating, toError } = this.state;
+    let content = null;
+    if (!validating) {
+      if (to && !toError) {
+        content = this.renderSendContent();
+      } else {
+        content = this.renderAddRecipient();
+      }
     }
 
     return (
@@ -338,7 +347,7 @@ export default class SendTransactionScreen extends Component {
   }
 
   renderInput() {
-    const { internalSearch } = this.state;
+    const { internalSearch, validating, toError } = this.state;
     return (
       <EnsInput
         className="send__to-row"
@@ -355,18 +364,23 @@ export default class SendTransactionScreen extends Component {
         onChange={this.onRecipientInputChange}
         onValidAddressTyped={(address) => this.props.updateSendTo(address, '')}
         onPaste={(text) => {
-          this.props.updateSendTo(text) && this.updateGas();
+          if (isValidReceipt(text)) {
+            // TODO: should check address existing first
+            this.props.updateSendTo(text) && this.updateGas();
+          }
         }}
         onReset={() => this.props.updateSendTo('', '')}
         updateEnsResolution={this.props.updateSendEnsResolution}
         updateEnsResolutionError={this.props.updateSendEnsResolutionError}
         internalSearch={internalSearch}
+        validating={validating}
+        toError={toError}
       />
     );
   }
 
   renderAddRecipient() {
-    const { toError, toWarning } = this.state;
+    const { toError, toWarning, validating } = this.state;
     return (
       <AddRecipient
         updateGas={({ to, amount, data } = {}) =>
@@ -375,6 +389,7 @@ export default class SendTransactionScreen extends Component {
         query={this.state.query}
         toError={toError}
         toWarning={toWarning}
+        validating={validating}
         setInternalSearch={(internalSearch) =>
           this.setInternalSearch(internalSearch)
         }

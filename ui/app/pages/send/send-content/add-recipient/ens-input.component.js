@@ -40,6 +40,8 @@ export default class EnsInput extends Component {
     contact: PropTypes.object,
     value: PropTypes.string,
     internalSearch: PropTypes.bool,
+    validating: PropTypes.bool,
+    onError: PropTypes.string,
   };
 
   state = {

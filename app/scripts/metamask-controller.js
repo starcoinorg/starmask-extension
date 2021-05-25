@@ -1927,11 +1927,11 @@ export default class MetamaskController extends EventEmitter {
       const chainId = network.id ? network.id : Number(hexToDecimal(network));
 
       let toAuthKey = '';
-      let receiptIdentifier;
+      let receiptIdentifier = null;
       const identities = this.getState().identities;
       if (estimateGasParams.toReceiptIdentifier && isValidReceiptIdentifier(estimateGasParams.toReceiptIdentifier)) {
         receiptIdentifier = estimateGasParams.toReceiptIdentifier;
-      } else if (estimateGasParams.to) {
+      } else if (estimateGasParams.to && identities[estimateGasParams.to]) {
         receiptIdentifier = identities[estimateGasParams.to].receiptIdentifier;
       }
       if (receiptIdentifier) {

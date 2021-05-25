@@ -8,8 +8,8 @@ import {
 } from '../../../../selectors';
 import EnsInput from './ens-input.component';
 
-export default connect((state) => {
-  const selectedAddress = getSendTo(state);
+export default connect((state, ownProps) => {
+  const selectedAddress = !ownProps.validating && !ownProps.toError ? getSendTo(state) : null;
   const chainId = getCurrentChainId(state);
   return {
     network: CHAIN_ID_TO_NETWORK_ID_MAP[chainId],

@@ -27,11 +27,12 @@ export default class SendContent extends Component {
 
   render() {
     const { warning, error, gasIsExcessive } = this.props;
-    return (
+    return error ? (
+      this.renderError()
+    ) : (
       <PageContainerContent>
         <div className="send-v2__form">
           {gasIsExcessive && this.renderError(true)}
-          {error && this.renderError()}
           {warning && this.renderWarning()}
           {this.maybeRenderAddContact()}
           <SendAssetRow />

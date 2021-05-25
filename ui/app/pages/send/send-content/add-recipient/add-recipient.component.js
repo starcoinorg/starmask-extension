@@ -20,6 +20,7 @@ export default class AddRecipient extends Component {
     ensResolution: PropTypes.string,
     toError: PropTypes.string,
     toWarning: PropTypes.string,
+    validating: PropTypes.bool,
     ensResolutionError: PropTypes.string,
     addressBookEntryName: PropTypes.string,
     contacts: PropTypes.array,
@@ -96,12 +97,12 @@ export default class AddRecipient extends Component {
   };
 
   render() {
-    const { ensResolution, query, addressBookEntryName } = this.props;
+    const { ensResolution, query, addressBookEntryName, validating, toError } = this.props;
     const { isShowingTransfer } = this.state;
 
     let content;
 
-    if (isValidAddress(query)) {
+    if (!validating && !toError && isValidAddress(query)) {
       content = this.renderExplicitAddress(query);
     } else if (ensResolution) {
       content = this.renderExplicitAddress(
