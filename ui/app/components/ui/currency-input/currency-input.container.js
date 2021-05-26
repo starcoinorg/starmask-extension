@@ -14,7 +14,8 @@ const mapStateToProps = (state) => {
     nativeCurrency,
     currentCurrency,
     conversionRate,
-    hideFiat: !isMainnet && !showFiatInTestnets,
+    // hideFiat: !isMainnet && !showFiatInTestnets,
+    hideFiat: true,
   };
 };
 

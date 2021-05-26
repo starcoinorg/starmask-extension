@@ -17,7 +17,8 @@ const mapStateToProps = (state) => {
   return {
     currentCurrency,
     tokenExchangeRates: getTokenExchangeRates(state),
-    hideConversion: !isMainnet && !showFiatInTestnets,
+    // hideConversion: !isMainnet && !showFiatInTestnets,
+    hideConversion: true,
   };
 };
 

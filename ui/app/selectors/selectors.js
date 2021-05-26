@@ -354,9 +354,10 @@ export function getPreferences({ starmask }) {
 }
 
 export function getShouldShowFiat(state) {
-  const isMainNet = getIsMainnet(state);
-  const { showFiatInTestnets } = getPreferences(state);
-  return Boolean(isMainNet || showFiatInTestnets);
+  // const isMainNet = getIsMainnet(state);
+  // const { showFiatInTestnets } = getPreferences(state);
+  // return Boolean(isMainNet || showFiatInTestnets);
+  return false;
 }
 
 export function getShouldHideZeroBalanceTokens(state) {

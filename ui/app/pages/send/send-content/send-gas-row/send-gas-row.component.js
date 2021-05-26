@@ -37,7 +37,8 @@ export default class SendGasRow extends Component {
     const { metricsEvent } = this.context;
     const { showCustomizeGasModal, isMainnet } = this.props;
     // Tests should behave in same way as mainnet, but are using Localhost
-    if (!isMainnet && !process.env.IN_TEST) {
+    // if (!isMainnet && !process.env.IN_TEST) {
+    if (!process.env.IN_TEST) {
       return null;
     }
     return (
@@ -148,7 +149,8 @@ export default class SendGasRow extends Component {
       </div>
     );
     // Tests should behave in same way as mainnet, but are using Localhost
-    if (advancedInlineGasShown || (!isMainnet && !process.env.IN_TEST)) {
+    // if (advancedInlineGasShown || (!isMainnet && !process.env.IN_TEST)) {
+    if (advancedInlineGasShown || !process.env.IN_TEST) {
       return advancedGasInputs;
     } else if (gasButtonGroupShown) {
       return gasPriceButtonGroup;
