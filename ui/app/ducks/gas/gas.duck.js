@@ -105,16 +105,17 @@ async function basicGasPriceQuery() {
 
 export function fetchBasicGasEstimates() {
   return async (dispatch, getState) => {
-    const isMainnet = getIsMainnet(getState());
+    // const isMainnet = getIsMainnet(getState());
 
     dispatch(basicGasEstimatesLoadingStarted());
 
-    let basicEstimates;
-    if (isMainnet || process.env.IN_TEST) {
-      basicEstimates = await fetchExternalBasicGasEstimates();
-    } else {
-      basicEstimates = await fetchEthGasPriceEstimates(getState());
-    }
+    // let basicEstimates;
+    // if (isMainnet || process.env.IN_TEST) {
+    //   basicEstimates = await fetchExternalBasicGasEstimates();
+    // } else {
+    //   basicEstimates = await fetchEthGasPriceEstimates(getState());
+    // }
+    const basicEstimates = await fetchEthGasPriceEstimates(getState());
     dispatch(setBasicGasEstimateData(basicEstimates));
     dispatch(basicGasEstimatesLoadingFinished());
 
