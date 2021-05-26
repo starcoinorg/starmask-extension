@@ -1059,6 +1059,11 @@ export default class MetamaskController extends EventEmitter {
 
       // set new identities
       this.preferencesController.setAddresses(accounts);
+
+      // add receiptIdentifiers in identifies
+      const receiptIdentifiers = await primaryKeyring.getReceiptIdentifiers();
+      this.preferencesController.setReceiptIdentifiers(receiptIdentifiers);
+
       this.selectFirstIdentity();
       return vault;
     } finally {
