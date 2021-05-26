@@ -39,7 +39,7 @@ class ErrorPage extends PureComponent {
         target="_blank"
         key="metamaskSupportLink"
         rel="noopener noreferrer"
-        href="https://metamask.zendesk.com/hc/en-us/requests/new"
+        href="https://starcoin.org/contact.html"
       >
         <span className="error-page__link-text">{this.context.t('here')}</span>
       </a>
