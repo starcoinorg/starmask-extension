@@ -42,11 +42,7 @@ export default class AccountDetailsModal extends Component {
       exportPrivateKeyFeatureEnabled = false;
     }
 
-    let showReceiptIdentifier = false;
-    // This feature is enabled for HD Key Tree wallets
-    if (keyring?.type?.search('HD Key Tree') !== -1) {
-      showReceiptIdentifier = true;
-    }
+    const showReceiptIdentifier = true;
 
     return (
       <AccountModalContainer className="account-details-modal">

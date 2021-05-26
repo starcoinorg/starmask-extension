@@ -29,7 +29,7 @@
     "message": "账户名称"
   },
   "accountNotExists": {
-    "message": "帐户地址在当前网络上不存在，请提供帐户收款识别码。"
+    "message": "帐户地址在当前网络上不存在，请提供帐户 收款识别码(stc1p)。"
   },
   "accountOptions": {
     "message": "账户选项"

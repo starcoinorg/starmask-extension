@@ -1492,6 +1492,10 @@ export default class MetamaskController extends EventEmitter {
     // update accounts in preferences controller
     const allAccounts = await this.keyringController.getAccounts();
     this.preferencesController.setAddresses(allAccounts);
+    // add receiptIdentifier in identities
+    const receiptIdentifiers = await keyring.getReceiptIdentifiers();
+    this.preferencesController.setReceiptIdentifiers(receiptIdentifiers);
+
     // set new account as selected
     await this.preferencesController.setSelectedAddress(accounts[0]);
   }

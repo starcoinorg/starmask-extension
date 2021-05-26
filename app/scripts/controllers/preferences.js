@@ -234,7 +234,8 @@ export default class PreferencesController {
       },
       {},
     );
-    this.store.updateState({ identities });
+
+    this.store.updateState({ identities: { ...oldIdentities, ...identities } });
   }
 
   /**
