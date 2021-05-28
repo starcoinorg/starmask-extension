@@ -14,9 +14,6 @@ import {
 } from '../../selectors';
 
 import {
-  restoreFromThreeBox,
-  turnThreeBoxSyncingOn,
-  getThreeBoxLastUpdated,
   setShowRestorePromptToFalse,
   setConnectedStatusPopoverHasBeenShown,
   setDefaultHomeActiveTabName,
@@ -24,7 +21,6 @@ import {
   setWeb3ShimUsageAlertDismissed,
   setAlertEnabledness,
 } from '../../store/actions';
-import { setThreeBoxLastUpdated } from '../../ducks/app/app';
 import { getWeb3ShimUsageAlertEnabledness } from '../../ducks/metamask/metamask';
 import {
   getSwapsWelcomeMessageSeenStatus,
@@ -47,7 +43,6 @@ const mapStateToProps = (state) => {
     suggestedTokens,
     seedPhraseBackedUp,
     tokens,
-    threeBoxSynced,
     showRestorePrompt,
     selectedAddress,
     connectedStatusPopoverHasBeenShown,
@@ -55,7 +50,7 @@ const mapStateToProps = (state) => {
     swapsState,
   } = starmask;
   const accountBalance = getCurrentEthBalance(state);
-  const { forgottenPassword, threeBoxLastUpdated } = appState;
+  const { forgottenPassword } = appState;
   const totalUnapprovedCount = getTotalUnapprovedCount(state);
   const swapsEnabled = getSwapsFeatureLiveness(state);
   const pendingConfirmations = getUnapprovedTemplatedConfirmations(state);
@@ -76,7 +71,7 @@ const mapStateToProps = (state) => {
     getWeb3ShimUsageAlertEnabledness(state) &&
     activeTabHasPermissions(state) &&
     getWeb3ShimUsageStateForOrigin(state, originOfCurrentTab) ===
-      WEB3_SHIM_USAGE_ALERT_STATES.RECORDED;
+    WEB3_SHIM_USAGE_ALERT_STATES.RECORDED;
 
   return {
     forgottenPassword,
@@ -88,10 +83,8 @@ const mapStateToProps = (state) => {
       (parseInt(accountBalance, 16) > 0 || tokens.length > 0),
     isPopup,
     isNotification,
-    threeBoxSynced,
     showRestorePrompt,
     selectedAddress,
-    threeBoxLastUpdated,
     firstPermissionsRequestId,
     totalUnapprovedCount,
     connectedStatusPopoverHasBeenShown,
@@ -108,18 +101,6 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  turnThreeBoxSyncingOn: () => dispatch(turnThreeBoxSyncingOn()),
-  setupThreeBox: () => {
-    dispatch(getThreeBoxLastUpdated()).then((lastUpdated) => {
-      if (lastUpdated) {
-        dispatch(setThreeBoxLastUpdated(lastUpdated));
-      } else {
-        dispatch(setShowRestorePromptToFalse());
-        dispatch(turnThreeBoxSyncingOn());
-      }
-    });
-  },
-  restoreFromThreeBox: (address) => dispatch(restoreFromThreeBox(address)),
   setShowRestorePromptToFalse: () => dispatch(setShowRestorePromptToFalse()),
   setConnectedStatusPopoverHasBeenShown: () =>
     dispatch(setConnectedStatusPopoverHasBeenShown()),

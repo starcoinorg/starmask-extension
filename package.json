@@ -25,16 +25,11 @@
     "**/redux/symbol-observable": "^2.0.3",
     "**/redux-devtools-instrument/symbol-observable": "^2.0.3",
     "**/rxjs/symbol-observable": "^2.0.3",
-    "3box/ipfs/ipld-zcash/zcash-bitcore-lib/lodash": "^4.17.19",
-    "3box/ipfs/ipld-zcash/zcash-bitcore-lib/elliptic": "^6.5.4",
-    "3box/**/libp2p-crypto/node-forge": "^0.10.0",
-    "3box/**/libp2p-keychain/node-forge": "^0.10.0",
     "analytics-node/axios": "^0.21.1",
     "netmask": "^2.0.1",
     "pull-ws": "^3.3.2"
   },
   "dependencies": {
-    "3box": "^1.10.2",
     "@babel/runtime": "^7.5.5",
     "@download/blockies": "^1.0.3",
     "@formatjs/intl-relativetimeformat": "^5.2.6",
