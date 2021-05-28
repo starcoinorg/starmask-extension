@@ -86,7 +86,7 @@ export default function ConfirmTokenTransactionBase({
       primaryTotalTextOverride={
         <div>
           <span>{`${tokensText} + `}</span>
-          <img src="/images/stc.svg" height="18" alt="" />
+          <img src="/images/stc_logo.svg" height="18" alt="" />
           <span>{ethTransactionTotal}</span>
         </div>
       }
