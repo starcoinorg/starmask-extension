@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.1 2021-05-31
+- change loading gif
+
 ## 1.1.0 2021-05-26
 - show the receiptIdentifier in the details popup page for the imported account
 - send STC to the imported account in another network using its receiptIdentifier
