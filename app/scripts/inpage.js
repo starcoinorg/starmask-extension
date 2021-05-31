@@ -13,7 +13,7 @@ const cleanContextForImports = () => {
   try {
     global.define = undefined;
   } catch (_) {
-    console.warn('MetaMask - global.define could not be deleted.');
+    console.warn('StarMask - global.define could not be deleted.');
   }
 };
 
@@ -24,7 +24,7 @@ const restoreContextAfterImports = () => {
   try {
     global.define = __define;
   } catch (_) {
-    console.warn('MetaMask - global.define could not be overwritten.');
+    console.warn('StarMask - global.define could not be overwritten.');
   }
 };
 
@@ -44,14 +44,15 @@ log.setDefaultLevel(process.env.STARMASK_DEBUG ? 'debug' : 'warn');
 //
 
 // setup background connection
-const metamaskStream = new LocalMessageDuplexStream({
+const starmaskStream = new LocalMessageDuplexStream({
   name: 'starmask-inpage',
   target: 'starmask-contentscript',
 });
 
 initializeProvider({
-  connectionStream: metamaskStream,
+  connectionStream: starmaskStream,
   jsonRpcStreamName: 'starmask-provider',
   logger: log,
   shouldShimWeb3: true,
+  shouldSendMetadata: false,
 });
