@@ -567,7 +567,7 @@ export default class MetamaskController extends EventEmitter {
     const { network } = memState || this.getState();
     return {
       chainId: this.networkController.getCurrentChainId(),
-      networkVersion: network,
+      networkVersion: network.name,
     };
   }
 
