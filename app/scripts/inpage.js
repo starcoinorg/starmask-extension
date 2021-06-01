@@ -33,7 +33,7 @@ cleanContextForImports();
 /* eslint-disable import/first */
 import log from 'loglevel';
 import LocalMessageDuplexStream from 'post-message-stream';
-import { initializeProvider } from '@starcoin/stc-inpage-providers';
+import { initializeProvider } from '@starcoin/stc-inpage-provider';
 
 restoreContextAfterImports();
 
@@ -53,6 +53,5 @@ initializeProvider({
   connectionStream: starmaskStream,
   jsonRpcStreamName: 'starmask-provider',
   logger: log,
-  shouldShimWeb3: true,
   shouldSendMetadata: false,
 });
