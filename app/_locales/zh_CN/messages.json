@@ -639,9 +639,9 @@
   "estimatedProcessingTimes": {
     "message": "预计处理时间"
   },
-  "eth_accounts": {
+  "stc_accounts": {
     "message": "查看您允许的账户的地址（必填）",
-    "description": "The description for the `eth_accounts` permission"
+    "description": "The description for the `stc_accounts` permission"
   },
   "ethereumPublicAddress": {
     "message": "以太坊 Starcoin 公开地址"

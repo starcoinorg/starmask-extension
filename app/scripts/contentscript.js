@@ -46,7 +46,7 @@ function injectScript(content) {
     container.insertBefore(scriptTag, container.children[0]);
     container.removeChild(scriptTag);
   } catch (error) {
-    console.error('MetaMask: Provider injection failed.', error);
+    console.error('StarMask: Provider injection failed.', error);
   }
 }
 
@@ -131,7 +131,7 @@ function forwardTrafficBetweenMuxes(channelName, muxA, muxB) {
   const channelB = muxB.createStream(channelName);
   pump(channelA, channelB, channelA, (error) =>
     console.debug(
-      `MetaMask: Muxed traffic for channel "${channelName}" failed.`,
+      `StarMask: Muxed traffic for channel "${channelName}" failed.`,
       error,
     ),
   );
@@ -148,7 +148,7 @@ function forwardNamedTrafficBetweenMuxes(
   const channelB = muxB.createStream(channelBName);
   pump(channelA, channelB, channelA, (error) =>
     console.debug(
-      `MetaMask: Muxed traffic between channels "${channelAName}" and "${channelBName}" failed.`,
+      `StarMask: Muxed traffic between channels "${channelAName}" and "${channelBName}" failed.`,
       error,
     ),
   );
@@ -176,7 +176,7 @@ function getNotificationTransformStream() {
  */
 function logStreamDisconnectWarning(remoteLabel, error) {
   console.debug(
-    `MetaMask: Content script lost connection to "${remoteLabel}".`,
+    `StarMask: Content script lost connection to "${remoteLabel}".`,
     error,
   );
 }
@@ -300,7 +300,7 @@ function blockedDomainCheck() {
  * Redirects the current page to a phishing information page
  */
 function redirectToPhishingWarning() {
-  console.debug('MetaMask: Routing to Phishing Warning component.');
+  console.debug('StarMask: Routing to Phishing Warning component.');
   const extensionURL = extension.runtime.getURL('phishing.html');
   window.location.href = `${extensionURL}#${querystring.stringify({
     hostname: window.location.hostname,

@@ -694,9 +694,9 @@
   "estimatedProcessingTimes": {
     "message": "Estimated Processing Times"
   },
-  "eth_accounts": {
+  "stc_accounts": {
     "message": "View the addresses of your permitted accounts (required)",
-    "description": "The description for the `eth_accounts` permission"
+    "description": "The description for the `stc_accounts` permission"
   },
   "ethereumPublicAddress": {
     "message": "Starcoin Public Address"

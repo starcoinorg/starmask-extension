@@ -3,7 +3,7 @@ export default function getRestrictedMethods({
   getKeyringAccounts,
 }) {
   return {
-    eth_accounts: {
+    stc_accounts: {
       method: async (_, res, __, end) => {
         try {
           const accounts = await getKeyringAccounts();

@@ -18,23 +18,23 @@ export default function createPermissionsMethodMiddleware({
     let responseHandler;
 
     switch (req.method) {
-      // Intercepting eth_accounts requests for backwards compatibility:
+      // Intercepting stc_accounts requests for backwards compatibility:
       // The getAccounts call below wraps the rpc-cap middleware, and returns
       // an empty array in case of errors (such as 4100:unauthorized)
-      case 'eth_accounts': {
+      case 'stc_accounts': {
         res.result = await getAccounts();
         return;
       }
 
-      case 'eth_requestAccounts': {
+      case 'stc_requestAccounts': {
         if (isProcessingRequestAccounts) {
           res.error = ethErrors.rpc.resourceUnavailable(
-            'Already processing eth_requestAccounts. Please wait.',
+            'Already processing stc_requestAccounts. Please wait.',
           );
           return;
         }
 
-        if (hasPermission('eth_accounts')) {
+        if (hasPermission('stc_accounts')) {
           isProcessingRequestAccounts = true;
           await getUnlockPromise();
           isProcessingRequestAccounts = false;
@@ -83,11 +83,11 @@ export default function createPermissionsMethodMiddleware({
 
       // register return handler to send accountsChanged notification
       case 'wallet_requestPermissions': {
-        if ('eth_accounts' in req.params?.[0]) {
+        if ('stc_accounts' in req.params?.[0]) {
           responseHandler = async () => {
             if (Array.isArray(res.result)) {
               for (const permission of res.result) {
-                if (permission.parentCapability === 'eth_accounts') {
+                if (permission.parentCapability === 'stc_accounts') {
                   notifyAccountsChanged(await getAccounts());
                 }
               }

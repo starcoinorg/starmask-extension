@@ -29,7 +29,7 @@ export function getPermissionDomainsMetadata(state) {
 }
 
 /**
- * Selects the permitted accounts from the eth_accounts permission given state
+ * Selects the permitted accounts from the stc_accounts permission given state
  * and an origin.
  *
  * @param {Object} state - The current state.
@@ -43,7 +43,7 @@ export function getPermittedAccounts(state, origin) {
 }
 
 /**
- * Selects the permitted accounts from the eth_accounts permission for the
+ * Selects the permitted accounts from the stc_accounts permission for the
  * origin of the current tab.
  *
  * @param {Object} state - The current state.
@@ -151,7 +151,7 @@ function getAccountsFromDomain(domain) {
 function getAccountsPermissionFromDomain(domain = {}) {
   return Array.isArray(domain.permissions)
     ? domain.permissions.find(
-      (perm) => perm.parentCapability === 'eth_accounts',
+      (perm) => perm.parentCapability === 'stc_accounts',
     )
     : {};
 }
@@ -208,7 +208,7 @@ export function getOrderedConnectedAccountsForActiveTab(state) {
 
   const permissionsHistoryByAccount =
     // eslint-disable-next-line camelcase
-    permissionsHistory[activeTab.origin]?.eth_accounts?.accounts;
+    permissionsHistory[activeTab.origin]?.stc_accounts?.accounts;
   const orderedAccounts = getMetaMaskAccountsOrdered(state);
   const connectedAccounts = getPermittedAccountsForCurrentTab(state);
 
@@ -255,7 +255,7 @@ export function getLastConnectedInfo(state) {
   const { permissionsHistory = {} } = state.starmask;
   return Object.keys(permissionsHistory).reduce((acc, origin) => {
     const ethAccountsHistory = JSON.parse(
-      JSON.stringify(permissionsHistory[origin].eth_accounts),
+      JSON.stringify(permissionsHistory[origin].stc_accounts),
     );
     return {
       ...acc,
