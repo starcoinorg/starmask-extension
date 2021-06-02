@@ -88,7 +88,7 @@ export const SAFE_METHODS = [
   'eth_submitWork',
   'eth_syncing',
   'eth_uninstallFilter',
-  'metamask_getProviderState',
+  'starmask_getProviderState',
   'metamask_watchAsset',
   'net_listening',
   'net_peerCount',
