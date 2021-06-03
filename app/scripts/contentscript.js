@@ -4,7 +4,6 @@ import LocalMessageDuplexStream from 'post-message-stream';
 import ObjectMultiplex from 'obj-multiplex';
 import extension from 'extensionizer';
 import PortStream from 'extension-port-stream';
-import { obj as createThoughStream } from 'through2';
 
 // These require calls need to use require to be statically recognized by browserify
 const fs = require('fs');
@@ -20,12 +19,6 @@ const inpageBundle = inpageContent + inpageSuffix;
 const CONTENT_SCRIPT = 'starmask-contentscript';
 const INPAGE = 'starmask-inpage';
 const PROVIDER = 'starmask-provider';
-
-// TODO:LegacyProvider: Delete
-const LEGACY_CONTENT_SCRIPT = 'contentscript';
-const LEGACY_INPAGE = 'inpage';
-const LEGACY_PROVIDER = 'provider';
-const LEGACY_PUBLIC_CONFIG = 'publicConfig';
 
 if (shouldInjectProvider()) {
   injectScript(inpageBundle);
@@ -70,7 +63,6 @@ async function setupStreams() {
   pageMux.setMaxListeners(25);
   const extensionMux = new ObjectMultiplex();
   extensionMux.setMaxListeners(25);
-  extensionMux.ignoreStream(LEGACY_PUBLIC_CONFIG); // TODO:LegacyProvider: Delete
 
   pump(pageMux, pageStream, pageMux, (err) =>
     logStreamDisconnectWarning('MetaMask Inpage Multiplex', err),
@@ -86,44 +78,6 @@ async function setupStreams() {
   // connect "phishing" channel to warning system
   const phishingStream = extensionMux.createStream('phishing');
   phishingStream.once('data', redirectToPhishingWarning);
-
-  // TODO:LegacyProvider: Delete
-  // handle legacy provider
-  const legacyPageStream = new LocalMessageDuplexStream({
-    name: LEGACY_CONTENT_SCRIPT,
-    target: LEGACY_INPAGE,
-  });
-
-  const legacyPageMux = new ObjectMultiplex();
-  legacyPageMux.setMaxListeners(25);
-  const legacyExtensionMux = new ObjectMultiplex();
-  legacyExtensionMux.setMaxListeners(25);
-
-  pump(legacyPageMux, legacyPageStream, legacyPageMux, (err) =>
-    logStreamDisconnectWarning('MetaMask Legacy Inpage Multiplex', err),
-  );
-  pump(
-    legacyExtensionMux,
-    extensionStream,
-    getNotificationTransformStream(),
-    legacyExtensionMux,
-    (err) => {
-      logStreamDisconnectWarning('MetaMask Background Legacy Multiplex', err);
-      notifyInpageOfStreamFailure();
-    },
-  );
-
-  forwardNamedTrafficBetweenMuxes(
-    LEGACY_PROVIDER,
-    PROVIDER,
-    legacyPageMux,
-    legacyExtensionMux,
-  );
-  forwardTrafficBetweenMuxes(
-    LEGACY_PUBLIC_CONFIG,
-    legacyPageMux,
-    legacyExtensionMux,
-  );
 }
 
 function forwardTrafficBetweenMuxes(channelName, muxA, muxB) {
@@ -135,37 +89,6 @@ function forwardTrafficBetweenMuxes(channelName, muxA, muxB) {
       error,
     ),
   );
-}
-
-// TODO:LegacyProvider: Delete
-function forwardNamedTrafficBetweenMuxes(
-  channelAName,
-  channelBName,
-  muxA,
-  muxB,
-) {
-  const channelA = muxA.createStream(channelAName);
-  const channelB = muxB.createStream(channelBName);
-  pump(channelA, channelB, channelA, (error) =>
-    console.debug(
-      `StarMask: Muxed traffic between channels "${channelAName}" and "${channelBName}" failed.`,
-      error,
-    ),
-  );
-}
-
-// TODO:LegacyProvider: Delete
-function getNotificationTransformStream() {
-  return createThoughStream((chunk, _, cb) => {
-    if (chunk?.name === PROVIDER) {
-      if (chunk.data?.method === 'metamask_accountsChanged') {
-        chunk.data.method = 'wallet_accountsChanged';
-        chunk.data.result = chunk.data.params;
-        delete chunk.data.params;
-      }
-    }
-    cb(null, chunk);
-  });
 }
 
 /**
@@ -195,7 +118,7 @@ function notifyInpageOfStreamFailure() {
         name: PROVIDER, // the obj-multiplex channel name
         data: {
           jsonrpc: '2.0',
-          method: 'METAMASK_STREAM_FAILURE',
+          method: 'STARMASK_STREAM_FAILURE',
         },
       },
     },
