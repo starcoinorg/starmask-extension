@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.2.0] - 2021-06-02
+
+- support [starmask-test-dapp](https://github.com/starcoinorg/starmask-test-dapp) for 2 sections:
+ - Status
+ - Basic Actions (install/connect + get_accounts)
+
 ## 1.1.1 2021-05-31
 - change loading gif
 
