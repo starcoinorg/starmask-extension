@@ -65,10 +65,10 @@ async function setupStreams() {
   extensionMux.setMaxListeners(25);
 
   pump(pageMux, pageStream, pageMux, (err) =>
-    logStreamDisconnectWarning('MetaMask Inpage Multiplex', err),
+    logStreamDisconnectWarning('StarMask Inpage Multiplex', err),
   );
   pump(extensionMux, extensionStream, extensionMux, (err) => {
-    logStreamDisconnectWarning('MetaMask Background Multiplex', err);
+    logStreamDisconnectWarning('StarMask Background Multiplex', err);
     notifyInpageOfStreamFailure();
   });
 
