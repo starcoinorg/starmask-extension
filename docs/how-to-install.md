@@ -1,7 +1,7 @@
 # 安装指南 - Chrome 浏览器
 
 1. 前往 [chrome 网上应用店
-](https://chrome.google.com/webstore/detail/starmask/mfhbebgoclkghebffdldpobeajmbecfk/related)
+StarMask 下载页](https://chrome.google.com/webstore/detail/starmask/mfhbebgoclkghebffdldpobeajmbecfk/related)
 
 2. 点击 `添加至 Chrome`
 
@@ -47,15 +47,14 @@
 
     ![](./images/10.png)
  
-12. 进入Starcoin钱包主页面(全屏模式)
+12. 点击浏览器右上角`扩展程序`图标，选中 `StarMask` 右侧 图钉
 
     ![](./images/11.png)
 
-13. 点击浏览器右上角`扩展程序`图标，选中 `Starcoin` 右侧 图钉
+13. StarMask插件的图标会固定出现在浏览器右上角
 
     ![](./images/12.png)
 
-14. Starcoin插件的图标会固定出现在浏览器右上角。 
-    任何时候单击该图标，都会进入插件钱包主页面(弹窗模式)
+14. 点击 StarMask插件的图标，弹出插件钱包主页面(弹窗模式)
 
     ![](./images/31.png)
