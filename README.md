@@ -25,3 +25,7 @@ yarn start
 # Publish
 - change version in app/manifest/_base.json
 - `yarn dist`
+
+# Docs
+- [How to install](./docs/how-to-install)
+- [How to use](./docs/how-to-use)
