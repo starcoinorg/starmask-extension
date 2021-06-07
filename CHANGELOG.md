@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.3.0] - 2021-06-07
+
+- add public key in detail page
+- fix transaction detail url in explorer
+
 ## [1.2.0] - 2021-06-02
 
 - support [starmask-test-dapp](https://github.com/starcoinorg/starmask-test-dapp) for 2 sections:
