@@ -11,6 +11,8 @@ export default class AccountDetailsModal extends Component {
   static propTypes = {
     selectedIdentity: PropTypes.object,
     chainId: PropTypes.string,
+    showPublicKeyModal: PropTypes.func,
+    showReceiptIdentiferModal: PropTypes.func,
     showExportPrivateKeyModal: PropTypes.func,
     setAccountLabel: PropTypes.func,
     keyrings: PropTypes.array,
@@ -25,6 +27,8 @@ export default class AccountDetailsModal extends Component {
     const {
       selectedIdentity,
       chainId,
+      showPublicKeyModal,
+      showReceiptIdentiferModal,
       showExportPrivateKeyModal,
       setAccountLabel,
       keyrings,
@@ -57,22 +61,20 @@ export default class AccountDetailsModal extends Component {
             data: address,
           }}
         />
-
-        <div className="account-details-modal__divider" />
-        {showReceiptIdentifier ? (
-          <>
-            <div className="editable-label__value">
-              {this.context.t('receiptIdentifier')}
-            </div>
-
-            <ReadOnlyInput
-              wrapperClass="ellip-address-wrapper"
-              value={receiptIdentifier}
-            />
-          </>
-        ) : null}
-
-
+        <Button
+          type="secondary"
+          className="account-details-modal__button"
+          onClick={() => showPublicKeyModal()}
+        >
+          {this.context.t('viewPublicKey')}
+        </Button>
+        <Button
+          type="secondary"
+          className="account-details-modal__button"
+          onClick={() => showReceiptIdentiferModal()}
+        >
+          {this.context.t('viewReceiptIdengifier')}
+        </Button>
         <Button
           type="secondary"
           className="account-details-modal__button"
@@ -84,7 +86,7 @@ export default class AccountDetailsModal extends Component {
         >
           {rpcPrefs.blockExplorerUrl
             ? this.context.t('blockExplorerView', [
-              rpcPrefs.blockExplorerUrl.match(/^https?:\/\/(.+)/u)[1],
+              rpcPrefs.blockExplorerUrl.match(/^https?:\/\/(.+)\//u)[1],
             ])
             : this.context.t('viewOnEtherscan')}
         </Button>

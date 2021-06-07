@@ -406,6 +406,9 @@
   "copyToClipboard": {
     "message": "复制到剪贴板"
   },
+  "copyToClipboardOnClick": {
+    "message": "点击复制到剪贴板"
+  },
   "copyTransactionId": {
     "message": "复制交易 ID"
   },
@@ -2073,6 +2076,12 @@
   },
   "viewContact": {
     "message": "查看联系人"
+  },
+  "viewReceiptIdengifier": {
+    "message": "查看收款识别码"
+  },
+  "viewPublicKey": {
+    "message": "查看公钥"
   },
   "viewOnCustomBlockExplorer": {
     "message": "在 $1 查看"

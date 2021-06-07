@@ -13,6 +13,7 @@ import ConfirmCustomizeGasModal from '../gas-customization/gas-modal-page-contai
 import SwapsGasCustomizationModal from '../../../pages/swaps/swaps-gas-customization-modal';
 import DepositEtherModal from './deposit-ether-modal';
 import AccountDetailsModal from './account-details-modal';
+import ShowReceiptIdentifier from './show-receipt-identifier';
 import ExportPrivateKeyModal from './export-private-key-modal';
 import HideTokenConfirmationModal from './hide-token-confirmation-modal';
 import QRScanner from './qr-scanner';
@@ -168,6 +169,16 @@ const MODALS = {
 
   ACCOUNT_DETAILS: {
     contents: <AccountDetailsModal />,
+    ...accountModalStyle,
+  },
+
+  SHOW_PUBLIC_KEY: {
+    contents: <ExportPrivateKeyModal />,
+    ...accountModalStyle,
+  },
+
+  SHOW_RECEIPT_IDENTIFIER: {
+    contents: <ShowReceiptIdentifier />,
     ...accountModalStyle,
   },
 

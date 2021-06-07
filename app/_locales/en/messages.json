@@ -447,6 +447,9 @@
   "copyToClipboard": {
     "message": "Copy to clipboard"
   },
+  "copyToClipboardOnClick": {
+    "message": "Copy to clipboard on click"
+  },
   "copyTransactionId": {
     "message": "Copy Transaction ID"
   },
@@ -2218,6 +2221,12 @@
   },
   "viewContact": {
     "message": "View Contact"
+  },
+  "viewReceiptIdengifier": {
+    "message": "View ReceiptIdengifier"
+  },
+  "viewPublicKey": {
+    "message": "View PublicKey"
   },
   "viewOnCustomBlockExplorer": {
     "message": "View at $1"

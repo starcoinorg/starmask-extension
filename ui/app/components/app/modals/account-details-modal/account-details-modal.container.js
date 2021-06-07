@@ -18,6 +18,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    showPublicKeyModal: () =>
+      dispatch(showModal({ name: 'SHOW_PUBLIC_KEY' })),
+    showReceiptIdentiferModal: () =>
+      dispatch(showModal({ name: 'SHOW_RECEIPT_IDENTIFIER' })),
     showExportPrivateKeyModal: () =>
       dispatch(showModal({ name: 'EXPORT_PRIVATE_KEY' })),
     setAccountLabel: (address, label) =>
