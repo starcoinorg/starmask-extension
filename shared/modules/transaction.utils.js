@@ -26,9 +26,7 @@ export function transactionMatchesNetwork(transaction, chainId, networkId) {
  */
 export function getBlockExplorerUrlForTx(transaction, rpcPrefs = {}) {
   if (rpcPrefs.blockExplorerUrl) {
-    return `${rpcPrefs.blockExplorerUrl.replace(/\/+$/u, '')}/tx/${
-      transaction.hash
-    }`;
+    return `${rpcPrefs.blockExplorerUrl.replace(/\/+$/u, '')}/transactions/detail/${transaction.hash}`;
   }
   if (transaction.chainId) {
     return createExplorerLinkForChain(transaction.hash, transaction.chainId);
