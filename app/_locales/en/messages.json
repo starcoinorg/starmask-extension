@@ -1336,6 +1336,9 @@
   "proxima": {
     "message": "Proxima Test Network"
   },
+  "publicKey": {
+    "message": "Public Key"
+  },
   "queue": {
     "message": "Queue"
   },

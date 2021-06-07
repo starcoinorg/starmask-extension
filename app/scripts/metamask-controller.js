@@ -920,6 +920,9 @@ export default class MetamaskController extends EventEmitter {
         const receiptIdentifiers = await primaryKeyring.getReceiptIdentifiers();
         this.preferencesController.setReceiptIdentifiers(receiptIdentifiers);
 
+        const publicKeys = await primaryKeyring.getPublicKeys();
+        this.preferencesController.setPublicKeys(publicKeys);
+
         this.selectFirstIdentity();
       }
       return vault;
@@ -991,6 +994,10 @@ export default class MetamaskController extends EventEmitter {
       // add receiptIdentifiers in identifies
       const receiptIdentifiers = await primaryKeyring.getReceiptIdentifiers();
       this.preferencesController.setReceiptIdentifiers(receiptIdentifiers);
+
+      // add publicKey in identifies
+      const publicKeys = await primaryKeyring.getPublicKeys();
+      this.preferencesController.setPublicKeys(publicKeys);
 
       this.selectFirstIdentity();
       return vault;
@@ -1310,8 +1317,11 @@ export default class MetamaskController extends EventEmitter {
 
     this.preferencesController.setAddresses(newAccounts);
 
-    const receiptIdentifier = await primaryKeyring.getReceiptIdentifiers();
-    this.preferencesController.setReceiptIdentifiers(receiptIdentifier);
+    const receiptIdentifiers = await primaryKeyring.getReceiptIdentifiers();
+    this.preferencesController.setReceiptIdentifiers(receiptIdentifiers);
+
+    const publicKeys = await primaryKeyring.getPublicKeys();
+    this.preferencesController.setPublicKeys(publicKeys);
 
     newAccounts.forEach((address) => {
       if (!oldAccounts.includes(address)) {
@@ -1415,7 +1425,9 @@ export default class MetamaskController extends EventEmitter {
     // add receiptIdentifier in identities
     const receiptIdentifiers = await keyring.getReceiptIdentifiers();
     this.preferencesController.setReceiptIdentifiers(receiptIdentifiers);
-
+    // add publicKey in identities
+    const publicKeys = await keyring.getPublicKeys();
+    this.preferencesController.setPublicKeys(publicKeys);
     // set new account as selected
     await this.preferencesController.setSelectedAddress(accounts[0]);
   }
@@ -1935,6 +1947,7 @@ export default class MetamaskController extends EventEmitter {
    * @param {MessageSender} sender - The sender of the messages on this stream
    */
   setupUntrustedCommunication(connectionStream, sender) {
+    log.debug('setupUntrustedCommunication', connectionStream, sender);
     const { usePhishDetect } = this.preferencesController.store.getState();
     const { hostname } = new URL(sender.url);
     // Check if new connection is blocked if phishing detection is on
@@ -2023,6 +2036,7 @@ export default class MetamaskController extends EventEmitter {
    * @param {boolean} isInternal - True if this is a connection with an internal process
    */
   setupProviderConnection(outStream, sender, isInternal) {
+    log.debug('setupProviderConnection', outStream, sender, isInternal);
     const origin = isInternal ? 'starmask' : new URL(sender.url).origin;
     let extensionId;
     if (sender.id !== this.extension.runtime.id) {
@@ -2076,6 +2090,13 @@ export default class MetamaskController extends EventEmitter {
     tabId,
     isInternal = false,
   }) {
+    log.debug('setupProviderEngine', {
+      origin,
+      location,
+      extensionId,
+      tabId,
+      isInternal,
+    });
     // setup json rpc engine stack
     const engine = new JsonRpcEngine();
     const { provider, blockTracker } = this;

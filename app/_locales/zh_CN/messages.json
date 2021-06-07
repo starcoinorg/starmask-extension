@@ -1245,6 +1245,9 @@
   "proxima": {
     "message": "Proxima 测试网络"
   },
+  "publicKey": {
+    "message": "公钥"
+  },
   "queue": {
     "message": "队列"
   },
