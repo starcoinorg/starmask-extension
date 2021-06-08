@@ -396,37 +396,36 @@ export class PermissionsController {
    */
   async finalizePermissionsRequest(requestedPermissions, requestedAccounts) {
     const finalizedPermissions = cloneDeep(requestedPermissions);
+
     const finalizedAccounts = cloneDeep(requestedAccounts);
+    const { stc_accounts: stcAccounts } = finalizedPermissions;
 
-    const { stc_accounts: ethAccounts } = finalizedPermissions;
-
-    if (ethAccounts) {
+    if (stcAccounts) {
       this.validatePermittedAccounts(finalizedAccounts);
 
-      if (!ethAccounts.caveats) {
-        ethAccounts.caveats = [];
+      if (!stcAccounts.caveats) {
+        stcAccounts.caveats = [];
       }
 
       // caveat names are unique, and we will only construct this caveat here
-      ethAccounts.caveats = ethAccounts.caveats.filter(
+      stcAccounts.caveats = stcAccounts.caveats.filter(
         (c) =>
           c.name !== CAVEAT_NAMES.exposedAccounts &&
           c.name !== CAVEAT_NAMES.primaryAccountOnly,
       );
 
-      ethAccounts.caveats.push({
+      stcAccounts.caveats.push({
         type: CAVEAT_TYPES.limitResponseLength,
         value: 1,
         name: CAVEAT_NAMES.primaryAccountOnly,
       });
 
-      ethAccounts.caveats.push({
+      stcAccounts.caveats.push({
         type: CAVEAT_TYPES.filterResponse,
         value: finalizedAccounts,
         name: CAVEAT_NAMES.exposedAccounts,
       });
     }
-
     return finalizedPermissions;
   }
 
@@ -640,10 +639,10 @@ export class PermissionsController {
     const domains = this.permissions.getDomains() || {};
     const connectedDomains = Object.entries(domains)
       .filter(([_, { permissions }]) => {
-        const ethAccounts = permissions.find(
+        const stcAccounts = permissions.find(
           (permission) => permission.parentCapability === 'stc_accounts',
         );
-        const exposedAccounts = ethAccounts?.caveats.find(
+        const exposedAccounts = stcAccounts?.caveats.find(
           (caveat) => caveat.name === 'exposedAccounts',
         )?.value;
         return exposedAccounts?.includes(account);
