@@ -1,5 +1,5 @@
 import { createScaffoldMiddleware, mergeMiddleware } from 'json-rpc-engine';
-import createWalletSubprovider from 'eth-json-rpc-middleware/wallet';
+import createWalletSubprovider from '@starcoin/stc-json-rpc-middleware/wallet';
 import {
   createPendingNonceMiddleware,
   createPendingTxMiddleware,

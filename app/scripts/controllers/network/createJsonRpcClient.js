@@ -1,10 +1,10 @@
 import { createAsyncMiddleware, mergeMiddleware } from 'json-rpc-engine';
-import createFetchMiddleware from 'eth-json-rpc-middleware/fetch';
-import createBlockRefRewriteMiddleware from 'eth-json-rpc-middleware/block-ref-rewrite';
-import createBlockCacheMiddleware from 'eth-json-rpc-middleware/block-cache';
-import createInflightMiddleware from 'eth-json-rpc-middleware/inflight-cache';
-import createBlockTrackerInspectorMiddleware from 'eth-json-rpc-middleware/block-tracker-inspector';
-import providerFromMiddleware from 'eth-json-rpc-middleware/providerFromMiddleware';
+import createFetchMiddleware from '@starcoin/stc-json-rpc-middleware/fetch';
+import createBlockRefRewriteMiddleware from '@starcoin/stc-json-rpc-middleware/block-ref-rewrite';
+import createBlockCacheMiddleware from '@starcoin/stc-json-rpc-middleware/block-cache';
+import createInflightMiddleware from '@starcoin/stc-json-rpc-middleware/inflight-cache';
+import createBlockTrackerInspectorMiddleware from '@starcoin/stc-json-rpc-middleware/block-tracker-inspector';
+import providerFromMiddleware from '@starcoin/stc-json-rpc-middleware/providerFromMiddleware';
 import { PollingBlockTracker } from '@starcoin/stc-block-tracker';
 
 const inTest = process.env.IN_TEST === 'true';

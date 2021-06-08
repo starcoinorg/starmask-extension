@@ -1,10 +1,10 @@
 import { createScaffoldMiddleware, mergeMiddleware } from 'json-rpc-engine';
-import createBlockReRefMiddleware from 'eth-json-rpc-middleware/block-ref';
-import createRetryOnEmptyMiddleware from 'eth-json-rpc-middleware/retryOnEmpty';
-import createBlockCacheMiddleware from 'eth-json-rpc-middleware/block-cache';
-import createInflightMiddleware from 'eth-json-rpc-middleware/inflight-cache';
-import createBlockTrackerInspectorMiddleware from 'eth-json-rpc-middleware/block-tracker-inspector';
-import providerFromMiddleware from 'eth-json-rpc-middleware/providerFromMiddleware';
+import createBlockReRefMiddleware from '@starcoin/stc-json-rpc-middleware/block-ref';
+import createRetryOnEmptyMiddleware from '@starcoin/stc-json-rpc-middleware/retryOnEmpty';
+import createBlockCacheMiddleware from '@starcoin/stc-json-rpc-middleware/block-cache';
+import createInflightMiddleware from '@starcoin/stc-json-rpc-middleware/inflight-cache';
+import createBlockTrackerInspectorMiddleware from '@starcoin/stc-json-rpc-middleware/block-tracker-inspector';
+import providerFromMiddleware from '@starcoin/stc-json-rpc-middleware/providerFromMiddleware';
 import createInfuraMiddleware from '@starcoin/stc-json-rpc';
 import { PollingBlockTracker } from '@starcoin/stc-block-tracker';
 
