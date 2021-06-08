@@ -78,7 +78,7 @@ export const SAFE_METHODS = [
   'eth_newPendingTransactionFilter',
   'eth_protocolVersion',
   'eth_sendRawTransaction',
-  'eth_sendTransaction',
+  'stc_sendTransaction',
   'eth_sign',
   'eth_signTypedData',
   'eth_signTypedData_v1',
