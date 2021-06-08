@@ -1,15 +1,20 @@
 # Changelog
 
+
+## [1.4.0] - 2021-06-09
+
+- support `Send STC` in [starmask-test-dapp](https://github.com/starcoinorg/starmask-test-dapp)
+
 ## [1.3.0] - 2021-06-07
 
-- add public key in detail page
-- fix transaction detail url in explorer
+- add public key in the account detail page
+- fix explorer url in the transaction detail page
 
 ## [1.2.0] - 2021-06-02
 
-- support [starmask-test-dapp](https://github.com/starcoinorg/starmask-test-dapp) for 2 sections:
- - Status
- - Basic Actions (install/connect + get_accounts)
+- support 2 sections in [starmask-test-dapp](https://github.com/starcoinorg/starmask-test-dapp) :
+    - Status
+    - Basic Actions (Install/Connect + getSelectedAccount)
 
 ## 1.1.1 2021-05-31
 - change loading gif
