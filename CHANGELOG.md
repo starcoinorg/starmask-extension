@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.4.2] - 2021-06-10
+
+- fix #6: scan qrImage get address with prefix of `ethereum:`
+- fix: the public key shown in the detail page of the account that imported from mnemonic is incorrect
 
 ## [1.4.0] - 2021-06-09
 
