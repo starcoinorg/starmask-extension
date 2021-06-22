@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import BigNumber from 'bignumber.js';
 import ConfirmTransactionBase from '../confirm-transaction-base';
 import { showModal } from '../../store/actions';
 import { getTokenData } from '../../helpers/utils/transactions.util';
@@ -53,8 +54,8 @@ export default function ConfirmApprove() {
   const { tokensWithBalances } = useTokenTracker([currentToken]);
   const tokenTrackerBalance = tokensWithBalances[0]?.balance || '';
 
-  const tokenSymbol = currentToken?.symbol;
-  const decimals = Number(currentToken?.decimals);
+  const tokenSymbol = currentToken?.symbol || 'STC';
+  const decimals = Number(currentToken?.decimals || 10);
   const tokenData = getTokenData(data);
   const tokenValue = getTokenValueParam(tokenData);
   const toAddress = getTokenAddressParam(tokenData);
@@ -83,7 +84,7 @@ export default function ConfirmApprove() {
   const tokensText = `${Number(tokenAmount)} ${tokenSymbol}`;
   const tokenBalance = tokenTrackerBalance
     ? calcTokenAmount(tokenTrackerBalance, decimals).toString(10)
-    : '';
+    : 0;
   const customData = customPermissionAmount
     ? getCustomTxParamsData(data, { customPermissionAmount, decimals })
     : null;

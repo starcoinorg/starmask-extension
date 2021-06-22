@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import Identicon from '../../../components/ui/identicon';
 import { addressSummary } from '../../../helpers/utils/util';
 import { formatCurrency } from '../../../helpers/utils/confirm-tx.util';
-
+import { decodeTokenData } from '../../../helpers/utils/transactions.util';
 export default class ConfirmApproveContent extends Component {
   static contextTypes = {
     t: PropTypes.func,
@@ -135,6 +135,7 @@ export default class ConfirmApproveContent extends Component {
   renderDataContent() {
     const { t } = this.context;
     const { data } = this.props;
+    const payload = decodeTokenData(data);
     return (
       <div className="flex-column">
         <div className="confirm-approve-content__small-text">
@@ -142,6 +143,11 @@ export default class ConfirmApproveContent extends Component {
         </div>
         <div className="confirm-approve-content__small-text confirm-approve-content__data__data-block">
           {data}
+        </div>
+        <div className="confirm-approve-content__small-text confirm-approve-content__data__data-block">
+          <br />
+          <br />
+          {JSON.stringify(payload.params, null, 2)}
         </div>
       </div>
     );

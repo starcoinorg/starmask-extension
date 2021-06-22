@@ -3,10 +3,10 @@ import { ObservableStore } from '@metamask/obs-store';
 import ethUtil from 'ethereumjs-util';
 import EthQuery from '@starcoin/stc-query';
 import { ethErrors } from 'eth-rpc-errors';
-import abi from 'human-standard-token-abi';
-import { ethers } from 'ethers';
+// import abi from 'human-standard-token-abi';
+// import { ethers } from 'ethers';
 import NonceTracker from '@starcoin/stc-nonce-tracker';
-import { utils } from '@starcoin/starcoin';
+import { encoding, utils } from '@starcoin/starcoin';
 import log from 'loglevel';
 import BigNumber from 'bignumber.js';
 import cleanErrorStack from '../../lib/cleanErrorStack';
@@ -29,7 +29,7 @@ import TxGasUtil from './tx-gas-utils';
 import PendingTransactionTracker from './pending-tx-tracker';
 import * as txUtils from './lib/util';
 
-const hstInterface = new ethers.utils.Interface(abi);
+// const hstInterface = new ethers.utils.Interface(abi);
 
 const SIMPLE_GAS_COST = '0x5208'; // Hex for 21000, cost of a simple send.
 const MAX_MEMSTORE_TX_LIST_SIZE = 100; // Number of transactions (by unique nonces) to keep in memory
@@ -901,7 +901,20 @@ export default class TransactionController extends EventEmitter {
     const { data, to } = txParams;
     let name;
     try {
-      name = data && hstInterface.parseTransaction({ data }).name;
+      // name = data && hstInterface.parseTransaction({ data }).name;
+      if (data) {
+        const txnPayload = encoding.decodeTransactionPayload(data);
+        const keys = Object.keys(txnPayload);
+        log.debug(keys[0]);
+        log.debug(JSON.stringify(txnPayload[keys[0]], null, 2));
+        if (keys[0] === 'ScriptFunction') {
+          // name = TRANSACTION_TYPES.EXECUTE_SCRIPT_FUNCTION;
+          // name = TRANSACTION_TYPES.CONTRACT_INTERACTION;
+          name = TRANSACTION_TYPES.TOKEN_METHOD_APPROVE;
+        } else if (keys[0] === 'Package') {
+          name = TRANSACTION_TYPES.DEPLOY_CONTRACT;
+        }
+      }
     } catch (error) {
       log.debug('Failed to parse transaction data.', error, data);
     }
@@ -910,8 +923,12 @@ export default class TransactionController extends EventEmitter {
       TRANSACTION_TYPES.TOKEN_METHOD_APPROVE,
       TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER,
       TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER_FROM,
+      TRANSACTION_TYPES.CONTRACT_INTERACTION,
+      TRANSACTION_TYPES.EXECUTE_SCRIPT_FUNCTION,
+      TRANSACTION_TYPES.DEPLOY_CONTRACT,
     ].find((methodName) => methodName === name && name.toLowerCase());
 
+    log.debug({ tokenMethodName });
     let result;
     if (data && tokenMethodName) {
       result = tokenMethodName;
@@ -942,7 +959,6 @@ export default class TransactionController extends EventEmitter {
       //   : TRANSACTION_TYPES.CONTRACT_INTERACTION;
       result = TRANSACTION_TYPES.SENT_ETHER;
     }
-
     return { type: result, getCodeResponse: code };
   }
 

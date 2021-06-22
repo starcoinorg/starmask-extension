@@ -1,6 +1,7 @@
 import { MethodRegistry } from 'eth-method-registry';
-import abi from 'human-standard-token-abi';
-import { ethers } from 'ethers';
+// import abi from 'human-standard-token-abi';
+// import { ethers } from 'ethers';
+import { encoding } from '@starcoin/starcoin';
 import log from 'loglevel';
 
 import { addHexPrefix } from '../../../../app/scripts/lib/util';
@@ -13,7 +14,7 @@ import fetchWithCache from './fetch-with-cache';
 
 import { addCurrencies } from './conversion-util';
 
-const hstInterface = new ethers.utils.Interface(abi);
+// const hstInterface = new ethers.utils.Interface(abi);
 
 /**
  * @typedef EthersContractCall
@@ -33,10 +34,25 @@ const hstInterface = new ethers.utils.Interface(abi);
  */
 export function getTokenData(data) {
   try {
-    return hstInterface.parseTransaction({ data });
+    const payload = decodeTokenData(data);
+    return payload.params;
   } catch (error) {
     log.debug('Failed to parse transaction data.', error, data);
     return undefined;
+  }
+}
+
+export function decodeTokenData(data) {
+  let type, params;
+  try {
+    const txnPayload = encoding.decodeTransactionPayload(data);
+    const keys = Object.keys(txnPayload);
+    type = keys[0];
+    params = txnPayload[keys[0]];
+    return { type, params };
+  } catch (error) {
+    log.debug('Failed to decode transaction data.', error, data);
+    return { type, params };
   }
 }
 
@@ -222,6 +238,9 @@ export function getTransactionTypeTitle(t, type) {
     }
     case TRANSACTION_TYPES.CONTRACT_INTERACTION: {
       return t('contractInteraction');
+    }
+    case TRANSACTION_TYPES.EXECUTE_SCRIPT_FUNCTION: {
+      return t('contractScriptFunction');
     }
     case TRANSACTION_TYPES.DEPLOY_CONTRACT: {
       return t('contractDeployment');

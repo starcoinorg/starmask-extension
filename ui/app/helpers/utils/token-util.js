@@ -1,9 +1,13 @@
 import log from 'loglevel';
 import BigNumber from 'bignumber.js';
+import { ethers } from 'ethers';
+import { bcs } from '@starcoin/starcoin';
 import contractMap from '@metamask/contract-metadata';
 import * as util from './util';
 import { conversionUtil, multiplyCurrencies } from './conversion-util';
 import { formatCurrency } from './confirm-tx.util';
+
+const { arrayify } = ethers.utils;
 
 const casedContractMap = Object.keys(contractMap).reduce((acc, base) => {
   return {
@@ -155,26 +159,33 @@ export function calcTokenValue(value, decimals) {
  * Attempts to get the address parameter of the given token transaction data
  * (i.e. function call) per the Human Standard Token ABI, in the following
  * order:
- *   - The '_to' parameter, if present
  *   - The first parameter, if present
  *
  * @param {Object} tokenData - ethers Interface token data.
  * @returns {string | undefined} A lowercase address string.
  */
-export function getTokenAddressParam(tokenData = {}) {
-  const value = tokenData?.args?._to || tokenData?.args?.[0];
+export function getTokenAddressParam(tokenData = []) {
+  const value = tokenData?.args?.[0];
   return value?.toString().toLowerCase();
 }
 
 /**
  * Gets the '_value' parameter of the given token transaction data
- * (i.e function call) per the Human Standard Token ABI, if present.
- *
+ * (i.e function call) per the Human Standard Token ABI, in the following
+ * order:
+ *   - The third parameter, if present
  * @param {Object} tokenData - ethers Interface token data.
  * @returns {string | undefined} A decimal string value.
  */
-export function getTokenValueParam(tokenData = {}) {
-  return tokenData?.args?._value?.toString();
+export function getTokenValueParam(tokenData = []) {
+  const value = tokenData?.args?.[2];
+  const amountNanoSTC = (function () {
+    const bytes = arrayify(value);
+    const de = new bcs.BcsDeserializer(bytes);
+    return de.deserializeU128();
+  })();
+
+  return amountNanoSTC?.toString().toLowerCase();
 }
 
 export function getTokenValue(tokenParams = []) {
