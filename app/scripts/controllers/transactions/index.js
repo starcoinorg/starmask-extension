@@ -905,12 +905,8 @@ export default class TransactionController extends EventEmitter {
       if (data) {
         const txnPayload = encoding.decodeTransactionPayload(data);
         const keys = Object.keys(txnPayload);
-        log.debug(keys[0]);
-        log.debug(JSON.stringify(txnPayload[keys[0]], null, 2));
         if (keys[0] === 'ScriptFunction') {
-          // name = TRANSACTION_TYPES.EXECUTE_SCRIPT_FUNCTION;
-          // name = TRANSACTION_TYPES.CONTRACT_INTERACTION;
-          name = TRANSACTION_TYPES.TOKEN_METHOD_APPROVE;
+          name = TRANSACTION_TYPES.CONTRACT_INTERACTION;
         } else if (keys[0] === 'Package') {
           name = TRANSACTION_TYPES.DEPLOY_CONTRACT;
         }
@@ -924,7 +920,6 @@ export default class TransactionController extends EventEmitter {
       TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER,
       TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER_FROM,
       TRANSACTION_TYPES.CONTRACT_INTERACTION,
-      TRANSACTION_TYPES.EXECUTE_SCRIPT_FUNCTION,
       TRANSACTION_TYPES.DEPLOY_CONTRACT,
     ].find((methodName) => methodName === name && name.toLowerCase());
 

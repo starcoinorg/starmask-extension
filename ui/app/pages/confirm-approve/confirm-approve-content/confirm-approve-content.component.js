@@ -145,6 +145,7 @@ export default class ConfirmApproveContent extends Component {
           {data}
         </div>
         <div className="confirm-approve-content__small-text confirm-approve-content__data__data-block">
+          {payload.name}
           <br />
           <br />
           {JSON.stringify(payload.params, null, 2)}

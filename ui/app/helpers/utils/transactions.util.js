@@ -43,16 +43,16 @@ export function getTokenData(data) {
 }
 
 export function decodeTokenData(data) {
-  let type, params;
+  let name, params;
   try {
     const txnPayload = encoding.decodeTransactionPayload(data);
     const keys = Object.keys(txnPayload);
-    type = keys[0];
+    name = keys[0];
     params = txnPayload[keys[0]];
-    return { type, params };
+    return { name, params };
   } catch (error) {
     log.debug('Failed to decode transaction data.', error, data);
-    return { type, params };
+    return { name, params };
   }
 }
 
@@ -238,9 +238,6 @@ export function getTransactionTypeTitle(t, type) {
     }
     case TRANSACTION_TYPES.CONTRACT_INTERACTION: {
       return t('contractInteraction');
-    }
-    case TRANSACTION_TYPES.EXECUTE_SCRIPT_FUNCTION: {
-      return t('contractScriptFunction');
     }
     case TRANSACTION_TYPES.DEPLOY_CONTRACT: {
       return t('contractDeployment');

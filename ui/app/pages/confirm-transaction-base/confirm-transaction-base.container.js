@@ -19,6 +19,7 @@ import {
   INSUFFICIENT_FUNDS_ERROR_KEY,
   GAS_LIMIT_TOO_LOW_ERROR_KEY,
 } from '../../helpers/constants/error-keys';
+import { decodeTokenData } from '../../helpers/utils/transactions.util';
 import { getHexGasTotal } from '../../helpers/utils/confirm-tx.util';
 import { isBalanceSufficient, calcGasTotal } from '../send/send.utils';
 import { conversionGreaterThan } from '../../helpers/utils/conversion-util';
@@ -32,7 +33,6 @@ import {
   getAdvancedInlineGasShown,
   getCustomNonceValue,
   getIsMainnet,
-  getKnownMethodData,
   getMetaMaskAccounts,
   getUseNonceField,
   getPreferences,
@@ -137,7 +137,7 @@ const mapStateToProps = (state, ownProps) => {
     conversionRate,
   });
 
-  const methodData = getKnownMethodData(state, data) || {};
+  const methodData = decodeTokenData(data) || {};
 
   let fullTxData = { ...txData, ...transaction };
   if (customTxParamsData) {
