@@ -137,7 +137,7 @@ const mapStateToProps = (state, ownProps) => {
     conversionRate,
   });
 
-  const methodData = decodeTokenData(data) || {};
+  const methodData = (data && decodeTokenData(data)) || {};
 
   let fullTxData = { ...txData, ...transaction };
   if (customTxParamsData) {

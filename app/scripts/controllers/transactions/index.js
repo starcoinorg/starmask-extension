@@ -6,7 +6,8 @@ import { ethErrors } from 'eth-rpc-errors';
 // import abi from 'human-standard-token-abi';
 // import { ethers } from 'ethers';
 import NonceTracker from '@starcoin/stc-nonce-tracker';
-import { encoding, utils } from '@starcoin/starcoin';
+import { ethers } from 'ethers';
+import { bcs, encoding, utils } from '@starcoin/starcoin';
 import log from 'loglevel';
 import BigNumber from 'bignumber.js';
 import cleanErrorStack from '../../lib/cleanErrorStack';
@@ -29,6 +30,7 @@ import TxGasUtil from './tx-gas-utils';
 import PendingTransactionTracker from './pending-tx-tracker';
 import * as txUtils from './lib/util';
 
+const { arrayify, hexlify } = ethers.utils;
 // const hstInterface = new ethers.utils.Interface(abi);
 
 const SIMPLE_GAS_COST = '0x5208'; // Hex for 21000, cost of a simple send.
@@ -544,7 +546,9 @@ export default class TransactionController extends EventEmitter {
     @returns {string} rawTx
   */
   async signTransaction(txId) {
+    // log.debug('signTransaction', txId);
     const txMeta = this.txStateManager.getTx(txId);
+    // log.debug({ txMeta });
     // add network/chain id
     const chainId = this.getChainId();
     const txParams = { ...txMeta.txParams, chainId };
@@ -553,7 +557,7 @@ export default class TransactionController extends EventEmitter {
       fromNumericBase: 'hex',
       toNumericBase: 'dec',
     });
-
+    // log.debug({ sendAmount });
     const senderSequenceNumber = await new Promise((resolve, reject) => {
       return this.query.getResource(
         txParams.from,
@@ -568,7 +572,7 @@ export default class TransactionController extends EventEmitter {
         },
       );
     });
-
+    // log.debug({ senderSequenceNumber });
     const gasTotal = multiplyCurrencies(
       ethUtil.stripHexPrefix(txParams.gas),
       ethUtil.stripHexPrefix(txParams.gasPrice),
@@ -578,12 +582,12 @@ export default class TransactionController extends EventEmitter {
         multiplierBase: 16,
       },
     );
-
+    // log.debug({ gasTotal });
     const maxGasAmount = conversionUtil(gasTotal, {
       fromNumericBase: 'hex',
       toNumericBase: 'dec',
     });
-
+    // log.debug({ maxGasAmount });
     // because the time system in dev network is relatively static,
     // we should use nodeInfo.now_seconds instead of using new Date().getTime()
     const nowSeconds = await new Promise((resolve, reject) => {
@@ -596,18 +600,52 @@ export default class TransactionController extends EventEmitter {
     });
     // expired after 12 hours since Unix Epoch
     const expirationTimestampSecs = nowSeconds + 43200;
-
     const fromAddress = txParams.from;
+
+    if (txMeta.type === 'sentEther') {
+      const functionId = '0x1::TransferScripts::peer_to_peer';
+
+      const tyArgs = [{ Struct: { address: '0x1', module: 'STC', name: 'STC', type_params: [] } }];
+
+      const receiver = txParams.toReceiptIdentifier ? txParams.toReceiptIdentifier : txParams.to;
+      let receiverAddressHex;
+
+      if (receiver.slice(0, 3) === 'stc') {
+        const receiptIdentifierView = encoding.decodeReceiptIdentifier(receiver);
+        receiverAddressHex = ethUtil.addHexPrefix(receiptIdentifierView.accountAddress);
+      } else {
+        receiverAddressHex = receiver;
+      }
+
+      // Multiple BcsSerializers should be used in different closures, otherwise, the latter will be contaminated by the former.
+      const amountSCSHex = (function () {
+        const se = new bcs.BcsSerializer();
+        // eslint-disable-next-line no-undef
+        se.serializeU128(BigInt(sendAmount));
+        return hexlify(se.getBytes());
+      })();
+
+      const args = [
+        arrayify(receiverAddressHex),
+        Buffer.from('00', 'hex'),
+        arrayify(amountSCSHex),
+      ];
+
+      const scriptFunction = utils.tx.encodeScriptFunction(
+        functionId,
+        tyArgs,
+        args,
+      );
+      txParams.data = scriptFunction;
+    }
     const rawUserTransaction = utils.tx.generateRawUserTransaction(
       fromAddress,
-      txParams.toReceiptIdentifier ? txParams.toReceiptIdentifier : txParams.to,
-      sendAmount,
+      txParams.data,
       maxGasAmount,
       senderSequenceNumber,
       expirationTimestampSecs,
       chainId,
     );
-
     const rawUserTransactionHex = await this.signEthTx(
       rawUserTransaction,
       fromAddress,
