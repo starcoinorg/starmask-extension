@@ -7,7 +7,7 @@ import { ethErrors } from 'eth-rpc-errors';
 // import { ethers } from 'ethers';
 import NonceTracker from '@starcoin/stc-nonce-tracker';
 import { ethers } from 'ethers';
-import { bcs, encoding, utils } from '@starcoin/starcoin';
+import { bcs, encoding, utils, starcoin_types } from '@starcoin/starcoin';
 import log from 'loglevel';
 import BigNumber from 'bignumber.js';
 import cleanErrorStack from '../../lib/cleanErrorStack';
@@ -602,6 +602,7 @@ export default class TransactionController extends EventEmitter {
     const expirationTimestampSecs = nowSeconds + 43200;
     const fromAddress = txParams.from;
 
+    let payload;
     if (txMeta.type === 'sentEther') {
       const functionId = '0x1::TransferScripts::peer_to_peer';
 
@@ -636,11 +637,16 @@ export default class TransactionController extends EventEmitter {
         tyArgs,
         args,
       );
-      txParams.data = scriptFunction;
+      payload = scriptFunction;
+    } else if (txParams.data) {
+      const bytes = arrayify(txParams.data);
+      const de = new bcs.BcsDeserializer(bytes);
+      payload = starcoin_types.TransactionPayload.deserialize(de);
+      log.debug({ payload });
     }
     const rawUserTransaction = utils.tx.generateRawUserTransaction(
       fromAddress,
-      txParams.data,
+      payload,
       maxGasAmount,
       senderSequenceNumber,
       expirationTimestampSecs,
