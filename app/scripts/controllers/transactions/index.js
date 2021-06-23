@@ -642,7 +642,7 @@ export default class TransactionController extends EventEmitter {
       const bytes = arrayify(txParams.data);
       const de = new bcs.BcsDeserializer(bytes);
       payload = starcoin_types.TransactionPayload.deserialize(de);
-      log.debug({ payload });
+      // log.debug({ payload });
     }
     const rawUserTransaction = utils.tx.generateRawUserTransaction(
       fromAddress,
