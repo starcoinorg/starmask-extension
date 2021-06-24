@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.5.0] - 2021-06-23
+- support web Dapps wake up the wallet popup window to confirm a trnasaction(payload type is ScriptFunction), type=CONTRACT_INTERACTION.
+
 ## [1.4.2] - 2021-06-10
 
 - fix #6: scan qrImage get address with prefix of `ethereum:`
