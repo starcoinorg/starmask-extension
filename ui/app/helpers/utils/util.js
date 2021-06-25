@@ -1,7 +1,7 @@
 import punycode from 'punycode/punycode';
 import abi from 'human-standard-token-abi';
 import BigNumber from 'bignumber.js';
-import ethUtil from 'ethereumjs-util';
+import * as stcUtil from '@starcoin/stc-util';
 import { DateTime } from 'luxon';
 import { addHexPrefix } from '../../../../app/scripts/lib/util';
 import {
@@ -44,7 +44,7 @@ const valueTable = {
 };
 const bnTable = {};
 Object.keys(valueTable).forEach((currency) => {
-  bnTable[currency] = new ethUtil.BN(valueTable[currency], 10);
+  bnTable[currency] = new stcUtil.BN(valueTable[currency], 10);
 });
 
 /**
@@ -86,7 +86,7 @@ export function addressSummary(
   }
   let checked = checksumAddress(address);
   if (!includeHex) {
-    checked = ethUtil.stripHexPrefix(checked);
+    checked = stcUtil.stripHexPrefix(checked);
   }
   return checked
     ? `${checked.slice(0, firstSegLength)}...${checked.slice(
@@ -101,8 +101,8 @@ export function isValidAddress(address) {
   }
   const prefixed = addHexPrefix(address);
   return (
-    (isAllOneCase(prefixed.slice(2)) && ethUtil.isValidAddress(prefixed)) ||
-    ethUtil.isValidChecksumAddress(prefixed)
+    (isAllOneCase(prefixed.slice(2)) && stcUtil.isValidAddress(prefixed)) ||
+    stcUtil.isValidChecksumAddress(prefixed)
   );
 }
 
@@ -155,10 +155,10 @@ export function isAllOneCase(address) {
 // Takes wei Hex, returns wei BN, even if input is null
 export function numericBalance(balance) {
   if (!balance) {
-    return new ethUtil.BN(0, 16);
+    return new stcUtil.BN(0, 16);
   }
-  const stripped = ethUtil.stripHexPrefix(balance);
-  return new ethUtil.BN(stripped, 16);
+  const stripped = stcUtil.stripHexPrefix(balance);
+  return new stcUtil.BN(stripped, 16);
 }
 
 // Takes  hex, returns [beforeDecimal, afterDecimal]
@@ -269,7 +269,7 @@ export function normalizeToWei(amount, currency) {
 
 export function normalizeEthStringToWei(str) {
   const parts = str.split('.');
-  let eth = new ethUtil.BN(parts[0], 10).mul(bnTable.wei);
+  let eth = new stcUtil.BN(parts[0], 10).mul(bnTable.wei);
   if (parts[1]) {
     let decimal = parts[1];
     while (decimal.length < 18) {
@@ -278,16 +278,16 @@ export function normalizeEthStringToWei(str) {
     if (decimal.length > 18) {
       decimal = decimal.slice(0, 18);
     }
-    const decimalBN = new ethUtil.BN(decimal, 10);
+    const decimalBN = new stcUtil.BN(decimal, 10);
     eth = eth.add(decimalBN);
   }
   return eth;
 }
 
-const multiple = new ethUtil.BN('10000', 10);
+const multiple = new stcUtil.BN('10000', 10);
 export function normalizeNumberToWei(n, currency) {
   const enlarged = n * 10000;
-  const amount = new ethUtil.BN(String(enlarged), 10);
+  const amount = new stcUtil.BN(String(enlarged), 10);
   return normalizeToWei(amount, currency).div(multiple);
 }
 
@@ -339,7 +339,7 @@ export function exportAsFile(filename, data, type = 'text/csv') {
  *
  */
 export function checksumAddress(address) {
-  const checksummed = address ? ethUtil.toChecksumAddress(address) : '';
+  const checksummed = address ? stcUtil.toChecksumAddress(address) : '';
   return checksummed;
 }
 
