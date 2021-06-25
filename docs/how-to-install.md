@@ -58,3 +58,6 @@ StarMask 下载页](https://chrome.google.com/webstore/detail/starmask/mfhbebgoc
 14. 点击 StarMask插件的图标，弹出插件钱包主页面(弹窗模式)
 
     ![](./images/26.jpg)
+
+# 参考
+- [使用指南](./how-to-use.md)

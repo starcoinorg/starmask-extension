@@ -74,3 +74,7 @@
 - c 切换网络
 
     ![](./images/30.jpg)
+
+
+# 参考
+- [安装指南](./how-to-install.md)
