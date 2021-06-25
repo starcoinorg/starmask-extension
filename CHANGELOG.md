@@ -1,5 +1,9 @@
 # Changelog
 
+
+## [1.5.1] - 2021-06-25
+- Do not check the existence on the chain of the 0x's Receipt Address while send STC.
+
 ## [1.5.0] - 2021-06-23
 - support web Dapps wake up the wallet popup window to confirm a trnasaction(payload type is ScriptFunction), type=CONTRACT_INTERACTION.
 
