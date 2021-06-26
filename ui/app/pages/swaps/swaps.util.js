@@ -363,7 +363,7 @@ export async function fetchSwapsQuoteRefreshTime(chainId) {
   }
 
   throw new Error(
-    `MetaMask - refreshTime provided invalid response: ${response}`,
+    `StarMask - refreshTime provided invalid response: ${response}`,
   );
 }
 
@@ -531,15 +531,15 @@ export function quotesToRenderableData(
       chainId,
     )
       ? calcTokenAmount(destinationAmount, destinationTokenInfo.decimals).minus(
-          rawEthFee,
+        rawEthFee,
+        10,
+      )
+      : new BigNumber(tokenConversionRate || 0, 10)
+        .times(
+          calcTokenAmount(destinationAmount, destinationTokenInfo.decimals),
           10,
         )
-      : new BigNumber(tokenConversionRate || 0, 10)
-          .times(
-            calcTokenAmount(destinationAmount, destinationTokenInfo.decimals),
-            10,
-          )
-          .minus(rawEthFee, 10);
+        .minus(rawEthFee, 10);
 
     let liquiditySourceKey;
     let renderedSlippage = slippage;
@@ -657,9 +657,9 @@ export function getSwapsTokensReceivedFromTxMeta(
     });
     return tokenTransferLog
       ? toPrecisionWithoutTrailingZeros(
-          calcTokenAmount(tokenTransferLog.data, tokenDecimals).toString(10),
-          6,
-        )
+        calcTokenAmount(tokenTransferLog.data, tokenDecimals).toString(10),
+        6,
+      )
       : '';
   }
   return null;
