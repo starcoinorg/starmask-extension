@@ -75,7 +75,7 @@
     "activeTab"
   ],
   "short_name": "__MSG_appName__",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "web_accessible_resources": [
     "inpage.js",
     "phishing.html"

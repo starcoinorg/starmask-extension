@@ -1,5 +1,8 @@
 # Changelog
 
+## [1.6.0] - 2021-06-26
+- fix bug: the exported privateKey and receiptIdentifier of HD accounts are the same
+- sync with @starcoin/stc-keyring-controller^1.3.1
 
 ## [1.5.1] - 2021-06-25
 - Do not check the existence on the chain of the 0x's Receipt Address while send STC.
