@@ -15,19 +15,19 @@ import pify from 'pify';
 import Web3 from 'web3';
 import BigNumber from 'bignumber.js';
 import SINGLE_CALL_BALANCES_ABI from 'single-call-balance-checker-abi';
-import {
-  MAINNET_CHAIN_ID,
-  RINKEBY_CHAIN_ID,
-  ROPSTEN_CHAIN_ID,
-  KOVAN_CHAIN_ID,
-} from '../../../shared/constants/network';
+// import {
+//   MAINNET_CHAIN_ID,
+//   RINKEBY_CHAIN_ID,
+//   ROPSTEN_CHAIN_ID,
+//   KOVAN_CHAIN_ID,
+// } from '../../../shared/constants/network';
 
-import {
-  SINGLE_CALL_BALANCES_ADDRESS,
-  SINGLE_CALL_BALANCES_ADDRESS_RINKEBY,
-  SINGLE_CALL_BALANCES_ADDRESS_ROPSTEN,
-  SINGLE_CALL_BALANCES_ADDRESS_KOVAN,
-} from '../constants/contracts';
+// import {
+//   SINGLE_CALL_BALANCES_ADDRESS,
+//   SINGLE_CALL_BALANCES_ADDRESS_RINKEBY,
+//   SINGLE_CALL_BALANCES_ADDRESS_ROPSTEN,
+//   SINGLE_CALL_BALANCES_ADDRESS_KOVAN,
+// } from '../constants/contracts';
 import { bnToHex } from './util';
 
 /**
@@ -205,40 +205,41 @@ export default class AccountTracker {
   async _updateAccounts() {
     const { accounts } = this.store.getState();
     const addresses = Object.keys(accounts);
-    const chainId = this.getCurrentChainId();
+    // const chainId = this.getCurrentChainId();
 
-    switch (chainId) {
-      case MAINNET_CHAIN_ID:
-        await this._updateAccountsViaBalanceChecker(
-          addresses,
-          SINGLE_CALL_BALANCES_ADDRESS,
-        );
-        break;
+    // switch (chainId) {
+    //   case MAINNET_CHAIN_ID:
+    //     await this._updateAccountsViaBalanceChecker(
+    //       addresses,
+    //       SINGLE_CALL_BALANCES_ADDRESS,
+    //     );
+    //     break;
 
-      case RINKEBY_CHAIN_ID:
-        await this._updateAccountsViaBalanceChecker(
-          addresses,
-          SINGLE_CALL_BALANCES_ADDRESS_RINKEBY,
-        );
-        break;
+    //   case RINKEBY_CHAIN_ID:
+    //     await this._updateAccountsViaBalanceChecker(
+    //       addresses,
+    //       SINGLE_CALL_BALANCES_ADDRESS_RINKEBY,
+    //     );
+    //     break;
 
-      case ROPSTEN_CHAIN_ID:
-        await this._updateAccountsViaBalanceChecker(
-          addresses,
-          SINGLE_CALL_BALANCES_ADDRESS_ROPSTEN,
-        );
-        break;
+    //   case ROPSTEN_CHAIN_ID:
+    //     await this._updateAccountsViaBalanceChecker(
+    //       addresses,
+    //       SINGLE_CALL_BALANCES_ADDRESS_ROPSTEN,
+    //     );
+    //     break;
 
-      case KOVAN_CHAIN_ID:
-        await this._updateAccountsViaBalanceChecker(
-          addresses,
-          SINGLE_CALL_BALANCES_ADDRESS_KOVAN,
-        );
-        break;
+    //   case KOVAN_CHAIN_ID:
+    //     await this._updateAccountsViaBalanceChecker(
+    //       addresses,
+    //       SINGLE_CALL_BALANCES_ADDRESS_KOVAN,
+    //     );
+    //     break;
 
-      default:
-        await Promise.all(addresses.map(this._updateAccount.bind(this)));
-    }
+    //   default:
+    //     await Promise.all(addresses.map(this._updateAccount.bind(this)));
+    // }
+    await Promise.all(addresses.map(this._updateAccount.bind(this)));
   }
 
   /**
