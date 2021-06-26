@@ -1,9 +1,10 @@
 import Web3 from 'web3';
 import contracts from '@metamask/contract-metadata';
 import { warn } from 'loglevel';
-import SINGLE_CALL_BALANCES_ABI from 'single-call-balance-checker-abi';
+// import SINGLE_CALL_BALANCES_ABI from 'single-call-balance-checker-abi';
 import { MAINNET_CHAIN_ID } from '../../../shared/constants/network';
-import { SINGLE_CALL_BALANCES_ADDRESS } from '../constants/contracts';
+// import { SINGLE_CALL_BALANCES_ADDRESS } from '../constants/contracts';
+// import { LOG_IGNORE_METHODS } from './permissions/enums';
 
 // By default, poll every 3 minutes
 const DEFAULT_INTERVAL = 180 * 1000;
@@ -58,7 +59,7 @@ export default class DetectTokensController {
       result = await this._getTokenBalances(tokensToDetect);
     } catch (error) {
       warn(
-        `MetaMask - DetectTokensController single call balance fetch failed`,
+        `StarMask - DetectTokensController single call balance fetch failed`,
         error,
       );
       return;
@@ -77,17 +78,18 @@ export default class DetectTokensController {
   }
 
   async _getTokenBalances(tokens) {
-    const ethContract = this.web3.eth
-      .contract(SINGLE_CALL_BALANCES_ABI)
-      .at(SINGLE_CALL_BALANCES_ADDRESS);
-    return new Promise((resolve, reject) => {
-      ethContract.balances([this.selectedAddress], tokens, (error, result) => {
-        if (error) {
-          return reject(error);
-        }
-        return resolve(result);
-      });
-    });
+    return [];
+    // const ethContract = this.web3.eth
+    //   .contract(SINGLE_CALL_BALANCES_ABI)
+    //   .at(SINGLE_CALL_BALANCES_ADDRESS);
+    // return new Promise((resolve, reject) => {
+    //   ethContract.balances([this.selectedAddress], tokens, (error, result) => {
+    //     if (error) {
+    //       return reject(error);
+    //     }
+    //     return resolve(result);
+    //   });
+    // });
   }
 
   /**
