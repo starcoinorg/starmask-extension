@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { debounce } from 'lodash';
-import {
-  isValidReceipt,
-} from '../../helpers/utils/util';
+import { isValidAddress } from '@starcoin/stc-util';
+import { isValidReceipt } from '../../helpers/utils/util';
 import {
   getAmountErrorObject,
   getGasFeeErrorObject,
@@ -169,25 +168,25 @@ export default class SendTransactionScreen extends Component {
       updateGas = true;
     }
 
-    // let scannedAddress;
-    // if (qrCodeData) {
-    //   if (qrCodeData.type === 'address') {
-    //     scannedAddress = qrCodeData.values.address.toLowerCase();
-    //     if (ethUtil.isValidAddress(scannedAddress)) {
-    //       const currentAddress = prevTo?.toLowerCase();
-    //       if (currentAddress !== scannedAddress) {
-    //         updateSendTo(scannedAddress);
-    //         updateGas = true;
-    //         // Clean up QR code data after handling
-    //         qrCodeDetected(null);
-    //       }
-    //     } else {
-    //       scannedAddress = null;
-    //       qrCodeDetected(null);
-    //       this.setState({ toError: INVALID_RECIPIENT_ADDRESS_ERROR });
-    //     }
-    //   }
-    // }
+    let scannedAddress;
+    if (qrCodeData) {
+      if (qrCodeData.type === 'address') {
+        scannedAddress = qrCodeData.values.address.toLowerCase();
+        if (isValidAddress(scannedAddress)) {
+          const currentAddress = prevTo?.toLowerCase();
+          if (currentAddress !== scannedAddress) {
+            updateSendTo(scannedAddress);
+            updateGas = true;
+            // Clean up QR code data after handling
+            qrCodeDetected(null);
+          }
+        } else {
+          scannedAddress = null;
+          qrCodeDetected(null);
+          this.setState({ toError: INVALID_RECIPIENT_ADDRESS_ERROR });
+        }
+      }
+    }
 
     if (updateGas) {
       if (scannedAddress) {
