@@ -1,3 +1,5 @@
+import BigNumber from 'bignumber.js';
+import { conversionUtil } from '../../../helpers/utils/conversion-util';
 import { TRANSACTION_TYPES } from '../../../../../shared/constants/transaction';
 import { getHexGasTotal } from '../../../helpers/utils/confirm-tx.util';
 
@@ -53,8 +55,8 @@ export function getActivities(transaction, isFirstTransaction = false) {
     metamaskNetworkId,
     hash,
     history = [],
-    txParams: { gas: paramsGasLimit, gasPrice: paramsGasPrice },
-    xReceipt: { status } = {},
+    txParams: { gasPrice: paramsGasPrice },
+    txReceipt: { status, gasUsed: gasUsedStr } = {},
     type,
   } = transaction;
 
@@ -89,6 +91,13 @@ export function getActivities(transaction, isFirstTransaction = false) {
     } else if (Array.isArray(base)) {
       const events = [];
 
+      let gasUsed = gasUsedStr;
+      if (gasUsedStr && gasUsedStr.slice(0, 2) !== '0x') {
+        gasUsed = conversionUtil(new BigNumber(gasUsedStr, 10), {
+          fromNumericBase: 'BN',
+          toNumericBase: 'hex',
+        });
+      }
       base.forEach((entry) => {
         const { op, path, value, timestamp: entryTimestamp } = entry;
         // Not all sub-entries in a history entry have a timestamp. If the sub-entry does not have a
@@ -98,17 +107,17 @@ export function getActivities(transaction, isFirstTransaction = false) {
         if (path in eventPathsHash && op === REPLACE_OP) {
           switch (path) {
             case STATUS_PATH: {
+              const paramsGasUsed = typeof gasUsedStr === 'string' ? gasUsed : cachedGasLimit;
               const gasFee =
                 cachedGasLimit === '0x0' && cachedGasPrice === '0x0'
                   ? getHexGasTotal({
-                      gasLimit: paramsGasLimit,
-                      gasPrice: paramsGasPrice,
-                    })
+                    gasLimit: paramsGasUsed,
+                    gasPrice: paramsGasPrice,
+                  })
                   : getHexGasTotal({
-                      gasLimit: cachedGasLimit,
-                      gasPrice: cachedGasPrice,
-                    });
-
+                    gasLimit: paramsGasUsed,
+                    gasPrice: cachedGasPrice,
+                  });
               if (value in statusHash) {
                 let eventKey = statusHash[value];
 
@@ -191,12 +200,12 @@ export function getActivities(transaction, isFirstTransaction = false) {
   // so we add an error entry to the Activity Log.
   return status === '0x0'
     ? historyActivities.concat({
-        id,
-        hash,
-        chainId,
-        metamaskNetworkId,
-        eventKey: TRANSACTION_ERRORED_EVENT,
-      })
+      id,
+      hash,
+      chainId,
+      metamaskNetworkId,
+      eventKey: TRANSACTION_ERRORED_EVENT,
+    })
     : historyActivities;
 }
 
