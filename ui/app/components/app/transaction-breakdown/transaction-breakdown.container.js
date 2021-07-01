@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import BigNumber from 'bignumber.js';
 import {
   getIsMainnet,
   getNativeCurrency,
@@ -6,26 +7,36 @@ import {
 } from '../../../selectors';
 import { getHexGasTotal } from '../../../helpers/utils/confirm-tx.util';
 import { sumHexes } from '../../../helpers/utils/transactions.util';
+import { conversionUtil } from '../../../helpers/utils/conversion-util';
 import TransactionBreakdown from './transaction-breakdown.component';
 
 const mapStateToProps = (state, ownProps) => {
   const { transaction, isTokenApprove } = ownProps;
   const {
     txParams: { gas, gasPrice, value } = {},
-    txReceipt: { gasUsed } = {},
+    txReceipt: { gasUsed: gasUsedStr } = {},
   } = transaction;
   const { showFiatInTestnets } = getPreferences(state);
   const isMainnet = getIsMainnet(state);
 
-  const gasLimit = typeof gasUsed === 'string' ? gasUsed : gas;
+  let gasUsed = gasUsedStr;
 
+  if (gasUsedStr.slice(0, 2) !== '0x') {
+    gasUsed = conversionUtil(new BigNumber(gasUsedStr, 10), {
+      fromNumericBase: 'BN',
+      toNumericBase: 'hex',
+    });
+  }
+  const gasLimit = typeof gasUsedStr === 'string' ? gasUsed : gas;
   const hexGasTotal =
     (gasLimit && gasPrice && getHexGasTotal({ gasLimit, gasPrice })) || '0x0';
   const totalInHex = sumHexes(hexGasTotal, value);
 
   return {
     nativeCurrency: getNativeCurrency(state),
-    showFiat: isMainnet || Boolean(showFiatInTestnets),
+    // Do not show fiat, because we have the only one: STC
+    // showFiat: isMainnet || Boolean(showFiatInTestnets),
+    showFiat: false,
     totalInHex,
     gas,
     gasPrice,
