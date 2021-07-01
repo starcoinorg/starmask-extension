@@ -110,7 +110,7 @@ export default class SignatureRequestOriginal extends Component {
       fromAccount: { balance },
     } = this.state;
 
-    const balanceInEther = conversionUtil(balance, {
+    const balanceInStc = conversionUtil(balance, {
       fromNumericBase: 'hex',
       toNumericBase: 'dec',
       fromDenomination: 'NANOSTC',
@@ -124,7 +124,7 @@ export default class SignatureRequestOriginal extends Component {
           {`${this.context.t('balance')}:`}
         </div>
         <div className="request-signature__balance-value">
-          {`${balanceInEther} ETH`}
+          {`${balanceInStc} STC`}
         </div>
       </div>
     );

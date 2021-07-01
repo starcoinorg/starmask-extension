@@ -134,7 +134,7 @@ export default class ConfirmDecryptMessage extends Component {
     } = this.state;
     const { t } = this.context;
 
-    const balanceInEther = conversionUtil(balance, {
+    const balanceInStc = conversionUtil(balance, {
       fromNumericBase: 'hex',
       toNumericBase: 'dec',
       fromDenomination: 'NANOSTC',
@@ -148,7 +148,7 @@ export default class ConfirmDecryptMessage extends Component {
           {`${t('balance')}:`}
         </div>
         <div className="request-decrypt-message__balance-value">
-          {`${balanceInEther} ETH`}
+          {`${balanceInStc} STC`}
         </div>
       </div>
     );

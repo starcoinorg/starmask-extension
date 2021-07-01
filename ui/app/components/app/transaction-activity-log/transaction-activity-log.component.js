@@ -83,18 +83,18 @@ export default class TransactionActivityLog extends PureComponent {
     const ethValue =
       index === 0
         ? `${getValueFromWeiHex({
-            value,
-            fromCurrency: 'ETH',
-            toCurrency: 'ETH',
-            conversionRate,
-            numberOfDecimals: 6,
-          })} ${nativeCurrency}`
+          value,
+          fromCurrency: 'STC',
+          toCurrency: 'STC',
+          conversionRate,
+          numberOfDecimals: 6,
+        })} ${nativeCurrency}`
         : getEthConversionFromWeiHex({
-            value,
-            fromCurrency: 'ETH',
-            conversionRate,
-            numberOfDecimals: 3,
-          });
+          value,
+          fromCurrency: 'STC',
+          conversionRate,
+          numberOfDecimals: 3,
+        });
     const formattedTimestamp = formatDate(timestamp, "T 'on' M/d/y");
     const activityText = this.context.t(eventKey, [
       ethValue,

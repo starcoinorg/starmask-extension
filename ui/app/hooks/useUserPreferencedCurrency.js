@@ -4,14 +4,14 @@ import {
   getShouldShowFiat,
   getNativeCurrency,
 } from '../selectors';
-import { PRIMARY, SECONDARY, ETH } from '../helpers/constants/common';
+import { PRIMARY, SECONDARY, STC } from '../helpers/constants/common';
 
 /**
  * Defines the shape of the options parameter for useUserPreferencedCurrency
  * @typedef {Object} UseUserPreferencedCurrencyOptions
  * @property {number} [numberOfDecimals]     - Number of significant decimals to display
  * @property {number} [ethNumberOfDecimals]  - Number of significant decimals to display
- *                                             when using ETH
+ *                                             when using STC
  * @property {number} [fiatNumberOfDecimals] - Number of significant decimals to display
  *                                            when using fiat
  */
@@ -19,7 +19,7 @@ import { PRIMARY, SECONDARY, ETH } from '../helpers/constants/common';
 /**
  * Defines the return shape of useUserPreferencedCurrency
  * @typedef {Object} UserPreferredCurrency
- * @property {string} currency         - the currency type to use (eg: 'ETH', 'usd')
+ * @property {string} currency         - the currency type to use (eg: 'STC', 'usd')
  * @property {number} numberOfDecimals - Number of significant decimals to display
  */
 
@@ -44,8 +44,8 @@ export function useUserPreferencedCurrency(type, opts = {}) {
     (type === PRIMARY && useNativeCurrencyAsPrimaryCurrency) ||
     (type === SECONDARY && !useNativeCurrencyAsPrimaryCurrency)
   ) {
-    // Display ETH
-    currency = nativeCurrency || ETH;
+    // Display STC
+    currency = nativeCurrency || STC;
     numberOfDecimals = opts.numberOfDecimals || opts.ethNumberOfDecimals || 6;
   } else if (
     (type === SECONDARY && useNativeCurrencyAsPrimaryCurrency) ||

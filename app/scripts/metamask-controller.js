@@ -173,7 +173,7 @@ export default class MetamaskController extends EventEmitter {
       preferences: this.preferencesController.store,
       getNativeCurrency: () => {
         const { ticker } = this.networkController.getProviderConfig();
-        return ticker ?? 'ETH';
+        return ticker ?? 'STC';
       },
     });
 
@@ -358,7 +358,7 @@ export default class MetamaskController extends EventEmitter {
       );
     });
     const { ticker } = this.networkController.getProviderConfig();
-    this.currencyRateController.configure({ nativeCurrency: ticker ?? 'ETH' });
+    this.currencyRateController.configure({ nativeCurrency: ticker ?? 'STC' });
     this.networkController.lookupNetwork();
     this.messageManager = new MessageManager();
     this.personalMessageManager = new PersonalMessageManager();
@@ -2488,7 +2488,7 @@ export default class MetamaskController extends EventEmitter {
   async updateAndSetCustomRpc(
     rpcUrl,
     chainId,
-    ticker = 'ETH',
+    ticker = 'STC',
     nickname,
     rpcPrefs,
   ) {

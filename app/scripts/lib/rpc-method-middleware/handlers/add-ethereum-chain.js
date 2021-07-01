@@ -75,8 +75,8 @@ async function addEthereumChainHandler(
   const firstValidBlockExplorerUrl =
     blockExplorerUrls !== null && Array.isArray(blockExplorerUrls)
       ? blockExplorerUrls.find((blockExplorerUrl) =>
-          validUrl.isHttpsUri(blockExplorerUrl),
-        )
+        validUrl.isHttpsUri(blockExplorerUrl),
+      )
       : null;
 
   if (!firstValidRPCUrl) {
@@ -205,7 +205,7 @@ async function addEthereumChainHandler(
       );
     }
   }
-  const ticker = nativeCurrency?.symbol || 'ETH';
+  const ticker = nativeCurrency?.symbol || 'STC';
 
   if (typeof ticker !== 'string' || ticker.length < 2 || ticker.length > 6) {
     return end(

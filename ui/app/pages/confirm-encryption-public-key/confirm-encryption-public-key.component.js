@@ -114,7 +114,7 @@ export default class ConfirmEncryptionPublicKey extends Component {
       fromAccount: { balance },
     } = this.state;
 
-    const balanceInEther = conversionUtil(balance, {
+    const balanceInStc = conversionUtil(balance, {
       fromNumericBase: 'hex',
       toNumericBase: 'dec',
       fromDenomination: 'NANOSTC',
@@ -128,7 +128,7 @@ export default class ConfirmEncryptionPublicKey extends Component {
           {`${t('balance')}:`}
         </div>
         <div className="request-encryption-public-key__balance-value">
-          {`${balanceInEther} ETH`}
+          {`${balanceInStc} STC`}
         </div>
       </div>
     );
