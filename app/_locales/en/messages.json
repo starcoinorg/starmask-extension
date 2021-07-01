@@ -1560,6 +1560,9 @@
   "settings": {
     "message": "Settings"
   },
+  "sequenceNumber": {
+    "message": "Sequence Number"
+  },
   "showAdvancedGasInline": {
     "message": "Advanced gas controls"
   },

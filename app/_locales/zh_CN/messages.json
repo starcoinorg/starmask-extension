@@ -1466,6 +1466,9 @@
   "settings": {
     "message": "设置"
   },
+  "sequenceNumber": {
+    "message": "序号"
+  },
   "showAdvancedGasInline": {
     "message": "高级燃料控制"
   },

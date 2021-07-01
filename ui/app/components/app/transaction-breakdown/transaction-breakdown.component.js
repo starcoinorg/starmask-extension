@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import CurrencyDisplay from '../../ui/currency-display';
 import UserPreferencedCurrencyDisplay from '../user-preferenced-currency-display';
 import HexToDecimal from '../../ui/hex-to-decimal';
-import { MILLISTC, PRIMARY, SECONDARY } from '../../../helpers/constants/common';
+import { NANOSTC, PRIMARY, SECONDARY } from '../../../helpers/constants/common';
 import TransactionBreakdownRow from './transaction-breakdown-row';
 
 export default class TransactionBreakdown extends PureComponent {
@@ -46,7 +46,7 @@ export default class TransactionBreakdown extends PureComponent {
     return (
       <div className={classnames('transaction-breakdown', className)}>
         <div className="transaction-breakdown__title">{t('transaction')}</div>
-        <TransactionBreakdownRow title="Nonce">
+        <TransactionBreakdownRow title={t('sequenceNumber')}>
           {typeof nonce === 'undefined' ? null : (
             <HexToDecimal
               className="transaction-breakdown__value"
@@ -93,7 +93,7 @@ export default class TransactionBreakdown extends PureComponent {
               className="transaction-breakdown__value"
               data-testid="transaction-breakdown__gas-price"
               currency={nativeCurrency}
-              denomination={MILLISTC}
+              denomination={NANOSTC}
               value={gasPrice}
               hideLabel
             />
