@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.6.1] - 2021-07-01
+- fix: scannedAddress is not undefined while switch network in the send page
+- fix: display errors in the transaction detail page
+
 ## [1.6.0] - 2021-06-26
 - fix bug: the exported privateKey and receiptIdentifier of HD accounts are the same
 - sync with @starcoin/stc-keyring-controller^1.3.1
