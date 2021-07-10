@@ -17,7 +17,7 @@ const defaultNetworksData = [
     rpcUrl: 'https://main-seed.starcoin.org',
     chainId: MAINNET_CHAIN_ID,
     ticker: 'STC',
-    blockExplorerUrl: 'http://explorer.starcoin.org/main',
+    blockExplorerUrl: 'https://stcscan.io/main',
   },
   {
     labelKey: BARNARD,
@@ -26,7 +26,7 @@ const defaultNetworksData = [
     rpcUrl: 'https://barnard-seed.starcoin.org',
     chainId: BARNARD_CHAIN_ID,
     ticker: 'STC',
-    blockExplorerUrl: 'http://explorer.starcoin.org/barnard',
+    blockExplorerUrl: 'https://stcscan.io/barnard',
   },
   {
     labelKey: HALLEY,
@@ -35,7 +35,7 @@ const defaultNetworksData = [
     rpcUrl: 'https://halley-seed.starcoin.org',
     chainId: HALLEY_CHAIN_ID,
     ticker: 'STC',
-    blockExplorerUrl: 'http://explorer.starcoin.org/halley',
+    blockExplorerUrl: 'https://stcscan.io/halley',
   },
   {
     labelKey: PROXIMA,
@@ -44,7 +44,7 @@ const defaultNetworksData = [
     rpcUrl: 'https://proxima-seed.starcoin.org',
     chainId: PROXIMA_CHAIN_ID,
     ticker: 'STC',
-    blockExplorerUrl: 'http://explorer.starcoin.org/proxima',
+    blockExplorerUrl: 'https://stcscan.io/proxima',
   },
 ];
 
