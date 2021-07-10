@@ -12,6 +12,7 @@ import KeyringController from '@starcoin/stc-keyring-controller';
 import { Mutex } from 'await-semaphore';
 import * as ethUtil from '@starcoin/stc-util';
 import { encoding } from '@starcoin/starcoin';
+import BigNumber from 'bignumber.js';
 import log from 'loglevel';
 // import TrezorKeyring from 'eth-trezor-keyring';
 // import LedgerBridgeKeyring from '@metamask/eth-ledger-bridge-keyring';
@@ -1021,7 +1022,7 @@ export default class MetamaskController extends EventEmitter {
         ethQuery.getResource(
           address,
           '0x1::Account::Balance<0x1::STC::STC>',
-          (error, balance) => {
+          (error, res) => {
             if (error) {
               log.error(error);
               if (error.message && error.message === 'Invalid params: unable to parse AccoutAddress.') {
@@ -1030,6 +1031,9 @@ export default class MetamaskController extends EventEmitter {
                 reject(error);
               }
             } else {
+              const balanceDecimal = res && res.value[0][1].Struct.value[0][1].U128 || 0;
+              const balanceHex = new BigNumber(balanceDecimal, 10).toString(16);
+              const balance = ethUtil.addHexPrefix(balanceHex);
               resolve(balance || '0x0');
             }
           },
