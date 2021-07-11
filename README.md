@@ -4,6 +4,7 @@ A blockchain wallet browser extension for Starcoin blockchain.
 # Initialize
 ```
 yarn setup
+cp .starmaskrc.dist .starmaskrc # change the values according to your needs
 yarn start
 ```
 
