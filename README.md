@@ -28,5 +28,5 @@ yarn start
 - `yarn dist`
 
 # Docs
-- [How to install](./docs/how-to-install)
-- [How to use](./docs/how-to-use)
+- [How to install](./docs/how-to-install.md)
+- [How to use](./docs/how-to-use.md)
