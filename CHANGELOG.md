@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.7.0] - 2021-07-11
+- support `Personal Sign' in [starmask-test-dapp](https://github.com/starcoinorg/starmask-test-dapp)
+- change explorer url to https://stcscan.io
+- fix: create vault by import mnemoonic will get 2 accounts
+
 ## [1.6.1] - 2021-07-01
 - fix: scannedAddress is not undefined while switch network in the send page
 - fix: display errors in the transaction detail page
