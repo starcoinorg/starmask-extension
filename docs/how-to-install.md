@@ -26,6 +26,15 @@ StarMask 下载页](https://chrome.google.com/webstore/detail/starmask/mfhbebgoc
 5. StarMask 插件安装成功
     ![](./images/install_zip_5.jpg)
     
+## 三、将 StarMask 插件图标 固定在 插件栏
+
+1. 点击浏览器右上角`扩展程序`图标，选中 `StarMask` 右侧 图钉
+
+    ![](./images/11.jpg)
+
+2. StarMask插件的图标会固定出现在浏览器右上角的 插件栏 里
+
+    ![](./images/12.jpg)
 ## 三、初始化
 
 1. 点击 `开始使用`
@@ -68,15 +77,8 @@ StarMask 下载页](https://chrome.google.com/webstore/detail/starmask/mfhbebgoc
 
     ![](./images/10.jpg)
  
-10. 点击浏览器右上角`扩展程序`图标，选中 `StarMask` 右侧 图钉
 
-    ![](./images/11.jpg)
-
-11. StarMask插件的图标会固定出现在浏览器右上角
-
-    ![](./images/12.jpg)
-
-12. 点击 StarMask插件的图标，弹出插件钱包主页面(弹窗模式)
+10. 点击 StarMask插件的图标，弹出插件钱包主页面(弹窗模式)
 
     ![](./images/26.jpg)
 
