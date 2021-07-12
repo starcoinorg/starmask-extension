@@ -6,6 +6,7 @@ import createInflightMiddleware from '@starcoin/stc-json-rpc-middleware/inflight
 import createBlockTrackerInspectorMiddleware from '@starcoin/stc-json-rpc-middleware/block-tracker-inspector';
 import providerFromMiddleware from '@starcoin/stc-json-rpc-middleware/providerFromMiddleware';
 import { PollingBlockTracker } from '@starcoin/stc-block-tracker';
+import { hexToDecimal } from '../../../../ui/app/helpers/utils/conversions.util';
 
 const inTest = process.env.IN_TEST === 'true';
 const blockTrackerOpts = inTest ? { pollingInterval: 30000 } : {};
@@ -38,7 +39,7 @@ export default function createJsonRpcClient({ rpcUrl, chainId }) {
 function createChainIdMiddleware(chainId) {
   return (req, res, next, end) => {
     if (req.method === 'chain.id') {
-      res.result = chainId;
+      res.result = { name: chainId, id: Number(hexToDecimal(chainId)) };
       return end();
     }
     return next();
