@@ -9,7 +9,7 @@ yarn start
 ```
 # Development
 
-It is convenient to use `yarn link @starcoin/xxx` for debugging,
+It is convenient to use `yarn link @starcoin/xxx` for debugging in localhost,
 
 but dont forget doing the following steps before next release:
 
