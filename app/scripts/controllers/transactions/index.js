@@ -228,6 +228,9 @@ export default class TransactionController extends EventEmitter {
    * @returns {txMeta}
    */
   async addUnapprovedTransaction(txParams, origin) {
+    log.debug(
+      `MetaMaskController addUnapprovedTransaction ${JSON.stringify(txParams)}`,
+    );
     // validate
     const normalizedTxParams = txUtils.normalizeTxParams(txParams);
 
@@ -269,6 +272,7 @@ export default class TransactionController extends EventEmitter {
     const { type, getCodeResponse } = await this._determineTransactionType(
       txParams,
     );
+    log.debug({ type, getCodeResponse })
     txMeta.type = type;
 
     // ensure value
@@ -302,7 +306,9 @@ export default class TransactionController extends EventEmitter {
    * @returns {Promise<object>} resolves with txMeta
    */
   async addTxGasDefaults(txMeta, getCodeResponse) {
+    log.debug('addTxGasDefaults', { txMeta, getCodeResponse })
     const defaultGasPrice = await this._getDefaultGasPrice(txMeta);
+    log.debug({ defaultGasPrice })
     const {
       gasLimit: defaultGasLimit,
       simulationFails,
@@ -319,6 +325,7 @@ export default class TransactionController extends EventEmitter {
     if (defaultGasLimit && !txMeta.txParams.gas) {
       txMeta.txParams.gas = defaultGasLimit;
     }
+    log.debug({ txMeta })
     return txMeta;
   }
 
@@ -331,8 +338,8 @@ export default class TransactionController extends EventEmitter {
     if (txMeta.txParams.gasPrice) {
       return undefined;
     }
-    const gasPrice = await this.query.gasPrice();
-
+    // const gasPrice = await this.query.gasPrice();
+    const gasPrice = 1;
     return addHexPrefix(gasPrice.toString(16));
   }
 
