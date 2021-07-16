@@ -21,8 +21,8 @@ const mapStateToProps = (state, ownProps) => {
   // const isMainnet = getIsMainnet(state);
 
   let gasUsed = gasUsedStr;
-
-  if (gasUsedStr.slice(0, 2) !== '0x') {
+  // check gasUsedStr first in case txReceipt is undefined before txn is confirmed
+  if (gasUsedStr && gasUsedStr.slice(0, 2) !== '0x') {
     gasUsed = conversionUtil(new BigNumber(gasUsedStr, 10), {
       fromNumericBase: 'BN',
       toNumericBase: 'hex',
