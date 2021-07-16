@@ -720,7 +720,7 @@
     "message": "燃料限制是指您愿意花费的最燃料量单位。"
   },
   "gasLimitTooLow": {
-    "message": "燃料限制至少要 21000"
+    "message": "燃料限制至少要 13000"
   },
   "gasLimitTooLowWithDynamicFee": {
     "message": "燃料限制至少要 $1",

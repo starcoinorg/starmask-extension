@@ -33,7 +33,7 @@ import * as txUtils from './lib/util';
 const { arrayify, hexlify } = ethers.utils;
 // const hstInterface = new ethers.utils.Interface(abi);
 
-const SIMPLE_GAS_COST = '0x5208'; // Hex for 21000, cost of a simple send.
+const SIMPLE_GAS_COST = '0x32c8'; // Hex for 13000, cost of a simple send.
 const MAX_MEMSTORE_TX_LIST_SIZE = 100; // Number of transactions (by unique nonces) to keep in memory
 
 /**
@@ -80,7 +80,7 @@ export default class TransactionController extends EventEmitter {
     this.memStore = new ObservableStore({});
     this.query = new EthQuery(this.provider);
 
-    this.txGasUtil = new TxGasUtil(this.provider);
+    this.txGasUtil = new TxGasUtil(this.provider, this.preferencesStore.getState());
     this._mapMethods();
     this.txStateManager = new TransactionStateManager({
       initState: opts.initState,

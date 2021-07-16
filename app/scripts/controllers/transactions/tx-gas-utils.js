@@ -4,7 +4,7 @@ import * as ethUtil from '@starcoin/stc-util';
 import { cloneDeep } from 'lodash';
 import BigNumber from 'bignumber.js';
 import { arrayify, hexlify } from '@ethersproject/bytes';
-import { encoding, utils } from '@starcoin/starcoin';
+import { encoding, utils, starcoin_types } from '@starcoin/starcoin';
 import { hexToBn, BnMultiplyByFraction, bnToHex } from '../../lib/util';
 
 /**
@@ -20,12 +20,16 @@ import { hexToBn, BnMultiplyByFraction, bnToHex } from '../../lib/util';
 tx-gas-utils are gas utility methods for Transaction manager
 its passed ethquery
 and used to do things like calculate gas of a tx.
+its passed state
+and used to get selected account publicKey.
 @param {Object} provider - A network provider.
+@param {Object} state - current state, including identities.
 */
 
 export default class TxGasUtil {
-  constructor(provider) {
+  constructor(provider, state) {
     this.query = new EthQuery(provider);
+    this.state = state;
   }
 
   /**
@@ -44,22 +48,9 @@ export default class TxGasUtil {
     });
     log.debug({ chainInfo })
     const blockNumber = chainInfo && chainInfo.head ? chainInfo.head.number : 0;
-    // log.debug({ blockNumber })
-    // const block = await await new Promise((resolve, reject) => {
-    //   return this.query.getBlockByNumber(
-    //     new BigNumber(blockNumber, 10).toNumber(),
-    //     (err, res) => {
-    //       if (err) {
-    //         return reject(err);
-    //       }
-    //       return resolve(res);
-    //     },
-    //   );
-    // });
-    // log.debug({ block })
 
-    // maxGasAmount is dynamical adjusted, today it is about 50000000
-    const maxGasAmount = new BigNumber(50000000, 10).toString(16);
+    // maxGasAmount is dynamical adjusted, today it is about 40000000
+    const maxGasAmount = new BigNumber(40000000, 10).toString(16);
     const gasLimit = ethUtil.addHexPrefix(maxGasAmount);
     const block = { number: blockNumber, gasLimit };
     log.debug({ block })
@@ -90,7 +81,6 @@ export default class TxGasUtil {
     @returns {string} the estimated gas limit as a hex string
   */
   async estimateTxGas(txMeta) {
-    log.debug('estimateTxGas')
     // const txParams = cloneDeep(txMeta.txParams);
 
     // // `eth_estimateGas` can fail if the user has insufficient balance for the
@@ -102,7 +92,7 @@ export default class TxGasUtil {
     // // estimate tx gas requirements
     // return await this.query.estimateGas(txParams);
 
-    const maxGasAmount = 50000000;
+    const maxGasAmount = 40000000;
 
     // because the time system in dev network is relatively static,
     // we should use nodeInfo.now_secondsinstead of using new Date().getTime()
@@ -114,34 +104,46 @@ export default class TxGasUtil {
         return resolve(res);
       });
     });
-    log.debug({ nodeInfo })
     // expired after 12 hours since Unix Epoch
     const expirationTimestampSecs = nodeInfo.now_seconds + 43200;
-    log.debug({ expirationTimestampSecs })
-    const senderAddressHex = '0x024f69FF412b2C1Bb1dD394d79554F30';
-    const senderPublicKeyHex = '0x06898c96a2abfa44ba4d5db6f9f3751595bb868eaac01c8f3c6bb4424ee882a6';
-    const senderSequenceNumber = 7;
-    const chainId = 254;
-    const transactionPayload = encoding.packageHexToTransactionPayload(
+    const selectedAddressHex = txMeta.txParams.from;
+    const selectedPublicKeyHex = this.state.identities[selectedAddressHex].publicKey;
+    const selectedSequenceNumber = await new Promise((resolve, reject) => {
+      return this.query.getResource(
+        txMeta.txParams.from,
+        '0x1::Account::Account',
+        (err, res) => {
+          if (err) {
+            return reject(err);
+          }
+
+          const sequence_number = res && res.value[6][1].U64 || 0;
+          return resolve(new BigNumber(sequence_number, 10).toNumber());
+        },
+      );
+    });
+    const chainId = txMeta.metamaskNetworkId.id;
+
+    const transactionPayload = encoding.bcsDecode(
+      starcoin_types.TransactionPayload,
       txMeta.txParams.data,
     );
+
     const rawUserTransaction = utils.tx.generateRawUserTransaction(
-      senderAddressHex,
+      selectedAddressHex,
       transactionPayload,
       maxGasAmount,
-      senderSequenceNumber,
+      selectedSequenceNumber,
       expirationTimestampSecs,
       chainId,
     );
-    console.log({ rawUserTransaction })
 
-    const rawUserTransactionHex = encoding.bcsEncode(rawUserTransaction)
-    console.log({ rawUserTransactionHex })
+    const rawUserTransactionHex = encoding.bcsEncode(rawUserTransaction);
 
-    const dryRunRawResult = await await new Promise((resolve, reject) => {
+    const dryRunRawResult = await new Promise((resolve, reject) => {
       return this.query.dryRunRaw(
         rawUserTransactionHex,
-        senderPublicKeyHex,
+        selectedPublicKeyHex,
         (err, res) => {
           if (err) {
             return reject(err);
@@ -150,18 +152,12 @@ export default class TxGasUtil {
         },
       );
     });
-    log.debug({ dryRunRawResult })
 
-    // const dryRunRawResult = await provider.dryRunRaw(
-    //   rawUserTransactionHex,
-    //   senderPublicKeyHex
-    // );
-    // console.log({ dryRunRawResult })
     let estimatedGasHex;
     if (dryRunRawResult.status === 'Executed') {
-      log.debug(dryRunRawResult.gas_used, typeof dryRunRawResult.gas_used)
       estimatedGasHex = new BigNumber(dryRunRawResult.gas_used, 10).toString(16);
     }
+
     return estimatedGasHex;
   }
 
