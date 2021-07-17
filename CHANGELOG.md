@@ -1,10 +1,13 @@
 # Changelog
 
+## [1.8.1] - 2021-07-17
+- support Package and ScriptFunction using contract.dry_run_raw in [starmask-test-dapp](https://github.com/starcoinorg/starmask-test-dapp)
+- fix txn detail page failed: check gasUsedStr first in case txReceipt is undefined before txn is confirmed
+
 ## [1.8.0] - 2021-07-14
 - support depoly contract and call contract function in [starmask-test-dapp](https://github.com/starcoinorg/starmask-test-dapp)
 - add intro of how to install from latest release zip in docs
 - fix: test-dapp failed on chainChanged event while switch to http://localhost:9850
-
 
 ## [1.7.0] - 2021-07-11
 - support `Personal Sign' in [starmask-test-dapp](https://github.com/starcoinorg/starmask-test-dapp)
