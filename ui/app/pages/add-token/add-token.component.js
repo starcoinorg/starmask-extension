@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import ethUtil from 'ethereumjs-util';
+import * as stcUtil from '@starcoin/stc-util';
 import { checkExistingAddresses } from '../../helpers/utils/util';
 import { tokenInfoGetter } from '../../helpers/utils/token-util';
 import { CONFIRM_ADD_TOKEN_ROUTE } from '../../helpers/constants/routes';
@@ -165,8 +165,8 @@ class AddToken extends Component {
       autoFilled: false,
     });
 
-    const isValidAddress = ethUtil.isValidAddress(customAddress);
-    const standardAddress = addHexPrefix(customAddress).toLowerCase();
+    const isValidAddress = stcUtil.isValidAddress(customAddress);
+    // const standardAddress = addHexPrefix(customAddress).toLowerCase();
 
     switch (true) {
       case !isValidAddress:
@@ -179,12 +179,12 @@ class AddToken extends Component {
         });
 
         break;
-      case Boolean(this.props.identities[standardAddress]):
-        this.setState({
-          customAddressError: this.context.t('personalAddressDetected'),
-        });
+      // case Boolean(this.props.identities[standardAddress]):
+      //   this.setState({
+      //     customAddressError: this.context.t('personalAddressDetected'),
+      //   });
 
-        break;
+      // break;
       case checkExistingAddresses(customAddress, this.props.tokens):
         this.setState({
           customAddressError: this.context.t('tokenAlreadyAdded'),
