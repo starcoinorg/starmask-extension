@@ -178,7 +178,7 @@ const state = {
           value: '0xde0b6b3a7640000',
           metamaskId: 4768706228115573,
           metamaskNetworkId: '3',
-          gas: '0x5209',
+          gas: '0x32c9',
         },
         txFee: '17e0186e60800',
         txValue: 'de0b6b3a7640000',

@@ -292,7 +292,7 @@ export function getRenderableEstimateDataForSmallButtonsFromGWEI(state) {
   const isMainnet = getIsMainnet(state);
   const showFiat = isMainnet || Boolean(showFiatInTestnets);
   const gasLimit =
-    state.starmask.send.gasLimit || getCustomGasLimit(state) || '0x5208';
+    state.starmask.send.gasLimit || getCustomGasLimit(state) || '0x32c8';
   const { conversionRate } = state.starmask;
   const currentCurrency = getCurrentCurrency(state);
   const {

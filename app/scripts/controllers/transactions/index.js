@@ -408,7 +408,7 @@ export default class TransactionController extends EventEmitter {
         from,
         to: from,
         nonce,
-        gas: customGasLimit || '0x5208',
+        gas: customGasLimit || '0x32c8',
         value: '0x0',
         gasPrice: newGasPrice,
       },
