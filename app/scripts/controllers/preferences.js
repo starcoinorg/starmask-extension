@@ -416,22 +416,21 @@ export default class PreferencesController {
    * Modifies the existing tokens array from the store. All objects in the tokens array array AddedToken objects.
    * @see AddedToken {@link AddedToken}
    *
-   * @param {string} rawAddress - Hex address of the token contract. May or may not be a checksum address.
+   * @param {string} code - Hex address of the token contract. May or may not be a checksum address.
    * @param {string} symbol - The symbol of the token
    * @param {number} decimals - The number of decimals the token uses.
    * @returns {Promise<array>} Promises the new array of AddedToken objects.
    *
    */
-  async addToken(rawAddress, symbol, decimals, image) {
-    const address = normalizeAddress(rawAddress);
-    const newEntry = { address, symbol, decimals: Number(decimals) };
+  async addToken(code, symbol, decimals, image) {
+    const newEntry = { code, symbol, decimals: Number(decimals) };
     const { tokens, hiddenTokens } = this.store.getState();
     const assetImages = this.getAssetImages();
     const updatedHiddenTokens = hiddenTokens.filter(
-      (tokenAddress) => tokenAddress !== rawAddress.toLowerCase(),
+      (tokenCode) => tokenCode !== code.toLowerCase(),
     );
     const previousEntry = tokens.find((token) => {
-      return token.address === address;
+      return token.code === code;
     });
     const previousIndex = tokens.indexOf(previousEntry);
 
@@ -440,7 +439,7 @@ export default class PreferencesController {
     } else {
       tokens.push(newEntry);
     }
-    assetImages[address] = image;
+    assetImages[code] = image;
     this._updateAccountTokens(tokens, assetImages, updatedHiddenTokens);
     return Promise.resolve(tokens);
   }
@@ -448,18 +447,16 @@ export default class PreferencesController {
   /**
    * Removes a specified token from the tokens array and adds it to hiddenTokens array
    *
-   * @param {string} rawAddress - Hex address of the token contract to remove.
+   * @param {string} code - Hex address of the token contract to remove.
    * @returns {Promise<array>} The new array of AddedToken objects
    *
    */
-  removeToken(rawAddress) {
+  removeToken(code) {
     const { tokens, hiddenTokens } = this.store.getState();
     const assetImages = this.getAssetImages();
-    const updatedTokens = tokens.filter(
-      (token) => token.address !== rawAddress,
-    );
-    const updatedHiddenTokens = [...hiddenTokens, rawAddress.toLowerCase()];
-    delete assetImages[rawAddress];
+    const updatedTokens = tokens.filter((token) => token.code !== code);
+    const updatedHiddenTokens = [...hiddenTokens, code.toLowerCase()];
+    delete assetImages[code];
     this._updateAccountTokens(updatedTokens, assetImages, updatedHiddenTokens);
     return Promise.resolve(updatedTokens);
   }

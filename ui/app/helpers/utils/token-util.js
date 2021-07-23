@@ -54,32 +54,37 @@ function getContractMetadata(tokenAddress) {
   return tokenAddress && casedContractMap[tokenAddress.toLowerCase()];
 }
 
-async function getSymbol(tokenAddress) {
-  let symbol = await getSymbolFromContract(tokenAddress);
+function getSymbol(tokenCode) {
+  const arr = tokenCode.split('::');
+  const symbol = arr[2];
+  return Promise.resolve(symbol);
+  // let symbol = await getSymbolFromContract(tokenAddress);
 
-  if (!symbol) {
-    const contractMetadataInfo = getContractMetadata(tokenAddress);
+  // if (!symbol) {
+  //   const contractMetadataInfo = getContractMetadata(tokenAddress);
 
-    if (contractMetadataInfo) {
-      symbol = contractMetadataInfo.symbol;
-    }
-  }
+  //   if (contractMetadataInfo) {
+  //     symbol = contractMetadataInfo.symbol;
+  //   }
+  // }
 
-  return symbol;
+  // return symbol;
 }
 
-async function getDecimals(tokenAddress) {
-  let decimals = await getDecimalsFromContract(tokenAddress);
+async function getDecimals(tokenCode) {
+  const decimals = 9;
+  return Promise.resolve(decimals);
+  // let decimals = await getDecimalsFromContract(tokenAddress);
 
-  if (!decimals || decimals === '0') {
-    const contractMetadataInfo = getContractMetadata(tokenAddress);
+  // if (!decimals || decimals === '0') {
+  //   const contractMetadataInfo = getContractMetadata(tokenAddress);
 
-    if (contractMetadataInfo) {
-      decimals = contractMetadataInfo.decimals;
-    }
-  }
+  //   if (contractMetadataInfo) {
+  //     decimals = contractMetadataInfo.decimals;
+  //   }
+  // }
 
-  return decimals;
+  // return decimals;
 }
 
 export async function fetchSymbolAndDecimals(tokenAddress) {
@@ -101,10 +106,8 @@ export async function fetchSymbolAndDecimals(tokenAddress) {
   };
 }
 
-export async function getSymbolAndDecimals(tokenAddress, existingTokens = []) {
-  const existingToken = existingTokens.find(
-    ({ address }) => tokenAddress === address,
-  );
+export async function getSymbolAndDecimals(tokenCode, existingTokens = []) {
+  const existingToken = existingTokens.find(({ code }) => tokenCode === code);
 
   if (existingToken) {
     return {
@@ -116,11 +119,12 @@ export async function getSymbolAndDecimals(tokenAddress, existingTokens = []) {
   let symbol, decimals;
 
   try {
-    symbol = await getSymbol(tokenAddress);
-    decimals = await getDecimals(tokenAddress);
+    symbol = await getSymbol(tokenCode);
+    decimals = await getDecimals(tokenCode);
+    console.log({ symbol, decimals })
   } catch (error) {
     log.warn(
-      `symbol() and decimal() calls for token at address ${tokenAddress} resulted in error:`,
+      `symbol() and decimal() calls for token at address ${tokenCode} resulted in error:`,
       error,
     );
   }
@@ -134,14 +138,14 @@ export async function getSymbolAndDecimals(tokenAddress, existingTokens = []) {
 export function tokenInfoGetter() {
   const tokens = {};
 
-  return async (address) => {
-    if (tokens[address]) {
-      return tokens[address];
+  return async (code) => {
+    if (tokens[code]) {
+      return tokens[code];
     }
 
-    tokens[address] = await getSymbolAndDecimals(address);
-
-    return tokens[address];
+    tokens[code] = await getSymbolAndDecimals(code);
+    console.log('tokens[code]', tokens[code])
+    return tokens[code];
   };
 }
 

@@ -806,6 +806,9 @@
     "message": "隐藏 $1",
     "description": "$1 is the symbol for a token (e.g. 'DAI')"
   },
+  "hideZeroBalanceTokens": {
+    "message": "隐藏没有余额的代币"
+  },
   "history": {
     "message": "历史记录"
   },
@@ -864,6 +867,9 @@
   },
   "invalidChainIdTooBig": {
     "message": "无效的链 ID，该链 ID 数字过大。"
+  },
+  "invalidContractCode": {
+    "message": "无效合约代码"
   },
   "invalidCustomNetworkAlertContent1": {
     "message": "需要重新输入自定义网络'$1'的链 ID。",
@@ -1946,6 +1952,9 @@
   },
   "tokenContractAddress": {
     "message": "代币合约地址"
+  },
+  "tokenContractCode": {
+    "message": "代币合约代码(address::module::struct)"
   },
   "tokenOptions": {
     "message": "代币选项"

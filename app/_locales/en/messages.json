@@ -933,6 +933,9 @@
   "invalidChainIdTooBig": {
     "message": "Invalid chain ID. The chain ID is too big."
   },
+  "invalidContractCode": {
+    "message": "invalid contract code"
+  },
   "invalidCustomNetworkAlertContent1": {
     "message": "The chain ID for custom network '$1' has to be re-entered.",
     "description": "$1 is the name/identifier of the network."
@@ -2080,6 +2083,9 @@
   },
   "tokenContractAddress": {
     "message": "Token Contract Address"
+  },
+  "tokenContractCode": {
+    "message": "Token Contract Code(address::module::struct)"
   },
   "tokenOptions": {
     "message": "Token options"

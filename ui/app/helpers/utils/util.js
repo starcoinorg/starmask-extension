@@ -440,6 +440,27 @@ export function checkExistingAddresses(address, list = []) {
 }
 
 /**
+ * Checks whether a code is in a passed list of objects with code properties. The check is performed on the
+ * lowercased version of the addresses.
+ *
+ * @param {string} code - The hex address to check
+ * @param {Array} list - The array of objects to check
+ * @returns {boolean} Whether or not the address is in the list
+ */
+export function checkExistingCodes(code, list = []) {
+  console.log('checkExistingCodes', code, list)
+  if (!code) {
+    return false;
+  }
+
+  const matchesCode = (obj) => {
+    return obj.code?.toLowerCase() === code.toLowerCase();
+  };
+
+  return list.some(matchesCode);
+}
+
+/**
  * Given a number and specified precision, returns that number in base 10 with a maximum of precision
  * significant digits, but without any trailing zeros after the decimal point To be used when wishing
  * to display only as much digits to the user as necessary

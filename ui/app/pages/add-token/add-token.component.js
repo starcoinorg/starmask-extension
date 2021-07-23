@@ -1,20 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as stcUtil from '@starcoin/stc-util';
-import { checkExistingAddresses } from '../../helpers/utils/util';
+import { checkExistingCodes } from '../../helpers/utils/util';
 import { tokenInfoGetter } from '../../helpers/utils/token-util';
 import { CONFIRM_ADD_TOKEN_ROUTE } from '../../helpers/constants/routes';
 import TextField from '../../components/ui/text-field';
 import PageContainer from '../../components/ui/page-container';
 import { Tabs, Tab } from '../../components/ui/tabs';
-import { addHexPrefix } from '../../../../app/scripts/lib/util';
 import TokenList from './token-list';
 import TokenSearch from './token-search';
 
-const emptyAddr = '0x0000000000000000000000000000000000000000';
-
 const MIN_DECIMAL_VALUE = 0;
-const MAX_DECIMAL_VALUE = 36;
+const MAX_DECIMAL_VALUE = 9;
 
 class AddToken extends Component {
   static contextTypes = {
@@ -33,13 +30,13 @@ class AddToken extends Component {
   };
 
   state = {
-    customAddress: '',
+    customCode: '',
     customSymbol: '',
     customDecimals: 0,
     searchResults: [],
     selectedTokens: {},
     tokenSelectorError: null,
-    customAddressError: null,
+    customCodeError: null,
     customSymbolError: null,
     customDecimalsError: null,
     autoFilled: false,
@@ -55,26 +52,26 @@ class AddToken extends Component {
       let selectedTokens = {};
       let customToken = {};
 
-      pendingTokenKeys.forEach((tokenAddress) => {
-        const token = pendingTokens[tokenAddress];
+      pendingTokenKeys.forEach((tokenCode) => {
+        const token = pendingTokens[tokenCode];
         const { isCustom } = token;
 
         if (isCustom) {
           customToken = { ...token };
         } else {
-          selectedTokens = { ...selectedTokens, [tokenAddress]: { ...token } };
+          selectedTokens = { ...selectedTokens, [tokenCode]: { ...token } };
         }
       });
 
       const {
-        address: customAddress = '',
+        code: customCode = '',
         symbol: customSymbol = '',
         decimals: customDecimals = 0,
       } = customToken;
 
       this.setState({
         selectedTokens,
-        customAddress,
+        customCode,
         customSymbol,
         customDecimals,
       });
@@ -82,14 +79,14 @@ class AddToken extends Component {
   }
 
   handleToggleToken(token) {
-    const { address } = token;
+    const { code } = token;
     const { selectedTokens = {} } = this.state;
     const selectedTokensCopy = { ...selectedTokens };
 
-    if (address in selectedTokensCopy) {
-      delete selectedTokensCopy[address];
+    if (code in selectedTokensCopy) {
+      delete selectedTokensCopy[code];
     } else {
-      selectedTokensCopy[address] = token;
+      selectedTokensCopy[code] = token;
     }
 
     this.setState({
@@ -101,22 +98,22 @@ class AddToken extends Component {
   hasError() {
     const {
       tokenSelectorError,
-      customAddressError,
+      customCodeError,
       customSymbolError,
       customDecimalsError,
     } = this.state;
 
     return (
       tokenSelectorError ||
-      customAddressError ||
+      customCodeError ||
       customSymbolError ||
       customDecimalsError
     );
   }
 
   hasSelected() {
-    const { customAddress = '', selectedTokens = {} } = this.state;
-    return customAddress || Object.keys(selectedTokens).length > 0;
+    const { customCode = '', selectedTokens = {} } = this.state;
+    return customCode || Object.keys(selectedTokens).length > 0;
   }
 
   handleNext() {
@@ -131,14 +128,14 @@ class AddToken extends Component {
 
     const { setPendingTokens, history } = this.props;
     const {
-      customAddress: address,
+      customCode: code,
       customSymbol: symbol,
       customDecimals: decimals,
       selectedTokens,
     } = this.state;
 
     const customToken = {
-      address,
+      code,
       symbol,
       decimals,
     };
@@ -147,8 +144,8 @@ class AddToken extends Component {
     history.push(CONFIRM_ADD_TOKEN_ROUTE);
   }
 
-  async attemptToAutoFillTokenParams(address) {
-    const { symbol = '', decimals = 0 } = await this.tokenInfoGetter(address);
+  async attemptToAutoFillTokenParams(code) {
+    const { symbol = '', decimals = 0 } = await this.tokenInfoGetter(code);
 
     const autoFilled = Boolean(symbol && decimals);
     this.setState({ autoFilled });
@@ -156,22 +153,23 @@ class AddToken extends Component {
     this.handleCustomDecimalsChange(decimals);
   }
 
-  handleCustomAddressChange(value) {
-    const customAddress = value.trim();
+  handleCustomCodeChange(value) {
+    const customCode = value.trim();
     this.setState({
-      customAddress,
-      customAddressError: null,
+      customCode,
+      customCodeError: null,
       tokenSelectorError: null,
       autoFilled: false,
     });
 
-    const isValidAddress = stcUtil.isValidAddress(customAddress);
-    // const standardAddress = addHexPrefix(customAddress).toLowerCase();
+    const arr = customCode.split('::');
+
+    const isValidCode = arr.length === 3 && stcUtil.isValidAddress(arr[0]);
 
     switch (true) {
-      case !isValidAddress:
+      case !isValidCode:
         this.setState({
-          customAddressError: this.context.t('invalidAddress'),
+          customCodeError: this.context.t('invalidContractCode'),
           customSymbol: '',
           customDecimals: 0,
           customSymbolError: null,
@@ -179,22 +177,14 @@ class AddToken extends Component {
         });
 
         break;
-      // case Boolean(this.props.identities[standardAddress]):
-      //   this.setState({
-      //     customAddressError: this.context.t('personalAddressDetected'),
-      //   });
-
-      // break;
-      case checkExistingAddresses(customAddress, this.props.tokens):
+      case checkExistingCodes(customCode, this.props.tokens):
         this.setState({
-          customAddressError: this.context.t('tokenAlreadyAdded'),
+          customCodeError: this.context.t('tokenAlreadyAdded'),
         });
 
         break;
       default:
-        if (customAddress !== emptyAddr) {
-          this.attemptToAutoFillTokenParams(customAddress);
-        }
+        this.attemptToAutoFillTokenParams(customCode);
     }
   }
 
@@ -211,7 +201,7 @@ class AddToken extends Component {
   }
 
   handleCustomDecimalsChange(value) {
-    const customDecimals = value.trim();
+    const customDecimals = typeof value === 'string' ? value.trim() : value;
     const validDecimals =
       customDecimals !== null &&
       customDecimals !== '' &&
@@ -228,10 +218,10 @@ class AddToken extends Component {
 
   renderCustomTokenForm() {
     const {
-      customAddress,
+      customCode,
       customSymbol,
       customDecimals,
-      customAddressError,
+      customCodeError,
       customSymbolError,
       customDecimalsError,
       autoFilled,
@@ -242,14 +232,20 @@ class AddToken extends Component {
       <div className="add-token__custom-token-form">
         <TextField
           id="custom-address"
-          label={this.context.t('tokenContractAddress')}
+          label={this.context.t('tokenContractCode')}
           type="text"
-          value={customAddress}
-          onChange={(e) => this.handleCustomAddressChange(e.target.value)}
-          error={customAddressError}
+          value={customCode}
+          onChange={(e) => this.handleCustomCodeChange(e.target.value)}
+          error={customCodeError}
           fullWidth
           autoFocus
           margin="normal"
+          multiline
+          rows="3"
+          classes={{
+            inputMultiline: 'address-book__view-contact__text-area',
+            inputRoot: 'address-book__view-contact__text-area-wrapper',
+          }}
         />
         <TextField
           id="custom-symbol"

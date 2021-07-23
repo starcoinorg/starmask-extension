@@ -61,19 +61,19 @@ export default class ConfirmAddToken extends Component {
               </div>
             </div>
             <div className="confirm-add-token__token-list">
-              {Object.entries(pendingTokens).map(([address, token]) => {
+              {Object.entries(pendingTokens).map(([code, token]) => {
                 const { name, symbol } = token;
-
+                console.log({ token })
                 return (
                   <div
                     className="confirm-add-token__token-list-item"
-                    key={address}
+                    key={code}
                   >
                     <div className="confirm-add-token__token confirm-add-token__data">
                       <Identicon
                         className="confirm-add-token__token-icon"
                         diameter={48}
-                        address={address}
+                        address={code}
                       />
                       <div className="confirm-add-token__name">
                         {this.getTokenName(name, symbol)}
@@ -111,7 +111,7 @@ export default class ConfirmAddToken extends Component {
                       category: 'Wallet',
                       sensitiveProperties: {
                         token_symbol: pendingToken.symbol,
-                        token_contract_address: pendingToken.address,
+                        token_contract_code: pendingToken.code,
                         token_decimal_precision: pendingToken.decimals,
                         unlisted: pendingToken.unlisted,
                         source: pendingToken.isCustom ? 'custom' : 'list',
@@ -119,7 +119,7 @@ export default class ConfirmAddToken extends Component {
                     });
                   });
                   clearPendingTokens();
-                  const firstTokenAddress = pendingTokenValues?.[0].address?.toLowerCase();
+                  const firstTokenAddress = pendingTokenValues?.[0].code?.toLowerCase();
                   if (firstTokenAddress) {
                     history.push(`${ASSET_ROUTE}/${firstTokenAddress}`);
                   } else {

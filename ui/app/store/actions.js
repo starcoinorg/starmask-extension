@@ -1384,21 +1384,21 @@ export function showConfTxPage({ id } = {}) {
 }
 
 export function addToken(
-  address,
+  code,
   symbol,
   decimals,
   image,
   dontShowLoadingIndicator,
 ) {
   return (dispatch) => {
-    if (!address) {
-      throw new Error('MetaMask - Cannot add token without address');
+    if (!code) {
+      throw new Error('StarMask - Cannot add token without code');
     }
     if (!dontShowLoadingIndicator) {
       dispatch(showLoadingIndication());
     }
     return new Promise((resolve, reject) => {
-      background.addToken(address, symbol, decimals, image, (err, tokens) => {
+      background.addToken(code, symbol, decimals, image, (err, tokens) => {
         dispatch(hideLoadingIndication());
         if (err) {
           dispatch(displayWarning(err.message));
@@ -1412,11 +1412,11 @@ export function addToken(
   };
 }
 
-export function removeToken(address) {
+export function removeToken(code) {
   return (dispatch) => {
     dispatch(showLoadingIndication());
     return new Promise((resolve, reject) => {
-      background.removeToken(address, (err, tokens) => {
+      background.removeToken(code, (err, tokens) => {
         dispatch(hideLoadingIndication());
         if (err) {
           dispatch(displayWarning(err.message));
@@ -1434,14 +1434,14 @@ export function addTokens(tokens) {
   return (dispatch) => {
     if (Array.isArray(tokens)) {
       return Promise.all(
-        tokens.map(({ address, symbol, decimals }) =>
-          dispatch(addToken(address, symbol, decimals)),
+        tokens.map(({ code, symbol, decimals }) =>
+          dispatch(addToken(code, symbol, decimals)),
         ),
       );
     }
     return Promise.all(
-      Object.entries(tokens).map(([_, { address, symbol, decimals }]) =>
-        dispatch(addToken(address, symbol, decimals)),
+      Object.entries(tokens).map(([_, { code, symbol, decimals }]) =>
+        dispatch(addToken(code, symbol, decimals)),
       ),
     );
   };
@@ -2262,21 +2262,21 @@ export function setCurrentLocale(locale, messages) {
 
 export function setPendingTokens(pendingTokens) {
   const { customToken = {}, selectedTokens = {} } = pendingTokens;
-  const { address, symbol, decimals } = customToken;
+  const { code, symbol, decimals } = customToken;
   const tokens =
-    address && symbol && decimals
+    code && symbol && decimals
       ? {
         ...selectedTokens,
-        [address]: {
+        [code]: {
           ...customToken,
           isCustom: true,
         },
       }
       : selectedTokens;
 
-  Object.keys(tokens).forEach((tokenAddress) => {
-    tokens[tokenAddress].unlisted = !LISTED_CONTRACT_ADDRESSES.includes(
-      tokenAddress.toLowerCase(),
+  Object.keys(tokens).forEach((tokenCode) => {
+    tokens[tokenCode].unlisted = !LISTED_CONTRACT_ADDRESSES.includes(
+      tokenCode.toLowerCase(),
     );
   });
 
