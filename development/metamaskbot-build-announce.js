@@ -30,7 +30,7 @@ async function start() {
   // build the github comment content
 
   // links to extension builds
-  const platforms = ['chrome', 'firefox', 'opera'];
+  const platforms = ['chrome'];
   const buildLinks = platforms
     .map((platform) => {
       const url = `${BUILD_LINK_BASE}/builds/starmask-${platform}-${VERSION}.zip`;
@@ -156,14 +156,12 @@ async function start() {
             }
             metricRows.push(metricData);
           }
-          metricRows[0] = `<td rowspan="${
-            allMetrics.size
-          }">${capitalizeFirstLetter(page)}</td>${metricRows[0]}`;
+          metricRows[0] = `<td rowspan="${allMetrics.size
+            }">${capitalizeFirstLetter(page)}</td>${metricRows[0]}`;
           pageRows.push(...metricRows);
         }
-        pageRows[0] = `<td rowspan="${
-          allPages.size * allMetrics.size
-        }">${capitalizeFirstLetter(platform)}</td>${pageRows[0]}`;
+        pageRows[0] = `<td rowspan="${allPages.size * allMetrics.size
+          }">${capitalizeFirstLetter(platform)}</td>${pageRows[0]}`;
         for (const row of pageRows) {
           tableRows.push(`<tr>${row}</tr>`);
         }
