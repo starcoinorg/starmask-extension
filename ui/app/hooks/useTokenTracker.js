@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import TokenTracker from '@metamask/eth-token-tracker';
-// import TokenTracker from '@starcoin/stc-token-tracker';
 import { useSelector } from 'react-redux';
+import TokenTracker from '../../lib/token-tracker';
 import { getCurrentChainId, getSelectedAddress } from '../selectors';
 import { useEqualityCheck } from './useEqualityCheck';
 
@@ -36,29 +35,29 @@ export function useTokenTracker(
   }, []);
 
   const teardownTracker = useCallback(() => {
-    // if (tokenTracker.current) {
-    //   tokenTracker.current.stop();
-    //   tokenTracker.current.removeAllListeners('update');
-    //   tokenTracker.current.removeAllListeners('error');
-    //   tokenTracker.current = null;
-    // }
+    if (tokenTracker.current) {
+      tokenTracker.current.stop();
+      tokenTracker.current.removeAllListeners('update');
+      tokenTracker.current.removeAllListeners('error');
+      tokenTracker.current = null;
+    }
   }, []);
 
   const buildTracker = useCallback(
     (address, tokenList) => {
       // clear out previous tracker, if it exists.
-      // teardownTracker();
-      // tokenTracker.current = new TokenTracker({
-      //   userAddress: address,
-      //   provider: global.ethereumProvider,
-      //   tokens: tokenList,
-      //   includeFailedTokens,
-      //   pollingInterval: 8000,
-      // });
+      teardownTracker();
+      tokenTracker.current = new TokenTracker({
+        userAddress: address,
+        provider: global.ethereumProvider,
+        tokens: tokenList,
+        includeFailedTokens,
+        pollingInterval: 8000,
+      });
 
-      // tokenTracker.current.on('update', updateBalances);
-      // tokenTracker.current.on('error', showError);
-      // tokenTracker.current.updateBalances();
+      tokenTracker.current.on('update', updateBalances);
+      tokenTracker.current.on('error', showError);
+      tokenTracker.current.updateBalances();
     },
     [updateBalances, includeFailedTokens, showError, teardownTracker],
   );
