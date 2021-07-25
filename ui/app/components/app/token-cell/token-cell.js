@@ -8,7 +8,7 @@ import { useI18nContext } from '../../../hooks/useI18nContext';
 import { useTokenFiatAmount } from '../../../hooks/useTokenFiatAmount';
 
 export default function TokenCell({
-  address,
+  code,
   decimals,
   balanceError,
   symbol,
@@ -19,13 +19,13 @@ export default function TokenCell({
   const userAddress = useSelector(getSelectedAddress);
   const t = useI18nContext();
 
-  const formattedFiat = useTokenFiatAmount(address, string, symbol);
+  const formattedFiat = useTokenFiatAmount(code, string, symbol);
 
   const warning = balanceError ? (
     <span>
       {t('troubleTokenBalances')}
       <a
-        href={`https://ethplorer.io/address/${userAddress}`}
+        href={`https://stcscan.io/address/${userAddress}`}
         rel="noopener noreferrer"
         target="_blank"
         onClick={(event) => event.stopPropagation()}
@@ -42,8 +42,8 @@ export default function TokenCell({
         'token-cell--outdated': Boolean(balanceError),
       })}
       iconClassName="token-cell__icon"
-      onClick={onClick.bind(null, address)}
-      tokenAddress={address}
+      onClick={onClick.bind(null, code)}
+      tokenCode={code}
       tokenImage={image}
       tokenSymbol={symbol}
       tokenDecimals={decimals}
@@ -55,7 +55,7 @@ export default function TokenCell({
 }
 
 TokenCell.propTypes = {
-  address: PropTypes.string,
+  code: PropTypes.string,
   balanceError: PropTypes.object,
   symbol: PropTypes.string,
   decimals: PropTypes.number,

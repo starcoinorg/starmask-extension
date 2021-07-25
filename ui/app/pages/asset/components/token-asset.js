@@ -37,7 +37,7 @@ export default function TokenAsset({ token }) {
             }
             onViewEtherscan={() => {
               const url = createTokenTrackerLinkForChain(
-                token.address,
+                token.code,
                 chainId,
                 selectedAddress,
               );
@@ -48,14 +48,14 @@ export default function TokenAsset({ token }) {
         }
       />
       <TokenOverview className="asset__overview" token={token} />
-      <TransactionList tokenAddress={token.address} />
+      <TransactionList tokenAddress={token.code} />
     </>
   );
 }
 
 TokenAsset.propTypes = {
   token: PropTypes.shape({
-    address: PropTypes.string.isRequired,
+    code: PropTypes.string.isRequired,
     decimals: PropTypes.number,
     symbol: PropTypes.string,
   }).isRequired,

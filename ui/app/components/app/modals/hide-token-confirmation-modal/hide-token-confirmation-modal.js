@@ -15,8 +15,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     hideModal: () => dispatch(actions.hideModal()),
-    hideToken: (address) => {
-      dispatch(actions.removeToken(address)).then(() => {
+    hideToken: (code) => {
+      dispatch(actions.removeToken(code)).then(() => {
         dispatch(actions.hideModal());
       });
     },
@@ -34,7 +34,7 @@ class HideTokenConfirmationModal extends Component {
     assetImages: PropTypes.object.isRequired,
     token: PropTypes.shape({
       symbol: PropTypes.string,
-      address: PropTypes.string,
+      code: PropTypes.string,
     }),
   };
 
@@ -42,8 +42,8 @@ class HideTokenConfirmationModal extends Component {
 
   render() {
     const { token, hideToken, hideModal, assetImages } = this.props;
-    const { symbol, address } = token;
-    const image = assetImages[address];
+    const { symbol, code } = token;
+    const image = assetImages[code];
 
     return (
       <div className="hide-token-confirmation">
@@ -54,7 +54,7 @@ class HideTokenConfirmationModal extends Component {
           <Identicon
             className="hide-token-confirmation__identicon"
             diameter={45}
-            address={address}
+            address={code}
             image={image}
           />
           <div className="hide-token-confirmation__symbol">{symbol}</div>
@@ -74,7 +74,7 @@ class HideTokenConfirmationModal extends Component {
               type="secondary"
               className="hide-token-confirmation__button"
               data-testid="hide-token-confirmation__hide"
-              onClick={() => hideToken(address)}
+              onClick={() => hideToken(code)}
             >
               {this.context.t('hide')}
             </Button>

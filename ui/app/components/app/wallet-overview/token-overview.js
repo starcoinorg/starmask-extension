@@ -53,7 +53,7 @@ const TokenOverview = ({ className, token }) => {
   const balanceToRender = tokensWithBalances[0]?.string;
   const balance = tokensWithBalances[0]?.balance;
   const formattedFiatBalance = useTokenFiatAmount(
-    token.address,
+    token.code,
     balanceToRender,
     token.symbol,
   );
@@ -107,7 +107,7 @@ const TokenOverview = ({ className, token }) => {
                   dispatch(
                     setSwapsFromToken({
                       ...token,
-                      iconUrl: assetImages[token.address],
+                      iconUrl: assetImages[token.code],
                       balance,
                       string: balanceToRender,
                     }),
@@ -137,8 +137,8 @@ const TokenOverview = ({ className, token }) => {
       icon={
         <Identicon
           diameter={32}
-          address={token.address}
-          image={assetImages[token.address]}
+          address={token.code}
+          image={assetImages[token.code]}
         />
       }
     />
@@ -148,7 +148,7 @@ const TokenOverview = ({ className, token }) => {
 TokenOverview.propTypes = {
   className: PropTypes.string,
   token: PropTypes.shape({
-    address: PropTypes.string.isRequired,
+    code: PropTypes.string.isRequired,
     decimals: PropTypes.number,
     symbol: PropTypes.string,
   }).isRequired,

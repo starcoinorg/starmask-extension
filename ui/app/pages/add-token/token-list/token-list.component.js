@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { checkExistingAddresses } from '../../../helpers/utils/util';
+import { checkExistingCodes } from '../../../helpers/utils/util';
 import TokenListPlaceholder from './token-list-placeholder';
 
 export default class TokenList extends Component {
@@ -35,8 +35,8 @@ export default class TokenList extends Component {
           {Array(6)
             .fill(undefined)
             .map((_, i) => {
-              const { logo, symbol, name, address } = results[i] || {};
-              const tokenAlreadyAdded = checkExistingAddresses(address, tokens);
+              const { logo, symbol, name, code } = results[i] || {};
+              const tokenAlreadyAdded = checkExistingCodes(code, tokens);
               const onClick = () =>
                 !tokenAlreadyAdded && onToggleToken(results[i]);
 
@@ -44,7 +44,7 @@ export default class TokenList extends Component {
                 Boolean(logo || symbol || name) && (
                   <div
                     className={classnames('token-list__token', {
-                      'token-list__token--selected': selectedTokens[address],
+                      'token-list__token--selected': selectedTokens[code],
                       'token-list__token--disabled': tokenAlreadyAdded,
                     })}
                     onClick={onClick}

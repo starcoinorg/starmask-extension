@@ -34,7 +34,7 @@ export default class TokenRatesController {
   async updateExchangeRates() {
     const contractExchangeRates = {};
     const nativeCurrency = this.getNativeCurrency().toLowerCase();
-    const pairs = this._tokens.map((token) => token.address).join(',');
+    const pairs = this._tokens.map((token) => token.code.split('::')[0]).join(',');
     const query = `contract_addresses=${pairs}&vs_currencies=${nativeCurrency}`;
     if (this._tokens.length > 0) {
       try {
@@ -43,10 +43,11 @@ export default class TokenRatesController {
         );
         const prices = await response.json();
         this._tokens.forEach((token) => {
+          const arr = token.code.split('::');
           const price =
-            prices[token.address.toLowerCase()] ||
-            prices[ethUtil.toChecksumAddress(token.address)];
-          contractExchangeRates[normalizeAddress(token.address)] = price
+            prices[arr[0].toLowerCase()] ||
+            prices[ethUtil.toChecksumAddress(arr[0])];
+          contractExchangeRates[normalizeAddress(arr[0])] = price
             ? price[nativeCurrency]
             : 0;
         });

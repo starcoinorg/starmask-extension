@@ -19,7 +19,7 @@ const AssetListItem = ({
   'data-testid': dataTestId,
   iconClassName,
   onClick,
-  tokenAddress,
+  tokenCode,
   tokenSymbol,
   tokenDecimals,
   tokenImage,
@@ -56,7 +56,7 @@ const AssetListItem = ({
   ) : null;
 
   const sendTokenButton = useMemo(() => {
-    if (tokenAddress === null || tokenAddress === undefined) {
+    if (tokenCode === null || tokenCode === undefined) {
       return null;
     }
     return (
@@ -68,7 +68,7 @@ const AssetListItem = ({
           sendTokenEvent();
           dispatch(
             updateSendToken({
-              address: tokenAddress,
+              address: tokenCode,
               decimals: tokenDecimals,
               symbol: tokenSymbol,
             }),
@@ -82,7 +82,7 @@ const AssetListItem = ({
   }, [
     tokenSymbol,
     sendTokenEvent,
-    tokenAddress,
+    tokenCode,
     tokenDecimals,
     history,
     t,
@@ -112,7 +112,7 @@ const AssetListItem = ({
         <Identicon
           className={iconClassName}
           diameter={32}
-          address={tokenAddress}
+          address={tokenCode}
           image={tokenImage}
           alt={`${primary} ${tokenSymbol}`}
         />
@@ -133,7 +133,7 @@ AssetListItem.propTypes = {
   'data-testid': PropTypes.string,
   iconClassName: PropTypes.string,
   onClick: PropTypes.func.isRequired,
-  tokenAddress: PropTypes.string,
+  tokenCode: PropTypes.string,
   tokenSymbol: PropTypes.string,
   tokenDecimals: PropTypes.number,
   tokenImage: PropTypes.string,
@@ -146,7 +146,7 @@ AssetListItem.defaultProps = {
   className: undefined,
   'data-testid': undefined,
   iconClassName: undefined,
-  tokenAddress: undefined,
+  tokenCode: undefined,
   tokenImage: undefined,
   warning: undefined,
 };

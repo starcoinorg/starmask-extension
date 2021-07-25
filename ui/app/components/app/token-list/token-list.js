@@ -46,7 +46,7 @@ export default function TokenList({ onTokenClick }) {
   return (
     <div>
       {tokensWithBalances.map((tokenData, index) => {
-        tokenData.image = assetImages[tokenData.address];
+        tokenData.image = assetImages[tokenData.code];
         return <TokenCell key={index} {...tokenData} onClick={onTokenClick} />;
       })}
     </div>
