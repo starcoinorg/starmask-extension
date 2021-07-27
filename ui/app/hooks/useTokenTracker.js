@@ -1,108 +1,77 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import TokenTracker from '../../lib/token-tracker';
-import { getCurrentChainId, getSelectedAddress } from '../selectors';
-import { useEqualityCheck } from './useEqualityCheck';
+import BN from 'bn.js';
+import { getSelectedAddress, getAssets } from '../selectors';
+
+const zero = new BN(0)
+
+function stringifyBalance(balance, bnDecimals) {
+  if (balance.eq(zero)) {
+    return '0'
+  }
+
+  const decimals = parseInt(bnDecimals.toString())
+  if (decimals === 0) {
+    return balance.toString()
+  }
+
+  let bal = balance.toString()
+  let len = bal.length
+  let decimalIndex = len - decimals
+  let prefix = ''
+
+  if (decimalIndex <= 0) {
+    while (prefix.length <= decimalIndex * -1) {
+      prefix += '0'
+      len++
+    }
+    bal = prefix + bal
+    decimalIndex = 1
+  }
+
+  const whole = bal.substr(0, len - decimals)
+  const fractional = bal.substr(decimalIndex, 3)
+  if (/0+$/.test(fractional)) {
+    let withOnlySigZeroes = bal.substr(decimalIndex).replace(/0+$/, '')
+    if (withOnlySigZeroes.length > 0) withOnlySigZeroes = `.${withOnlySigZeroes}`
+    return `${whole}${withOnlySigZeroes}`
+  }
+  return `${whole}.${fractional}`
+}
+
 
 export function useTokenTracker(
   tokens,
   includeFailedTokens = false,
   hideZeroBalanceTokens = false,
 ) {
-  const chainId = useSelector(getCurrentChainId);
+
+  const tokensWithBalances = [];
   const userAddress = useSelector(getSelectedAddress);
-  const [loading, setLoading] = useState(() => tokens?.length >= 0);
-  const [tokensWithBalances, setTokensWithBalances] = useState([]);
-  const [error, setError] = useState(null);
-  const tokenTracker = useRef(null);
-  const memoizedTokens = useEqualityCheck(tokens);
-
-  const updateBalances = useCallback(
-    (tokenWithBalances) => {
-      const matchingTokens = hideZeroBalanceTokens
-        ? tokenWithBalances.filter((token) => Number(token.balance) > 0)
-        : tokenWithBalances;
-      setTokensWithBalances(matchingTokens);
-      setLoading(false);
-      setError(null);
-    },
-    [hideZeroBalanceTokens],
-  );
-
-  const showError = useCallback((err) => {
-    setError(err);
-    setLoading(false);
-  }, []);
-
-  const teardownTracker = useCallback(() => {
-    if (tokenTracker.current) {
-      tokenTracker.current.stop();
-      tokenTracker.current.removeAllListeners('update');
-      tokenTracker.current.removeAllListeners('error');
-      tokenTracker.current = null;
-    }
-  }, []);
-
-  const buildTracker = useCallback(
-    (address, tokenList) => {
-      // clear out previous tracker, if it exists.
-      teardownTracker();
-      tokenTracker.current = new TokenTracker({
-        userAddress: address,
-        provider: global.ethereumProvider,
-        tokens: tokenList,
-        includeFailedTokens,
-        pollingInterval: 8000,
-      });
-
-      tokenTracker.current.on('update', updateBalances);
-      tokenTracker.current.on('error', showError);
-      tokenTracker.current.updateBalances();
-    },
-    [updateBalances, includeFailedTokens, showError, teardownTracker],
-  );
-
-  // Effect to remove the tracker when the component is removed from DOM
-  // Do not overload this effect with additional dependencies. teardownTracker
-  // is the only dependency here, which itself has no dependencies and will
-  // never update. The lack of dependencies that change is what confirms
-  // that this effect only runs on mount/unmount
-  useEffect(() => {
-    return teardownTracker;
-  }, [teardownTracker]);
-
-  // Effect to set loading state and initialize tracker when values change
-  useEffect(() => {
-    // This effect will only run initially and when:
-    // 1. chainId is updated,
-    // 2. userAddress is changed,
-    // 3. token list is updated and not equal to previous list
-    // in any of these scenarios, we should indicate to the user that their token
-    // values are in the process of updating by setting loading state.
-    setLoading(true);
-
-    if (!userAddress || chainId === undefined || !global.ethereumProvider) {
-      // If we do not have enough information to build a TokenTracker, we exit early
-      // When the values above change, the effect will be restarted. We also teardown
-      // tracker because inevitably this effect will run again momentarily.
-      teardownTracker();
-      return;
-    }
-
-    if (memoizedTokens.length === 0) {
-      // sets loading state to false and token list to empty
-      updateBalances([]);
-    }
-
-    buildTracker(userAddress, memoizedTokens);
-  }, [
-    userAddress,
-    teardownTracker,
-    chainId,
-    memoizedTokens,
-    updateBalances,
-    buildTracker,
-  ]);
-
+  const assets = useSelector(getAssets);
+  const currentAssets = assets[userAddress];
+  if (Object.keys(currentAssets).length) {
+    Object.keys(currentAssets).forEach((key) => {
+      if (!tokens.filter((token) => token.code === key).length) {
+        return;
+      }
+      if (key === '0x00000000000000000000000000000001::STC::STC') {
+        return;
+      }
+      if (hideZeroBalanceTokens && Number(currentAssets[key]) === 0) {
+        return;
+      }
+      const decimals = 9;
+      const token = {
+        code: key,
+        balance: currentAssets[key],
+        symbol: key.split('::')[2],
+        decimals,
+        string: stringifyBalance(new BN(currentAssets[key], 16), decimals || new BN(0)),
+      };
+      tokensWithBalances.push(token);
+    });
+  }
+  const loading = false;
+  const error = null;
   return { loading, tokensWithBalances, error };
 }

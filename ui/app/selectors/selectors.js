@@ -485,3 +485,7 @@ export function getIsSwapsChain(state) {
   const chainId = getCurrentChainId(state);
   return ALLOWED_SWAPS_CHAIN_IDS[chainId];
 }
+
+export function getAssets(state) {
+  return state.starmask.assets;
+}
