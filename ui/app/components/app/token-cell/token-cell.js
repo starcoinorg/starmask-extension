@@ -34,7 +34,7 @@ export default function TokenCell({
         {t('here')}
       </a>
     </span>
-  ) : null;
+  ) : (code ? code : null);
 
   return (
     <AssetListItem
