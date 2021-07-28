@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { createTokenTrackerLinkForChain } from '@metamask/etherscan-link';
+import { createTokenTrackerLinkForChain } from '../../../../lib/token-tracker-link';
 
 import TransactionList from '../../../components/app/transaction-list';
 import { TokenOverview } from '../../../components/app/wallet-overview';
 import {
-  getCurrentChainId,
   getSelectedIdentity,
+  getRpcPrefsForCurrentProvider,
 } from '../../../selectors/selectors';
 import { DEFAULT_ROUTE } from '../../../helpers/constants/routes';
 import { showModal } from '../../../store/actions';
@@ -18,10 +18,9 @@ import TokenOptions from './token-options';
 
 export default function TokenAsset({ token }) {
   const dispatch = useDispatch();
-  const chainId = useSelector(getCurrentChainId);
+  const rpcPrefs = useSelector(getRpcPrefsForCurrentProvider);
   const selectedIdentity = useSelector(getSelectedIdentity);
   const selectedAccountName = selectedIdentity.name;
-  const selectedAddress = selectedIdentity.address;
   const history = useHistory();
 
   return (
@@ -38,8 +37,7 @@ export default function TokenAsset({ token }) {
             onViewEtherscan={() => {
               const url = createTokenTrackerLinkForChain(
                 token.code,
-                chainId,
-                selectedAddress,
+                rpcPrefs.blockExplorerUrl,
               );
               global.platform.openTab({ url });
             }}
