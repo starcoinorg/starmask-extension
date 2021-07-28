@@ -5,14 +5,12 @@ import getAccountLink from '../../../../../lib/account-link';
 import QrView from '../../../ui/qr-code';
 import EditableLabel from '../../../ui/editable-label';
 import Button from '../../../ui/button';
-import ReadOnlyInput from '../../../ui/readonly-input/readonly-input';
 
 export default class AccountDetailsModal extends Component {
   static propTypes = {
     selectedIdentity: PropTypes.object,
     chainId: PropTypes.string,
     showPublicKeyModal: PropTypes.func,
-    showReceiptIdentiferModal: PropTypes.func,
     showExportPrivateKeyModal: PropTypes.func,
     setAccountLabel: PropTypes.func,
     keyrings: PropTypes.array,
@@ -28,13 +26,12 @@ export default class AccountDetailsModal extends Component {
       selectedIdentity,
       chainId,
       showPublicKeyModal,
-      showReceiptIdentiferModal,
       showExportPrivateKeyModal,
       setAccountLabel,
       keyrings,
       rpcPrefs,
     } = this.props;
-    const { name, address, receiptIdentifier } = selectedIdentity;
+    const { name, address } = selectedIdentity;
 
     const keyring = keyrings.find((kr) => {
       return kr.accounts.includes(address);
@@ -45,8 +42,6 @@ export default class AccountDetailsModal extends Component {
     if (keyring?.type?.search('Hardware') !== -1) {
       exportPrivateKeyFeatureEnabled = false;
     }
-
-    const showReceiptIdentifier = true;
 
     return (
       <AccountModalContainer className="account-details-modal">
@@ -67,13 +62,6 @@ export default class AccountDetailsModal extends Component {
           onClick={() => showPublicKeyModal()}
         >
           {this.context.t('viewPublicKey')}
-        </Button>
-        <Button
-          type="secondary"
-          className="account-details-modal__button"
-          onClick={() => showReceiptIdentiferModal()}
-        >
-          {this.context.t('viewReceiptIdengifier')}
         </Button>
         <Button
           type="secondary"

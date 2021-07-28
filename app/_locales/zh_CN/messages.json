@@ -1276,7 +1276,7 @@
     "message": "接收地址"
   },
   "recipientAddressPlaceholder": {
-    "message": "查找 帐户地址 (0x) 或 收款识别码(stc1p)"
+    "message": "查找 帐户地址 (0x)"
   },
   "receiptIdentifier": {
     "message": "收款识别码"
