@@ -207,7 +207,7 @@ async function estimateGasForSend({
   // if recipient has no code, gas is 21k max:
   if (!sendToken && !data) {
     const code = await new Promise((resolve, reject) => {
-      return global.ethQuery.getCode('0x1::Account', (error, result) => {
+      return global.ethQuery.getCode('0x00000000000000000000000000000001::Account', (error, result) => {
         if (error) {
           return reject(error);
         }
@@ -262,7 +262,7 @@ async function estimateGasForSend({
     const sequenceNumber = await new Promise((resolve, reject) => {
       return global.ethQuery.getResource(
         paramsForGasEstimate.from,
-        '0x1::Account::Account',
+        '0x00000000000000000000000000000001::Account::Account',
         (err, res) => {
           if (err) {
             return reject(err);

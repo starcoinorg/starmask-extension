@@ -111,7 +111,7 @@ export default class TxGasUtil {
     const selectedSequenceNumber = await new Promise((resolve, reject) => {
       return this.query.getResource(
         txMeta.txParams.from,
-        '0x1::Account::Account',
+        '0x00000000000000000000000000000001::Account::Account',
         (err, res) => {
           if (err) {
             return reject(err);

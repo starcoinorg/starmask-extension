@@ -1021,7 +1021,7 @@ export default class MetamaskController extends EventEmitter {
       } else {
         ethQuery.getResource(
           address,
-          '0x1::Account::Balance<0x1::STC::STC>',
+          '0x00000000000000000000000000000001::Account::Balance<0x00000000000000000000000000000001::STC::STC>',
           (error, res) => {
             if (error) {
               log.error(error);
@@ -1876,8 +1876,8 @@ export default class MetamaskController extends EventEmitter {
             sequence_number: estimateGasParams.sequenceNumber,
             max_gas_amount: 40000000,
             script: {
-              code: '0x1::TransferScripts::peer_to_peer_v2',
-              type_args: ['0x1::STC::STC'],
+              code: '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2',
+              type_args: ['0x00000000000000000000000000000001::STC::STC'],
               args: [estimateGasParams.to, `${hexToDecimal(estimateGasParams.gas)}u128`]
             },
           };

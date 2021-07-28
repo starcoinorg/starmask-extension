@@ -568,7 +568,7 @@ export default class TransactionController extends EventEmitter {
     const senderSequenceNumber = await new Promise((resolve, reject) => {
       return this.query.getResource(
         txParams.from,
-        '0x1::Account::Account',
+        '0x00000000000000000000000000000001::Account::Account',
         (err, res) => {
           if (err) {
             return reject(err);
@@ -611,7 +611,7 @@ export default class TransactionController extends EventEmitter {
 
     let payload;
     if (txMeta.type === 'sentEther') {
-      const functionId = '0x1::TransferScripts::peer_to_peer_v2';
+      const functionId = '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2';
 
       const tyArgs = [{ Struct: { address: '0x1', module: 'STC', name: 'STC', type_params: [] } }];
 
@@ -738,7 +738,7 @@ export default class TransactionController extends EventEmitter {
         const postTxBalance = await new Promise((resolve, reject) => {
           return this.query.getResource(
             txMeta.txParams.from,
-            '0x1::Account::Account',
+            '0x00000000000000000000000000000001::Account::Account',
             (err, res) => {
               if (err) {
                 return reject(err);
@@ -982,7 +982,7 @@ export default class TransactionController extends EventEmitter {
     if (!result) {
       // try {
       //   code = await new Promise((resolve, reject) => {
-      //     return this.query.getCode('0x1::Account', (error, result) => {
+      //     return this.query.getCode('0x00000000000000000000000000000001::Account', (error, result) => {
       //       if (error) {
       //         return reject(error);
       //       }
