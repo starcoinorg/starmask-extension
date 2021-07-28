@@ -2597,10 +2597,10 @@
     json-rpc-random-id "^1.0.0"
     xtend "^4.0.1"
 
-"@starcoin/stc-query@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.npmjs.org/@starcoin/stc-query/-/stc-query-0.3.0.tgz#8b3d6e4900b1cdd30123b4622f02a6a5cf015151"
-  integrity sha512-XAgryeJPaSI1y8rH4Lj8MSqRiUpDIRb3XaAuNPo+qxJDvLhuWOU/s+9Q7E8B4J4sFDeVxH0R5qUf+TUa7gBi7g==
+"@starcoin/stc-query@^0.3.1":
+  version "0.3.1"
+  resolved "https://registry.npmjs.org/@starcoin/stc-query/-/stc-query-0.3.1.tgz#57f9d81bd9437337ecea9b63c418b87e0b6bdb14"
+  integrity sha512-oMPUJv+krDazeSMOXwNY+/4OrLET3wq4oQp0gTPmV9NxsglaprXgdHJsOLGR7svy6CooYB+9IowkFMPXfdsXfg==
   dependencies:
     json-rpc-random-id "^1.0.0"
     xtend "^4.0.1"

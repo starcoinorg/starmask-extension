@@ -54,7 +54,7 @@
     "@starcoin/stc-json-rpc-middleware": "^0.1.0",
     "@starcoin/stc-keyring-controller": "^1.4.1",
     "@starcoin/stc-nonce-tracker": "^0.1.0",
-    "@starcoin/stc-query": "^0.3.0",
+    "@starcoin/stc-query": "^0.3.1",
     "@starcoin/stc-util": "^0.3.0",
     "@zxing/library": "^0.8.0",
     "abortcontroller-polyfill": "^1.4.0",
