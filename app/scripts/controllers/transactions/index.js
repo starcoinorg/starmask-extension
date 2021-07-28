@@ -611,7 +611,7 @@ export default class TransactionController extends EventEmitter {
 
     let payload;
     if (txMeta.type === 'sentEther') {
-      const functionId = '0x1::TransferScripts::peer_to_peer';
+      const functionId = '0x1::TransferScripts::peer_to_peer_v2';
 
       const tyArgs = [{ Struct: { address: '0x1', module: 'STC', name: 'STC', type_params: [] } }];
 
@@ -633,11 +633,7 @@ export default class TransactionController extends EventEmitter {
         return hexlify(se.getBytes());
       })();
 
-      const args = [
-        arrayify(receiverAddressHex),
-        Buffer.from('00', 'hex'),
-        arrayify(amountSCSHex),
-      ];
+      const args = [arrayify(receiverAddressHex), arrayify(amountSCSHex)];
 
       const scriptFunction = utils.tx.encodeScriptFunction(
         functionId,

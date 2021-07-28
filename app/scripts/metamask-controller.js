@@ -1866,18 +1866,6 @@ export default class MetamaskController extends EventEmitter {
       // network = { name: XXX, id: XXX_NETWORK_ID } for others
       const chainId = network.id ? network.id : Number(hexToDecimal(network));
 
-      let toAuthKey = '';
-      let receiptIdentifier = null;
-      const identities = this.getState().identities;
-      if (estimateGasParams.toReceiptIdentifier && isValidReceiptIdentifier(estimateGasParams.toReceiptIdentifier)) {
-        receiptIdentifier = estimateGasParams.toReceiptIdentifier;
-      } else if (estimateGasParams.to && identities[estimateGasParams.to]) {
-        receiptIdentifier = identities[estimateGasParams.to].receiptIdentifier;
-      }
-      if (receiptIdentifier) {
-        const decodedReciptIdentifier = encoding.decodeReceiptIdentifier(receiptIdentifier);
-        toAuthKey = decodedReciptIdentifier.authKey;
-      }
       return this.keyringController.getEncryptionPublicKey(estimateGasParams.from)
         .then((publicKey) => {
           const params = {
@@ -1888,9 +1876,9 @@ export default class MetamaskController extends EventEmitter {
             sequence_number: estimateGasParams.sequenceNumber,
             max_gas_amount: 40000000,
             script: {
-              code: '0x1::TransferScripts::peer_to_peer',
+              code: '0x1::TransferScripts::peer_to_peer_v2',
               type_args: ['0x1::STC::STC'],
-              args: [estimateGasParams.to, `x"${toAuthKey}"`, `${hexToDecimal(estimateGasParams.gas)}u128`]
+              args: [estimateGasParams.to, `${hexToDecimal(estimateGasParams.gas)}u128`]
             },
           };
           if (!estimateGasParams.to) {
