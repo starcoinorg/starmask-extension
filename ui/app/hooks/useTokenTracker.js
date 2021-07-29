@@ -44,12 +44,11 @@ export function useTokenTracker(
   includeFailedTokens = false,
   hideZeroBalanceTokens = false,
 ) {
-
   const tokensWithBalances = [];
   const userAddress = useSelector(getSelectedAddress);
   const assets = useSelector(getAssets);
   const currentAssets = assets[userAddress];
-  if (Object.keys(currentAssets).length) {
+  if (currentAssets && Object.keys(currentAssets).length) {
     Object.keys(currentAssets).forEach((key) => {
       if (!tokens.filter((token) => token.code === key).length) {
         return;
