@@ -76,7 +76,7 @@ export default class AccountDetailsModal extends Component {
             ? this.context.t('blockExplorerView', [
               rpcPrefs.blockExplorerUrl.match(/^https?:\/\/(.+)\//u)[1],
             ])
-            : this.context.t('viewOnEtherscan')}
+            : this.context.t('viewOnStcscan')}
         </Button>
 
         {exportPrivateKeyFeatureEnabled ? (

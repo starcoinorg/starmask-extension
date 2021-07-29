@@ -19,7 +19,7 @@ export default function ViewOnEtherScanLink({
     >
       {isCustomBlockExplorerUrl
         ? t('viewOnCustomBlockExplorer', [new URL(blockExplorerUrl).hostname])
-        : t('viewOnEtherscan')}
+        : t('viewOnStcscan')}
     </div>
   );
 }

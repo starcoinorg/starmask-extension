@@ -2101,7 +2101,7 @@
   "viewOnCustomBlockExplorer": {
     "message": "在 $1 查看"
   },
-  "viewOnEtherscan": {
+  "viewOnStcscan": {
     "message": "在Starcoin浏览器上查看"
   },
   "viewinExplorer": {

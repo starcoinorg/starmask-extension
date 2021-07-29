@@ -2243,7 +2243,7 @@
   "viewOnCustomBlockExplorer": {
     "message": "View at $1"
   },
-  "viewOnEtherscan": {
+  "viewOnStcscan": {
     "message": "View on Starcoin Explorer"
   },
   "viewinExplorer": {

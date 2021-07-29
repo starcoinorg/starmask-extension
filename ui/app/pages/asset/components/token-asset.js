@@ -34,7 +34,7 @@ export default function TokenAsset({ token }) {
             onRemove={() =>
               dispatch(showModal({ name: 'HIDE_TOKEN_CONFIRMATION', token }))
             }
-            onViewEtherscan={() => {
+            onViewStcscan={() => {
               const url = createTokenTrackerLinkForChain(
                 token.code,
                 rpcPrefs.blockExplorerUrl,
