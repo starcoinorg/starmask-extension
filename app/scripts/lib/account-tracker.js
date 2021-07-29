@@ -253,7 +253,6 @@ export default class AccountTracker {
    *
    */
   async _updateAccount(address) {
-    log.debug('_updateAccount', address, address.length)
     // query balance
     // const balance = await this._query.getBalance(address);
 

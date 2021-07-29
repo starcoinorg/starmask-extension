@@ -109,6 +109,21 @@ export function formatCurrency(value, currencyCode) {
     : value;
 }
 
+export function stringifyBalance(balance, decimals, currency) {
+  return formatCurrency(
+    conversionUtil(balance, {
+      fromCurrency: currency,
+      toCurrency: currency,
+      fromNumericBase: 'hex',
+      toNumericBase: 'dec',
+      numberOfDecimals: decimals,
+      fromDenomination: 'NANOSTC',
+      toDenomination: 'STC',
+    }),
+    currency,
+  );
+}
+
 export function convertTokenToFiat({
   value,
   fromCurrency = 'STC',

@@ -48,7 +48,7 @@ export default class SendTransactionScreen extends Component {
     toNickname: PropTypes.string,
     tokens: PropTypes.array,
     tokenBalance: PropTypes.string,
-    tokenContract: PropTypes.object,
+    assets: PropTypes.object,
     updateAndSetGasLimit: PropTypes.func.isRequired,
     updateSendEnsResolution: PropTypes.func.isRequired,
     updateSendEnsResolutionError: PropTypes.func.isRequired,
@@ -94,7 +94,7 @@ export default class SendTransactionScreen extends Component {
       updateSendErrors,
       updateSendTo,
       updateSendTokenBalance,
-      tokenContract,
+      assets,
       to,
       toNickname,
       addressBook,
@@ -150,7 +150,7 @@ export default class SendTransactionScreen extends Component {
       if (chainId !== prevChainId && chainId !== undefined) {
         updateSendTokenBalance({
           sendToken,
-          tokenContract,
+          assets,
           address,
         });
         updateToNicknameIfNecessary(to, toNickname, addressBook);
@@ -285,13 +285,13 @@ export default class SendTransactionScreen extends Component {
     const {
       from: { address },
       sendToken,
-      tokenContract,
+      assets,
       updateSendTokenBalance,
     } = this.props;
 
     updateSendTokenBalance({
       sendToken,
-      tokenContract,
+      assets,
       address,
     });
   }

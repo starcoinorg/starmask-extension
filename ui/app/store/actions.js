@@ -716,15 +716,15 @@ export function gasLoadingFinished() {
   };
 }
 
-export function updateSendTokenBalance({ sendToken, tokenContract, address }) {
+export function updateSendTokenBalance({ sendToken, assets, address }) {
   return (dispatch) => {
-    const tokenBalancePromise = tokenContract
-      ? tokenContract.balanceOf(address)
+    const tokenBalancePromise = assets && address
+      ? Promise.resolve(assets[address])
       : Promise.resolve();
     return tokenBalancePromise
       .then((usersToken) => {
         if (usersToken) {
-          const newTokenBalance = calcTokenBalance({ sendToken, usersToken });
+          const newTokenBalance = usersToken[sendToken.code];
           dispatch(setSendTokenBalance(newTokenBalance));
         }
       })

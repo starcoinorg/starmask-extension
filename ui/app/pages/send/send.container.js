@@ -10,7 +10,7 @@ import {
   getGasTotal,
   getPrimaryCurrency,
   getSendToken,
-  getSendTokenContract,
+  getAssets,
   getSendAmount,
   getSendEditingTransactionId,
   getSendHexDataFeatureFlagState,
@@ -68,7 +68,7 @@ function mapStateToProps(state) {
     toNickname: getSendToNickname(state),
     tokens: getTokens(state),
     tokenBalance: getTokenBalance(state),
-    tokenContract: getSendTokenContract(state),
+    assets: getAssets(state),
     sendTokenAddress: getSendTokenCode(state),
     gasIsExcessive: isCustomPriceExcessive(state, true),
   };
@@ -103,11 +103,11 @@ function mapDispatchToProps(dispatch) {
           }),
         );
     },
-    updateSendTokenBalance: ({ sendToken, tokenContract, address }) => {
+    updateSendTokenBalance: ({ sendToken, assets, address }) => {
       dispatch(
         updateSendTokenBalance({
           sendToken,
-          tokenContract,
+          assets,
           address,
         }),
       );

@@ -169,8 +169,8 @@ function getGasFeeErrorObject({
 }
 
 function calcTokenBalance({ sendToken, usersToken }) {
-  const { decimals } = sendToken || {};
-  return calcTokenAmount(usersToken.balance.toString(), decimals).toString(16);
+  const { code, decimals } = sendToken || {};
+  return calcTokenAmount(usersToken[code].toString(), decimals).toString(16);
 }
 
 function doesAmountErrorRequireUpdate({
