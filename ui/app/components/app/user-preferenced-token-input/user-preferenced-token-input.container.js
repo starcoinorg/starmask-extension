@@ -17,7 +17,7 @@ const UserPreferencedTokenInputContainer = connect(mapStateToProps)(
 
 UserPreferencedTokenInputContainer.propTypes = {
   token: PropTypes.shape({
-    address: PropTypes.string.isRequired,
+    code: PropTypes.string.isRequired,
     decimals: PropTypes.number,
     symbol: PropTypes.string,
   }).isRequired,

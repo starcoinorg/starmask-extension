@@ -27,7 +27,7 @@ export default class TokenInput extends PureComponent {
     showFiat: PropTypes.bool,
     hideConversion: PropTypes.bool,
     token: PropTypes.shape({
-      address: PropTypes.string.isRequired,
+      code: PropTypes.string.isRequired,
       decimals: PropTypes.number,
       symbol: PropTypes.string,
     }).isRequired,
@@ -99,7 +99,7 @@ export default class TokenInput extends PureComponent {
     } = this.props;
     const { decimalValue } = this.state;
 
-    const tokenExchangeRate = tokenExchangeRates?.[token.address] || 0;
+    const tokenExchangeRate = tokenExchangeRates?.[token.code] || 0;
     let currency, numberOfDecimals;
 
     if (hideConversion) {

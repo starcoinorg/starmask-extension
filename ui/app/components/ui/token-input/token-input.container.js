@@ -26,7 +26,7 @@ const TokenInputContainer = connect(mapStateToProps)(TokenInput);
 
 TokenInputContainer.propTypes = {
   token: PropTypes.shape({
-    address: PropTypes.string.isRequired,
+    code: PropTypes.string.isRequired,
     decimals: PropTypes.number,
     symbol: PropTypes.string,
   }).isRequired,
