@@ -5,19 +5,21 @@ import Identicon from '../../../../components/ui/identicon/identicon.component';
 import TokenBalance from '../../../../components/ui/token-balance';
 import UserPreferencedCurrencyDisplay from '../../../../components/app/user-preferenced-currency-display';
 import { ERC20, STC, PRIMARY } from '../../../../helpers/constants/common';
+import { cloneDeepWith } from 'lodash';
+import { cloneDeep } from 'lodash';
 
 export default class SendAssetRow extends Component {
   static propTypes = {
     tokens: PropTypes.arrayOf(
       PropTypes.shape({
-        address: PropTypes.string,
+        code: PropTypes.string,
         decimals: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         symbol: PropTypes.string,
       }),
     ).isRequired,
     accounts: PropTypes.object.isRequired,
     selectedAddress: PropTypes.string.isRequired,
-    sendTokenAddress: PropTypes.string,
+    sendTokenCode: PropTypes.string,
     setSendToken: PropTypes.func.isRequired,
     nativeCurrency: PropTypes.string,
   };
@@ -70,9 +72,9 @@ export default class SendAssetRow extends Component {
   }
 
   renderSendToken() {
-    const { sendTokenAddress } = this.props;
+    const { sendTokenCode } = this.props;
     const token = this.props.tokens.find(
-      ({ address }) => address === sendTokenAddress,
+      ({ code }) => code === sendTokenCode,
     );
     return (
       <div
@@ -146,17 +148,17 @@ export default class SendAssetRow extends Component {
   }
 
   renderAsset(token, insideDropdown = false) {
-    const { address, symbol } = token;
+    const { code, symbol } = token;
     const { t } = this.context;
 
     return (
       <div
-        key={address}
+        key={code}
         className="send-v2__asset-dropdown__asset"
         onClick={() => this.selectToken(token)}
       >
         <div className="send-v2__asset-dropdown__asset-icon">
-          <Identicon address={address} diameter={36} />
+          <Identicon address={code} diameter={36} />
         </div>
         <div className="send-v2__asset-dropdown__asset-data">
           <div className="send-v2__asset-dropdown__symbol">{symbol}</div>

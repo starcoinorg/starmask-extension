@@ -22,7 +22,7 @@ import {
   getQrCodeData,
   getSelectedAddress,
   getAddressBook,
-  getSendTokenAddress,
+  getSendTokenCode,
   isCustomPriceExcessive,
   getCurrentChainId,
 } from '../../selectors';
@@ -69,7 +69,7 @@ function mapStateToProps(state) {
     tokens: getTokens(state),
     tokenBalance: getTokenBalance(state),
     tokenContract: getSendTokenContract(state),
-    sendTokenAddress: getSendTokenAddress(state),
+    sendTokenAddress: getSendTokenCode(state),
     gasIsExcessive: isCustomPriceExcessive(state, true),
   };
 }

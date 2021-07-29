@@ -45,6 +45,10 @@ export function getSendTokenAddress(state) {
   return getSendToken(state)?.address;
 }
 
+export function getSendTokenCode(state) {
+  return getSendToken(state)?.code;
+}
+
 export function getSendTokenContract(state) {
   const sendTokenAddress = getSendTokenAddress(state);
   return sendTokenAddress
