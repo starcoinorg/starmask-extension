@@ -40,7 +40,7 @@ const CONFUSING_ENS_ERROR = 'confusingEnsDomain';
 const ACCOUNT_NOT_EXISTS = 'accountNotExists';
 
 const SIMPLE_GAS_COST = '0x1e51f'; // Hex for 124191, cost of a simple send.
-const BASE_TOKEN_GAS_COST = '0x186a0'; // Hex for 100000, a base estimate for token transfers.
+const BASE_TOKEN_GAS_COST = '0x1e51f'; // Hex for 124191, a base estimate for token transfers.
 
 export {
   ACCOUNT_NOT_EXISTS,

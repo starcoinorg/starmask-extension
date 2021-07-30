@@ -3,7 +3,6 @@ import log from 'loglevel';
 import * as ethUtil from '@starcoin/stc-util';
 import { cloneDeep } from 'lodash';
 import BigNumber from 'bignumber.js';
-import { arrayify, hexlify } from '@ethersproject/bytes';
 import { encoding, utils, starcoin_types } from '@starcoin/starcoin';
 import { hexToBn, BnMultiplyByFraction, bnToHex } from '../../lib/util';
 
