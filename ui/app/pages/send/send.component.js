@@ -159,10 +159,10 @@ export default class SendTransactionScreen extends Component {
       }
     }
 
-    const prevTokenAddress = prevSendToken && prevSendToken.address;
-    const sendTokenAddress = sendToken && sendToken.address;
+    const prevTokenCode = prevSendToken && prevSendToken.code;
+    const sendTokenCode = sendToken && sendToken.code;
 
-    if (sendTokenAddress && prevTokenAddress !== sendTokenAddress) {
+    if (sendTokenCode && prevTokenCode !== sendTokenCode) {
       this.updateSendToken();
       this.validate(this.state.query);
       updateGas = true;
