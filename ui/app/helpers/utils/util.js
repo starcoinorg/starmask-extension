@@ -433,7 +433,8 @@ export function checkExistingAddresses(address, list = []) {
   }
 
   const matchesAddress = (obj) => {
-    return obj.address.toLowerCase() === address.toLowerCase();
+    const tokenAddress = obj.code.split('::')[0];
+    return tokenAddress.toLowerCase() === address.toLowerCase();
   };
 
   return list.some(matchesAddress);
