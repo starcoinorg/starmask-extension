@@ -723,7 +723,7 @@ export function updateSendTokenBalance({ sendToken, assets, address }) {
       : Promise.resolve();
     return tokenBalancePromise
       .then((usersToken) => {
-        if (usersToken) {
+        if (usersToken && sendToken && sendToken.code) {
           const newTokenBalance = usersToken[sendToken.code];
           dispatch(setSendTokenBalance(newTokenBalance));
         }
