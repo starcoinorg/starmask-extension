@@ -1,8 +1,9 @@
 import EthQuery from '@starcoin/stc-query';
 import log from 'loglevel';
 import * as ethUtil from '@starcoin/stc-util';
-import { cloneDeep } from 'lodash';
+// import { cloneDeep } from 'lodash';
 import BigNumber from 'bignumber.js';
+// eslint-disable-next-line camelcase
 import { encoding, utils, starcoin_types } from '@starcoin/starcoin';
 import { hexToBn, BnMultiplyByFraction, bnToHex } from '../../lib/util';
 
