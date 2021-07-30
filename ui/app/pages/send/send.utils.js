@@ -1,3 +1,5 @@
+import { utils, bcs } from '@starcoin/starcoin';
+import { ethers } from 'ethers';
 import abi from 'ethereumjs-abi';
 import { BigNumber } from 'bignumber.js';
 import {
@@ -21,6 +23,8 @@ import {
   SIMPLE_GAS_COST,
   TOKEN_TRANSFER_FUNCTION_SIGNATURE,
 } from './send.constants';
+
+const { arrayify, hexlify } = ethers.utils;
 
 export {
   addGasBuffer,
@@ -225,12 +229,12 @@ async function estimateGasForSend({
 
   if (sendToken) {
     paramsForGasEstimate.value = '0x0';
-    paramsForGasEstimate.data = generateTokenTransferData({
+    paramsForGasEstimate.data = generateTokenPalyloadData({
       toAddress: to,
       amount: value,
       sendToken,
     });
-    paramsForGasEstimate.to = sendToken.address;
+    // paramsForGasEstimate.to = sendToken.address;
   } else {
     if (data) {
       paramsForGasEstimate.data = data;
@@ -274,7 +278,7 @@ async function estimateGasForSend({
       );
     });
     paramsForGasEstimate.sequenceNumber = sequenceNumber;
-    // get gas_used from contract.dry_run
+    // get gas_used from contract.dry_run_raw
     const estimatedGas = await estimateGasMethod(paramsForGasEstimate);
     const estimateWithBuffer = addGasBuffer(
       estimatedGas.toString(16),
@@ -342,6 +346,45 @@ function addGasBuffer(
   }
   // otherwise use blockGasLimit
   return upperGasLimit;
+}
+
+function generateTokenPalyloadData({
+  toAddress = '0x0',
+  amount = '0x0',
+  sendToken,
+}) {
+  if (!sendToken) {
+    return undefined;
+  }
+  const functionId = '0x1::TransferScripts::peer_to_peer_v2';
+  const strTypeArgs = [sendToken.code];
+  const tyArgs = utils.tx.encodeStructTypeTags(strTypeArgs);
+
+  const multiplier = new BigNumber(Math.pow(10, sendToken.decimals));
+  const bnAmount = new BigNumber(amount, 16);
+  const bnAmountInPercision = bnAmount.times(multiplier);
+
+  const amountSCSHex = (function () {
+    const se = new bcs.BcsSerializer();
+    // eslint-disable-next-line no-undef
+    se.serializeU128(BigInt(bnAmountInPercision.toString(10)));
+    return hexlify(se.getBytes());
+  })();
+
+  const args = [arrayify(toAddress), arrayify(amountSCSHex)];
+
+  const scriptFunction = utils.tx.encodeScriptFunction(
+    functionId,
+    tyArgs,
+    args,
+  );
+
+  const payloadInHex = (function () {
+    const se = new bcs.BcsSerializer();
+    scriptFunction.serialize(se);
+    return hexlify(se.getBytes());
+  })();
+  return payloadInHex;
 }
 
 function generateTokenTransferData({
