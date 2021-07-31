@@ -356,7 +356,7 @@ function generateTokenPalyloadData({
   if (!sendToken) {
     return undefined;
   }
-  const functionId = '0x1::TransferScripts::peer_to_peer_v2';
+  const functionId = '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2';
   const strTypeArgs = [sendToken.code];
   const tyArgs = utils.tx.encodeStructTypeTags(strTypeArgs);
 
