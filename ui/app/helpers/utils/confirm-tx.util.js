@@ -13,7 +13,7 @@ import {
 
 export function increaseLastGasPrice(lastGasPrice) {
   return addHexPrefix(
-    multiplyCurrencies(lastGasPrice || '0x0', 1.1, {
+    multiplyCurrencies(lastGasPrice || '0x0', 100, {
       multiplicandBase: 16,
       multiplierBase: 10,
       toNumericBase: 'hex',

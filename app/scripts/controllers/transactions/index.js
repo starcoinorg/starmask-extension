@@ -56,9 +56,8 @@ const MAX_MEMSTORE_TX_LIST_SIZE = 100; // Number of transactions (by unique nonc
   @param {Object} opts.networkStore - an observable store for network number
   @param {Object} opts.blockTracker - An instance of eth-blocktracker
   @param {Object} opts.provider - A network provider.
-  @param {Function} opts.signTransaction - function the signs an ethereumjs-tx
+  @param {Function} opts.signTransaction - function the signs an ethereumjs-tx(ethTx signer that returns a rawTx)
   @param {Object} opts.getPermittedAccounts - get accounts that an origin has permissions for
-  @param {Function} opts.signTransaction - ethTx signer that returns a rawTx
   @param {number} [opts.txHistoryLimit] - number *optional* for limiting how many transactions are in state
   @param {Object} opts.preferencesStore
 */
@@ -610,7 +609,7 @@ export default class TransactionController extends EventEmitter {
     const fromAddress = txParams.from;
 
     let payload;
-    if (txMeta.type === 'sentEther') {
+    if (txMeta.type === TRANSACTION_TYPES.SENT_ETHER || txMeta.type === TRANSACTION_TYPES.CANCEL) {
       const functionId = '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2';
 
       const tyArgs = [{ Struct: { address: '0x1', module: 'STC', name: 'STC', type_params: [] } }];
