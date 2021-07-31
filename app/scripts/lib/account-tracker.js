@@ -253,20 +253,13 @@ export default class AccountTracker {
    *
    */
   async _updateAccount(address) {
-    // query balance
-    // const balance = await this._query.getBalance(address);
-
-    // update accounts state
     const { accounts, assets } = this.store.getState();
-    // only populate if the entry is still present
-    // if (!accounts[address]) {
-    //   return;
-    // }
-
+    const currentTokens = {};
     let balanceDecimal = 0;
     // do not update HD Key account
     if (address.length !== 42) {
       try {
+        // query balance
         const res = await this._query.listResource(address, { 'decode': true });
         const resources = res.resources;
         const ACCOUNT_BALANCE = '0x00000000000000000000000000000001::Account::Balance';
@@ -274,27 +267,36 @@ export default class AccountTracker {
           const token = key.substr(ACCOUNT_BALANCE.length + 1, key.length - ACCOUNT_BALANCE.length - 2);
           return token.split('::').length === 3
         })
-        const currentTokens = {}
-        balanceKeys.forEach(key => {
-          balanceDecimal = resources[key].json.token.value;
-          const token = key.substr(ACCOUNT_BALANCE.length + 1, key.length - ACCOUNT_BALANCE.length - 2);
-          const balanceHex = new BigNumber(balanceDecimal, 10).toString(16);
-          const balance = ethUtil.addHexPrefix(balanceHex);
-          if (token === '0x00000000000000000000000000000001::STC::STC') {
-            const result = { address, balance };
-            accounts[address] = result;
-          } else {
-            currentTokens[token] = balance;
-          }
-        });
+        if (balanceKeys.length === 0) {
+          accounts[address] = { address, balance: '0x0' };
+        } else {
+          balanceKeys.forEach((key) => {
+            balanceDecimal = resources[key].json.token.value;
+            const token = key.substr(ACCOUNT_BALANCE.length + 1, key.length - ACCOUNT_BALANCE.length - 2);
+            const balanceHex = new BigNumber(balanceDecimal, 10).toString(16);
+            const balance = ethUtil.addHexPrefix(balanceHex);
+            if (token === '0x00000000000000000000000000000001::STC::STC') {
+              const result = { address, balance };
+              accounts[address] = result;
+            } else {
+              currentTokens[token] = balance;
+            }
+          });
+        }
         assets[address] = currentTokens;
       } catch (error) {
         log.info('_updateAccount error', error);
         // HD account will get error: Invalid params: unable to parse AccoutAddress
-        balanceDecimal = 0;
+        accounts[address] = { address, balance: '0x0' };
+        assets[address] = currentTokens;
       }
     }
+    // update accounts state
 
+    // only populate if the entry is still present
+    // if (!accounts[address]) {
+    //   return;
+    // }
     this.store.updateState({ accounts, assets });
   }
 
