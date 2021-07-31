@@ -23,6 +23,11 @@
 
 ![](./images/debug-4.png)
 
+> 常见的错误 method 包括: contract.dry_run, contract.dry_run_raw 等
+> 注意: 提交issue时，请把params下面的所有字段展开，提供 Request Payloadd 完整请求的截图
+
 ### 5. 在 Preview 和  Response 可以查看 api请求返回的错误详情
 
 ![](./images/debug-5.png)
+
+> 注意: 提交issue时，请把 Preview 下面的所有字段展开再截图，或者直接拷贝粘贴 Response 的原始数据
