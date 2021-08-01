@@ -114,7 +114,7 @@ export default class SendFooter extends Component {
       gasIsLoading,
     } = this.props;
     const missingTokenBalance = sendToken && !tokenBalance;
-    const gasLimitTooLow = gasLimit < 13000;
+    const gasLimitTooLow = gasLimit < 10000;
     const shouldBeDisabled =
       inError ||
       !gasTotal ||

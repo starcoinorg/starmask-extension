@@ -33,7 +33,7 @@ import * as txUtils from './lib/util';
 const { arrayify, hexlify } = ethers.utils;
 // const hstInterface = new ethers.utils.Interface(abi);
 
-const SIMPLE_GAS_COST = '0x32c8'; // Hex for 13000, cost of a simple send.
+const SIMPLE_GAS_COST = '0x2710'; // Hex for 10000, cost of a simple send.
 const MAX_MEMSTORE_TX_LIST_SIZE = 100; // Number of transactions (by unique nonces) to keep in memory
 
 /**
@@ -407,7 +407,7 @@ export default class TransactionController extends EventEmitter {
         from,
         to: from,
         nonce,
-        gas: customGasLimit || '0x32c8',
+        gas: customGasLimit || '0x2710',
         value: '0x0',
         gasPrice: newGasPrice,
       },

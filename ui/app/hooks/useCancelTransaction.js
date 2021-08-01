@@ -44,13 +44,13 @@ export function useCancelTransaction(transactionGroup) {
   const cancelTransaction = useCallback(
     (event) => {
       event.stopPropagation();
-      dispatch(setCustomGasLimit('0x32c8'));
+      dispatch(setCustomGasLimit('0x2710'));
       dispatch(setCustomGasPriceForRetry(defaultNewGasPrice));
       const tx = {
         ...transaction,
         txParams: {
           ...transaction.txParams,
-          gas: '0x32c8',
+          gas: '0x2710',
           value: '0x0',
         },
       };

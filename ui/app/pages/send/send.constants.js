@@ -6,7 +6,7 @@ import { addHexPrefix } from '../../../../app/scripts/lib/util';
 
 const MIN_GAS_PRICE_DEC = '0';
 const MIN_GAS_PRICE_HEX = parseInt(MIN_GAS_PRICE_DEC, 10).toString(16);
-const MIN_GAS_LIMIT_DEC = '13000';
+const MIN_GAS_LIMIT_DEC = '10000';
 const MIN_GAS_LIMIT_HEX = parseInt(MIN_GAS_LIMIT_DEC, 10).toString(16);
 
 const MIN_GAS_PRICE_GWEI = addHexPrefix(
