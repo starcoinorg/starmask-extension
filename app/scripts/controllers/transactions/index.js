@@ -644,7 +644,11 @@ export default class TransactionController extends EventEmitter {
       const bytes = arrayify(txParams.data);
       const de = new bcs.BcsDeserializer(bytes);
       payload = starcoin_types.TransactionPayload.deserialize(de);
-      // log.debug({ payload });
+    }
+    log.debug({ payload });
+    if (!payload) {
+      log.error('payload is undefined');
+      throw new Error('StarMask - signTransaction: payload is undefined');
     }
     const rawUserTransaction = utils.tx.generateRawUserTransaction(
       fromAddress,

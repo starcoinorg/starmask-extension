@@ -33,6 +33,7 @@ export {
   doesAmountErrorRequireUpdate,
   estimateGasForSend,
   generateTokenTransferData,
+  generateTokenPalyloadData,
   getAmountErrorObject,
   getGasFeeErrorObject,
   getToAddressForGasUpdate,

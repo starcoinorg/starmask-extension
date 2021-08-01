@@ -89,7 +89,7 @@ function mapDispatchToProps(dispatch) {
       });
 
       sendToken
-        ? dispatch(signTokenTx(sendToken.address, to, amount, txParams))
+        ? dispatch(await signTokenTx(sendToken, to, amount, txParams))
         : dispatch(await signTx(txParams));
     },
     update: ({

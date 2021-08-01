@@ -4,7 +4,7 @@ import log from 'loglevel';
 import { capitalize } from 'lodash';
 import getBuyEthUrl from '../../../app/scripts/lib/buy-eth-url';
 import { checksumAddress } from '../helpers/utils/util';
-import { calcTokenBalance, estimateGasForSend } from '../pages/send/send.utils';
+import { calcTokenBalance, estimateGasForSend, generateTokenPalyloadData } from '../pages/send/send.utils';
 import {
   fetchLocale,
   loadRelativeTimeFormatLocaleData,
@@ -818,16 +818,24 @@ export function updateSendEnsResolutionError(errorMessage) {
   };
 }
 
-export function signTokenTx(tokenAddress, toAddress, amount, txData) {
+// export function signTokenTx(tokenAddress, toAddress, amount, txData) {
+export function signTokenTx(sendToken, toAddress, amount, txData) {
   return async (dispatch) => {
     dispatch(showLoadingIndication());
 
     try {
-      const token = global.eth.contract(abi).at(tokenAddress);
-      const txPromise = token.transfer(toAddress, addHexPrefix(amount), txData);
+      // const token = global.eth.contract(abi).at(tokenAddress);
+      // const txPromise = token.transfer(toAddress, addHexPrefix(amount), txData);
+      const payloadHex = generateTokenPalyloadData({
+        toAddress,
+        amount,
+        sendToken,
+      });
+      txData.data = payloadHex;
+      await promisifiedBackground.addUnapprovedTransaction(txData, 'starmask');
       dispatch(showConfTxPage());
       dispatch(hideLoadingIndication());
-      await txPromise;
+      // await txPromise;
     } catch (error) {
       dispatch(hideLoadingIndication());
       dispatch(displayWarning(error.message));
