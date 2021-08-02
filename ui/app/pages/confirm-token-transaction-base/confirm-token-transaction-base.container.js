@@ -44,9 +44,9 @@ const mapStateToProps = (state, ownProps) => {
   const currentToken = tokens?.find(({ address }) => tokenAddress === address);
   const { decimals, symbol: tokenSymbol } = currentToken || {};
 
-  const tokenData = getTokenData(data);
-  const tokenValue = getTokenValueParam(tokenData);
-  const toAddress = getTokenAddressParam(tokenData);
+  const tokenData = data && getTokenData(data);
+  const tokenValue = tokenData && getTokenValueParam(tokenData);
+  const toAddress = tokenData && getTokenAddressParam(tokenData);
   const tokenAmount =
     tokenData && calcTokenAmount(tokenValue, decimals).toFixed();
   const contractExchangeRate = contractExchangeRateSelector(state);

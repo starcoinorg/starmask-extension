@@ -13,6 +13,7 @@ import { getMethodDataAsync } from '../helpers/utils/transactions.util';
 import { fetchSymbolAndDecimals } from '../helpers/utils/token-util';
 import switchDirection from '../helpers/utils/switch-direction';
 import { ENVIRONMENT_TYPE_NOTIFICATION } from '../../../shared/constants/app';
+import { TRANSACTION_TYPES } from '../../../shared/constants/transaction';
 import { hasUnconfirmedTransactions } from '../helpers/utils/confirm-tx.util';
 import { setCustomGasLimit } from '../ducks/gas/gas.duck';
 import txHelper from '../../lib/tx-helper';
@@ -818,11 +819,9 @@ export function updateSendEnsResolutionError(errorMessage) {
   };
 }
 
-// export function signTokenTx(tokenAddress, toAddress, amount, txData) {
 export function signTokenTx(sendToken, toAddress, amount, txData) {
   return async (dispatch) => {
     dispatch(showLoadingIndication());
-
     try {
       // const token = global.eth.contract(abi).at(tokenAddress);
       // const txPromise = token.transfer(toAddress, addHexPrefix(amount), txData);
@@ -832,14 +831,14 @@ export function signTokenTx(sendToken, toAddress, amount, txData) {
         sendToken,
       });
       txData.data = payloadHex;
+      txData.type = TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER;
       await promisifiedBackground.addUnapprovedTransaction(txData, 'starmask');
       dispatch(showConfTxPage());
-      dispatch(hideLoadingIndication());
       // await txPromise;
     } catch (error) {
-      dispatch(hideLoadingIndication());
       dispatch(displayWarning(error.message));
     }
+    dispatch(hideLoadingIndication());
   };
 }
 

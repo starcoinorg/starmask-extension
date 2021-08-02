@@ -190,7 +190,7 @@ export const sendTokenTokenAmountAndToAddressSelector = createSelector(
     // interface than bignumber.js
     if (args && args.length) {
       toAddress = args[TOKEN_PARAM_TO];
-      let value = args[TOKEN_PARAM_VALUE].toString();
+      let value = args[TOKEN_PARAM_VALUE]?.toString() || '0';
 
       if (tokenDecimals) {
         // bignumber.js return value

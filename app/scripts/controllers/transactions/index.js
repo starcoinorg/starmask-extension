@@ -948,17 +948,21 @@ export default class TransactionController extends EventEmitter {
    * @returns {InferTransactionTypeResult}
    */
   async _determineTransactionType(txParams) {
-    const { data, to } = txParams;
+    const { data, to, type } = txParams;
     let name;
     try {
       // name = data && hstInterface.parseTransaction({ data }).name;
       if (data) {
-        const txnPayload = encoding.decodeTransactionPayload(data);
-        const keys = Object.keys(txnPayload);
-        if (keys[0] === 'ScriptFunction') {
-          name = TRANSACTION_TYPES.CONTRACT_INTERACTION;
-        } else if (keys[0] === 'Package') {
-          name = TRANSACTION_TYPES.DEPLOY_CONTRACT;
+        if (type && type === TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER) {
+          name = type;
+        } else {
+          const txnPayload = encoding.decodeTransactionPayload(data);
+          const keys = Object.keys(txnPayload);
+          if (keys[0] === 'ScriptFunction') {
+            name = TRANSACTION_TYPES.CONTRACT_INTERACTION;
+          } else if (keys[0] === 'Package') {
+            name = TRANSACTION_TYPES.DEPLOY_CONTRACT;
+          }
         }
       }
     } catch (error) {
