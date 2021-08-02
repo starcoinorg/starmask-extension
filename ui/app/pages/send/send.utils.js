@@ -361,14 +361,12 @@ function generateTokenPalyloadData({
   const strTypeArgs = [sendToken.code];
   const tyArgs = utils.tx.encodeStructTypeTags(strTypeArgs);
 
-  const multiplier = new BigNumber(Math.pow(10, sendToken.decimals));
   const bnAmount = new BigNumber(amount, 16);
-  const bnAmountInPercision = bnAmount.times(multiplier);
 
   const amountSCSHex = (function () {
     const se = new bcs.BcsSerializer();
     // eslint-disable-next-line no-undef
-    se.serializeU128(BigInt(bnAmountInPercision.toString(10)));
+    se.serializeU128(BigInt(bnAmount.toString(10)));
     return hexlify(se.getBytes());
   })();
 
