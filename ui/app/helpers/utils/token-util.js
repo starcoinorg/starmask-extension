@@ -181,8 +181,8 @@ export function getTokenAddressParam(tokenData = []) {
  * @param {Object} tokenData - ethers Interface token data.
  * @returns {string | undefined} A decimal string value.
  */
-export function getTokenValueParam(tokenData = []) {
-  const value = tokenData?.args?.[2];
+export function getTokenValueParam(tokenData = {}) {
+  const value = tokenData?.args?.[tokenData.args.length - 1];
   const amountNanoSTC = (function () {
     const bytes = arrayify(value);
     const de = new bcs.BcsDeserializer(bytes);
