@@ -72,7 +72,29 @@ function getSymbol(tokenCode) {
 }
 
 async function getDecimals(tokenCode) {
-  const decimals = 9;
+  const decimals = await new Promise((resolve, reject) => {
+    return global.ethQuery.sendAsync(
+      {
+        method: 'contract.call_v2',
+        params: [
+          {
+            function_id: '0x1::Token::scaling_factor',
+            type_args: [tokenCode],
+            args: [],
+          },
+        ],
+      },
+      (error, result) => {
+        if (error) {
+          return reject(error);
+        }
+        if (result && result[0]) {
+          return resolve(Math.log10(result[0]));
+        }
+        return reject(new Error('invalid token code'));
+      },
+    );
+  });
   return Promise.resolve(decimals);
   // let decimals = await getDecimalsFromContract(tokenAddress);
 
@@ -121,10 +143,9 @@ export async function getSymbolAndDecimals(tokenCode, existingTokens = []) {
   try {
     symbol = await getSymbol(tokenCode);
     decimals = await getDecimals(tokenCode);
-    console.log({ symbol, decimals })
   } catch (error) {
     log.warn(
-      `symbol() and decimal() calls for token at address ${tokenCode} resulted in error:`,
+      `symbol() and decimal() calls for token ${tokenCode} resulted in error:`,
       error,
     );
   }
@@ -144,7 +165,6 @@ export function tokenInfoGetter() {
     }
 
     tokens[code] = await getSymbolAndDecimals(code);
-    console.log('tokens[code]', tokens[code])
     return tokens[code];
   };
 }
