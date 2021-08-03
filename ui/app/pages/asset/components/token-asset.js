@@ -21,6 +21,7 @@ export default function TokenAsset({ token }) {
   const rpcPrefs = useSelector(getRpcPrefsForCurrentProvider);
   const selectedIdentity = useSelector(getSelectedIdentity);
   const selectedAccountName = selectedIdentity.name;
+  const selectedAddress = selectedIdentity.address;
   const history = useHistory();
 
   return (
@@ -46,7 +47,7 @@ export default function TokenAsset({ token }) {
         }
       />
       <TokenOverview className="asset__overview" token={token} />
-      <TransactionList tokenAddress={token.code} />
+      <TransactionList tokenAddress={selectedAddress} tokenCode={token.code} />
     </>
   );
 }

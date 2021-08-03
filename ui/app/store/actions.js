@@ -832,6 +832,7 @@ export function signTokenTx(sendToken, toAddress, amount, txData) {
       });
       txData.data = payloadHex;
       txData.type = TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER;
+      txData.code = sendToken.code;
       await promisifiedBackground.addUnapprovedTransaction(txData, 'starmask');
       dispatch(showConfTxPage());
       // await txPromise;

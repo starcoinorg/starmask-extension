@@ -62,7 +62,7 @@ export function useTransactionDisplayData(transactionGroup) {
   const t = useI18nContext();
   const { initialTransaction, primaryTransaction } = transactionGroup;
   // initialTransaction contains the data we need to derive the primary purpose of this transaction group
-  const { type } = initialTransaction;
+  const { type, code: tokenCode } = initialTransaction;
 
   const { from: senderAddress, to } = initialTransaction.txParams || {};
 
@@ -94,8 +94,7 @@ export function useTransactionDisplayData(transactionGroup) {
   // false for non-token transactions. This additional argument forces the
   // hook to return null
   const token =
-    isTokenCategory &&
-    knownTokens.find(({ address }) => address === recipientAddress);
+    isTokenCategory && knownTokens.find(({ code }) => code === tokenCode);
   const tokenData = useTokenData(
     initialTransaction?.txParams?.data,
     isTokenCategory,

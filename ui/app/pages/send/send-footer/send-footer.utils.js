@@ -24,6 +24,9 @@ export function constructTxParams({
   if (!sendToken) {
     txParams.value = amount;
     txParams.to = to;
+  } else {
+    txParams.to = to;
+    txParams.code = sendToken.code;
   }
 
   const txParamsFinal = addHexPrefixToObjectValues(txParams);

@@ -28,6 +28,7 @@ const mapStateToProps = (state, ownProps) => {
     txData: {
       id: transactionId,
       txParams: { to: tokenAddress, data } = {},
+      code: tokenCode,
     } = {},
   } = confirmTransaction;
 
@@ -41,7 +42,7 @@ const mapStateToProps = (state, ownProps) => {
     transaction,
   );
   const tokens = getTokens(state);
-  const currentToken = tokens?.find(({ address }) => tokenAddress === address);
+  const currentToken = tokens?.find(({ code }) => tokenCode === code);
   const { decimals, symbol: tokenSymbol } = currentToken || {};
 
   const tokenData = data && getTokenData(data);

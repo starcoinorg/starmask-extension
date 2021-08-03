@@ -24,11 +24,14 @@ const PAGE_INCREMENT = 10;
 // either of those criteria
 const getTransactionGroupRecipientAddressFilter = (
   recipientAddress,
+  tokenCode,
   chainId,
 ) => {
-  return ({ initialTransaction: { txParams } }) => {
+  return ({ initialTransaction: { txParams, type, code } }) => {
     return (
-      txParams?.to === recipientAddress ||
+      (type === TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER &&
+        code === tokenCode &&
+        [txParams?.from, txParams?.to].includes(recipientAddress)) ||
       (txParams?.to === SWAPS_CHAINID_CONTRACT_ADDRESS_MAP[chainId] &&
         txParams.data.match(recipientAddress.slice(2)))
     );
@@ -50,13 +53,14 @@ const getFilteredTransactionGroups = (
   transactionGroups,
   hideTokenTransactions,
   tokenAddress,
+  tokenCode,
   chainId,
 ) => {
   if (hideTokenTransactions) {
     return transactionGroups.filter(tokenTransactionFilter);
   } else if (tokenAddress) {
     return transactionGroups.filter(
-      getTransactionGroupRecipientAddressFilter(tokenAddress, chainId),
+      getTransactionGroupRecipientAddressFilter(tokenAddress, tokenCode, chainId),
     );
   }
   return transactionGroups;
@@ -65,6 +69,7 @@ const getFilteredTransactionGroups = (
 export default function TransactionList({
   hideTokenTransactions,
   tokenAddress,
+  tokenCode,
 }) {
   const [limit, setLimit] = useState(PAGE_INCREMENT);
   const t = useI18nContext();
@@ -83,12 +88,14 @@ export default function TransactionList({
         unfilteredPendingTransactions,
         hideTokenTransactions,
         tokenAddress,
+        tokenCode,
         chainId,
       ),
     [
+      unfilteredPendingTransactions,
       hideTokenTransactions,
       tokenAddress,
-      unfilteredPendingTransactions,
+      tokenCode,
       chainId,
     ],
   );
@@ -98,12 +105,14 @@ export default function TransactionList({
         unfilteredCompletedTransactions,
         hideTokenTransactions,
         tokenAddress,
+        tokenCode,
         chainId,
       ),
     [
+      unfilteredCompletedTransactions,
       hideTokenTransactions,
       tokenAddress,
-      unfilteredCompletedTransactions,
+      tokenCode,
       chainId,
     ],
   );
@@ -171,9 +180,11 @@ export default function TransactionList({
 TransactionList.propTypes = {
   hideTokenTransactions: PropTypes.bool,
   tokenAddress: PropTypes.string,
+  tokenCode: PropTypes.string,
 };
 
 TransactionList.defaultProps = {
   hideTokenTransactions: false,
   tokenAddress: undefined,
+  tokenCode: undefined,
 };

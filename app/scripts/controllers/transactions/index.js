@@ -271,8 +271,11 @@ export default class TransactionController extends EventEmitter {
     const { type, getCodeResponse } = await this._determineTransactionType(
       txParams,
     );
-    log.debug({ type, getCodeResponse })
     txMeta.type = type;
+
+    if (txParams.code) {
+      txMeta.code = txParams.code;
+    }
 
     // ensure value
     txMeta.txParams.value = txMeta.txParams.value
