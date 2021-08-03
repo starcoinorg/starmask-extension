@@ -1865,7 +1865,7 @@ export default class MetamaskController extends EventEmitter {
       // network = 0xfe for `Localhost 9850`
       // network = { name: XXX, id: XXX_NETWORK_ID } for others
       const chainId = network.id ? network.id : Number(hexToDecimal(network));
-
+      const tokenCode = estimateGasParams.code ? estimateGasParams.code : '0x00000000000000000000000000000001::STC::STC'
       return this.keyringController.getEncryptionPublicKey(estimateGasParams.from)
         .then((publicKey) => {
           const params = {
@@ -1877,7 +1877,7 @@ export default class MetamaskController extends EventEmitter {
             max_gas_amount: 40000000,
             script: {
               code: '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2',
-              type_args: ['0x00000000000000000000000000000001::STC::STC'],
+              type_args: [tokenCode],
               args: [estimateGasParams.to, `${hexToDecimal(estimateGasParams.gas)}u128`]
             },
           };

@@ -229,13 +229,13 @@ async function estimateGasForSend({
   }
 
   if (sendToken) {
+    paramsForGasEstimate.code = sendToken.code;
     paramsForGasEstimate.value = '0x0';
     paramsForGasEstimate.data = generateTokenPalyloadData({
       toAddress: to,
       amount: value,
       sendToken,
     });
-    // paramsForGasEstimate.to = sendToken.address;
   } else {
     if (data) {
       paramsForGasEstimate.data = data;
@@ -253,7 +253,7 @@ async function estimateGasForSend({
   }
 
   paramsForGasEstimate.gas = addHexPrefix(
-    multiplyCurrencies(blockGasLimit, 0.95, {
+    multiplyCurrencies(blockGasLimit, 1, {
       multiplicandBase: 16,
       multiplierBase: 10,
       roundDown: '0',
