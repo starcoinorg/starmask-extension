@@ -109,19 +109,18 @@ export function formatCurrency(value, currencyCode) {
     : value;
 }
 
-export function stringifyBalance(balance, decimals, currency) {
-  return formatCurrency(
-    conversionUtil(balance, {
-      fromCurrency: currency,
-      toCurrency: currency,
-      fromNumericBase: 'hex',
-      toNumericBase: 'dec',
-      numberOfDecimals: decimals,
-      fromDenomination: 'NANOSTC',
-      toDenomination: 'STC',
-    }),
-    currency,
-  );
+export function stringifyBalance(balance, decimals, currency, numberOfDecimals) {
+  const multiplier = Math.pow(10, Number(decimals || 0));
+  const value = conversionUtil(balance, {
+    // fromCurrency,
+    toCurrency: currency,
+    fromNumericBase: 'hex',
+    toNumericBase: 'dec',
+    numberOfDecimals,
+    conversionRate: multiplier,
+    invertConversionRate: true,
+  });
+  return formatCurrency(value, currency);
 }
 
 export function convertTokenToFiat({

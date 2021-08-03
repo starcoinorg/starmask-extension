@@ -16,20 +16,22 @@ export function useTokenTracker(
       if (!tokens.filter((token) => token.code === key).length) {
         return;
       }
+      const currentToken = tokens.filter((token) => token.code === key)[0];
       if (key === '0x00000000000000000000000000000001::STC::STC') {
         return;
       }
       if (hideZeroBalanceTokens && Number(currentAssets[key]) === 0) {
         return;
       }
-      const decimals = 4;
+      const numberOfDecimals = 4;
+      const { decimals } = currentToken;
       const symbol = key.split('::')[2];
       const token = {
         code: key,
         balance: currentAssets[key],
         symbol,
         decimals,
-        string: stringifyBalance(currentAssets[key], decimals, symbol),
+        string: stringifyBalance(currentAssets[key], decimals, symbol, numberOfDecimals),
       };
       tokensWithBalances.push(token);
     });
