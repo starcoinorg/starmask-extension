@@ -916,7 +916,7 @@ export default class MetamaskController extends EventEmitter {
           'HD Key Tree',
         )[0];
         if (!primaryKeyring) {
-          throw new Error('MetamaskController - No HD Key Tree found');
+          throw new Error('StarMaskController - No HD Key Tree found');
         }
         const receiptIdentifiers = await primaryKeyring.getReceiptIdentifiers();
         this.preferencesController.setReceiptIdentifiers(receiptIdentifiers);
@@ -976,7 +976,7 @@ export default class MetamaskController extends EventEmitter {
         'HD Key Tree',
       )[0];
       if (!primaryKeyring) {
-        throw new Error('MetamaskController - No HD Key Tree found');
+        throw new Error('StarMaskController - No HD Key Tree found');
       }
 
       // seek out the first zero balance
@@ -1193,7 +1193,7 @@ export default class MetamaskController extends EventEmitter {
         break;
       default:
         throw new Error(
-          'MetamaskController:getKeyringForDevice - Unknown device',
+          'StarMaskController:getKeyringForDevice - Unknown device',
         );
     }
     let keyring = await this.keyringController.getKeyringsByType(
@@ -1310,7 +1310,7 @@ export default class MetamaskController extends EventEmitter {
       'HD Key Tree',
     )[0];
     if (!primaryKeyring) {
-      throw new Error('MetamaskController - No HD Key Tree found');
+      throw new Error('StarMaskController - No HD Key Tree found');
     }
     const { keyringController } = this;
     const oldAccounts = await keyringController.getAccounts();
@@ -1351,7 +1351,7 @@ export default class MetamaskController extends EventEmitter {
       'HD Key Tree',
     )[0];
     if (!primaryKeyring) {
-      throw new Error('MetamaskController - No HD Key Tree found');
+      throw new Error('StarMaskController - No HD Key Tree found');
     }
 
     const serialized = await primaryKeyring.serialize();
@@ -1359,7 +1359,7 @@ export default class MetamaskController extends EventEmitter {
 
     const accounts = await primaryKeyring.getAccounts();
     if (accounts.length < 1) {
-      throw new Error('MetamaskController - No accounts found');
+      throw new Error('StarMaskController - No accounts found');
     }
 
     try {
@@ -1479,7 +1479,7 @@ export default class MetamaskController extends EventEmitter {
    * @returns {Promise<Object>} Full state update.
    */
   signMessage(msgParams) {
-    log.info('MetaMaskController - signMessage');
+    log.info('StarMaskController - signMessage');
     const msgId = msgParams.metamaskId;
 
     // sets the status op the message to 'approved'
@@ -1543,7 +1543,7 @@ export default class MetamaskController extends EventEmitter {
    * @returns {Promise<Object>} A full state update.
    */
   signPersonalMessage(msgParams) {
-    log.info('MetaMaskController - signPersonalMessage');
+    log.info('StarMaskController - signPersonalMessage');
     const msgId = msgParams.metamaskId;
     // sets the status op the message to 'approved'
     // and removes the metamaskId for signing
@@ -1601,7 +1601,7 @@ export default class MetamaskController extends EventEmitter {
    * @returns {Promise<Object>} A full state update.
    */
   async decryptMessageInline(msgParams) {
-    log.info('MetaMaskController - decryptMessageInline');
+    log.info('StarMaskController - decryptMessageInline');
     // decrypt the message inline
     const msgId = msgParams.metamaskId;
     const msg = this.decryptMessageManager.getMsg(msgId);
@@ -1627,7 +1627,7 @@ export default class MetamaskController extends EventEmitter {
    * @returns {Promise<Object>} A full state update.
    */
   async decryptMessage(msgParams) {
-    log.info('MetaMaskController - decryptMessage');
+    log.info('StarMaskController - decryptMessage');
     const msgId = msgParams.metamaskId;
     // sets the status op the message to 'approved'
     // and removes the metamaskId for decryption
@@ -1647,7 +1647,7 @@ export default class MetamaskController extends EventEmitter {
       // tells the listener that the message has been decrypted and can be returned to the dapp
       this.decryptMessageManager.setMsgStatusDecrypted(msgId, rawMess);
     } catch (error) {
-      log.info('MetaMaskController - eth_decrypt failed.', error);
+      log.info('StarMaskController - eth_decrypt failed.', error);
       this.decryptMessageManager.errorMessage(msgId, error);
     }
     return this.getState();
@@ -1717,7 +1717,7 @@ export default class MetamaskController extends EventEmitter {
    * @returns {Promise<Object>} A full state update.
    */
   async encryptionPublicKey(msgParams) {
-    log.info('MetaMaskController - encryptionPublicKey');
+    log.info('StarMaskController - encryptionPublicKey');
     const msgId = msgParams.metamaskId;
     // sets the status op the message to 'approved'
     // and removes the metamaskId for decryption
@@ -1736,7 +1736,7 @@ export default class MetamaskController extends EventEmitter {
       this.encryptionPublicKeyManager.setMsgStatusReceived(msgId, publicKey);
     } catch (error) {
       log.info(
-        'MetaMaskController - eth_getEncryptionPublicKey failed.',
+        'StarMaskController - eth_getEncryptionPublicKey failed.',
         error,
       );
       this.encryptionPublicKeyManager.errorMessage(msgId, error);
@@ -1785,7 +1785,7 @@ export default class MetamaskController extends EventEmitter {
    * @returns {Object} Full state update.
    */
   async signTypedMessage(msgParams) {
-    log.info('MetaMaskController - eth_signTypedData');
+    log.info('StarMaskController - eth_signTypedData');
     const msgId = msgParams.metamaskId;
     const { version } = msgParams;
     try {
@@ -1808,7 +1808,7 @@ export default class MetamaskController extends EventEmitter {
       this.typedMessageManager.setMsgStatusSigned(msgId, signature);
       return this.getState();
     } catch (error) {
-      log.info('MetaMaskController - eth_signTypedData failed.', error);
+      log.info('StarMaskController - eth_signTypedData failed.', error);
       this.typedMessageManager.errorMessage(msgId, error);
       throw error;
     }

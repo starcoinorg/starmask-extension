@@ -174,7 +174,7 @@ export default class TransactionController extends EventEmitter {
    */
   async newUnapprovedTransaction(txParams, opts = {}) {
     log.debug(
-      `MetaMaskController newUnapprovedTransaction ${JSON.stringify(txParams)}`,
+      `StarMaskController newUnapprovedTransaction ${JSON.stringify(txParams)}`,
     );
 
     const initialTxMeta = await this.addUnapprovedTransaction(
@@ -228,7 +228,7 @@ export default class TransactionController extends EventEmitter {
    */
   async addUnapprovedTransaction(txParams, origin) {
     log.debug(
-      `MetaMaskController addUnapprovedTransaction ${JSON.stringify(txParams)}`,
+      `StarMaskController addUnapprovedTransaction ${JSON.stringify(txParams)}`,
     );
     // validate
     const normalizedTxParams = txUtils.normalizeTxParams(txParams);
