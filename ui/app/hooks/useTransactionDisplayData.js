@@ -211,15 +211,6 @@ export function useTransactionDisplayData(transactionGroup) {
     subtitle = t('toAddress', [shortenAddress(recipientAddress)]);
   }
 
-  // category is required
-  // handle it as SEND if undefined, otherwise will panic
-  if (!category) {
-    category = TRANSACTION_GROUP_CATEGORIES.SEND;
-    title = t('sendSpecifiedTokens', [token?.symbol || t('token')]);
-    recipientAddress = getTokenAddressParam(tokenData);
-    subtitle = t('toAddress', [shortenAddress(recipientAddress)]);
-  }
-
   const primaryCurrencyPreferences = useUserPreferencedCurrency(PRIMARY);
   const secondaryCurrencyPreferences = useUserPreferencedCurrency(SECONDARY);
 
