@@ -1,13 +1,13 @@
 import log from 'loglevel';
 import BigNumber from 'bignumber.js';
 import { ethers } from 'ethers';
-import { bcs } from '@starcoin/starcoin';
+import { bcs, utils } from '@starcoin/starcoin';
 import contractMap from '@metamask/contract-metadata';
 import * as util from './util';
 import { conversionUtil, multiplyCurrencies } from './conversion-util';
 import { formatCurrency } from './confirm-tx.util';
 
-const { arrayify } = ethers.utils;
+const { arrayify, hexlify } = ethers.utils;
 
 const casedContractMap = Object.keys(contractMap).reduce((acc, base) => {
   return {
@@ -203,6 +203,9 @@ export function getTokenAddressParam(tokenData = []) {
  */
 export function getTokenValueParam(tokenData = {}) {
   const value = tokenData?.args?.[tokenData.args.length - 1];
+  if (!value) {
+    return '0';
+  }
   const amountNanoSTC = (function () {
     const bytes = arrayify(value);
     const de = new bcs.BcsDeserializer(bytes);
@@ -276,4 +279,21 @@ export function getTokenFiatAmount(
     result = currentTokenInFiat;
   }
   return result;
+}
+
+export function generateAcceptTokenPayloadHex(tokenCode) {
+  const functionId = '0x1::Account::accept_token';
+  const strTypeArgs = [tokenCode];
+  const tyArgs = utils.tx.encodeStructTypeTags(strTypeArgs);
+  const args = [];
+
+  const scriptFunction = utils.tx.encodeScriptFunction(functionId, tyArgs, args);
+
+  // Multiple BcsSerializers should be used in different closures, otherwise, the latter will be contaminated by the former.
+  const payloadInHex = (function () {
+    const se = new bcs.BcsSerializer();
+    scriptFunction.serialize(se);
+    return hexlify(se.getBytes());
+  })();
+  return payloadInHex;
 }

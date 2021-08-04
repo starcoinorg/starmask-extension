@@ -10,7 +10,7 @@ import {
   loadRelativeTimeFormatLocaleData,
 } from '../helpers/utils/i18n-helper';
 import { getMethodDataAsync } from '../helpers/utils/transactions.util';
-import { fetchSymbolAndDecimals } from '../helpers/utils/token-util';
+import { fetchSymbolAndDecimals, generateAcceptTokenPayloadHex } from '../helpers/utils/token-util';
 import switchDirection from '../helpers/utils/switch-direction';
 import { ENVIRONMENT_TYPE_NOTIFICATION } from '../../../shared/constants/app';
 import { TRANSACTION_TYPES } from '../../../shared/constants/transaction';
@@ -819,6 +819,23 @@ export function updateSendEnsResolutionError(errorMessage) {
   };
 }
 
+export function acceptToken(tokenCode, from) {
+  return async (dispatch, getState) => {
+    try {
+      const payloadInHex = generateAcceptTokenPayloadHex(tokenCode);
+      const txData = {
+        from,
+        gasPrice: '0x1',
+        data: payloadInHex,
+      };
+      await promisifiedBackground.addUnapprovedTransaction(txData, 'starmask');
+    } catch (error) {
+      log.error(error);
+    }
+    dispatch(showConfTxPage());
+  };
+}
+
 export function signTokenTx(sendToken, toAddress, amount, txData) {
   return async (dispatch) => {
     dispatch(showLoadingIndication());
@@ -837,6 +854,7 @@ export function signTokenTx(sendToken, toAddress, amount, txData) {
       dispatch(showConfTxPage());
       // await txPromise;
     } catch (error) {
+      log.error(error);
       dispatch(displayWarning(error.message));
     }
     dispatch(hideLoadingIndication());

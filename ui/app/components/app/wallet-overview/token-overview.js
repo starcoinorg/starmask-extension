@@ -17,7 +17,7 @@ import {
 } from '../../../hooks/useMetricEvent';
 import { useTokenTracker } from '../../../hooks/useTokenTracker';
 import { useTokenFiatAmount } from '../../../hooks/useTokenFiatAmount';
-import { updateSendToken } from '../../../store/actions';
+import { updateSendToken, acceptToken } from '../../../store/actions';
 import {
   getSwapsFeatureLiveness,
   setSwapsFromToken,
@@ -51,6 +51,13 @@ const TokenOverview = ({ className, token }) => {
       category: 'Navigation',
       action: 'Home',
       name: 'Clicked Send: Token',
+    },
+  });
+  const acceptTokenEvent = useMetricEvent({
+    eventOpts: {
+      category: 'Navigation',
+      action: 'Home',
+      name: 'Clicked: Accept Token',
     },
   });
   const history = useHistory();
@@ -110,10 +117,8 @@ const TokenOverview = ({ className, token }) => {
             <IconButton
               className="token-overview__button"
               onClick={() => {
-                console.log('asdf');
-                // sendTokenEvent();
-                // dispatch(updateSendToken(token));
-                // history.push(SEND_ROUTE);
+                acceptTokenEvent();
+                dispatch(acceptToken(token.code, userAddress));
               }}
               Icon={acceptIcon}
               label={t('acceptToken')}
