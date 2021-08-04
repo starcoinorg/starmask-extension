@@ -23,6 +23,7 @@ const AssetListItem = ({
   tokenSymbol,
   tokenDecimals,
   tokenImage,
+  tokenAccepted,
   warning,
   primary,
   secondary,
@@ -119,10 +120,12 @@ const AssetListItem = ({
       }
       midContent={midContent}
       rightContent={
-        <>
-          <i className="fas fa-chevron-right asset-list-item__chevron-right" />
-          {sendTokenButton}
-        </>
+        tokenAccepted ? (
+          <>
+            <i className="fas fa-chevron-right asset-list-item__chevron-right" />
+            {sendTokenButton}
+          </>
+        ) : null
       }
     />
   );
@@ -137,6 +140,7 @@ AssetListItem.propTypes = {
   tokenSymbol: PropTypes.string,
   tokenDecimals: PropTypes.number,
   tokenImage: PropTypes.string,
+  tokenAccepted: PropTypes.bool,
   warning: PropTypes.node,
   primary: PropTypes.string,
   secondary: PropTypes.string,

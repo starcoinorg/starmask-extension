@@ -32,10 +32,26 @@ export function useTokenTracker(
         symbol,
         decimals,
         string: stringifyBalance(currentAssets[key], decimals, symbol, numberOfDecimals),
+        accepted: true,
       };
       tokensWithBalances.push(token);
     });
   }
+  // added to wallet but not enabled accept_tokens ones
+  const unAcceptTokens = tokens.filter((token) => token.code.split('::').length === 3 && !currentAssets[token.code]);
+  unAcceptTokens.map(({ code, decimals }) => {
+    const numberOfDecimals = 4;
+    const symbol = code.split('::')[2];
+    const token = {
+      code,
+      balance: currentAssets[code],
+      symbol,
+      decimals,
+      string: stringifyBalance(currentAssets[code], decimals, symbol, numberOfDecimals),
+      accepted: false,
+    };
+    tokensWithBalances.push(token);
+  });
   const loading = false;
   const error = null;
   return { loading, tokensWithBalances, error };

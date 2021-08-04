@@ -14,6 +14,7 @@ export default function TokenCell({
   symbol,
   string,
   image,
+  accepted,
   onClick,
 }) {
   const userAddress = useSelector(getSelectedAddress);
@@ -45,6 +46,7 @@ export default function TokenCell({
       onClick={onClick.bind(null, code)}
       tokenCode={code}
       tokenImage={image}
+      tokenAccepted={accepted}
       tokenSymbol={symbol}
       tokenDecimals={decimals}
       warning={warning}
@@ -61,6 +63,7 @@ TokenCell.propTypes = {
   decimals: PropTypes.number,
   string: PropTypes.string,
   image: PropTypes.string,
+  accepted: PropTypes.bool,
   onClick: PropTypes.func.isRequired,
 };
 
