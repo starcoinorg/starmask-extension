@@ -26,8 +26,11 @@ import {
   getAssetImages,
   getCurrentKeyring,
   getIsSwapsChain,
+  getSelectedAddress,
+  getAssets,
 } from '../../../selectors/selectors';
 
+import ReceiveIcon from '../../ui/icon/receive-icon.component';
 import SwapIcon from '../../ui/icon/swap-icon.component';
 import SendIcon from '../../ui/icon/overview-send-icon.component';
 
@@ -35,6 +38,12 @@ import IconButton from '../../ui/icon-button';
 import WalletOverview from './wallet-overview';
 
 const TokenOverview = ({ className, token }) => {
+  const userAddress = useSelector(getSelectedAddress);
+  const assets = useSelector(getAssets);
+  const currentAssets = assets[userAddress];
+
+  const acceptTokenEnabled = Boolean(currentAssets && currentAssets[token.code]);
+  const acceptIcon = () => <ReceiveIcon size={15} color="white" />;
   const dispatch = useDispatch();
   const t = useContext(I18nContext);
   const sendTokenEvent = useMetricEvent({
@@ -85,17 +94,32 @@ const TokenOverview = ({ className, token }) => {
       }
       buttons={
         <>
-          <IconButton
-            className="token-overview__button"
-            onClick={() => {
-              sendTokenEvent();
-              dispatch(updateSendToken(token));
-              history.push(SEND_ROUTE);
-            }}
-            Icon={SendIcon}
-            label={t('send')}
-            data-testid="eth-overview-send"
-          />
+          {acceptTokenEnabled ? (
+            <IconButton
+              className="token-overview__button"
+              onClick={() => {
+                sendTokenEvent();
+                dispatch(updateSendToken(token));
+                history.push(SEND_ROUTE);
+              }}
+              Icon={SendIcon}
+              label={t('send')}
+              data-testid="eth-overview-send"
+            />
+          ) : (
+            <IconButton
+              className="token-overview__button"
+              onClick={() => {
+                console.log('asdf');
+                // sendTokenEvent();
+                // dispatch(updateSendToken(token));
+                // history.push(SEND_ROUTE);
+              }}
+              Icon={acceptIcon}
+              label={t('acceptToken')}
+              data-testid="eth-overview-accept"
+            />
+          )}
           {swapsEnabled ? (
             <IconButton
               className="token-overview__button"

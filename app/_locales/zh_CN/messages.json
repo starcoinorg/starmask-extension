@@ -12,6 +12,9 @@
     "message": "我已阅读并同意 $1",
     "description": "$1 is the `terms` message"
   },
+  "acceptToken": {
+    "message": "接受代币"
+  },
   "accessAndSpendNotice": {
     "message": "$1 可以访问并使用此最大数额",
     "description": "$1 is the url of the site requesting ability to spend"

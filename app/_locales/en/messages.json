@@ -12,6 +12,9 @@
     "message": "I have read and agree to the $1",
     "description": "$1 is the `terms` message"
   },
+  "acceptToken": {
+    "message": "AcceptToken"
+  },
   "accessAndSpendNotice": {
     "message": "$1 may access and spend up to this max amount",
     "description": "$1 is the url of the site requesting ability to spend"
