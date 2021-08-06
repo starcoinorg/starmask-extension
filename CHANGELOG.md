@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.9.0] - 2021-08-06
+- New feature:
+    1. custom add token, accept token, send token, hide token.
+	    - while add token,the token contract code pattern is: address:moduleName:structName
+	    - after add a token, you must accept this token first, then you can send or receive this token.
+    2. add `how-to-debug.md` in docs
+
+- Bug fixes:
+    1. cancel send transaction is not working
+    2. account balance and tokens balance should be synced with network switching
+    3. hide receiptIdentifier entrances in send search input
+    4. shrink minGasLimit from 13000 to 10000 nanoSTC
+
 ## [1.8.1] - 2021-07-17
 - support Package and ScriptFunction using contract.dry_run_raw in [starmask-test-dapp](https://github.com/starcoinorg/starmask-test-dapp)
 - fix txn detail page failed: check gasUsedStr first in case txReceipt is undefined before txn is confirmed
