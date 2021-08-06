@@ -25,7 +25,7 @@ const TokenOptions = ({ onRemove, onViewStcscan, tokenSymbol }) => {
           anchorElement={tokenOptionsButtonElement}
           onHide={() => setTokenOptionsOpen(false)}
         >
-          <MenuItem
+          {/* <MenuItem
             iconClassName="fas fa-external-link-alt token-options__icon"
             data-testid="token-options__etherscan"
             onClick={() => {
@@ -34,7 +34,7 @@ const TokenOptions = ({ onRemove, onViewStcscan, tokenSymbol }) => {
             }}
           >
             {t('viewOnStcscan')}
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem
             iconClassName="fas fa-trash-alt token-options__icon"
             data-testid="token-options__hide"

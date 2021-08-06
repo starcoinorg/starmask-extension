@@ -29,7 +29,6 @@ import SINGLE_CALL_BALANCES_ABI from 'single-call-balance-checker-abi';
 //   SINGLE_CALL_BALANCES_ADDRESS_KOVAN,
 // } from '../constants/contracts';
 import { bnToHex } from './util';
-import { logger } from 'ethers';
 
 /**
  * This module is responsible for tracking any number of accounts and caching their current balances & transaction
