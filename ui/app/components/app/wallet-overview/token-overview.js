@@ -10,6 +10,7 @@ import { I18nContext } from '../../../contexts/i18n';
 import {
   SEND_ROUTE,
   BUILD_QUOTE_ROUTE,
+  CONFIRM_TRANSACTION_ROUTE,
 } from '../../../helpers/constants/routes';
 import {
   useMetricEvent,
@@ -28,7 +29,8 @@ import {
   getIsSwapsChain,
   getSelectedAddress,
   getAssets,
-} from '../../../selectors/selectors';
+  unconfirmedTransactionsCountSelector,
+} from '../../../selectors';
 
 import ReceiveIcon from '../../ui/icon/receive-icon.component';
 import SwapIcon from '../../ui/icon/swap-icon.component';
@@ -38,6 +40,13 @@ import IconButton from '../../ui/icon-button';
 import WalletOverview from './wallet-overview';
 
 const TokenOverview = ({ className, token }) => {
+  const history = useHistory();
+  const unconfirmedTransactionsCount = useSelector(
+    unconfirmedTransactionsCountSelector,
+  );
+  if (unconfirmedTransactionsCount) {
+    history.push(CONFIRM_TRANSACTION_ROUTE);
+  }
   const userAddress = useSelector(getSelectedAddress);
   const assets = useSelector(getAssets);
   const currentAssets = assets[userAddress];
@@ -60,7 +69,6 @@ const TokenOverview = ({ className, token }) => {
       name: 'Clicked: Accept Token',
     },
   });
-  const history = useHistory();
   const assetImages = useSelector(getAssetImages);
 
   const keyring = useSelector(getCurrentKeyring);

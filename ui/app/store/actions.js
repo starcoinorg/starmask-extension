@@ -820,7 +820,7 @@ export function updateSendEnsResolutionError(errorMessage) {
 }
 
 export function acceptToken(tokenCode, from) {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     try {
       const payloadInHex = generateAcceptTokenPayloadHex(tokenCode);
       const txData = {
