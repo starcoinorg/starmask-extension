@@ -597,18 +597,8 @@ export default class TransactionController extends EventEmitter {
       toNumericBase: 'dec',
     });
     // log.debug({ maxGasAmount });
-    // because the time system in dev network is relatively static,
-    // we should use nodeInfo.now_seconds instead of using new Date().getTime()
-    const nowSeconds = await new Promise((resolve, reject) => {
-      return this.query.getNodeInfo((err, res) => {
-        if (err) {
-          return reject(err);
-        }
-        return resolve(res.now_seconds);
-      });
-    });
-    // expired after 12 hours since Unix Epoch
-    const expirationTimestampSecs = nowSeconds + 43200;
+
+    const expirationTimestampSecs = await this.txGasUtil.getExpirationTimestampSecs(txParams);
     const fromAddress = txParams.from;
 
     let payload;

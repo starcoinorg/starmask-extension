@@ -6,6 +6,7 @@ import BigNumber from 'bignumber.js';
 // eslint-disable-next-line camelcase
 import { encoding, utils, starcoin_types } from '@starcoin/starcoin';
 import { hexToBn, BnMultiplyByFraction, bnToHex } from '../../lib/util';
+import { conversionUtil } from '../../../../ui/app/helpers/utils/conversion-util';
 
 /**
  * Result of gas analysis, including either a gas estimate for a successful analysis, or
@@ -81,6 +82,7 @@ export default class TxGasUtil {
     @returns {string} the estimated gas limit as a hex string
   */
   async estimateTxGas(txMeta) {
+    // log.debug('estimateTxGas', { txMeta })
     // const txParams = cloneDeep(txMeta.txParams);
 
     // // `eth_estimateGas` can fail if the user has insufficient balance for the
@@ -93,19 +95,7 @@ export default class TxGasUtil {
     // return await this.query.estimateGas(txParams);
 
     const maxGasAmount = 40000000;
-
-    // because the time system in dev network is relatively static,
-    // we should use nodeInfo.now_secondsinstead of using new Date().getTime()
-    const nodeInfo = await new Promise((resolve, reject) => {
-      return this.query.getNodeInfo((err, res) => {
-        if (err) {
-          return reject(err);
-        }
-        return resolve(res);
-      });
-    });
-    // expired after 12 hours since Unix Epoch
-    const expirationTimestampSecs = nodeInfo.now_seconds + 43200;
+    const expirationTimestampSecs = await this.getExpirationTimestampSecs(txMeta.txParams);
     const selectedAddressHex = txMeta.txParams.from;
     const selectedPublicKeyHex = this.state.identities[selectedAddressHex].publicKey;
     const selectedSequenceNumber = await new Promise((resolve, reject) => {
@@ -161,9 +151,29 @@ export default class TxGasUtil {
     return estimatedGasHex;
   }
 
+  async getExpirationTimestampSecs(txParams) {
+    // because the time system in dev network is relatively static,
+    // we should use nodeInfo.now_secondsinstead of using new Date().getTime()
+    const nowSeconds = await new Promise((resolve, reject) => {
+      return this.query.getNodeInfo((err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(res.now_seconds);
+      });
+    });
+    // expired after 12 hours since Unix Epoch by default
+    const expiredSecs = txParams.expiredSecs ? Number(conversionUtil(txParams.expiredSecs, {
+      fromNumericBase: 'hex',
+      toNumericBase: 'dec',
+    })) : 43200;
+    const expirationTimestampSecs = nowSeconds + expiredSecs;
+    return expirationTimestampSecs;
+  }
+
   /**
     Adds a gas buffer with out exceeding the block gas limit
-
+  
     @param {string} initialGasLimitHex - the initial gas limit to add the buffer too
     @param {string} blockGasLimitHex - the block gas limit
     @returns {string} the buffered gas limit as a hex string
