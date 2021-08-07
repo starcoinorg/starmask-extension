@@ -1367,7 +1367,7 @@
     "message": "Recipient Address"
   },
   "recipientAddressPlaceholder": {
-    "message": "Search Address (0x)"
+    "message": "Search Address (0x) or ReceiptIdentifier(stc1p)"
   },
   "receiptIdentifier": {
     "message": "ReceiptIdentifier"
