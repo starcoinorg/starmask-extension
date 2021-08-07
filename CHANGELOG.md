@@ -1,7 +1,7 @@
 # Changelog
 
 ## [1.9.0] - 2021-08-06
-- New feature:
+- New features:
     1. custom add token, accept token, send token, hide token.
 	    - while add token,the token contract code pattern is: address:moduleName:structName
 	    - after add a token, you must accept this token first, then you can send or receive this token.
