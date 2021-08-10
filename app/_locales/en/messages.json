@@ -1265,7 +1265,7 @@
     "message": "Currency Symbol (optional)"
   },
   "orderOneHere": {
-    "message": "Order a Trezor or Ledger and keep your funds in cold storage"
+    "message": "Order a OneKey and keep your funds in cold storage"
   },
   "origin": {
     "message": "Origin"
