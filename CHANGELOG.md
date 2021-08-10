@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.1] - 2021-08-07
+- New features:
+    1. support optional custom expiredSecs in txParams, default value is 43200(12 hours)
+
+- Bug fixes:
+    1. add back receiptIdentifier view and search, because other exchange platforms are using it to send STC.
+
 ## [1.9.0] - 2021-08-06
 - New features:
     1. custom add token, accept token, send token, hide token.
