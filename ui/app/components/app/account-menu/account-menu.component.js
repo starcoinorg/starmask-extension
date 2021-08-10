@@ -383,7 +383,7 @@ export default class AccountMenu extends Component {
           }
           text={t('importAccount')}
         />
-        {/* <AccountMenuItem
+        <AccountMenuItem
           onClick={() => {
             toggleAccountMenu();
             metricsEvent({
@@ -407,7 +407,7 @@ export default class AccountMenu extends Component {
             />
           }
           text={t('connectHardwareWallet')}
-        /> */}
+        />
         <div className="account-menu__divider" />
         <AccountMenuItem
           onClick={() => {
