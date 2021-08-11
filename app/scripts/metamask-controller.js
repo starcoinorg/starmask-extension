@@ -14,7 +14,7 @@ import * as ethUtil from '@starcoin/stc-util';
 import { encoding } from '@starcoin/starcoin';
 import BigNumber from 'bignumber.js';
 import log from 'loglevel';
-// import TrezorKeyring from 'eth-trezor-keyring';
+import TrezorKeyring from '@onekeyhq/eth-onekey-keyring';
 // import LedgerBridgeKeyring from '@metamask/eth-ledger-bridge-keyring';
 import EthQuery from '@starcoin/stc-query';
 import nanoid from 'nanoid';
@@ -238,7 +238,7 @@ export default class MetamaskController extends EventEmitter {
     });
 
     // const additionalKeyrings = [TrezorKeyring, LedgerBridgeKeyring];
-    const additionalKeyrings = [];
+    const additionalKeyrings = [TrezorKeyring];
     this.keyringController = new KeyringController({
       keyringTypes: additionalKeyrings,
       initState: initState.KeyringController,
@@ -1188,9 +1188,9 @@ export default class MetamaskController extends EventEmitter {
       case 'trezor':
         keyringName = TrezorKeyring.type;
         break;
-      case 'ledger':
-        keyringName = LedgerBridgeKeyring.type;
-        break;
+      // case 'ledger':
+      //   keyringName = LedgerBridgeKeyring.type;
+      //   break;
       default:
         throw new Error(
           'StarMaskController:getKeyringForDevice - Unknown device',
