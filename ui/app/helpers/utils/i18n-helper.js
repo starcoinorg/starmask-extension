@@ -44,7 +44,7 @@ export const getMessage = (localeCode, localeMessages, key, substitutions) => {
         `Translator - Unable to find value of key "${key}" for locale "${localeCode}"`,
       );
     }
-    return null;
+    return key;
   }
   const entry = localeMessages[key];
   let phrase = entry.message;

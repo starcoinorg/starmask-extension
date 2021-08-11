@@ -65,7 +65,7 @@ export default class TxGasUtil {
       estimatedGasHex = await this.estimateTxGas(txMeta);
       log.debug('estimatedGasHex2', { estimatedGasHex })
     } catch (error) {
-      log.warn(error);
+      log.warn({ error });
       simulationFails = {
         reason: error.message,
         errorKey: error.errorKey,
@@ -146,6 +146,8 @@ export default class TxGasUtil {
     let estimatedGasHex;
     if (dryRunRawResult.status === 'Executed') {
       estimatedGasHex = new BigNumber(dryRunRawResult.gas_used, 10).toString(16);
+    } else {
+      throw new Error(`Starmask: contract.dry_run_raw failed. status: ${dryRunRawResult.status}, Error: ${dryRunRawResult.explained_status.Error}`)
     }
 
     return estimatedGasHex;

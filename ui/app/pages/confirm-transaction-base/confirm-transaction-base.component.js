@@ -178,19 +178,19 @@ export default class ConfirmTransactionBase extends Component {
       };
     }
 
+    if (simulationFails) {
+      return {
+        valid: false,
+        errorKey: simulationFails.reason
+          ? simulationFails.reason
+          : TRANSACTION_ERROR_KEY,
+      };
+    }
+
     if (hexToDecimal(customGas.gasLimit) < 10000) {
       return {
         valid: false,
         errorKey: GAS_LIMIT_TOO_LOW_ERROR_KEY,
-      };
-    }
-
-    if (simulationFails) {
-      return {
-        valid: true,
-        errorKey: simulationFails.errorKey
-          ? simulationFails.errorKey
-          : TRANSACTION_ERROR_KEY,
       };
     }
 
