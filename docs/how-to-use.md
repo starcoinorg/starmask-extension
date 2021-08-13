@@ -75,6 +75,15 @@
 
     ![](./images/30.jpg)
 
+- d 交易确认/失败 通知
+
+    ![](./images/31.jpg)
+
+    > 注意: mac 系统需要前往 `系统偏好设置` -> `通知`, 
+    >      选中 `Google Chrome`, 打开 `允许通知`
+    
+    ![](./images/32.jpg)
 
 # 参考
+
 - [安装指南](./how-to-install.md)
