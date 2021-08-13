@@ -112,14 +112,13 @@ export default class ExtensionPlatform {
 
   showTransactionNotification(txMeta, rpcPrefs) {
     const { status, txReceipt: { status: receiptStatus } = {} } = txMeta;
-
     if (status === TRANSACTION_STATUSES.CONFIRMED) {
       // There was an on-chain failure
-      receiptStatus === '0x0'
+      receiptStatus !== 'Executed'
         ? this._showFailedTransaction(
-            txMeta,
-            'Transaction encountered an error.',
-          )
+          txMeta,
+          'Transaction encountered an error.',
+        )
         : this._showConfirmedTransaction(txMeta, rpcPrefs);
     } else if (status === TRANSACTION_STATUSES.FAILED) {
       this._showFailedTransaction(txMeta);
@@ -194,20 +193,15 @@ export default class ExtensionPlatform {
 
     const url = getBlockExplorerUrlForTx(txMeta, rpcPrefs);
     const nonce = parseInt(txMeta.txParams.nonce, 16);
-
     const title = 'Confirmed transaction';
-    const message = `Transaction ${nonce} confirmed! ${
-      url.length ? 'View on Etherscan' : ''
-    }`;
+    const message = `Transaction ${nonce} confirmed! ${url.length ? 'View on StcScan' : ''}`;
     this._showNotification(title, message, url);
   }
 
   _showFailedTransaction(txMeta, errorMessage) {
     const nonce = parseInt(txMeta.txParams.nonce, 16);
     const title = 'Failed transaction';
-    const message = `Transaction ${nonce} failed! ${
-      errorMessage || txMeta.err.message
-    }`;
+    const message = `Transaction ${nonce} failed! ${errorMessage || txMeta.err.message}`;
     this._showNotification(title, message);
   }
 
@@ -221,12 +215,12 @@ export default class ExtensionPlatform {
   }
 
   _subscribeToNotificationClicked() {
-    if (!extension.notifications.onClicked.hasListener(this._viewOnEtherscan)) {
-      extension.notifications.onClicked.addListener(this._viewOnEtherscan);
+    if (!extension.notifications.onClicked.hasListener(this._viewOnStcscan)) {
+      extension.notifications.onClicked.addListener(this._viewOnStcscan);
     }
   }
 
-  _viewOnEtherscan(txId) {
+  _viewOnStcscan(txId) {
     if (txId.startsWith('https://')) {
       extension.tabs.create({ url: txId });
     }

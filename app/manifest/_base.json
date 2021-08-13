@@ -80,7 +80,8 @@
     "storage",
     "unlimitedStorage",
     "webRequest",
-    "activeTab"
+    "activeTab",
+    "notifications"
   ],
   "short_name": "__MSG_appName__",
   "version": "1.9.2",

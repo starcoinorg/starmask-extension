@@ -1,7 +1,4 @@
-import {
-  createExplorerLink,
-  createExplorerLinkForChain,
-} from '@metamask/etherscan-link';
+import { defaultNetworksData } from '../../ui/app/pages/settings/networks-tab/networks-tab.constants';
 
 export function transactionMatchesNetwork(transaction, chainId, networkId) {
   if (typeof transaction.chainId !== 'undefined') {
@@ -25,11 +22,14 @@ export function transactionMatchesNetwork(transaction, chainId, networkId) {
  * @returns {string}
  */
 export function getBlockExplorerUrlForTx(transaction, rpcPrefs = {}) {
+  let blockExplorerUrl;
   if (rpcPrefs.blockExplorerUrl) {
-    return `${rpcPrefs.blockExplorerUrl.replace(/\/+$/u, '')}/transactions/detail/${transaction.hash}`;
+    blockExplorerUrl = rpcPrefs.blockExplorerUrl;
+  } else if (transaction.chainId) {
+    const rpcPref = defaultNetworksData.find(
+      (rpcInfo) => rpcInfo.chainId === transaction.chainId,
+    ) || {};
+    blockExplorerUrl = rpcPref.blockExplorerUrl || '';
   }
-  if (transaction.chainId) {
-    return createExplorerLinkForChain(transaction.hash, transaction.chainId);
-  }
-  return createExplorerLink(transaction.hash, transaction.metamaskNetworkId);
+  return `${blockExplorerUrl.replace(/\/+$/u, '')}/transactions/detail/${transaction.hash}`;
 }
