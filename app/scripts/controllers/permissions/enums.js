@@ -16,9 +16,9 @@ export const CAVEAT_TYPES = {
 };
 
 export const NOTIFICATION_NAMES = {
-  accountsChanged: 'metamask_accountsChanged',
-  unlockStateChanged: 'metamask_unlockStateChanged',
-  chainChanged: 'metamask_chainChanged',
+  accountsChanged: 'starmask_accountsChanged',
+  unlockStateChanged: 'starmask_unlockStateChanged',
+  chainChanged: 'starmask_chainChanged',
 };
 
 export const LOG_IGNORE_METHODS = [
