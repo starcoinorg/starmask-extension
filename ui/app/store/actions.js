@@ -2638,31 +2638,32 @@ export function loadingMethodDataFinished() {
 
 export function getContractMethodData(data = '') {
   return (dispatch, getState) => {
-    const prefixedData = addHexPrefix(data);
-    const fourBytePrefix = prefixedData.slice(0, 10);
-    const { knownMethodData } = getState().starmask;
+    // do not fetch, because eth_call is not exists.
 
-    if (
-      (knownMethodData &&
-        knownMethodData[fourBytePrefix] &&
-        Object.keys(knownMethodData[fourBytePrefix]).length !== 0) ||
-      fourBytePrefix === '0x'
-    ) {
-      return Promise.resolve(knownMethodData[fourBytePrefix]);
-    }
+    // const prefixedData = addHexPrefix(data);
+    // const fourBytePrefix = prefixedData.slice(0, 10);
+    // const { knownMethodData } = getState().starmask;
 
-    dispatch(loadingMethodDataStarted());
-    log.debug(`loadingMethodData`);
+    // if (
+    //   (knownMethodData &&
+    //     knownMethodData[fourBytePrefix] &&
+    //     Object.keys(knownMethodData[fourBytePrefix]).length !== 0) ||
+    //   fourBytePrefix === '0x'
+    // ) {
+    //   return Promise.resolve(knownMethodData[fourBytePrefix]);
+    // }
 
-    return getMethodDataAsync(fourBytePrefix).then(({ name, params }) => {
-      dispatch(loadingMethodDataFinished());
-      background.addKnownMethodData(fourBytePrefix, { name, params }, (err) => {
-        if (err) {
-          dispatch(displayWarning(err.message));
-        }
-      });
-      return { name, params };
-    });
+    // dispatch(loadingMethodDataStarted());
+
+    // return getMethodDataAsync(fourBytePrefix).then(({ name, params }) => {
+    //   dispatch(loadingMethodDataFinished());
+    //   background.addKnownMethodData(fourBytePrefix, { name, params }, (err) => {
+    //     if (err) {
+    //       dispatch(displayWarning(err.message));
+    //     }
+    //   });
+    //   return { name, params };
+    // });
   };
 }
 
