@@ -2662,10 +2662,10 @@
     safe-buffer "^5.1.1"
     secp256k1 "^3.0.1"
 
-"@starcoin/stc-inpage-provider@^0.3.3":
-  version "0.3.3"
-  resolved "https://registry.npmjs.org/@starcoin/stc-inpage-provider/-/stc-inpage-provider-0.3.3.tgz#cc95a19e9348ceee59cf84056b3f1c5ca38b68ae"
-  integrity sha512-6By3zykCOsA0z5KiqDrLkTQqIs/DhvoL+z7L/8r/C3K2MgrQKYP7e9aPT9KLFDNd7uKYRZrEtnl9vpCLedQ68A==
+"@starcoin/stc-inpage-provider@^0.3.4":
+  version "0.3.4"
+  resolved "https://registry.npmjs.org/@starcoin/stc-inpage-provider/-/stc-inpage-provider-0.3.4.tgz#388fd59ed1547a0d6ff75b391f3cfc81faf97ac2"
+  integrity sha512-j6kt7vOLsXh5O1JxQgryAFvZ0WtcRmoHjkLTmUkXCgGNZ9MriL3QGlUvPFtoxt759QF05jnH0bMeoE2yVdmyHQ==
   dependencies:
     "@metamask/object-multiplex" "^1.1.0"
     "@metamask/safe-event-emitter" "^2.0.0"
