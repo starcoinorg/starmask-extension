@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.9.3] - 2021-08-16
+- New features:
+    1. Enable system notifications for transaction CONFIRMED and FAILED
+    2. Update docs about how to enable system notifications on Mac.
+    3. Display contract.dry_run_raw error in transaction confirm page
+
+- Bug fixes:
+    1. do not fetch https://min-api.cryptocompare.com for CurrencyRate
+    2. do not fetch https://api.coingecko.com for updateExchangeRates
+    3. do not call eth_call for getContractMethodData and tryReverseResolveAddress
+    4. update @starcoin/stc-inpage-provider from 0.3.1 to 0.3.3
+
 ## [1.9.1] - 2021-08-07
 - New features:
     1. support optional custom expiredSecs in txParams, default value is 43200(12 hours)
