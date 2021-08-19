@@ -21,16 +21,16 @@ import { conversionUtil } from '../../../../ui/app/helpers/utils/conversion-util
 tx-gas-utils are gas utility methods for Transaction manager
 its passed ethquery
 and used to do things like calculate gas of a tx.
-its passed state
+its passed store.getState()
 and used to get selected account publicKey.
 @param {Object} provider - A network provider.
-@param {Object} state - current state, including identities.
+@param {Object} store - current store, store.getState() will include identities.
 */
 
 export default class TxGasUtil {
-  constructor(provider, state) {
+  constructor(provider, store) {
     this.query = new EthQuery(provider);
-    this.state = state;
+    this.store = store;
   }
 
   /**
@@ -97,7 +97,7 @@ export default class TxGasUtil {
     const maxGasAmount = 40000000;
     const expirationTimestampSecs = await this.getExpirationTimestampSecs(txMeta.txParams);
     const selectedAddressHex = txMeta.txParams.from;
-    const selectedPublicKeyHex = this.state.identities[selectedAddressHex].publicKey;
+    const selectedPublicKeyHex = this.store.getState().identities[selectedAddressHex].publicKey;
     const selectedSequenceNumber = await new Promise((resolve, reject) => {
       return this.query.getResource(
         txMeta.txParams.from,
