@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.9.7] - 2021-08-19
+- Bug fixes:
+    1. fix: toUpperCase of undefined
+    2. fix: publickKey of undefined
 ## [1.9.5] - 2021-08-16
 - New features:
     1. Enable system notifications for transaction CONFIRMED and FAILED
