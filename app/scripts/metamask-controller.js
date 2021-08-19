@@ -22,7 +22,7 @@ import contractMap from '@metamask/contract-metadata';
 import {
   AddressBookController,
   ApprovalController,
-  // CurrencyRateController,
+  CurrencyRateController,
   PhishingController,
 } from '@metamask/controllers';
 import { TRANSACTION_STATUSES } from '../../shared/constants/transaction';
@@ -157,11 +157,10 @@ export default class MetamaskController extends EventEmitter {
       preferencesStore: this.preferencesController.store,
     });
 
-    // this.currencyRateController = new CurrencyRateController(
-    //   { includeUSDRate: true },
-    //   initState.CurrencyController,
-    // );
-    this.currencyRateController = { state: initState.CurrencyController };
+    this.currencyRateController = new CurrencyRateController(
+      { includeUSDRate: true },
+      initState.CurrencyController,
+    );
 
     this.phishingController = new PhishingController();
 
@@ -349,18 +348,18 @@ export default class MetamaskController extends EventEmitter {
       }
     });
 
-    // this.networkController.on(NETWORK_EVENTS.NETWORK_DID_CHANGE, () => {
-    //   this.setCurrentCurrency(
-    //     this.currencyRateController.state.currentCurrency,
-    //     (error) => {
-    //       if (error) {
-    //         throw error;
-    //       }
-    //     },
-    //   );
-    // });
-    // const { ticker } = this.networkController.getProviderConfig();
-    // this.currencyRateController.configure({ nativeCurrency: ticker ?? 'STC' });
+    this.networkController.on(NETWORK_EVENTS.NETWORK_DID_CHANGE, () => {
+      this.setCurrentCurrency(
+        this.currencyRateController.state.currentCurrency,
+        (error) => {
+          if (error) {
+            throw error;
+          }
+        },
+      );
+    });
+    const { ticker } = this.networkController.getProviderConfig();
+    this.currencyRateController.configure({ nativeCurrency: ticker ?? 'STC' });
     this.networkController.lookupNetwork();
     this.messageManager = new MessageManager();
     this.personalMessageManager = new PersonalMessageManager();
@@ -412,7 +411,7 @@ export default class MetamaskController extends EventEmitter {
       PreferencesController: this.preferencesController.store,
       MetaMetricsController: this.metaMetricsController.store,
       AddressBookController: this.addressBookController,
-      // CurrencyController: this.currencyRateController,
+      CurrencyController: this.currencyRateController,
       NetworkController: this.networkController.store,
       CachedBalancesController: this.cachedBalancesController.store,
       AlertController: this.alertController.store,
@@ -438,7 +437,7 @@ export default class MetamaskController extends EventEmitter {
       PreferencesController: this.preferencesController.store,
       MetaMetricsController: this.metaMetricsController.store,
       AddressBookController: this.addressBookController,
-      // CurrencyController: this.currencyRateController,
+      CurrencyController: this.currencyRateController,
       AlertController: this.alertController.store,
       OnboardingController: this.onboardingController.store,
       IncomingTransactionsController: this.incomingTransactionsController.store,
@@ -2453,12 +2452,12 @@ export default class MetamaskController extends EventEmitter {
   setCurrentCurrency(currencyCode, cb) {
     // const { ticker } = this.networkController.getProviderConfig();
     try {
-      // const currencyState = {
-      //   nativeCurrency: ticker,
-      //   currentCurrency: currencyCode,
-      // };
-      // this.currencyRateController.update(currencyState);
-      // this.currencyRateController.configure(currencyState);
+      const currencyState = {
+        nativeCurrency: ticker,
+        currentCurrency: currencyCode,
+      };
+      this.currencyRateController.update(currencyState);
+      this.currencyRateController.configure(currencyState);
       cb(null, this.currencyRateController.state);
       return;
     } catch (err) {
