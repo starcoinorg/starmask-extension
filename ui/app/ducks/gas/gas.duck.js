@@ -166,13 +166,25 @@ async function fetchEthGasPriceEstimates(state) {
       },
     );
   });
+  // const safeLowGasPriceInDecGWEI = getValueFromWeiHex({
+  //   value: decimalToHex(parseInt(gasPrice, 10) / 10),
+  //   numberOfDecimals: 6,
+  //   toDenomination: 'MILLISTC',
+  // });
   const averageGasPriceInDecGWEI = getValueFromWeiHex({
     value: decimalToHex(parseInt(gasPrice, 10)),
     numberOfDecimals: 6,
     toDenomination: 'MILLISTC',
   });
+  const fastGasPriceInDecGWEI = getValueFromWeiHex({
+    value: decimalToHex(parseInt(gasPrice, 10) * 100),
+    numberOfDecimals: 6,
+    toDenomination: 'MILLISTC',
+  });
   const basicEstimates = {
+    // safeLow: Number(safeLowGasPriceInDecGWEI),
     average: Number(averageGasPriceInDecGWEI),
+    fast: Number(fastGasPriceInDecGWEI),
   };
 
   const timeRetrieved = Date.now();

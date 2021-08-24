@@ -732,6 +732,12 @@
   "gasPrice": {
     "message": "燃料价格（NanoSTC）"
   },
+  "gasPriceExcessive": {
+    "message": "燃料价格过高(不必要), 可以考虑减少燃料限制."
+  },
+  "gasPriceExcessiveInput": {
+    "message": "燃料价格过高"
+  },
   "gasPriceExtremelyLow": {
     "message": "燃料价格极低"
   },

@@ -1,9 +1,15 @@
 # Changelog
 
+## [2.0.0] - 2021-08-25
+- Bug fixes:
+    1. cancel transaction is not working for ScriptFunction
+    2. sequence number displayed in the txn detail page is 2 higher than the one on the chain.
+
 ## [1.9.7] - 2021-08-19
 - Bug fixes:
     1. fix: toUpperCase of undefined
     2. fix: publickKey of undefined
+
 ## [1.9.5] - 2021-08-16
 - New features:
     1. Enable system notifications for transaction CONFIRMED and FAILED

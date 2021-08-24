@@ -109,12 +109,12 @@ export function isCustomPriceExcessive(state, checkSend = false) {
     {
       value: customPrice,
       fromNumericBase: 'hex',
-      fromDenomination: 'NANOSTC',
-      toDenomination: 'MILLISTC',
     },
     {
       fromNumericBase: 'dec',
-      value: Math.floor(fastPrice * 1.5),
+      value: fastPrice * 1.5,
+      fromDenomination: 'MILLISTC',
+      toDenomination: 'NANOSTC',
     },
   );
 
