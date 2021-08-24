@@ -399,7 +399,7 @@ export default class TransactionController extends EventEmitter {
   async createCancelTransaction(originalTxId, customGasPrice, customGasLimit) {
     const originalTxMeta = this.txStateManager.getTx(originalTxId);
     const { txParams } = originalTxMeta;
-    const { gasPrice: lastGasPrice, from, nonce } = txParams;
+    const { gasPrice: lastGasPrice, from, nonce, gas } = txParams;
 
     const newGasPrice =
       customGasPrice ||
@@ -409,7 +409,7 @@ export default class TransactionController extends EventEmitter {
         from,
         to: from,
         nonce,
-        gas: customGasLimit || '0x2710',
+        gas: customGasLimit || gas,
         value: '0x0',
         gasPrice: newGasPrice,
       },
@@ -511,7 +511,7 @@ export default class TransactionController extends EventEmitter {
       nonceLock = await this.nonceTracker.getNonceLock(fromAddress);
       // add nonce to txParams
       // if txMeta has lastGasPrice then it is a retry at same nonce with higher
-      // gas price transaction and their for the nonce should not be calculated
+      // gas price transaction and therefor the nonce should not be calculated
       const nonce = txMeta.lastGasPrice
         ? txMeta.txParams.nonce
         : nonceLock.nextNonce;
