@@ -164,11 +164,11 @@ export default class TxGasUtil {
         return resolve(res.now_seconds);
       });
     });
-    // expired after 12 hours since Unix Epoch by default
+    // expired after 30 minutes since Unix Epoch by default
     const expiredSecs = txParams.expiredSecs ? Number(conversionUtil(txParams.expiredSecs, {
       fromNumericBase: 'hex',
       toNumericBase: 'dec',
-    })) : 43200;
+    })) : 1800;
     const expirationTimestampSecs = nowSeconds + expiredSecs;
     return expirationTimestampSecs;
   }

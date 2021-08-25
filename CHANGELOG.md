@@ -7,6 +7,7 @@
 - Bug fixes:
     1. cancel transaction is not working for ScriptFunction
     2. sequence number displayed in the txn detail page is 2 higher than the one on the chain.
+    3. change default expiredSecs in txParams from 43200(12 hours) to 1800(30 minutes)
 
 ## [1.9.7] - 2021-08-19
 - Bug fixes:
