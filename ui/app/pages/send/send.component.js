@@ -61,6 +61,8 @@ export default class SendTransactionScreen extends Component {
     qrCodeData: PropTypes.object,
     sendTokenAddress: PropTypes.string,
     gasIsExcessive: PropTypes.bool.isRequired,
+    gasPriceIsExtendMax: PropTypes.bool.isRequired,
+    gasLimitIsExtendMax: PropTypes.bool.isRequired,
   };
 
   static contextTypes = {
@@ -397,7 +399,7 @@ export default class SendTransactionScreen extends Component {
   }
 
   renderSendContent() {
-    const { history, showHexData, gasIsExcessive } = this.props;
+    const { history, showHexData, gasIsExcessive, gasPriceIsExtendMax, gasLimitIsExtendMax } = this.props;
     const { toWarning, toError } = this.state;
 
     return [
@@ -410,6 +412,8 @@ export default class SendTransactionScreen extends Component {
         warning={toWarning}
         error={toError}
         gasIsExcessive={gasIsExcessive}
+        gasPriceIsExtendMax={gasPriceIsExtendMax}
+        gasLimitIsExtendMax={gasLimitIsExtendMax}
       />,
       <SendFooter key="send-footer" history={history} />,
     ];

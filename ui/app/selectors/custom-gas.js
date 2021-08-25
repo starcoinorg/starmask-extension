@@ -14,6 +14,7 @@ import {
   getIsMainnet,
   getPreferences,
   getGasPrice,
+  getGasLimit,
 } from '.';
 
 const NUMBER_OF_DECIMALS_SM_BTNS = 5;
@@ -70,6 +71,26 @@ export function getFastPriceEstimate(state) {
   return fast;
 }
 
+export function getPriceMax(state) {
+  const {
+    gas: {
+      max: { price },
+    },
+  } = state;
+
+  return price;
+}
+
+export function getLimitMax(state) {
+  const {
+    gas: {
+      max: { limit },
+    },
+  } = state;
+
+  return limit;
+}
+
 export function isCustomPriceSafe(state) {
   const safeLow = getSafeLowEstimate(state);
 
@@ -94,6 +115,48 @@ export function isCustomPriceSafe(state) {
   );
 
   return customPriceSafe;
+}
+
+export function isCustomPriceExtendMax(state, checkSend = false) {
+  const customPrice = checkSend ? getGasPrice(state) : getCustomGasPrice(state);
+  const maxPrice = getPriceMax(state);
+
+  if (!customPrice || !maxPrice) {
+    return false;
+  }
+
+  const customPriceExtendMax = conversionGreaterThan(
+    {
+      value: customPrice,
+      fromNumericBase: 'hex',
+    },
+    {
+      fromNumericBase: 'dec',
+      value: maxPrice,
+    },
+  );
+  return customPriceExtendMax;
+}
+
+export function isCustomLimitExtendMax(state, checkSend = false) {
+  const customLimit = checkSend ? getGasLimit(state) : getCustomGasLimit(state);
+  const maxLimit = getLimitMax(state);
+
+  if (!customLimit || !maxLimit) {
+    return false;
+  }
+
+  const customLimitExtendMax = conversionGreaterThan(
+    {
+      value: customLimit,
+      fromNumericBase: 'hex',
+    },
+    {
+      fromNumericBase: 'dec',
+      value: maxLimit,
+    },
+  );
+  return customLimitExtendMax;
 }
 
 export function isCustomPriceExcessive(state, checkSend = false) {

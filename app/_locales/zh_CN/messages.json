@@ -719,6 +719,9 @@
   "gasLimit": {
     "message": "燃料限制"
   },
+  "gasLimitExtendMax": {
+    "message": "燃料限制不能超过最大值40000000."
+  },
   "gasLimitInfoTooltipContent": {
     "message": "燃料限制是指您愿意花费的最燃料量单位。"
   },
@@ -734,6 +737,9 @@
   },
   "gasPriceExcessive": {
     "message": "燃料价格过高(不必要), 可以考虑减少燃料限制."
+  },
+  "gasPriceExtendMax": {
+    "message": "燃料价格不能超过最大值10000."
   },
   "gasPriceExcessiveInput": {
     "message": "燃料价格过高"

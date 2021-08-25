@@ -774,6 +774,9 @@
   "gasLimit": {
     "message": "Gas Limit"
   },
+  "gasLimitExtendMax": {
+    "message": "Your gas limit is extend the max value: 40000000."
+  },
   "gasLimitInfoTooltipContent": {
     "message": "Gas limit is the maximum amount of units of gas you are willing to spend."
   },
@@ -789,6 +792,9 @@
   },
   "gasPriceExcessive": {
     "message": "Your gas fee is set unnecessarily high. Consider lowering the amount."
+  },
+  "gasPriceExtendMax": {
+    "message": "Your gas price is extend the max value: 10000."
   },
   "gasPriceExcessiveInput": {
     "message": "Gas Price Is Excessive"

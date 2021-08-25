@@ -24,6 +24,8 @@ import {
   getAddressBook,
   getSendTokenCode,
   isCustomPriceExcessive,
+  isCustomPriceExtendMax,
+  isCustomLimitExtendMax,
   getCurrentChainId,
 } from '../../selectors';
 
@@ -71,6 +73,8 @@ function mapStateToProps(state) {
     assets: getAssets(state),
     sendTokenAddress: getSendTokenCode(state),
     gasIsExcessive: isCustomPriceExcessive(state, true),
+    gasPriceIsExtendMax: isCustomPriceExtendMax(state, true),
+    gasLimitIsExtendMax: isCustomLimitExtendMax(state, true),
   };
 }
 

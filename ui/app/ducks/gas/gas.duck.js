@@ -9,6 +9,8 @@ import {
 import { getIsMainnet, getCurrentChainId } from '../../selectors';
 import fetchWithCache from '../../helpers/utils/fetch-with-cache';
 
+const MAX_GAS_PRICE = 10000;
+const MAX_GAS_LIMIT = 40000000;
 // Actions
 const BASIC_GAS_ESTIMATE_LOADING_FINISHED =
   'starmask/gas/BASIC_GAS_ESTIMATE_LOADING_FINISHED';
@@ -28,6 +30,10 @@ const initState = {
     safeLow: null,
     average: null,
     fast: null,
+  },
+  max: {
+    price: MAX_GAS_PRICE,
+    limit: MAX_GAS_LIMIT,
   },
   basicEstimateIsLoading: true,
 };
