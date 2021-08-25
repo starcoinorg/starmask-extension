@@ -1,6 +1,9 @@
 # Changelog
 
-## [2.0.0] - 2021-08-25
+## [2.0.0] - 2021-08-26
+- New features:
+    1. check max gasPrice(10000) and max gasLimit(40000000)
+
 - Bug fixes:
     1. cancel transaction is not working for ScriptFunction
     2. sequence number displayed in the txn detail page is 2 higher than the one on the chain.

@@ -115,10 +115,8 @@ export function isCustomPriceSafe(state) {
   return customPriceSafe;
 }
 
-export function isCustomPriceExtendMax(state, checkSend = false) {
-  const customPrice = checkSend ? getGasPrice(state) : getCustomGasPrice(state);
+export function isCustomPriceExtendMax(state, customPrice) {
   const maxPrice = getPriceMax(state);
-
   if (!customPrice || !maxPrice) {
     return false;
   }
@@ -136,10 +134,8 @@ export function isCustomPriceExtendMax(state, checkSend = false) {
   return customPriceExtendMax;
 }
 
-export function isCustomLimitExtendMax(state, checkSend = false) {
-  const customLimit = checkSend ? getGasLimit(state) : getCustomGasLimit(state);
+export function isCustomLimitExtendMax(state, customLimit) {
   const maxLimit = getLimitMax(state);
-
   if (!customLimit || !maxLimit) {
     return false;
   }

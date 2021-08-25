@@ -38,6 +38,8 @@ import {
   getSendMaxModeState,
   getAveragePriceEstimateInHexWEI,
   isCustomPriceExcessive,
+  isCustomPriceExtendMax,
+  isCustomLimitExtendMax,
 } from '../../../../selectors';
 
 import {
@@ -133,6 +135,8 @@ const mapStateToProps = (state, ownProps) => {
       conversionRate,
     });
 
+  const gasPriceIsExtendMax = isCustomPriceExtendMax(state, customModalGasPriceInHex);
+  const gasLimitIsExtendMax = isCustomLimitExtendMax(state, customModalGasLimitInHex);
   return {
     hideBasic,
     isConfirm: isConfirm(state),
@@ -177,6 +181,8 @@ const mapStateToProps = (state, ownProps) => {
     conversionRate,
     value,
     onSubmit,
+    gasPriceIsExtendMax,
+    gasLimitIsExtendMax,
   };
 };
 
@@ -236,6 +242,8 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     tokenBalance,
     customGasLimit,
     transaction,
+    gasPriceIsExtendMax,
+    gasLimitIsExtendMax,
   } = stateProps;
   const {
     hideGasButtonGroup: dispatchHideGasButtonGroup,
@@ -308,7 +316,9 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     disableSave:
       insufficientBalance ||
       (isSpeedUp && customGasPrice === 0) ||
-      customGasLimit < Number(MIN_GAS_LIMIT_DEC),
+      customGasLimit < Number(MIN_GAS_LIMIT_DEC) ||
+      gasPriceIsExtendMax ||
+      gasLimitIsExtendMax,
   };
 };
 

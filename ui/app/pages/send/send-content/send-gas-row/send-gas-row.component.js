@@ -24,6 +24,8 @@ export default class SendGasRow extends Component {
     resetGasButtons: PropTypes.func,
     gasPrice: PropTypes.string,
     gasLimit: PropTypes.string,
+    gasPriceIsExtendMax: PropTypes.bool,
+    gasLimitIsExtendMax: PropTypes.bool,
     insufficientBalance: PropTypes.bool,
     isMainnet: PropTypes.bool,
   };
@@ -92,6 +94,8 @@ export default class SendGasRow extends Component {
       gasPrice,
       gasLimit,
       insufficientBalance,
+      gasPriceIsExtendMax,
+      gasLimitIsExtendMax,
       isMainnet,
     } = this.props;
     const { metricsEvent } = this.context;
@@ -143,6 +147,8 @@ export default class SendGasRow extends Component {
           customGasPrice={gasPrice}
           customGasLimit={gasLimit}
           insufficientBalance={insufficientBalance}
+          gasPriceIsExtendMax={gasPriceIsExtendMax}
+          gasLimitIsExtendMax={gasLimitIsExtendMax}
           customPriceIsSafe
           isSpeedUp={false}
         />

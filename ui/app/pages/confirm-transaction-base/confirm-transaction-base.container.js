@@ -37,6 +37,8 @@ import {
   getUseNonceField,
   getPreferences,
   transactionFeeSelector,
+  isCustomPriceExtendMax,
+  isCustomLimitExtendMax,
 } from '../../selectors';
 import { getMostRecentOverviewPage } from '../../ducks/history/history';
 import { transactionMatchesNetwork } from '../../../../shared/modules/transaction.utils';
@@ -149,7 +151,8 @@ const mapStateToProps = (state, ownProps) => {
       },
     };
   }
-
+  const gasPriceIsExtendMax = isCustomPriceExtendMax(state, gasPrice);
+  const gasLimitIsExtendMax = isCustomLimitExtendMax(state, gasLimit);
   return {
     balance,
     fromAddress,
@@ -190,6 +193,8 @@ const mapStateToProps = (state, ownProps) => {
     nextNonce,
     mostRecentOverviewPage: getMostRecentOverviewPage(state),
     isMainnet,
+    gasPriceIsExtendMax,
+    gasLimitIsExtendMax,
   };
 };
 

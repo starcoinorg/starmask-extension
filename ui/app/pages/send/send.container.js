@@ -48,7 +48,8 @@ import SendEther from './send.component';
 
 function mapStateToProps(state) {
   const editingTransactionId = getSendEditingTransactionId(state);
-
+  const gasPrice = getGasPrice(state);
+  const gasLimit = getGasLimit(state);
   return {
     addressBook: getAddressBook(state),
     amount: getSendAmount(state),
@@ -56,8 +57,8 @@ function mapStateToProps(state) {
     conversionRate: getConversionRate(state),
     editingTransactionId,
     from: getSendFromObject(state),
-    gasLimit: getGasLimit(state),
-    gasPrice: getGasPrice(state),
+    gasLimit,
+    gasPrice,
     gasTotal: getGasTotal(state),
     chainId: getCurrentChainId(state),
     primaryCurrency: getPrimaryCurrency(state),
@@ -73,8 +74,8 @@ function mapStateToProps(state) {
     assets: getAssets(state),
     sendTokenAddress: getSendTokenCode(state),
     gasIsExcessive: isCustomPriceExcessive(state, true),
-    gasPriceIsExtendMax: isCustomPriceExtendMax(state, true),
-    gasLimitIsExtendMax: isCustomLimitExtendMax(state, true),
+    gasPriceIsExtendMax: isCustomPriceExtendMax(state, gasPrice),
+    gasLimitIsExtendMax: isCustomLimitExtendMax(state, gasLimit),
   };
 }
 

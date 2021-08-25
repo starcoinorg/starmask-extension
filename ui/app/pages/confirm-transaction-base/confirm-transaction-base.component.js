@@ -12,6 +12,8 @@ import {
   INSUFFICIENT_FUNDS_ERROR_KEY,
   TRANSACTION_ERROR_KEY,
   GAS_LIMIT_TOO_LOW_ERROR_KEY,
+  GAS_PRICE_EXTEND_MAX_ERROR_KEY,
+  GAS_LIMIT_EXTEND_MAX_ERROR_KEY,
 } from '../../helpers/constants/error-keys';
 import UserPreferencedCurrencyDisplay from '../../components/app/user-preferenced-currency-display';
 import { PRIMARY, SECONDARY } from '../../helpers/constants/common';
@@ -95,6 +97,8 @@ export default class ConfirmTransactionBase extends Component {
     showAccountInHeader: PropTypes.bool,
     mostRecentOverviewPage: PropTypes.string.isRequired,
     isMainnet: PropTypes.bool,
+    gasPriceIsExtendMax: PropTypes.bool,
+    gasLimitIsExtendMax: PropTypes.bool,
   };
 
   state = {
@@ -160,6 +164,8 @@ export default class ConfirmTransactionBase extends Component {
       hexTransactionFee,
       txData: { simulationFails, txParams: { value: amount } = {} } = {},
       customGas,
+      gasPriceIsExtendMax,
+      gasLimitIsExtendMax,
     } = this.props;
 
     const insufficientBalance =
@@ -191,6 +197,20 @@ export default class ConfirmTransactionBase extends Component {
       return {
         valid: false,
         errorKey: GAS_LIMIT_TOO_LOW_ERROR_KEY,
+      };
+    }
+
+    if (gasPriceIsExtendMax) {
+      return {
+        valid: false,
+        errorKey: GAS_PRICE_EXTEND_MAX_ERROR_KEY,
+      };
+    }
+
+    if (gasLimitIsExtendMax) {
+      return {
+        valid: false,
+        errorKey: GAS_LIMIT_EXTEND_MAX_ERROR_KEY,
       };
     }
 
@@ -243,6 +263,8 @@ export default class ConfirmTransactionBase extends Component {
       nextNonce,
       getNextNonce,
       isMainnet,
+      gasPriceIsExtendMax,
+      gasLimitIsExtendMax,
     } = this.props;
 
     const notMainnetOrTest = !(isMainnet || process.env.IN_TEST);
@@ -277,6 +299,8 @@ export default class ConfirmTransactionBase extends Component {
               insufficientBalance={insufficientBalance}
               customPriceIsSafe
               isSpeedUp={false}
+              gasPriceIsExtendMax={gasPriceIsExtendMax}
+              gasLimitIsExtendMax={gasLimitIsExtendMax}
             />
           ) : null}
         </div>

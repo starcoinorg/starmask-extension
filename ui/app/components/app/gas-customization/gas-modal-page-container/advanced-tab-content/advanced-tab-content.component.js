@@ -19,6 +19,8 @@ export default class AdvancedTabContent extends Component {
     customGasLimitMessage: PropTypes.string,
     minimumGasLimit: PropTypes.number,
     customPriceIsExcessive: PropTypes.bool.isRequired,
+    gasPriceIsExtendMax: PropTypes.bool,
+    gasLimitIsExtendMax: PropTypes.bool,
   };
 
   renderDataSummary(transactionFee) {
@@ -49,8 +51,9 @@ export default class AdvancedTabContent extends Component {
       customGasLimitMessage,
       minimumGasLimit,
       customPriceIsExcessive,
+      gasPriceIsExtendMax,
+      gasLimitIsExtendMax,
     } = this.props;
-
     return (
       <div className="advanced-tab">
         {this.renderDataSummary(transactionFee)}
@@ -67,6 +70,8 @@ export default class AdvancedTabContent extends Component {
               customGasLimitMessage={customGasLimitMessage}
               minimumGasLimit={minimumGasLimit}
               customPriceIsExcessive={customPriceIsExcessive}
+              gasPriceIsExtendMax={gasPriceIsExtendMax}
+              gasLimitIsExtendMax={gasLimitIsExtendMax}
             />
           </div>
         </div>

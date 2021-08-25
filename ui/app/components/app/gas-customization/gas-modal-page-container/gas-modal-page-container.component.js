@@ -36,6 +36,8 @@ export default class GasModalPageContainer extends Component {
     isRetry: PropTypes.bool,
     disableSave: PropTypes.bool,
     customPriceIsExcessive: PropTypes.bool.isRequired,
+    gasPriceIsExtendMax: PropTypes.bool.isRequired,
+    gasLimitIsExtendMax: PropTypes.bool.isRequired,
   };
 
   componentDidMount() {
@@ -59,6 +61,8 @@ export default class GasModalPageContainer extends Component {
       isSpeedUp,
       isRetry,
       customPriceIsExcessive,
+      gasPriceIsExtendMax,
+      gasLimitIsExtendMax,
       infoRowProps: { transactionFee },
     } = this.props;
 
@@ -74,6 +78,8 @@ export default class GasModalPageContainer extends Component {
         isSpeedUp={isSpeedUp}
         isRetry={isRetry}
         customPriceIsExcessive={customPriceIsExcessive}
+        gasPriceIsExtendMax={gasPriceIsExtendMax}
+        gasLimitIsExtendMax={gasLimitIsExtendMax}
       />
     );
   }

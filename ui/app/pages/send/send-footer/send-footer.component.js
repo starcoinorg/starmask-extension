@@ -28,6 +28,8 @@ export default class SendFooter extends Component {
     gasEstimateType: PropTypes.string,
     gasIsLoading: PropTypes.bool,
     mostRecentOverviewPage: PropTypes.string.isRequired,
+    gasPriceIsExtendMax: PropTypes.bool,
+    gasLimitIsExtendMax: PropTypes.bool,
   };
 
   static contextTypes = {
@@ -112,10 +114,14 @@ export default class SendFooter extends Component {
       to,
       gasLimit,
       gasIsLoading,
+      gasPriceIsExtendMax,
+      gasLimitIsExtendMax,
     } = this.props;
     const missingTokenBalance = sendToken && !tokenBalance;
     const gasLimitTooLow = gasLimit < 10000;
     const shouldBeDisabled =
+      gasPriceIsExtendMax ||
+      gasLimitIsExtendMax ||
       inError ||
       !gasTotal ||
       missingTokenBalance ||

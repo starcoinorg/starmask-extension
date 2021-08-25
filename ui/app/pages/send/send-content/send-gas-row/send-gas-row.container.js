@@ -18,6 +18,8 @@ import {
   getRenderableEstimateDataForSmallButtonsFromGWEI,
   getDefaultActiveButtonIndex,
   getIsMainnet,
+  isCustomPriceExtendMax,
+  isCustomLimitExtendMax,
 } from '../../../../selectors';
 import { isBalanceSufficient, calcGasTotal } from '../../send.utils';
 import { calcMaxAmount } from '../send-amount-row/amount-max-button/amount-max-button.utils';
@@ -65,6 +67,8 @@ function mapStateToProps(state) {
     conversionRate,
   });
 
+  const gasPriceIsExtendMax = isCustomPriceExtendMax(state, gasPrice);
+  const gasLimitIsExtendMax = isCustomLimitExtendMax(state, gasLimit);
   return {
     balance: getSendFromBalance(state),
     gasTotal,
@@ -80,6 +84,8 @@ function mapStateToProps(state) {
     advancedInlineGasShown: getAdvancedInlineGasShown(state),
     gasPrice,
     gasLimit,
+    gasPriceIsExtendMax,
+    gasLimitIsExtendMax,
     insufficientBalance,
     maxModeOn: getSendMaxModeState(state),
     sendToken: getSendToken(state),

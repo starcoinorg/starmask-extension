@@ -25,6 +25,8 @@ import {
   getGasIsLoading,
   getRenderableEstimateDataForSmallButtonsFromGWEI,
   getDefaultActiveButtonIndex,
+  isCustomPriceExtendMax,
+  isCustomLimitExtendMax,
 } from '../../../selectors';
 import { getMostRecentOverviewPage } from '../../../ducks/history/history';
 import { addHexPrefix } from '../../../../../app/scripts/lib/util';
@@ -40,6 +42,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(SendFooter);
 function mapStateToProps(state) {
   const gasButtonInfo = getRenderableEstimateDataForSmallButtonsFromGWEI(state);
   const gasPrice = getGasPrice(state);
+  const gasLimit = getGasLimit(state);
+  console.log(2, { gasPrice, gasLimit })
   const activeButtonIndex = getDefaultActiveButtonIndex(
     gasButtonInfo,
     gasPrice,
@@ -55,8 +59,8 @@ function mapStateToProps(state) {
     data: getSendHexData(state),
     editingTransactionId,
     from: getSendFromObject(state),
-    gasLimit: getGasLimit(state),
-    gasPrice: getGasPrice(state),
+    gasLimit,
+    gasPrice,
     gasTotal: getGasTotal(state),
     inError: isSendFormInError(state),
     sendToken: getSendToken(state),
@@ -69,6 +73,8 @@ function mapStateToProps(state) {
     gasEstimateType,
     gasIsLoading: getGasIsLoading(state),
     mostRecentOverviewPage: getMostRecentOverviewPage(state),
+    gasPriceIsExtendMax: isCustomPriceExtendMax(state, gasPrice),
+    gasLimitIsExtendMax: isCustomLimitExtendMax(state, gasLimit),
   };
 }
 

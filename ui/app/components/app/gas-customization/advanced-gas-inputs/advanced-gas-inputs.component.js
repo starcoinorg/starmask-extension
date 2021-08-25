@@ -21,11 +21,15 @@ export default class AdvancedGasInputs extends Component {
     customGasLimitMessage: PropTypes.string,
     minimumGasLimit: PropTypes.number,
     customPriceIsExcessive: PropTypes.bool,
+    gasPriceIsExtendMax: PropTypes.bool,
+    gasLimitIsExtendMax: PropTypes.bool,
   };
 
   static defaultProps = {
     minimumGasLimit: Number(MIN_GAS_LIMIT_DEC),
     customPriceIsExcessive: false,
+    gasPriceIsExtendMax: false,
+    gasLimitIsExtendMax: false,
   };
 
   constructor(props) {
@@ -78,6 +82,7 @@ export default class AdvancedGasInputs extends Component {
     isSpeedUp,
     gasPrice,
     customPriceIsExcessive,
+    gasPriceIsExtendMax,
   }) {
     const { t } = this.context;
 
@@ -91,6 +96,11 @@ export default class AdvancedGasInputs extends Component {
         errorText: t('zeroGasPriceOnSpeedUpError'),
         errorType: 'error',
       };
+    } else if (gasPriceIsExtendMax) {
+      return {
+        errorText: t('gasPriceExtendMax'),
+        errorType: 'error',
+      };
     } else if (!customPriceIsSafe) {
       return {
         errorText: t('gasPriceExtremelyLow'),
@@ -99,19 +109,29 @@ export default class AdvancedGasInputs extends Component {
     } else if (customPriceIsExcessive) {
       return {
         errorText: t('gasPriceExcessiveInput'),
-        errorType: 'error',
+        errorType: 'warning',
       };
     }
 
     return {};
   }
 
-  gasLimitError({ insufficientBalance, gasLimit, minimumGasLimit }) {
+  gasLimitError({
+    insufficientBalance,
+    gasLimit,
+    minimumGasLimit,
+    gasLimitIsExtendMax,
+  }) {
     const { t } = this.context;
 
     if (insufficientBalance) {
       return {
         errorText: t('insufficientBalance'),
+        errorType: 'error',
+      };
+    } else if (gasLimitIsExtendMax) {
+      return {
+        errorText: t('gasLimitExtendMax'),
         errorType: 'error',
       };
     } else if (gasLimit < minimumGasLimit) {
@@ -194,6 +214,8 @@ export default class AdvancedGasInputs extends Component {
       customGasLimitMessage,
       minimumGasLimit,
       customPriceIsExcessive,
+      gasPriceIsExtendMax,
+      gasLimitIsExtendMax,
     } = this.props;
     const { gasPrice, gasLimit } = this.state;
 
@@ -206,6 +228,7 @@ export default class AdvancedGasInputs extends Component {
       isSpeedUp,
       gasPrice,
       customPriceIsExcessive,
+      gasPriceIsExtendMax,
     });
     const gasPriceErrorComponent = gasPriceErrorType ? (
       <div
@@ -218,7 +241,7 @@ export default class AdvancedGasInputs extends Component {
     const {
       errorText: gasLimitErrorText,
       errorType: gasLimitErrorType,
-    } = this.gasLimitError({ insufficientBalance, gasLimit, minimumGasLimit });
+    } = this.gasLimitError({ insufficientBalance, gasLimit, minimumGasLimit, gasLimitIsExtendMax });
     const gasLimitErrorComponent = gasLimitErrorType ? (
       <div
         className={`advanced-gas-inputs__gas-edit-row__${gasLimitErrorType}-text`}

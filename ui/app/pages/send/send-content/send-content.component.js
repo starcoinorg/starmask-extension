@@ -21,20 +21,19 @@ export default class SendContent extends Component {
     warning: PropTypes.string,
     error: PropTypes.string,
     gasIsExcessive: PropTypes.bool.isRequired,
-    gasPriceIsExtendMax: PropTypes.bool.isRequired,
-    gasLimitIsExtendMax: PropTypes.bool.isRequired,
   };
 
   updateGas = (updateData) => this.props.updateGas(updateData);
 
   render() {
-    const { warning, error, gasIsExcessive, gasPriceIsExtendMax, gasLimitIsExtendMax } = this.props;
+    const { warning, error, gasIsExcessive } = this.props;
+
     return error ? (
       this.renderError()
     ) : (
       <PageContainerContent>
         <div className="send-v2__form">
-          {(gasIsExcessive || gasPriceIsExtendMax || gasLimitIsExtendMax) && this.renderError(gasIsExcessive, gasPriceIsExtendMax, gasLimitIsExtendMax)}
+          {gasIsExcessive && this.renderError(true)}
           {warning && this.renderWarning()}
           {/* {this.maybeRenderAddContact()} */}
           <SendAssetRow />
@@ -82,22 +81,13 @@ export default class SendContent extends Component {
     );
   }
 
-  renderError(gasIsExcessive, gasPriceIsExtendMax, gasLimitIsExtendMax) {
+  renderError(gasError = false) {
     const { t } = this.context;
     const { error } = this.props;
-    let message;
-    if (gasPriceIsExtendMax) {
-      message = t('gasPriceExtendMax');
-    } else if (gasLimitIsExtendMax) {
-      message = t('gasLimitExtendMax');
-    } else if (gasIsExcessive) {
-      message = t('gasPriceExcessive');
-    } else {
-      message = t(error);
-    }
+
     return (
       <Dialog type="error" className="send__error-dialog">
-        {message}
+        {gasError ? t('gasPriceExcessive') : t(error)}
       </Dialog>
     );
   }
