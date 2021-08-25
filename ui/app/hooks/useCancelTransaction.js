@@ -34,7 +34,7 @@ export function useCancelTransaction(transactionGroup) {
   const selectedAccount = useSelector(getSelectedAccount);
   const conversionRate = useSelector(getConversionRate);
   const defaultNewGasPrice = addHexPrefix(
-    multiplyCurrencies(gasPrice, 100, {
+    multiplyCurrencies(gasPrice, 10, {
       toNumericBase: 'hex',
       multiplicandBase: 16,
       multiplierBase: 10,

@@ -183,7 +183,7 @@ async function fetchEthGasPriceEstimates(state) {
     toDenomination: 'MILLISTC',
   });
   const fastGasPriceInDecGWEI = getValueFromWeiHex({
-    value: decimalToHex(parseInt(gasPrice, 10) * 100),
+    value: decimalToHex(parseInt(gasPrice, 10) * 10),
     numberOfDecimals: 6,
     toDenomination: 'MILLISTC',
   });

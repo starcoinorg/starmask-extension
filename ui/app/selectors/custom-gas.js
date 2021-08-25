@@ -93,15 +93,13 @@ export function getLimitMax(state) {
 
 export function isCustomPriceSafe(state) {
   const safeLow = getSafeLowEstimate(state);
-
-  const customGasPrice = getCustomGasPrice(state);
-
-  if (!customGasPrice) {
+  if (!safeLow) {
     return true;
   }
 
-  if (!safeLow) {
-    return false;
+  const customGasPrice = getCustomGasPrice(state);
+  if (!customGasPrice) {
+    return true;
   }
 
   const customPriceSafe = conversionGreaterThan(
@@ -167,7 +165,7 @@ export function isCustomPriceExcessive(state, checkSend = false) {
     return false;
   }
 
-  // Custom gas should be considered excessive when it is 1.5 times greater than the fastest estimate.
+  // Custom gas should be considered excessive when it is 10 times greater than the fastest estimate.
   const customPriceExcessive = conversionGreaterThan(
     {
       value: customPrice,
@@ -175,7 +173,7 @@ export function isCustomPriceExcessive(state, checkSend = false) {
     },
     {
       fromNumericBase: 'dec',
-      value: fastPrice * 1.5,
+      value: fastPrice * 10,
       fromDenomination: 'MILLISTC',
       toDenomination: 'NANOSTC',
     },
