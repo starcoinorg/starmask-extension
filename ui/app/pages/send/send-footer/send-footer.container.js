@@ -43,7 +43,6 @@ function mapStateToProps(state) {
   const gasButtonInfo = getRenderableEstimateDataForSmallButtonsFromGWEI(state);
   const gasPrice = getGasPrice(state);
   const gasLimit = getGasLimit(state);
-  console.log(2, { gasPrice, gasLimit })
   const activeButtonIndex = getDefaultActiveButtonIndex(
     gasButtonInfo,
     gasPrice,
@@ -82,7 +81,6 @@ function mapDispatchToProps(dispatch) {
   return {
     clearSend: () => dispatch(clearSend()),
     sign: async ({ sendToken, to, toReceiptIdentifier, amount, from, gas, gasPrice, data }) => {
-      console.log('sign', { sendToken, to, toReceiptIdentifier, amount, from, gas, gasPrice, data });
       const txParams = constructTxParams({
         amount,
         data,
