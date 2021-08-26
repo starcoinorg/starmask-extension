@@ -147,7 +147,10 @@ export default class TxGasUtil {
     if (dryRunRawResult.status === 'Executed') {
       estimatedGasHex = new BigNumber(dryRunRawResult.gas_used, 10).toString(16);
     } else {
-      throw new Error(`Starmask: contract.dry_run_raw failed. status: ${dryRunRawResult.status}, Error: ${dryRunRawResult.explained_status.Error}`)
+      if (typeof dryRunRawResult.status === 'string') {
+        throw new Error(`Starmask: contract.dry_run_raw failed. status: ${dryRunRawResult.status}, Error: ${dryRunRawResult.explained_status.Error}`)
+      }
+      throw new Error(`Starmask: contract.dry_run_raw failed. Error: ${JSON.stringify(dryRunRawResult.explained_status)}`)
     }
 
     return estimatedGasHex;
