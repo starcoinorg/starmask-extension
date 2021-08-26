@@ -95,6 +95,7 @@ export default class TxGasUtil {
     // return await this.query.estimateGas(txParams);
 
     const maxGasAmount = 40000000;
+    const gasUnitPrice = txMeta.txParams.gasPrice || 1;
     const expirationTimestampSecs = await this.getExpirationTimestampSecs(txMeta.txParams);
     const selectedAddressHex = txMeta.txParams.from;
     const selectedPublicKeyHex = this.store.getState().identities[selectedAddressHex].publicKey;
@@ -123,6 +124,7 @@ export default class TxGasUtil {
       selectedAddressHex,
       transactionPayload,
       maxGasAmount,
+      gasUnitPrice,
       selectedSequenceNumber,
       expirationTimestampSecs,
       chainId,

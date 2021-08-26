@@ -581,27 +581,19 @@ export default class TransactionController extends EventEmitter {
       );
     });
     // log.debug({ senderSequenceNumber });
-    const gasTotal = multiplyCurrencies(
-      ethUtil.stripHexPrefix(txParams.gas),
-      ethUtil.stripHexPrefix(txParams.gasPrice),
-      {
-        toNumericBase: 'hex',
-        multiplicandBase: 16,
-        multiplierBase: 16,
-      },
-    );
-    // log.debug({ gasTotal });
-    const maxGasAmount = conversionUtil(gasTotal, {
-      fromNumericBase: 'hex',
-      toNumericBase: 'dec',
-    });
-    // log.debug({ maxGasAmount });
+    const maxGasAmount = txParams.gas;
+    const gasUnitPrice = txParams.gasPrice;
+    log.debug({ gasUnitPrice, maxGasAmount });
 
     const expirationTimestampSecs = await this.txGasUtil.getExpirationTimestampSecs(txParams);
     const fromAddress = txParams.from;
 
     let payload;
-    if (txMeta.type === TRANSACTION_TYPES.SENT_ETHER || txMeta.type === TRANSACTION_TYPES.CANCEL) {
+    if (
+      txMeta.type === TRANSACTION_TYPES.SENT_ETHER ||
+      txMeta.type === TRANSACTION_TYPES.CANCEL ||
+      (txMeta.type === TRANSACTION_TYPES.RETRY && !txParams.data)
+    ) {
       const functionId = '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2';
 
       const tyArgs = [{ Struct: { address: '0x1', module: 'STC', name: 'STC', type_params: [] } }];
@@ -645,6 +637,7 @@ export default class TransactionController extends EventEmitter {
       fromAddress,
       payload,
       maxGasAmount,
+      gasUnitPrice,
       senderSequenceNumber,
       expirationTimestampSecs,
       chainId,
