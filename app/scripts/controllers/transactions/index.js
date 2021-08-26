@@ -404,14 +404,28 @@ export default class TransactionController extends EventEmitter {
     const newGasPrice =
       customGasPrice ||
       bnToHex(BnMultiplyByFraction(hexToBn(lastGasPrice), 11, 10));
+
+    const functionId = '0x1::EmptyScripts::empty_script';
+    const tyArgs = [];
+    const args = [];
+
+    const scriptFunction = utils.tx.encodeScriptFunction(functionId, tyArgs, args);
+
+    // Multiple BcsSerializers should be used in different closures, otherwise, the latter will be contaminated by the former.
+    const payloadInHex = (function () {
+      const se = new bcs.BcsSerializer();
+      scriptFunction.serialize(se);
+      return hexlify(se.getBytes());
+    })();
+
     const newTxMeta = this.txStateManager.generateTxMeta({
       txParams: {
+        data: payloadInHex,
         from,
-        to: from,
         nonce,
         gas: customGasLimit || gas,
-        value: '0x0',
         gasPrice: newGasPrice,
+        value: '0x0',
       },
       lastGasPrice,
       loadingDefaults: false,
@@ -591,7 +605,6 @@ export default class TransactionController extends EventEmitter {
     let payload;
     if (
       txMeta.type === TRANSACTION_TYPES.SENT_ETHER ||
-      txMeta.type === TRANSACTION_TYPES.CANCEL ||
       (txMeta.type === TRANSACTION_TYPES.RETRY && !txParams.data)
     ) {
       const functionId = '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2';

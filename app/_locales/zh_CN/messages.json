@@ -634,6 +634,14 @@
     "message": "代码：$1",
     "description": "Displayed error name for debugging purposes. $1 is the error name"
   },
+  "errorPageMessage": {
+    "message": "请刷新页面重新加载数据, 或者联系 $1 获得技术支持.",
+    "description": "Message displayed on generic error page in the fullscreen or notification UI, $1 is a clickable link with text defined by the 'here' key. The link will open to a form where users can file support tickets."
+  },
+  "errorPagePopupMessage": {
+    "message": "请关闭再打开弹窗, 或者联系 $1 获得技术支持.",
+    "description": "Message displayed on generic error page in the popup UI, $1 is a clickable link with text defined by the 'here' key. The link will open to a form where users can file support tickets."
+  },
   "errorPageTitle": {
     "message": "StarMask 遇到了一个错误",
     "description": "Title of generic error page"
