@@ -59,7 +59,6 @@ export function getActivities(transaction, isFirstTransaction = false) {
     txReceipt: { status, gasUsed: gasUsedStr } = {},
     type,
   } = transaction;
-
   let cachedGasLimit = '0x0';
   let cachedGasPrice = '0x0';
 
@@ -196,17 +195,17 @@ export function getActivities(transaction, isFirstTransaction = false) {
     return acc;
   }, []);
 
-  // If txReceipt.status is '0x0', that means that an on-chain error occurred for the transaction,
+  // If txReceipt exists and txReceipt.status !== 'Executed', that means that an on-chain error occurred for the transaction,
   // so we add an error entry to the Activity Log.
-  return status === '0x0'
-    ? historyActivities.concat({
+  return (!status || status === 'Executed')
+    ? historyActivities
+    : historyActivities.concat({
       id,
       hash,
       chainId,
       metamaskNetworkId,
       eventKey: TRANSACTION_ERRORED_EVENT,
-    })
-    : historyActivities;
+    });
 }
 
 /**
