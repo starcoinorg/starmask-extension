@@ -1,13 +1,19 @@
 # Changelog
 
+## [2.0.1] - 2021-08-27
+- Bug fixes:
+    1. multi transactions works and won't be droped
+    2. display failed if one transaction receipt status is not Executed
+    3. show transactionErrored in the bottom of transaction-activity-log
+
 ## [2.0.0] - 2021-08-26
 - New features:
     1. check max gasPrice(10000) and max gasLimit(40000000)
+    2. execute empty_script for a cancel transaction which will minimize the gas fee
 
 - Bug fixes:
-    1. cancel transaction is not working for ScriptFunction
-    2. sequence number displayed in the txn detail page is 2 higher than the one on the chain.
-    3. change default expiredSecs in txParams from 43200(12 hours) to 1800(30 minutes)
+    1. sequence number displayed in the transaction detail page is not sync with the chain, which is 2 more higher.
+    2. change the default expiredSecs in txParams from 43200(12 hours) to 1800(30 minutes)
 
 ## [1.9.7] - 2021-08-19
 - Bug fixes:
