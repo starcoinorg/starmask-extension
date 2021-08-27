@@ -580,21 +580,22 @@ export default class TransactionController extends EventEmitter {
       toNumericBase: 'dec',
     });
     // log.debug({ sendAmount });
-    const senderSequenceNumber = await new Promise((resolve, reject) => {
-      return this.query.getResource(
-        txParams.from,
-        '0x00000000000000000000000000000001::Account::Account',
-        (err, res) => {
-          if (err) {
-            return reject(err);
-          }
+    // const senderSequenceNumber = await new Promise((resolve, reject) => {
+    //   return this.query.getResource(
+    //     txParams.from,
+    //     '0x00000000000000000000000000000001::Account::Account',
+    //     (err, res) => {
+    //       if (err) {
+    //         return reject(err);
+    //       }
 
-          const sequence_number = res && res.value[6][1].U64 || 0;
-          return resolve(new BigNumber(sequence_number, 10).toNumber());
-        },
-      );
-    });
-    // log.debug({ senderSequenceNumber });
+    //       const sequence_number = res && res.value[6][1].U64 || 0;
+    //       return resolve(new BigNumber(sequence_number, 10).toNumber());
+    //     },
+    //   );
+    // });
+    // log.debug({ nonce: txParams.nonce, senderSequenceNumber });
+    const { nonce } = txParams;
     const maxGasAmount = txParams.gas;
     const gasUnitPrice = txParams.gasPrice;
     log.debug({ gasUnitPrice, maxGasAmount });
@@ -651,7 +652,7 @@ export default class TransactionController extends EventEmitter {
       payload,
       maxGasAmount,
       gasUnitPrice,
-      senderSequenceNumber,
+      nonce,
       expirationTimestampSecs,
       chainId,
     );
