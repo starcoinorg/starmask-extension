@@ -2568,7 +2568,7 @@
   resolved "https://registry.npmjs.org/@sinonjs/text-encoding/-/text-encoding-0.7.1.tgz"
   integrity sha512-+iTbntw2IZPb/anVDbypzfQa+ay64MW0Zo8aJ8gZPWMMK6/OubMVb6lUPMagqjOPnmtauXnFCACVl3O7ogjeqQ==
 
-"@starcoin/starcoin@^1.2.1", "@starcoin/starcoin@^1.4.2":
+"@starcoin/starcoin@^1.2.1":
   version "1.4.2"
   resolved "https://registry.npmjs.org/@starcoin/starcoin/-/starcoin-1.4.2.tgz#4327fdccfe963ad2fe30ab8bbe5f9081adea7400"
   integrity sha512-2+NIsptmJU4dbijg8UquUwysA0xEsL7NAGEoaCEGjNSq+T+mqZAfIgSWykL6QLMZvz1kpcqrDEdmHUERi1LixA==
@@ -2600,6 +2600,34 @@
   version "1.4.3"
   resolved "https://registry.npmjs.org/@starcoin/starcoin/-/starcoin-1.4.3.tgz#0c13eaff851399a9c3890d15ca67c0ac8c894819"
   integrity sha512-6bwkMAzBdCfVgnQvtoiBfIs39f+bU0kYI5nyX5Iv3fXGU+ImCM2pQTH4xpODHN/eafjDkdNpGWPoule/QccuRA==
+  dependencies:
+    "@ethersproject/basex" "^5.0.4"
+    "@ethersproject/bignumber" "^5.0"
+    "@ethersproject/bytes" "^5.0.6"
+    "@ethersproject/hash" "^5.0.6"
+    "@ethersproject/keccak256" "^5.0.5"
+    "@ethersproject/logger" "^5.0.6"
+    "@ethersproject/properties" "^5.0.4"
+    "@ethersproject/sha2" "^5.0.4"
+    "@ethersproject/web" "^5.0.9"
+    "@starcoin/stc-ed25519" "^0.1.0"
+    bech32 "^2.0.0"
+    ethereumjs-util "5.1.0"
+    is-alphabetical "^1.0.4"
+    is-alphanumerical "^1.0.4"
+    is-decimal "^1.0.4"
+    is-hexadecimal "^1.0.4"
+    is-whitespace-character "^1.0.4"
+    is-word-character "^1.0.4"
+    js-sha3 "^0.8.0"
+    jssha "^3.2.0"
+    read-bigint "^0.1.6"
+    ws "7.2.3"
+
+"@starcoin/starcoin@^1.5.2":
+  version "1.5.2"
+  resolved "https://registry.npmjs.org/@starcoin/starcoin/-/starcoin-1.5.2.tgz#cca74c6f7e72fb06483730af66f95566920963b1"
+  integrity sha512-a4Sm8VBvnwV4A+JESaY1Jwpp7OfaU8KYMu1byg44kVTWC/dsLkENjU5Q3JwNPd+d4VHaIfzViAKAaC9POgLpJw==
   dependencies:
     "@ethersproject/basex" "^5.0.4"
     "@ethersproject/bignumber" "^5.0"
@@ -2722,24 +2750,17 @@
     loglevel "^1.5.0"
     obs-store "^4.0.3"
 
-"@starcoin/stc-nonce-tracker@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.npmjs.org/@starcoin/stc-nonce-tracker/-/stc-nonce-tracker-0.1.0.tgz"
-  integrity sha512-lmfdtPkdrT1cRQffumQIS/spxvySb1E8D64M/+m4Hm6bTQkjUYAvCv2R5oczPQf5h0vsfZ3gBJhIg25kyJl+rQ==
+"@starcoin/stc-nonce-tracker@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.npmjs.org/@starcoin/stc-nonce-tracker/-/stc-nonce-tracker-0.2.0.tgz#1ed713c2c5be67542a3618c31965e50b506912e2"
+  integrity sha512-2g/hskuM7F8t26mLj2PmR8dmrbDHIfxs/aPRXahXeDpiFrk99GX+Mitl1OONLfGJLAxH2pLBHE6pqqRn6ejOnQ==
   dependencies:
     "@ethersproject/bignumber" "^5.1.1"
     "@starcoin/stc-block-tracker" "^0.1.0"
-    "@starcoin/stc-query" "^0.2.0"
+    "@starcoin/stc-query" "^0.3.1"
+    "@starcoin/stc-util" "^0.4.1"
     assert "^1.4.1"
     await-semaphore "^0.1.3"
-
-"@starcoin/stc-query@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.npmjs.org/@starcoin/stc-query/-/stc-query-0.2.0.tgz"
-  integrity sha512-dhjqOcJSN1XhDU5AJJKjeZypbfrvGLba+ZJk/GtCIAXfiJ1Lttt61GPDssuUVUhjnJRCLOi8sdtrShWdiTlwrQ==
-  dependencies:
-    json-rpc-random-id "^1.0.0"
-    xtend "^4.0.1"
 
 "@starcoin/stc-query@^0.3.1":
   version "0.3.1"
@@ -2774,6 +2795,21 @@
     js-sha3 "^0.8.0"
     keccak "^1.0.2"
     noble-ed25519 "^1.0.4"
+    rlp "^2.0.0"
+    safe-buffer "^5.1.1"
+    secp256k1 "^3.0.1"
+
+"@starcoin/stc-util@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.npmjs.org/@starcoin/stc-util/-/stc-util-0.4.1.tgz#3ad13dc5dfca76a9f71544261e544a440650c4a7"
+  integrity sha512-KaNVfmiBH+y6AGgbV0iqEkLbfXjMBw27xYAoS+JC9fEthUvo3ff5vzVBLJEjWiXuOxaJ4V0DkCBbQ4q7jEoPuQ==
+  dependencies:
+    "@starcoin/stc-ed25519" "^0.1.0"
+    bn.js "^4.11.0"
+    create-hash "^1.1.2"
+    ethjs-util "0.1.6"
+    js-sha3 "^0.8.0"
+    keccak "^1.0.2"
     rlp "^2.0.0"
     safe-buffer "^5.1.1"
     secp256k1 "^3.0.1"
