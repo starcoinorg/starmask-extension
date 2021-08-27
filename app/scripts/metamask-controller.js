@@ -2450,7 +2450,7 @@ export default class MetamaskController extends EventEmitter {
    * @param {Function} cb - A callback function returning currency info.
    */
   setCurrentCurrency(currencyCode, cb) {
-    // const { ticker } = this.networkController.getProviderConfig();
+    const { ticker } = this.networkController.getProviderConfig();
     try {
       const currencyState = {
         nativeCurrency: ticker,
