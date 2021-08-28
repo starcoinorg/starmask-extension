@@ -197,15 +197,15 @@ export function getActivities(transaction, isFirstTransaction = false) {
 
   // If txReceipt exists and txReceipt.status !== 'Executed', that means that an on-chain error occurred for the transaction,
   // so we add an error entry to the Activity Log.
-  return (!status || status === 'Executed')
-    ? historyActivities
-    : historyActivities.concat({
+  return (status && status !== 'Executed')
+    ? historyActivities.concat({
       id,
       hash,
       chainId,
       metamaskNetworkId,
       eventKey: TRANSACTION_ERRORED_EVENT,
-    });
+    })
+    : historyActivities;
 }
 
 /**

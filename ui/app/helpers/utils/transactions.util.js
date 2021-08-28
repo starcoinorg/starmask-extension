@@ -200,7 +200,7 @@ export function getStatusKey(transaction) {
   } = transaction;
 
   // There was an on-chain failure
-  if (receiptStatus !== 'Executed') {
+  if (receiptStatus && receiptStatus !== 'Executed') {
     return TRANSACTION_STATUSES.FAILED;
   }
 
