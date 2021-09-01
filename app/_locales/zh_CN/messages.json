@@ -1184,6 +1184,9 @@
     "message": "“$1”会关闭此标签，直接回到 $2",
     "description": "Return the user to the site that initiated onboarding"
   },
+  "onlyAddTrustedNetworks": {
+    "message": "恶意网络提供商可能会谎报区块链的状态并记录您的网络活动。仅添加您信任的自定义网络。"
+  },
   "onlyAvailableOnMainnet": {
     "message": "仅在主网（main）上提供"
   },
