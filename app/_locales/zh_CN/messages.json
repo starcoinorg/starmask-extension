@@ -1126,6 +1126,9 @@
     "message": "Nonce 高于建议的 nouce 值 $1",
     "description": "The next nonce according to StarMask's internal logic"
   },
+  "nfts": {
+    "message": "NFT"
+  },
   "noAccountsFound": {
     "message": "没找到查询的账户"
   },
@@ -1137,6 +1140,9 @@
   },
   "noConversionRateAvailable": {
     "message": "无可用转换率"
+  },
+  "noNFTs": {
+    "message": "没有NFT"
   },
   "noThanks": {
     "message": "不，谢谢"

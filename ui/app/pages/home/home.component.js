@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Redirect, Route } from 'react-router-dom';
 import { formatDate } from '../../helpers/utils/util';
 import AssetList from '../../components/app/asset-list';
+import NFTList from '../../components/app/nft-list';
 import HomeNotification from '../../components/app/home-notification';
 import MultipleNotifications from '../../components/app/multiple-notifications';
 import TransactionList from '../../components/app/transaction-list';
@@ -308,6 +309,14 @@ export default class Home extends PureComponent {
                     history.push(`${ASSET_ROUTE}/${asset}`)
                   }
                 />
+              </Tab>
+              <Tab
+                activeClassName="home__tab--active"
+                className="home__tab"
+                data-testid="home__nfts-tab"
+                name={t('nfts')}
+              >
+                <NFTList />
               </Tab>
               <Tab
                 activeClassName="home__tab--active"

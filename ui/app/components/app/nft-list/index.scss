@@ -1,0 +1,19 @@
+.nft-list {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  
+  &__empty {
+    flex: 1;
+    display: grid;
+    grid-template-rows: auto;
+    padding-top: 24px;
+  }
+
+  &__empty-text {
+    grid-row-start: 2;
+    display: flex;
+    justify-content: center;
+    color: $silver;
+  }
+}
