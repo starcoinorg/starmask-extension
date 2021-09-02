@@ -18,6 +18,7 @@ import SwapsIntroPopup from '../swaps/intro-popup';
 
 import {
   ASSET_ROUTE,
+  NFT_ROUTE,
   RESTORE_VAULT_ROUTE,
   CONFIRM_TRANSACTION_ROUTE,
   CONFIRM_ADD_SUGGESTED_TOKEN_ROUTE,
@@ -316,7 +317,11 @@ export default class Home extends PureComponent {
                 data-testid="home__nfts-tab"
                 name={t('nfts')}
               >
-                <NFTList />
+                <NFTList
+                  onClickNFT={(nft) =>
+                    history.push(`${NFT_ROUTE}/${nft}`)
+                  }
+                />
               </Tab>
               <Tab
                 activeClassName="home__tab--active"

@@ -425,7 +425,7 @@
     "message": "创建账户"
   },
   "createNFTGallery": {
-    "message": "创建收藏品"
+    "message": "创建收藏集"
   },
   "createPassword": {
     "message": "创建密码"
@@ -2047,6 +2047,9 @@
   },
   "transferFrom": {
     "message": "转自"
+  },
+  "transferNFT": {
+    "message": "转让NFT"
   },
   "troubleConnectingToWallet": {
     "message": "我们在连接您的  $1 遇到问题，尝试检查 $2 并重试。",

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { ASSET_ROUTE, DEFAULT_ROUTE } from '../../helpers/constants/routes';
+import { ASSET_ROUTE, NFT_ROUTE, DEFAULT_ROUTE } from '../../helpers/constants/routes';
 
 // Constants
 
@@ -18,7 +18,7 @@ const slice = createSlice({
   reducers: {
     pageChanged: (state, action) => {
       const path = action.payload;
-      if (path === DEFAULT_ROUTE || path.startsWith(ASSET_ROUTE)) {
+      if (path === DEFAULT_ROUTE || path.startsWith(ASSET_ROUTE) || path.startsWith(NFT_ROUTE)) {
         state.mostRecentOverviewPage = path;
       }
     },
