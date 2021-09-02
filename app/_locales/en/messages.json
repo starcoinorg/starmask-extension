@@ -465,6 +465,9 @@
   "createAccount": {
     "message": "Create Account"
   },
+  "createNFTGallery": {
+    "message": "Create Gallery"
+  },
   "createPassword": {
     "message": "Create Password"
   },

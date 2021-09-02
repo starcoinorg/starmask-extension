@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import classNames from 'classnames';
 import AddTokenButton from '../add-token-button';
 import TokenList from '../token-list';
+import Button from '../../ui/button';
 import { ADD_TOKEN_ROUTE } from '../../../helpers/constants/routes';
 import AssetListItem from '../asset-list-item';
 import { PRIMARY, SECONDARY } from '../../../helpers/constants/common';
@@ -16,8 +18,9 @@ import {
   getShouldShowFiat,
 } from '../../../selectors';
 import { useCurrencyDisplay } from '../../../hooks/useCurrencyDisplay';
+import { addFiat } from '../../../helpers/utils/confirm-tx.util';
 
-const NFTList = ({ onClickAsset }) => {
+const NFTList = ({ onClickNFT }) => {
   const t = useI18nContext();
 
   const history = useHistory();
@@ -66,50 +69,110 @@ const NFTList = ({ onClickAsset }) => {
     },
   );
 
-  const nfts = [];
+
+
+  const nfts = [
+    {
+      name: 'CryptoPunks',
+      price: 1153844.76,
+      image: 'https://lh3.googleusercontent.com/48oVuDyfe_xhs24BC2TTVcaYCX7rrU5mpuQLyTgRDbKHj2PtzKZsQ5qC3xTH4ar34wwAXxEKH8uUDPAGffbg7boeGYqX6op5vBDcbA=s2500',
+      gallery: [
+        {
+          id: 1728,
+          name: 'CryptoPunks #1728',
+          price: 384614.92,
+          image: 'https://lh3.googleusercontent.com/EGcV8ALUJYObT9fBp0gUR-SeYZqRhbhZpSXnBF2X_fZkrv69HWl9cOyc3lLikQeib9hbrkPsFBtG7ODgGle6st3WA5ZMsPFjoQzZ',
+        },
+        {
+          id: 3952,
+          name: 'CryptoPunks #3952',
+          price: 384614.92,
+          image: 'https://lh3.googleusercontent.com/uQxZL3qSkcV53HDFeYDnecFKtOMRAILeRVU1q-Jn5aTSeh5wTzWTZ91TTSqjeyOWorwFSaqVmw0lJkRiPSJ6IE0nSlaaAd6OjbqGlQY',
+        },
+        {
+          id: 5123,
+          name: 'CryptoPunks #5123',
+          price: 384614.92,
+          image: 'https://lh3.googleusercontent.com/CLwn9KH4VOLUr5GdIR2-Cm2Fy2KSOCZzmCW1hEDXn3tJOlQgw-qSoBj0R7uX1XogKI8G2EtUFTvbUo6lFNF7Txj7zavhDLj2QDUbzQ',
+        },
+      ],
+    },
+    {
+      name: 'Meebits',
+      price: 30887.53,
+      image: 'https://lh3.googleusercontent.com/qwnNTSRrf9CVq4LGawMcg7i2KZhD9I5LHA4uSNnB43-UAniBBgpNMSIz013HCKtrB9KFjrJUIRwpGbTzzNA4srJV39t3LnW3vaugmB8=s2500',
+      gallery: [
+        {
+          id: 7962,
+          name: 'Meebit #7962',
+          price: 30887.53,
+          image: 'https://lh3.googleusercontent.com/3T6pYQq90GPWi47MUiPKcqqtU2pykasTyftNUUpuy4EsS7uu3yGKqRWW5LK8k-pbR1Ku7eSicLhwrze4zCQELx8aFJjK7RpuM-BVOg',
+        },
+      ],
+    },
+    {
+      name: 'Crypto Blunt',
+      price: 31.83,
+      image: 'https://lh3.googleusercontent.com/kANKHDKWPx2MCMhAmWmJQuEFmnxBATw4bf4N1idVtrAOym5zIDIDKd4XE49DwCBNc5REqq2Trmv__90TH4x_GlXZ5qB1i6hF9bGNPbY=s2500',
+      gallery: [
+        {
+          id: 3,
+          name: '#003 Pixel Bong',
+          price: 31.83,
+          image: 'https://lh3.googleusercontent.com/rWVz4O4Yhy6AqDdUbkk9xjxKIZZEQLJp2_FYJbOvEDLaiAHw25CbEyRpsXGgzzvek5wkrMc1hcrmbArKgx9RQUmiFSKtUKcWFi6QVg',
+        },
+      ],
+    },
+  ];
+  const createGallery = () => {
+    console.log('createGallery');
+  };
+
   return (
     <>
-      {/* <AssetListItem
-        onClick={() => onClickAsset(nativeCurrency)}
-        data-testid="wallet-balance"
-        primary={primaryCurrencyProperties.value}
-        tokenSymbol={primaryCurrencyProperties.suffix}
-        secondary={showFiat ? secondaryCurrencyDisplay : undefined}
-      />
-      <TokenList
-        onTokenClick={(tokenAddress) => {
-          onClickAsset(tokenAddress);
-          selectTokenEvent();
-        }}
-      /> */}
-      {nfts.length > 0 ? (
-        nfts.map((nft, index) => (
-          <AssetListItem
-            key={index}
-            onClick={() => onClickAsset(nativeCurrency)}
-            data-testid="wallet-balance"
-            primary={primaryCurrencyProperties.value}
-            tokenSymbol={primaryCurrencyProperties.suffix}
-            secondary={showFiat ? secondaryCurrencyDisplay : undefined}
-          />
-        ))
-      ) : (
-        <div className="nft-list__empty">
-          <div className="nft-list__empty-text">{t('noNFTs')}</div>
-        </div>
-      )}
-      {/* <AddTokenButton
-        onClick={() => {
-          history.push(ADD_TOKEN_ROUTE);
-          addTokenEvent();
-        }}
-      /> */}
+      <div className="nft-list__grid nft-list__grid--3">
+        {
+          nfts.length > 0 ? (
+            nfts.map((nft, index) => (
+              // <AssetListItem
+              //   key={index}
+              //   onClick={() => onClickAsset(nativeCurrency)}
+              //   data-testid="wallet-balance"
+              //   primary={primaryCurrencyProperties.value}
+              //   tokenSymbol={primaryCurrencyProperties.suffix}
+              //   secondary={showFiat ? secondaryCurrencyDisplay : undefined}
+              // />
+              <div key={index} className="nft-list__photo-card" onClick={() => onClickNFT(nft.name)}>
+                <img src={nft.image} alt={nft.name} />
+                <div className="nft-list__photo-card_qty">{nft.gallery.length}&nbsp;
+                  <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0h24v24H0z"></path><path d="M20.083 10.5l1.202.721a.5.5 0 0 1 0 .858L12 17.65l-9.285-5.571a.5.5 0 0 1 0-.858l1.202-.721L12 15.35l8.083-4.85zm0 4.7l1.202.721a.5.5 0 0 1 0 .858l-8.77 5.262a1 1 0 0 1-1.03 0l-8.77-5.262a.5.5 0 0 1 0-.858l1.202-.721L12 20.05l8.083-4.85zM12.514 1.309l8.771 5.262a.5.5 0 0 1 0 .858L12 13 2.715 7.429a.5.5 0 0 1 0-.858l8.77-5.262a1 1 0 0 1 1.03 0z"></path></g></svg>
+                </div>
+                <div className="nft-list__photo-card_body">
+                  <div>{nft.name}</div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="nft-list__empty">
+              <div className="nft-list__empty-text">{t('noNFTs')}</div>
+            </div>
+          )
+        }
+      </div>
+      <Button
+        className="nft-list__create-gallery"
+        type="secondary"
+        rounded
+        onClick={createGallery}
+      >
+        {t('createNFTGallery')}
+      </Button>
     </>
   );
 };
 
 NFTList.propTypes = {
-  onClickAsset: PropTypes.func.isRequired,
+  onClickNFT: PropTypes.func.isRequired,
 };
 
 export default NFTList;

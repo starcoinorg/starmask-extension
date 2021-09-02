@@ -424,6 +424,9 @@
   "createAccount": {
     "message": "创建账户"
   },
+  "createNFTGallery": {
+    "message": "创建收藏品"
+  },
   "createPassword": {
     "message": "创建密码"
   },
