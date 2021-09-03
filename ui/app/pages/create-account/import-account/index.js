@@ -41,20 +41,6 @@ export default class AccountImportSubview extends Component {
       <div className="new-account-import-form">
         <div className="new-account-import-disclaimer">
           <span>{this.context.t('importAccountMsg')}</span>
-          <span
-            style={{
-              cursor: 'pointer',
-              textDecoration: 'underline',
-            }}
-            onClick={() => {
-              global.platform.openTab({
-                url:
-                  'https://metamask.zendesk.com/hc/en-us/articles/360015289932',
-              });
-            }}
-          >
-            {this.context.t('here')}
-          </span>
         </div>
         <div className="new-account-import-form__select-section">
           <div className="new-account-import-form__select-label">

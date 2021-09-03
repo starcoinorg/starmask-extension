@@ -846,7 +846,7 @@
     "message": "导入账户"
   },
   "importAccountMsg": {
-    "message": "导入的账户将不会与最初创建的 StarMask 账户助记词相关联。了解更多有关导入账户的信息 。"
+    "message": "导入的账户将不会与最初创建的 StarMask 账户助记词相关联。"
   },
   "importAccountSeedPhrase": {
     "message": "使用账户助记词导入账户"
