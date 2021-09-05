@@ -6,13 +6,13 @@ export const NETWORK_TYPE_RPC = 'rpc';
 
 export const MAINNET_NETWORK_ID = '1';
 export const BARNARD_NETWORK_ID = '251';
-export const PROXIMA_NETWORK_ID = '2';
+export const PROXIMA_NETWORK_ID = '252';
 export const HALLEY_NETWORK_ID = '253';
 export const LOCALHOST_NETWORK_ID = '254';
 
 export const MAINNET_CHAIN_ID = '0x1';
 export const BARNARD_CHAIN_ID = '0xfb';
-export const PROXIMA_CHAIN_ID = '0x2';
+export const PROXIMA_CHAIN_ID = '0xfc';
 export const HALLEY_CHAIN_ID = '0xfd';
 export const LOCALHOST_CHAIN_ID = '0xfe';
 
