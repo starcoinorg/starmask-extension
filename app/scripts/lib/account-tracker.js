@@ -259,19 +259,27 @@ export default class AccountTracker {
     if (address.length !== 42) {
       try {
         // query balance
-        const res = await this._query.listResource(address, { 'decode': true });
-        const resources = res.resources;
+        const res = await this._query.listResource(address, { decode: true });
+        const { resources } = res;
         const ACCOUNT_BALANCE = '0x00000000000000000000000000000001::Account::Balance';
-        const balanceKeys = Object.keys(resources).filter(key => key.startsWith(ACCOUNT_BALANCE)).filter(key => {
-          const token = key.substr(ACCOUNT_BALANCE.length + 1, key.length - ACCOUNT_BALANCE.length - 2);
-          return token.split('::').length === 3
-        })
+        const balanceKeys = Object.keys(resources)
+          .filter((key) => key.startsWith(ACCOUNT_BALANCE))
+          .filter((key) => {
+            const token = key.substr(
+              ACCOUNT_BALANCE.length + 1,
+              key.length - ACCOUNT_BALANCE.length - 2,
+            );
+            return token.split('::').length === 3;
+          });
         if (balanceKeys.length === 0) {
           accounts[address] = { address, balance: '0x0' };
         } else {
           balanceKeys.forEach((key) => {
             balanceDecimal = resources[key].json.token.value;
-            const token = key.substr(ACCOUNT_BALANCE.length + 1, key.length - ACCOUNT_BALANCE.length - 2);
+            const token = key.substr(
+              ACCOUNT_BALANCE.length + 1,
+              key.length - ACCOUNT_BALANCE.length - 2,
+            );
             const balanceHex = new BigNumber(balanceDecimal, 10).toString(16);
             const balance = ethUtil.addHexPrefix(balanceHex);
             if (token === '0x00000000000000000000000000000001::STC::STC') {

@@ -318,9 +318,7 @@ export default class Home extends PureComponent {
                 name={t('nfts')}
               >
                 <NFTList
-                  onClickNFT={(nft) =>
-                    history.push(`${NFT_ROUTE}/${nft}`)
-                  }
+                  onClickNFT={(nft) => history.push(`${NFT_ROUTE}/${nft}`)}
                 />
               </Tab>
               <Tab
