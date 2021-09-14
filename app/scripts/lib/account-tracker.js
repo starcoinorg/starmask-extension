@@ -10,6 +10,7 @@
 import StcQuery from '@starcoin/stc-query';
 import * as ethUtil from '@starcoin/stc-util';
 import { ObservableStore } from '@metamask/obs-store';
+import { arrayify } from '@ethersproject/bytes';
 import log from 'loglevel';
 import pify from 'pify';
 import Web3 from 'web3';
@@ -58,6 +59,7 @@ export default class AccountTracker {
     const initState = {
       assets: {},
       accounts: {},
+      nfts: {},
       currentBlockGasLimit: '',
     };
     this.store = new ObservableStore(initState);
@@ -252,8 +254,9 @@ export default class AccountTracker {
    *
    */
   async _updateAccount(address) {
-    const { accounts, assets } = this.store.getState();
+    const { accounts, assets, nfts } = this.store.getState();
     const currentTokens = {};
+    const currentNFTs = [];
     let balanceDecimal = 0;
     // do not update HD Key account
     if (address.length !== 42) {
@@ -262,15 +265,47 @@ export default class AccountTracker {
         const res = await this._query.listResource(address, { decode: true });
         const { resources } = res;
         const ACCOUNT_BALANCE = '0x00000000000000000000000000000001::Account::Balance';
-        const balanceKeys = Object.keys(resources)
-          .filter((key) => key.startsWith(ACCOUNT_BALANCE))
-          .filter((key) => {
+        const balanceKeys = [];
+        const NFT_GALLERY = '0x00000000000000000000000000000001::NFTGallery::NFTGallery';
+
+        Object.keys(resources).forEach((key) => {
+          if (key.startsWith(ACCOUNT_BALANCE)) {
             const token = key.substr(
               ACCOUNT_BALANCE.length + 1,
               key.length - ACCOUNT_BALANCE.length - 2,
             );
-            return token.split('::').length === 3;
-          });
+            if (token.split('::').length === 3) {
+              balanceKeys.push(key);
+            }
+          } else if (key.startsWith(NFT_GALLERY)) {
+            const T2 = key.substr(
+              NFT_GALLERY.length + 1,
+              key.length - NFT_GALLERY.length - 2,
+            );
+            const T2Arr = T2.split(',');
+            const NFTMeta = T2Arr[0];
+            const NFTBody = T2Arr[1];
+            const items = resources[key].json.items.map((item) => {
+              return {
+                id: item.id,
+                name: Buffer.from(arrayify(item.base_meta.name)).toString(),
+                description: Buffer.from(arrayify(item.base_meta.description)).toString(),
+                image: Buffer.from(arrayify(item.base_meta.image)).toString(),
+                image_data: Buffer.from(arrayify(item.base_meta.image_data)).toString(),
+              };
+            });
+            currentNFTs.push({
+              NFTMeta,
+              NFTBody,
+              name: 'CryptoPunks',
+              description: 'description',
+              image: 'https://lh3.googleusercontent.com/48oVuDyfe_xhs24BC2TTVcaYCX7rrU5mpuQLyTgRDbKHj2PtzKZsQ5qC3xTH4ar34wwAXxEKH8uUDPAGffbg7boeGYqX6op5vBDcbA=s2500',
+              image_data: '',
+              items,
+            });
+          }
+          nfts[address] = currentNFTs;
+        });
         if (balanceKeys.length === 0) {
           accounts[address] = { address, balance: '0x0' };
         } else {
@@ -296,6 +331,7 @@ export default class AccountTracker {
         // HD account will get error: Invalid params: unable to parse AccoutAddress
         accounts[address] = { address, balance: '0x0' };
         assets[address] = currentTokens;
+        nfts[address] = [];
       }
     }
     // update accounts state
@@ -304,7 +340,7 @@ export default class AccountTracker {
     // if (!accounts[address]) {
     //   return;
     // }
-    this.store.updateState({ accounts, assets });
+    this.store.updateState({ accounts, assets, nfts });
   }
 
   /**

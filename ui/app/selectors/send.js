@@ -20,62 +20,6 @@ export function getNativeCurrency(state) {
   return state.starmask.nativeCurrency;
 }
 
-export function getNFTList(state) {
-  const nfts = [
-    {
-      name: 'CryptoPunks',
-      price: 1153844.76,
-      image: 'https://lh3.googleusercontent.com/48oVuDyfe_xhs24BC2TTVcaYCX7rrU5mpuQLyTgRDbKHj2PtzKZsQ5qC3xTH4ar34wwAXxEKH8uUDPAGffbg7boeGYqX6op5vBDcbA=s2500',
-      gallery: [
-        {
-          id: 1728,
-          name: 'CryptoPunks #1728',
-          price: 384614.92,
-          image: 'https://lh3.googleusercontent.com/EGcV8ALUJYObT9fBp0gUR-SeYZqRhbhZpSXnBF2X_fZkrv69HWl9cOyc3lLikQeib9hbrkPsFBtG7ODgGle6st3WA5ZMsPFjoQzZ',
-        },
-        {
-          id: 3952,
-          name: 'CryptoPunks #3952',
-          price: 384614.92,
-          image: 'https://lh3.googleusercontent.com/uQxZL3qSkcV53HDFeYDnecFKtOMRAILeRVU1q-Jn5aTSeh5wTzWTZ91TTSqjeyOWorwFSaqVmw0lJkRiPSJ6IE0nSlaaAd6OjbqGlQY',
-        },
-        {
-          id: 5123,
-          name: 'CryptoPunks #5123',
-          price: 384614.92,
-          image: 'https://lh3.googleusercontent.com/CLwn9KH4VOLUr5GdIR2-Cm2Fy2KSOCZzmCW1hEDXn3tJOlQgw-qSoBj0R7uX1XogKI8G2EtUFTvbUo6lFNF7Txj7zavhDLj2QDUbzQ',
-        },
-      ],
-    },
-    // {
-    //   name: 'Meebits',
-    //   price: 30887.53,
-    //   image: 'https://lh3.googleusercontent.com/qwnNTSRrf9CVq4LGawMcg7i2KZhD9I5LHA4uSNnB43-UAniBBgpNMSIz013HCKtrB9KFjrJUIRwpGbTzzNA4srJV39t3LnW3vaugmB8=s2500',
-    //   gallery: [
-    //     {
-    //       id: 7962,
-    //       name: 'Meebit #7962',
-    //       price: 30887.53,
-    //       image: 'https://lh3.googleusercontent.com/3T6pYQq90GPWi47MUiPKcqqtU2pykasTyftNUUpuy4EsS7uu3yGKqRWW5LK8k-pbR1Ku7eSicLhwrze4zCQELx8aFJjK7RpuM-BVOg',
-    //     },
-    //   ],
-    // },
-    // {
-    //   name: 'Crypto Blunt',
-    //   price: 31.83,
-    //   image: 'https://lh3.googleusercontent.com/kANKHDKWPx2MCMhAmWmJQuEFmnxBATw4bf4N1idVtrAOym5zIDIDKd4XE49DwCBNc5REqq2Trmv__90TH4x_GlXZ5qB1i6hF9bGNPbY=s2500',
-    //   gallery: [
-    //     {
-    //       id: 3,
-    //       name: '#003 Pixel Bong',
-    //       price: 31.83,
-    //       image: 'https://lh3.googleusercontent.com/rWVz4O4Yhy6AqDdUbkk9xjxKIZZEQLJp2_FYJbOvEDLaiAHw25CbEyRpsXGgzzvek5wkrMc1hcrmbArKgx9RQUmiFSKtUKcWFi6QVg',
-    //     },
-    //   ],
-    // },
-  ];
-  return nfts;
-}
 export function getGasLimit(state) {
   return state.starmask.send.gasLimit || '0';
 }

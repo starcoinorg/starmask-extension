@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { useI18nContext } from '../../hooks/useI18nContext';
-import { getSelectedIdentity, getNFTList } from '../../selectors';
+import { getSelectedIdentity, getNFTs } from '../../selectors';
 import { DEFAULT_ROUTE } from '../../helpers/constants/routes';
 import Button from '../../components/ui/button';
 import AssetNavigation from '../asset/components/asset-navigation';
@@ -14,7 +14,7 @@ const NFTGallery = () => {
   const history = useHistory();
   const { nft } = useParams();
   console.log('NFTGallery', nft)
-  const nfts = useSelector(getNFTList);
+  const nfts = useSelector(getNFTs);
   console.log(nfts)
   const current = nfts.find(({ name }) => name === nft);
   const transferNFT = () => {
@@ -30,18 +30,10 @@ const NFTGallery = () => {
       />
       <div className="nft-list__grid nft-list__grid--3">
         {
-          current.gallery.length > 0 ? (
-            current.gallery.map((nft, index) => (
-              // <AssetListItem
-              //   key={index}
-              //   onClick={() => onClickAsset(nativeCurrency)}
-              //   data-testid="wallet-balance"
-              //   primary={primaryCurrencyProperties.value}
-              //   tokenSymbol={primaryCurrencyProperties.suffix}
-              //   secondary={showFiat ? secondaryCurrencyDisplay : undefined}
-              // />
+          current.items.length > 0 ? (
+            current.items.map((nft, index) => (
               <div key={index} className="nft-list__photo-card">
-                <img src={nft.image} alt={nft.name} />
+                <img src={nft.image.length ? nft.image : nft.image_data} alt={nft.name} />
                 <div className="nft-list__photo-card_body">
                   <div>{nft.name}</div>
                   <div>

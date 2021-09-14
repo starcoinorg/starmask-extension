@@ -489,3 +489,7 @@ export function getIsSwapsChain(state) {
 export function getAssets(state) {
   return state.starmask.assets;
 }
+
+export function getNFTs(state) {
+  return state.starmask.nfts[state.starmask.selectedAddress];
+}

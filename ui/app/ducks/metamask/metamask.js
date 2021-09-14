@@ -398,3 +398,5 @@ export const getUnconnectedAccountAlertShown = (state) =>
   state.starmask.unconnectedAccountAlertShownOrigins;
 
 export const getTokens = (state) => state.starmask.tokens;
+
+export const getNFTs = (state) => state.starmask.nfts;
