@@ -297,9 +297,8 @@ export default class AccountTracker {
             currentNFTs.push({
               meta,
               body,
-              name: 'CryptoPunks',
-              description: 'description',
-              // image: 'https://lh3.googleusercontent.com/48oVuDyfe_xhs24BC2TTVcaYCX7rrU5mpuQLyTgRDbKHj2PtzKZsQ5qC3xTH4ar34wwAXxEKH8uUDPAGffbg7boeGYqX6op5vBDcbA=s2500',
+              name: 'SimpleNFT',
+              description: 'A NFT example, everyone can mint a SimpleNFT',
               image: '',
               imageData: '',
               items,
