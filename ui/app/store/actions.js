@@ -2830,12 +2830,12 @@ export function trackMetaMetricsPage(payload, options) {
 
 export function setPendingNFTs(pendingNFTs) {
   const { customNFT = {}, selectedNFTs = {} } = pendingNFTs;
-  const { NFTMeta, NFTBody } = customNFT;
+  const { meta, body } = customNFT;
   const nfts =
-    NFTMeta && NFTBody
+    meta && body
       ? {
         ...selectedNFTs,
-        [NFTMeta]: {
+        [meta]: {
           ...customNFT,
           isCustom: true,
         },

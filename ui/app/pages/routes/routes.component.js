@@ -34,7 +34,7 @@ import Alerts from '../../components/app/alerts';
 import Asset from '../asset';
 import NFTGallery from '../nft-gallery';
 import AddNFTPage from '../add-nft';
-// import ConfirmAddNFTPage from '../confirm-add-NFT';
+import ConfirmAddNFTPage from '../confirm-add-nft';
 
 import {
   ADD_NFT_ROUTE,
@@ -178,11 +178,11 @@ export default class Routes extends Component {
         <Authenticated path={`${ASSET_ROUTE}/:asset`} component={Asset} />
         <Authenticated path={`${NFT_ROUTE}/:nft`} component={NFTGallery} />
         <Authenticated path={ADD_NFT_ROUTE} component={AddNFTPage} exact />
-        {/* <Authenticated
+        <Authenticated
           path={CONFIRM_ADD_NFT_ROUTE}
           component={ConfirmAddNFTPage}
           exact
-        /> */}
+        />
         <Authenticated path={DEFAULT_ROUTE} component={Home} />
       </Switch>
     );

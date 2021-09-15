@@ -972,6 +972,9 @@
   "letsGoSetUp": {
     "message": "第一次，立即开始设置！"
   },
+  "likeToAddNFTs": {
+    "message": "您想添加这些NFT收藏集吗?"
+  },
   "likeToAddTokens": {
     "message": "您想添加这些代币吗？"
   },
@@ -1144,8 +1147,14 @@
   "nftBody": {
     "message": "NFT Body"
   },
+  "nftDescriptioin": {
+    "message": "NFT 描述"
+  },
   "nftMeta": {
     "message": "NFT Meta"
+  },
+  "nftName": {
+    "message": "NFT 名称"
   },
   "nfts": {
     "message": "NFT"

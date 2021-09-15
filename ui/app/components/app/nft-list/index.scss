@@ -58,6 +58,10 @@
     padding: 12px;
   }
 
+  &__photo-card_description {
+    padding-bottom: 5px;
+  }
+
   &__empty {
     flex: 1;
     display: grid;

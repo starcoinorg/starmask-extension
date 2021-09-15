@@ -1023,6 +1023,9 @@
   "letsGoSetUp": {
     "message": "Yes, let’s get set up!"
   },
+  "likeToAddNFTs": {
+    "message": "Would you like to add these nft gallerys?"
+  },
   "likeToAddTokens": {
     "message": "Would you like to add these tokens?"
   },
@@ -1212,8 +1215,14 @@
   "nftBody": {
     "message": "NFT Body"
   },
+  "nftDescriptioin": {
+    "message": "NFT Descriptioin"
+  },
   "nftMeta": {
     "message": "NFT Meta"
+  },
+  "nftName": {
+    "message": "NFT Name"
   },
   "nftAlreadyAdded": {
     "message": "NFT Already Added"

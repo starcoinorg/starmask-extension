@@ -27,6 +27,8 @@ class AddNFT extends Component {
     customBody: '',
     customName: '',
     customDescription: '',
+    customImage: '',
+    customImageData: '',
     customMetaError: null,
     customBodyError: null,
     customNameError: null,
@@ -54,11 +56,22 @@ class AddNFT extends Component {
         }
       });
 
-      const { meta: customMeta = '', body: customBody = '' } = customNFT;
+      const {
+        meta: customMeta = '',
+        body: customBody = '',
+        name: customName = '',
+        description: customDescription = '',
+        image: customImage = '',
+        imageData: customImageData = '',
+      } = customNFT;
 
       this.setState({
         customMeta,
         customBody,
+        customName,
+        customDescription,
+        customImage,
+        customImageData,
       });
     }
   }
@@ -84,11 +97,22 @@ class AddNFT extends Component {
     // }
 
     const { setPendingNFTs, history } = this.props;
-    const { customMeta: meta, customBody: body } = this.state;
+    const {
+      customMeta: meta,
+      customBody: body,
+      customName: name,
+      customDescription: description,
+      customImage: image,
+      customImageData: imageData,
+    } = this.state;
 
     const customNFT = {
       meta,
       body,
+      name,
+      description,
+      image,
+      imageData,
     };
 
     setPendingNFTs({ customNFT });
@@ -99,7 +123,11 @@ class AddNFT extends Component {
     const result = await this.getNFTGalleryInfo(meta);
 
     const autoFilled = Boolean(result.name && result.description);
-    this.setState({ autoFilled });
+    this.setState({
+      autoFilled,
+      customImage: result.image,
+      customImageData: result.image_data,
+    });
     this.handleCustomNameChange(result.name || '');
     this.handleCustomDescriptionChange(result.description || '');
   }
@@ -222,7 +250,7 @@ class AddNFT extends Component {
         />
         <TextField
           id="custom-name"
-          label={this.context.t('name')}
+          label={this.context.t('nftName')}
           type="text"
           value={customName}
           onChange={(e) => this.handleCustomNameChange(e.target.value)}
@@ -233,7 +261,7 @@ class AddNFT extends Component {
         />
         <TextField
           id="custom-description"
-          label={this.context.t('description')}
+          label={this.context.t('nftDescription')}
           type="text"
           value={customDescription}
           onChange={(e) => this.handleCustomDescriptionChange(e.target.value)}
