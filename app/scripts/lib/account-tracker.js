@@ -283,24 +283,25 @@ export default class AccountTracker {
               key.length - NFT_GALLERY.length - 2,
             );
             const T2Arr = T2.split(',');
-            const NFTMeta = T2Arr[0];
-            const NFTBody = T2Arr[1];
+            const meta = T2Arr[0];
+            const body = T2Arr[1];
             const items = resources[key].json.items.map((item) => {
               return {
                 id: item.id,
                 name: Buffer.from(arrayify(item.base_meta.name)).toString(),
                 description: Buffer.from(arrayify(item.base_meta.description)).toString(),
                 image: Buffer.from(arrayify(item.base_meta.image)).toString(),
-                image_data: Buffer.from(arrayify(item.base_meta.image_data)).toString(),
+                imageData: Buffer.from(arrayify(item.base_meta.image_data)).toString(),
               };
             });
             currentNFTs.push({
-              NFTMeta,
-              NFTBody,
+              meta,
+              body,
               name: 'CryptoPunks',
               description: 'description',
               image: 'https://lh3.googleusercontent.com/48oVuDyfe_xhs24BC2TTVcaYCX7rrU5mpuQLyTgRDbKHj2PtzKZsQ5qC3xTH4ar34wwAXxEKH8uUDPAGffbg7boeGYqX6op5vBDcbA=s2500',
-              image_data: '',
+              // image: '',
+              imageData: '',
               items,
             });
           }
