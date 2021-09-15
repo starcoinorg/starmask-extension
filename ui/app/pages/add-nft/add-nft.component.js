@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as stcUtil from '@starcoin/stc-util';
 import { checkExistingNFT } from '../../helpers/utils/util';
+import { getNFTGalleryInfo } from '../../helpers/utils/token-util';
 import { CONFIRM_ADD_NFT_ROUTE } from '../../helpers/constants/routes';
 import TextField from '../../components/ui/text-field';
 import PageContainer from '../../components/ui/page-container';
@@ -22,13 +23,19 @@ class AddNFT extends Component {
   };
 
   state = {
-    customNFTMeta: '',
-    customNFTBody: '',
-    customNFTMetaError: null,
-    customNFTBodyError: null,
+    customMeta: '',
+    customBody: '',
+    customName: '',
+    customDescription: '',
+    customMetaError: null,
+    customBodyError: null,
+    customNameError: null,
+    customDescriptionError: null,
+    autoFilled: false,
   };
 
   componentDidMount() {
+    this.getNFTGalleryInfo = (meta) => getNFTGalleryInfo(meta);
     const { pendingNFTs = {} } = this.props;
     const pendingNFTKeys = Object.keys(pendingNFTs);
 
@@ -47,85 +54,117 @@ class AddNFT extends Component {
         }
       });
 
-      const {
-        NFTMeta: customNFTMeta = '',
-        NFTBody: customNFTBody = '',
-      } = customNFT;
+      const { meta: customMeta = '', body: customBody = '' } = customNFT;
 
       this.setState({
-        customNFTMeta,
-        customNFTBody,
+        customMeta,
+        customBody,
       });
     }
   }
 
   hasError() {
-    const { customNFTMetaError, customNFTBodyError } = this.state;
-    return customNFTMetaError || customNFTBodyError;
+    const { customMetaError, customBodyError } = this.state;
+    return customMetaError || customBodyError;
   }
 
-  handleNext() {
+  hasSelected() {
+    const { customMeta = '', customBody = '', selectedNFTs = {} } = this.state;
+    return (customMeta && customBody) || Object.keys(selectedNFTs).length > 0;
+  }
+
+  async handleNext() {
     if (this.hasError()) {
       return;
     }
 
+    // if (!this.hasSelected()) {
+    //   this.setState({ tokenSelectorError: this.context.t('mustSelectOne') });
+    //   return;
+    // }
+
     const { setPendingNFTs, history } = this.props;
-    const { customNFTMeta: NFTMeta, customNFTBody: NFTBody } = this.state;
+    const { customMeta: meta, customBody: body } = this.state;
 
     const customNFT = {
-      NFTMeta,
-      NFTBody,
+      meta,
+      body,
     };
 
     setPendingNFTs({ customNFT });
     history.push(CONFIRM_ADD_NFT_ROUTE);
   }
 
-  handleCustomNFTMetaChange(value) {
-    console.log('handleCustomNFTMetaChange', value)
-    const customNFTMeta = value.trim();
+  async attemptToAutoFillNFTParams(meta) {
+    const result = await this.getNFTGalleryInfo(meta);
+
+    const autoFilled = Boolean(result.name && result.description);
+    this.setState({ autoFilled });
+    this.handleCustomNameChange(result.name || '');
+    this.handleCustomDescriptionChange(result.description || '');
+  }
+
+  handleCustomNameChange(value) {
+    const customName = value.trim();
+    const customNameError = null;
+    this.setState({ customName, customNameError });
+  }
+
+  handleCustomDescriptionChange(value) {
+    const customDescription = value.trim();
+    const customDescriptionError = null;
+    this.setState({ customDescription, customDescriptionError });
+  }
+
+  handleCustomMetaChange(value) {
+    const customMeta = value.trim();
     this.setState({
-      customNFTMeta,
-      customNFTMetaError: null,
+      customMeta,
+      customMetaError: null,
+      autoFilled: false,
     });
 
-    const arr = customNFTMeta.split('::');
+    const arr = customMeta.split('::');
     const isValidCode = arr.length / 3 >= 1 && stcUtil.isValidAddress(arr[0]);
     switch (true) {
       case !isValidCode:
         this.setState({
-          customNFTMetaError: this.context.t('invalidNFTMeta'),
-          customNFTBodyError: null,
+          customMetaError: this.context.t('invalidMeta'),
+          customBodyError: null,
+          customNameError: null,
+          customDescriptionError: null,
         });
 
         break;
-      case checkExistingNFT(customNFTMeta, this.props.nfts):
+      case checkExistingNFT(customMeta, this.props.nfts):
         this.setState({
-          customNFTMetaError: this.context.t('nftAlreadyAdded'),
+          customMetaError: this.context.t('nftAlreadyAdded'),
         });
 
         break;
       default:
+        this.attemptToAutoFillNFTParams(customMeta);
     }
   }
 
-  handleCustomNFTBodyChange(value) {
-    console.log('handleCustomNFTBodyChange')
-    const customNFTBody = value.trim();
+  handleCustomBodyChange(value) {
+    const customBody = value.trim();
     this.setState({
-      customNFTBody,
-      customNFTBodyError: null,
+      customBody,
+      customBodyError: null,
     });
 
-    const arr = customNFTBody.split('::');
+    const arr = customBody.split('::');
 
     const isValidCode = arr.length / 3 >= 1 && stcUtil.isValidAddress(arr[0]);
 
     switch (true) {
       case !isValidCode:
         this.setState({
-          customNFTBodyError: this.context.t('invalidNFTBody'),
-          customNFTMetaError: null,
+          customBodyError: this.context.t('invalidBody'),
+          customMetaError: null,
+          customNameError: null,
+          customDescriptionError: null,
         });
 
         break;
@@ -135,10 +174,15 @@ class AddNFT extends Component {
 
   renderCustomNFTForm() {
     const {
-      customNFTMeta,
-      customNFTBody,
-      customNFTMetaError,
-      customNFTBodyError,
+      customMeta,
+      customBody,
+      customName,
+      customDescription,
+      customMetaError,
+      customBodyError,
+      customNameError,
+      customDescriptionError,
+      autoFilled,
     } = this.state;
 
     return (
@@ -147,14 +191,14 @@ class AddNFT extends Component {
           id="custom-nft-meta"
           label={this.context.t('nftMeta')}
           type="text"
-          value={customNFTMeta}
-          onChange={(e) => this.handleCustomNFTMetaChange(e.target.value)}
-          error={customNFTMetaError}
+          value={customMeta}
+          onChange={(e) => this.handleCustomMetaChange(e.target.value)}
+          error={customMetaError}
           fullWidth
           autoFocus
           margin="normal"
           multiline
-          rows="4"
+          rows="3"
           classes={{
             inputMultiline: 'address-book__view-contact__text-area',
             inputRoot: 'address-book__view-contact__text-area-wrapper',
@@ -164,18 +208,39 @@ class AddNFT extends Component {
           id="custom-nft-body"
           label={this.context.t('nftBody')}
           type="text"
-          value={customNFTBody}
-          onChange={(e) => this.handleCustomNFTBodyChange(e.target.value)}
-          error={customNFTBodyError}
+          value={customBody}
+          onChange={(e) => this.handleCustomBodyChange(e.target.value)}
+          error={customBodyError}
           fullWidth
-          autoFocus
           margin="normal"
           multiline
-          rows="4"
+          rows="3"
           classes={{
             inputMultiline: 'address-book__view-contact__text-area',
             inputRoot: 'address-book__view-contact__text-area-wrapper',
           }}
+        />
+        <TextField
+          id="custom-name"
+          label={this.context.t('name')}
+          type="text"
+          value={customName}
+          onChange={(e) => this.handleCustomNameChange(e.target.value)}
+          error={customNameError}
+          fullWidth
+          margin="normal"
+          disabled={autoFilled}
+        />
+        <TextField
+          id="custom-description"
+          label={this.context.t('description')}
+          type="text"
+          value={customDescription}
+          onChange={(e) => this.handleCustomDescriptionChange(e.target.value)}
+          error={customDescriptionError}
+          fullWidth
+          margin="normal"
+          disabled={autoFilled}
         />
       </div>
     );
@@ -201,7 +266,7 @@ class AddNFT extends Component {
         title={this.context.t('addNFTGallery')}
         tabsComponent={this.renderTabs()}
         onSubmit={() => this.handleNext()}
-        disabled={Boolean(this.hasError())}
+        disabled={Boolean(this.hasError()) || !this.hasSelected()}
         onCancel={() => {
           clearPendingNFTs();
           history.push(mostRecentOverviewPage);
