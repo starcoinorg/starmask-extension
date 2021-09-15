@@ -2624,10 +2624,10 @@
     read-bigint "^0.1.6"
     ws "7.2.3"
 
-"@starcoin/starcoin@^1.5.2":
-  version "1.5.2"
-  resolved "https://registry.npmjs.org/@starcoin/starcoin/-/starcoin-1.5.2.tgz#cca74c6f7e72fb06483730af66f95566920963b1"
-  integrity sha512-a4Sm8VBvnwV4A+JESaY1Jwpp7OfaU8KYMu1byg44kVTWC/dsLkENjU5Q3JwNPd+d4VHaIfzViAKAaC9POgLpJw==
+"@starcoin/starcoin@^1.5.3":
+  version "1.5.3"
+  resolved "https://registry.npmjs.org/@starcoin/starcoin/-/starcoin-1.5.3.tgz#b75c763f1ec68b149da674852eb73b4717dd7ea1"
+  integrity sha512-rO7deVE7ccz3VgwUp/Gbkiv4IKrgmgYZaNWNsmFga/BjtL1cOxjZiJ60b8eMOdqqrta+Qtyoz12CleDJU2+H3w==
   dependencies:
     "@ethersproject/basex" "^5.0.4"
     "@ethersproject/bignumber" "^5.0"

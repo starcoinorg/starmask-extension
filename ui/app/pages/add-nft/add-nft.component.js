@@ -120,16 +120,26 @@ class AddNFT extends Component {
   }
 
   async attemptToAutoFillNFTParams(meta) {
-    const result = await this.getNFTGalleryInfo(meta);
-
-    const autoFilled = Boolean(result.name && result.description);
-    this.setState({
-      autoFilled,
-      customImage: result.image,
-      customImageData: result.image_data,
-    });
-    this.handleCustomNameChange(result.name || '');
-    this.handleCustomDescriptionChange(result.description || '');
+    try {
+      const result = await this.getNFTGalleryInfo(meta);
+      const autoFilled = Boolean(result.name && result.description);
+      this.setState({
+        autoFilled,
+        customImage: result.image,
+        customImageData: result.image_data,
+      });
+      this.handleCustomNameChange(result.name || '');
+      this.handleCustomDescriptionChange(result.description || '');
+    } catch (error) {
+      console.log('dsdf', typeof error, JSON.stringify(error), error.Error);
+      console.log(error);
+      // this.setState({
+      //   customMetaError: error,
+      //   customBodyError: null,
+      //   customNameError: null,
+      //   customDescriptionError: null,
+      // });
+    }
   }
 
   handleCustomNameChange(value) {

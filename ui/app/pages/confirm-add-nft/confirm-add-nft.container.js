@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
-
-import { addTokens, clearPendingNFTs } from '../../store/actions';
+import { addNFTs, clearPendingNFTs } from '../../store/actions';
 import { getMostRecentOverviewPage } from '../../ducks/history/history';
 import ConfirmAddNFT from './confirm-add-nft.component';
 
@@ -16,7 +15,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addTokens: (tokens) => dispatch(addTokens(tokens)),
+    addNFTs: (tokens) => dispatch(addNFTs(tokens)),
     clearPendingNFTs: () => dispatch(clearPendingNFTs()),
   };
 };

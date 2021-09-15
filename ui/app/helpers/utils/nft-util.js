@@ -1,6 +1,7 @@
 import { ethers } from 'ethers';
+import { bcs, utils } from '@starcoin/starcoin';
 
-const { arrayify } = ethers.utils;
+const { arrayify, hexlify } = ethers.utils;
 
 export const GENESIS_NFT_IMAGE = '';
 
@@ -18,7 +19,7 @@ export async function getNFTGalleryInfo(meta) {
         if (result && result.json) {
           return resolve(result.json.meta);
         }
-        return reject(new Error('invalid token code'));
+        return reject(new Error('invalid nft meta'));
       },
     );
   });
@@ -26,4 +27,25 @@ export async function getNFTGalleryInfo(meta) {
     (key) => (metaInfo[key] = Buffer.from(arrayify(metaInfo[key])).toString()),
   );
   return Promise.resolve(metaInfo);
+}
+
+export async function generateAcceptNFTGalleryPayloadHex(meta, body, rpcUrl) {
+  const functionId = '0x1::NFTGalleryScripts::accept';
+  const tyArgs = [meta, body];
+  const args = [];
+
+  const scriptFunction = await utils.tx.encodeScriptFunctionByResolve(
+    functionId,
+    tyArgs,
+    args,
+    rpcUrl,
+  );
+
+  const payloadInHex = (function () {
+    const se = new bcs.BcsSerializer();
+    scriptFunction.serialize(se);
+    return hexlify(se.getBytes());
+  })();
+
+  return payloadInHex;
 }

@@ -11,6 +11,7 @@ import {
 } from '../helpers/utils/i18n-helper';
 import { getMethodDataAsync } from '../helpers/utils/transactions.util';
 import { fetchSymbolAndDecimals, generateAcceptTokenPayloadHex } from '../helpers/utils/token-util';
+import { generateAcceptNFTGalleryPayloadHex } from '../helpers/utils/nft-util';
 import switchDirection from '../helpers/utils/switch-direction';
 import { ENVIRONMENT_TYPE_NOTIFICATION } from '../../../shared/constants/app';
 import { TRANSACTION_TYPES } from '../../../shared/constants/transaction';
@@ -24,6 +25,7 @@ import {
 import {
   getPermittedAccountsForCurrentTab,
   getSelectedAddress,
+  getRpcPrefsForCurrentProvider,
 } from '../selectors';
 import { switchedToUnconnectedAccount } from '../ducks/alerts/unconnected-account';
 import { getUnconnectedAccountAlertEnabledness } from '../ducks/metamask/metamask';
@@ -2855,5 +2857,49 @@ export function setPendingNFTs(pendingNFTs) {
 export function clearPendingNFTs() {
   return {
     type: actionConstants.CLEAR_PENDING_NFTS,
+  };
+}
+
+export function updateNFTs(newNFTs) {
+  return {
+    type: actionConstants.UPDATE_NFTS,
+    newNFTs,
+  };
+}
+
+export function addNFT(meta, body) {
+  return async (dispatch, getState) => {
+    try {
+      if (!meta || !body) {
+        throw new Error('StarMask - Cannot add nft without meta and body');
+      }
+      const state = getState();
+      const { selectedAddress } = state.starmask;
+      const rpcPrefs = getRpcPrefsForCurrentProvider(state);
+      const payloadInHex = await generateAcceptNFTGalleryPayloadHex(meta, body, rpcPrefs.rpcUrl);
+      const txData = {
+        from: selectedAddress,
+        data: payloadInHex,
+      };
+      await promisifiedBackground.addUnapprovedTransaction(txData, 'starmask');
+    } catch (error) {
+      log.error(error);
+    }
+    dispatch(showConfTxPage());
+  };
+}
+
+export function addNFTs(nfts) {
+  return (dispatch) => {
+    if (Array.isArray(nfts)) {
+      return Promise.all(
+        nfts.map(({ meta, body }) => dispatch(addNFT(meta, body))),
+      );
+    }
+    return Promise.all(
+      Object.entries(nfts).map(([_, { meta, body }]) =>
+        dispatch(addNFT(meta, body)),
+      ),
+    );
   };
 }

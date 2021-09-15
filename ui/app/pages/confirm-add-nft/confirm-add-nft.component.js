@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ASSET_ROUTE, ADD_NFT_ROUTE } from '../../helpers/constants/routes';
+import { ADD_NFT_ROUTE } from '../../helpers/constants/routes';
 import genesisNFTMeta from '../../helpers/constants/genesis-nft-meta.json';
 import Button from '../../components/ui/button';
 
@@ -12,8 +12,8 @@ export default class ConfirmAddNFT extends Component {
 
   static propTypes = {
     history: PropTypes.object,
-    clearPendingTokens: PropTypes.func,
-    addTokens: PropTypes.func,
+    clearPendingNFTs: PropTypes.func,
+    addNFTs: PropTypes.func,
     mostRecentOverviewPage: PropTypes.string.isRequired,
     pendingNFTs: PropTypes.object,
   };
@@ -26,19 +26,14 @@ export default class ConfirmAddNFT extends Component {
     }
   }
 
-  getTokenName(name, symbol) {
-    return typeof name === 'undefined' ? symbol : `${name} (${symbol})`;
-  }
-
   render() {
     const {
       history,
-      addTokens,
-      clearPendingTokens,
+      addNFTs,
+      clearPendingNFTs,
       mostRecentOverviewPage,
       pendingNFTs,
     } = this.props;
-
     return (
       <div className="page-container">
         <div className="page-container__header">
@@ -53,7 +48,6 @@ export default class ConfirmAddNFT extends Component {
           <div className="confirm-add-token">
             <div className="confirm-add-token__token-list">
               {Object.entries(pendingNFTs).map(([meta, nft]) => {
-                console.log({ meta, nft })
                 let imgSrc = '';
                 if (nft.image.length) {
                   imgSrc = nft.image;
@@ -63,7 +57,6 @@ export default class ConfirmAddNFT extends Component {
                 if (!imgSrc.length) {
                   imgSrc = genesisNFTMeta.image_data;
                 }
-                console.log({ imgSrc })
                 return (
                   <div key={meta} className="nft-list__photo-card">
                     <img src={imgSrc} />
@@ -92,28 +85,23 @@ export default class ConfirmAddNFT extends Component {
               large
               className="page-container__footer-button"
               onClick={() => {
-                addTokens(pendingNFTs).then(() => {
-                  const pendingTokenValues = Object.values(pendingNFTs);
-                  pendingTokenValues.forEach((pendingToken) => {
+                addNFTs(pendingNFTs).then(() => {
+                  const pendingNFTValues = Object.values(pendingNFTs);
+                  pendingNFTValues.forEach((pendingNFT) => {
                     this.context.trackEvent({
-                      event: 'Token Added',
+                      event: 'NFT Added',
                       category: 'Wallet',
                       sensitiveProperties: {
-                        token_symbol: pendingToken.symbol,
-                        token_contract_code: pendingToken.code,
-                        token_decimal_precision: pendingToken.decimals,
-                        unlisted: pendingToken.unlisted,
-                        source: pendingToken.isCustom ? 'custom' : 'list',
+                        meta: pendingNFT.symbol,
+                        body: pendingNFT.code,
+                        name: pendingNFT.decimals,
+                        unlisted: pendingNFT.unlisted,
+                        source: pendingNFT.isCustom ? 'custom' : 'list',
                       },
                     });
                   });
-                  clearPendingTokens();
-                  const firstTokenAddress = pendingTokenValues?.[0].code?.toLowerCase();
-                  if (firstTokenAddress) {
-                    history.push(`${ASSET_ROUTE}/${firstTokenAddress}`);
-                  } else {
-                    history.push(mostRecentOverviewPage);
-                  }
+                  clearPendingNFTs();
+                  history.push(mostRecentOverviewPage);
                 });
               }}
             >
