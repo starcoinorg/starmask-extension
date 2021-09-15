@@ -20,7 +20,6 @@ export default class ConfirmAddNFT extends Component {
 
   componentDidMount() {
     const { mostRecentOverviewPage, pendingNFTs = {}, history } = this.props;
-    console.log({ pendingNFTs })
     if (Object.keys(pendingNFTs).length === 0) {
       history.push(mostRecentOverviewPage);
     }

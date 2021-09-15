@@ -79,7 +79,6 @@ const NFTList = ({ onClickNFT }) => {
         {
           nfts && nfts.length > 0 ? (
             nfts.map((nft, index) => {
-              console.log({ index, nft })
               let imgSrc = '';
               if (nft.image.length) {
                 imgSrc = nft.image;

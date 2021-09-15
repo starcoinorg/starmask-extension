@@ -63,7 +63,6 @@ export default class ConfirmAddToken extends Component {
             <div className="confirm-add-token__token-list">
               {Object.entries(pendingTokens).map(([code, token]) => {
                 const { name, symbol } = token;
-                console.log({ token })
                 return (
                   <div
                     className="confirm-add-token__token-list-item"
