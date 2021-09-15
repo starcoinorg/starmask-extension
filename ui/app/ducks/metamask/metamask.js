@@ -17,6 +17,7 @@ export default function reduceMetamask(state = {}, action) {
     contractExchangeRates: {},
     tokens: [],
     pendingTokens: {},
+    pendingNFTs: {},
     customNonceValue: '',
     send: {
       gasLimit: null,
@@ -345,6 +346,19 @@ export default function reduceMetamask(state = {}, action) {
       return {
         ...metamaskState,
         pendingTokens: {},
+      };
+    }
+
+    case actionConstants.SET_PENDING_NFTS:
+      return {
+        ...metamaskState,
+        pendingNFTs: { ...action.payload },
+      };
+
+    case actionConstants.CLEAR_PENDING_NFTS: {
+      return {
+        ...metamaskState,
+        pendingNFTs: {},
       };
     }
 

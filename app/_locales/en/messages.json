@@ -78,6 +78,9 @@
   "addNetwork": {
     "message": "Add Network"
   },
+  "addNFTGallery": {
+    "message": "Add NFT Gallery"
+  },
   "addRecipient": {
     "message": "Add Recipient"
   },
@@ -465,9 +468,6 @@
   "createAccount": {
     "message": "Create Account"
   },
-  "createNFTGallery": {
-    "message": "Create Gallery"
-  },
   "createPassword": {
     "message": "Create Password"
   },
@@ -494,6 +494,9 @@
   },
   "customGasSubTitle": {
     "message": "Increasing fee may decrease processing times, but it is not guaranteed."
+  },
+  "customNFT": {
+    "message": "Custom NFT"
   },
   "customRPC": {
     "message": "Custom RPC"
@@ -971,6 +974,12 @@
   "invalidIpfsGateway": {
     "message": "Invalid IPFS Gateway: The value must be a valid URL"
   },
+  "invalidNFTMeta": {
+    "message": "Invalid NFT Meta."
+  },
+  "invalidNFTBody": {
+    "message": "Invalid NFT Body."
+  },
   "invalidNumber": {
     "message": "Invalid number. Enter a decimal or '0x'-prefixed hexadecimal number."
   },
@@ -1199,6 +1208,15 @@
   "nextNonceWarning": {
     "message": "Nonce is higher than suggested nonce of $1",
     "description": "The next nonce according to StarMask's internal logic"
+  },
+  "nftBody": {
+    "message": "NFT Body"
+  },
+  "nftMeta": {
+    "message": "NFT Meta"
+  },
+  "nftAlreadyAdded": {
+    "message": "NFT Already Added"
   },
   "nfts": {
     "message": "NFTs"

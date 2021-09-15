@@ -462,6 +462,27 @@ export function checkExistingCodes(code, list = []) {
 }
 
 /**
+ * Checks whether a nftMeta is in a passed list of objects with NFTMeta properties. The check is performed on the
+ * lowercased version of the addresses.
+ *
+ * @param {string} code - The NFTMeta to check
+ * @param {Array} list - The array of objects to check
+ * @returns {boolean} Whether or not the NFTMeta is in the list
+ */
+export function checkExistingNFT(nftMeta, list = []) {
+  console.log('checkExistingNFT', nftMeta, list)
+  if (!nftMeta) {
+    return false;
+  }
+
+  const matchesNFT = (obj) => {
+    return obj.NFTMeta?.toLowerCase() === nftMeta.toLowerCase();
+  };
+
+  return list.some(matchesNFT);
+}
+
+/**
  * Given a number and specified precision, returns that number in base 10 with a maximum of precision
  * significant digits, but without any trailing zeros after the decimal point To be used when wishing
  * to display only as much digits to the user as necessary

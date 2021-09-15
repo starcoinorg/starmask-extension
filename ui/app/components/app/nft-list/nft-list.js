@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import AddTokenButton from '../add-token-button';
 import TokenList from '../token-list';
 import Button from '../../ui/button';
-import { ADD_TOKEN_ROUTE } from '../../../helpers/constants/routes';
+import { ADD_NFT_ROUTE } from '../../../helpers/constants/routes';
 import AssetListItem from '../asset-list-item';
 import { PRIMARY, SECONDARY } from '../../../helpers/constants/common';
 import { useMetricEvent } from '../../../hooks/useMetricEvent';
@@ -37,11 +37,11 @@ const NFTList = ({ onClickNFT }) => {
       name: 'Clicked Token',
     },
   });
-  const addTokenEvent = useMetricEvent({
+  const addNFTEvent = useMetricEvent({
     eventOpts: {
       category: 'Navigation',
-      action: 'Token Menu',
-      name: 'Clicked "Add Token"',
+      action: 'NFT Menu',
+      name: 'Clicked "Add NFT Gallery"',
     },
   });
 
@@ -71,9 +71,6 @@ const NFTList = ({ onClickNFT }) => {
   );
 
   const nfts = useSelector(getNFTs);
-  const createGallery = () => {
-    console.log('createGallery');
-  };
 
   return (
     <>
@@ -81,18 +78,10 @@ const NFTList = ({ onClickNFT }) => {
         {
           nfts && nfts.length > 0 ? (
             nfts.map((nft, index) => (
-              // <AssetListItem
-              //   key={index}
-              //   onClick={() => onClickAsset(nativeCurrency)}
-              //   data-testid="wallet-balance"
-              //   primary={primaryCurrencyProperties.value}
-              //   tokenSymbol={primaryCurrencyProperties.suffix}
-              //   secondary={showFiat ? secondaryCurrencyDisplay : undefined}
-              // />
               <div key={index} className="nft-list__photo-card" onClick={() => onClickNFT(nft.name)}>
                 <img src={nft.image} alt={nft.name} />
                 <div className="nft-list__photo-card_qty">{nft.items.length}&nbsp;
-                  <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0h24v24H0z"></path><path d="M20.083 10.5l1.202.721a.5.5 0 0 1 0 .858L12 17.65l-9.285-5.571a.5.5 0 0 1 0-.858l1.202-.721L12 15.35l8.083-4.85zm0 4.7l1.202.721a.5.5 0 0 1 0 .858l-8.77 5.262a1 1 0 0 1-1.03 0l-8.77-5.262a.5.5 0 0 1 0-.858l1.202-.721L12 20.05l8.083-4.85zM12.514 1.309l8.771 5.262a.5.5 0 0 1 0 .858L12 13 2.715 7.429a.5.5 0 0 1 0-.858l8.77-5.262a1 1 0 0 1 1.03 0z"></path></g></svg>
+                  <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><g><path fill="none" d="M0 0h24v24H0z"></path><path d="M20.083 10.5l1.202.721a.5.5 0 0 1 0 .858L12 17.65l-9.285-5.571a.5.5 0 0 1 0-.858l1.202-.721L12 15.35l8.083-4.85zm0 4.7l1.202.721a.5.5 0 0 1 0 .858l-8.77 5.262a1 1 0 0 1-1.03 0l-8.77-5.262a.5.5 0 0 1 0-.858l1.202-.721L12 20.05l8.083-4.85zM12.514 1.309l8.771 5.262a.5.5 0 0 1 0 .858L12 13 2.715 7.429a.5.5 0 0 1 0-.858l8.77-5.262a1 1 0 0 1 1.03 0z"></path></g></svg>
                 </div>
                 <div className="nft-list__photo-card_body">
                   <div>{nft.name}</div>
@@ -110,9 +99,12 @@ const NFTList = ({ onClickNFT }) => {
         className="nft-list__create-gallery"
         type="secondary"
         rounded
-        onClick={createGallery}
+        onClick={() => {
+          history.push(ADD_NFT_ROUTE);
+          addNFTEvent();
+        }}
       >
-        {t('createNFTGallery')}
+        {t('addNFTGallery')}
       </Button>
     </>
   );

@@ -33,12 +33,16 @@ import UnlockPage from '../unlock-page';
 import Alerts from '../../components/app/alerts';
 import Asset from '../asset';
 import NFTGallery from '../nft-gallery';
+import AddNFTPage from '../add-nft';
+// import ConfirmAddNFTPage from '../confirm-add-NFT';
 
 import {
+  ADD_NFT_ROUTE,
   ADD_TOKEN_ROUTE,
   ASSET_ROUTE,
   NFT_ROUTE,
   CONFIRM_ADD_SUGGESTED_TOKEN_ROUTE,
+  CONFIRM_ADD_NFT_ROUTE,
   CONFIRM_ADD_TOKEN_ROUTE,
   CONFIRM_TRANSACTION_ROUTE,
   CONNECT_ROUTE,
@@ -173,6 +177,12 @@ export default class Routes extends Component {
         />
         <Authenticated path={`${ASSET_ROUTE}/:asset`} component={Asset} />
         <Authenticated path={`${NFT_ROUTE}/:nft`} component={NFTGallery} />
+        <Authenticated path={ADD_NFT_ROUTE} component={AddNFTPage} exact />
+        {/* <Authenticated
+          path={CONFIRM_ADD_NFT_ROUTE}
+          component={ConfirmAddNFTPage}
+          exact
+        /> */}
         <Authenticated path={DEFAULT_ROUTE} component={Home} />
       </Switch>
     );

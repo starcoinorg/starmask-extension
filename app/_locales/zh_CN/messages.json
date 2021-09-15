@@ -61,6 +61,9 @@
   "addNetwork": {
     "message": "添加网络"
   },
+  "addNFTGallery": {
+    "message": "添加NFT收藏集"
+  },
   "addRecipient": {
     "message": "添加接收方"
   },
@@ -424,9 +427,6 @@
   "createAccount": {
     "message": "创建账户"
   },
-  "createNFTGallery": {
-    "message": "创建收藏集"
-  },
   "createPassword": {
     "message": "创建密码"
   },
@@ -447,6 +447,9 @@
   },
   "customGasSubTitle": {
     "message": "提升费用可能会缩短处理时间，但不保证绝对有效。"
+  },
+  "customNFT": {
+    "message": "自定义 NFT"
   },
   "customRPC": {
     "message": "自定义 RPC"
@@ -920,6 +923,12 @@
   "invalidIpfsGateway": {
     "message": "无效的 IPFS 网关。该值必须是一个有效的 URL"
   },
+  "invalidNFTMeta": {
+    "message": "无效的 NFT Meta."
+  },
+  "invalidNFTBody": {
+    "message": "无效的 NFT Body."
+  },
   "invalidNumber": {
     "message": "无效的数字。输入一个数字或‘0x’开头的十六进制数。"
   },
@@ -1128,6 +1137,15 @@
   "nextNonceWarning": {
     "message": "Nonce 高于建议的 nouce 值 $1",
     "description": "The next nonce according to StarMask's internal logic"
+  },
+  "nftAlreadyAdded": {
+    "message": "NFT已添加"
+  },
+  "nftBody": {
+    "message": "NFT Body"
+  },
+  "nftMeta": {
+    "message": "NFT Meta"
   },
   "nfts": {
     "message": "NFT"

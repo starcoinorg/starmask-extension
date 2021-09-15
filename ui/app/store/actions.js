@@ -2827,3 +2827,33 @@ export function trackMetaMetricsEvent(payload, options) {
 export function trackMetaMetricsPage(payload, options) {
   return promisifiedBackground.trackMetaMetricsPage(payload, options);
 }
+
+export function setPendingNFTs(pendingNFTs) {
+  const { customNFT = {}, selectedNFTs = {} } = pendingNFTs;
+  const { NFTMeta, NFTBody } = customNFT;
+  const nfts =
+    NFTMeta && NFTBody
+      ? {
+        ...selectedNFTs,
+        [NFTMeta]: {
+          ...customNFT,
+          isCustom: true,
+        },
+      }
+      : selectedNFTs;
+
+  Object.keys(nfts).forEach((key) => {
+    nfts[key].unlisted = !LISTED_CONTRACT_ADDRESSES.includes(key.toLowerCase());
+  });
+
+  return {
+    type: actionConstants.SET_PENDING_NFTS,
+    payload: nfts,
+  };
+}
+
+export function clearPendingNFTs() {
+  return {
+    type: actionConstants.CLEAR_PENDING_NFTS,
+  };
+}
