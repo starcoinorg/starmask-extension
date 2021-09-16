@@ -35,6 +35,8 @@ export default function reduceMetamask(state = {}, action) {
       toNickname: '',
       ensResolution: null,
       ensResolutionError: '',
+      token: null,
+      nft: null,
     },
     useBlockie: false,
     featureFlags: {},
@@ -242,6 +244,16 @@ export default function reduceMetamask(state = {}, action) {
       });
     }
 
+    case actionConstants.UPDATE_SEND_NFT: {
+      const newSend = {
+        ...metamaskState.send,
+        nft: action.value,
+      };
+      return Object.assign(metamaskState, {
+        send: newSend,
+      });
+    }
+
     case actionConstants.UPDATE_SEND_ENS_RESOLUTION:
       return {
         ...metamaskState,
@@ -279,6 +291,8 @@ export default function reduceMetamask(state = {}, action) {
           maxModeOn: false,
           editingTransactionId: null,
           toNickname: '',
+          token: null,
+          nft: null,
         },
       };
 

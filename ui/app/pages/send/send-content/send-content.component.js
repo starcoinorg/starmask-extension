@@ -6,6 +6,7 @@ import SendAmountRow from './send-amount-row';
 import SendGasRow from './send-gas-row';
 import SendHexDataRow from './send-hex-data-row';
 import SendAssetRow from './send-asset-row';
+import SendNFTRow from './send-nft-row';
 
 export default class SendContent extends Component {
   static contextTypes = {
@@ -16,6 +17,7 @@ export default class SendContent extends Component {
     updateGas: PropTypes.func,
     showAddToAddressBookModal: PropTypes.func,
     showHexData: PropTypes.bool,
+    sendNFT: PropTypes.object,
     contact: PropTypes.object,
     isOwnedAccount: PropTypes.bool,
     warning: PropTypes.string,
@@ -26,8 +28,7 @@ export default class SendContent extends Component {
   updateGas = (updateData) => this.props.updateGas(updateData);
 
   render() {
-    const { warning, error, gasIsExcessive } = this.props;
-
+    const { warning, error, gasIsExcessive, sendNFT } = this.props;
     return error ? (
       this.renderError()
     ) : (
@@ -36,14 +37,12 @@ export default class SendContent extends Component {
           {gasIsExcessive && this.renderError(true)}
           {warning && this.renderWarning()}
           {/* {this.maybeRenderAddContact()} */}
-          <SendAssetRow />
-          <SendAmountRow updateGas={this.updateGas} />
-          <SendGasRow />
+          {sendNFT ? <SendNFTRow /> : this.renderAsset()}
           {this.props.showHexData && (
             <SendHexDataRow updateGas={this.updateGas} />
           )}
         </div>
-      </PageContainerContent>
+      </PageContainerContent >
     );
   }
 
@@ -90,5 +89,15 @@ export default class SendContent extends Component {
         {gasError ? t('gasPriceExcessive') : t(error)}
       </Dialog>
     );
+  }
+
+  renderAsset() {
+    return (
+      <>
+        <SendAssetRow />
+        <SendAmountRow updateGas={this.updateGas} />
+        <SendGasRow />
+      </>
+    )
   }
 }

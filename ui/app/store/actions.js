@@ -802,6 +802,13 @@ export function updateSendToken(token) {
   };
 }
 
+export function updateSendNFT(nft) {
+  return {
+    type: actionConstants.UPDATE_SEND_NFT,
+    value: nft,
+  };
+}
+
 export function clearSend() {
   return {
     type: actionConstants.CLEAR_SEND,

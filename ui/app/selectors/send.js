@@ -37,6 +37,10 @@ export function getPrimaryCurrency(state) {
   return sendToken?.symbol;
 }
 
+export function getSendNFT(state) {
+  return state.starmask.send.nft;
+}
+
 export function getSendToken(state) {
   return state.starmask.send.token;
 }

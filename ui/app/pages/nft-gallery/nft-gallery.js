@@ -1,9 +1,11 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { useI18nContext } from '../../hooks/useI18nContext';
 import { getSelectedIdentity, getNFTs } from '../../selectors';
-import { DEFAULT_ROUTE } from '../../helpers/constants/routes';
+import { updateSendNFT } from '../../store/actions';
+import { DEFAULT_ROUTE, SEND_ROUTE } from '../../helpers/constants/routes';
+import { useMetricEvent } from '../../hooks/useMetricEvent';
 import Button from '../../components/ui/button';
 import AssetNavigation from '../asset/components/asset-navigation';
 import genesisNFTMeta from '../../helpers/constants/genesis-nft-meta.json';
@@ -14,13 +16,18 @@ const NFTGallery = () => {
   const selectedAccountName = selectedIdentity.name;
   const history = useHistory();
   const { nft } = useParams();
+  const dispatch = useDispatch();
+  const transferNFTEvent = useMetricEvent({
+    eventOpts: {
+      category: 'Navigation',
+      action: 'Home',
+      name: 'Clicked Transfer: NFT',
+    },
+  });
   console.log('NFTGallery', nft)
   const nfts = useSelector(getNFTs);
   console.log(nfts)
   const current = nfts.find(({ name }) => name === nft);
-  const transferNFT = () => {
-    console.log('transferNFT')
-  }
   return (
     <div className="main-container asset__container">
       <AssetNavigation
@@ -30,43 +37,51 @@ const NFTGallery = () => {
         optionsButton={null}
       />
       <div className="nft-list__grid nft-list__grid--3">
-        {
-          current.items.length > 0 ? (
-            current.items.map((nft, index) => {
-              let imgSrc = '';
-              if (nft.image.length) {
-                imgSrc = nft.image;
-              } else if (nft.imageData.length) {
-                imgSrc = nft.imageData;
-              }
-              if (!imgSrc.length) {
-                imgSrc = genesisNFTMeta.image_data;
-              }
-              return (
-                <div key={index} className="nft-list__photo-card">
-                  <img src={imgSrc} />
-                  <div className="nft-list__photo-card_body">
-                    <div>{nft.name}</div>
-                    <div>
-                      <Button
-                        className="nft-list__create-gallery"
-                        type="secondary"
-                        rounded
-                        onClick={transferNFT}
-                      >
-                        {t('transferNFT')}
-                      </Button>
-                    </div>
+        {current.items.length > 0 ? (
+          current.items.map((item, index) => {
+            const nft = {
+              ...item,
+              meta: current.meta,
+              body: current.body,
+            };
+            let imgSrc = '';
+            if (nft.image.length) {
+              imgSrc = nft.image;
+            } else if (nft.imageData.length) {
+              imgSrc = nft.imageData;
+            }
+            if (!imgSrc.length) {
+              imgSrc = genesisNFTMeta.image_data;
+            }
+
+            return (
+              <div key={index} className="nft-list__photo-card">
+                <img src={imgSrc} />
+                <div className="nft-list__photo-card_body">
+                  <div>{nft.name}</div>
+                  <div>
+                    <Button
+                      className="nft-list__create-gallery"
+                      type="secondary"
+                      rounded
+                      onClick={() => {
+                        transferNFTEvent();
+                        dispatch(updateSendNFT(nft));
+                        history.push(SEND_ROUTE);
+                      }}
+                    >
+                      {t('transferNFT')}
+                    </Button>
                   </div>
                 </div>
-              )
-            })
-          ) : (
-            <div className="nft-list__empty">
-              <div className="nft-list__empty-text">{t('noNFTs')}</div>
-            </div>
-          )
-        }
+              </div>
+            )
+          })
+        ) : (
+          <div className="nft-list__empty">
+            <div className="nft-list__empty-text">{t('noNFTs')}</div>
+          </div>
+        )}
       </div>
     </div>
   );

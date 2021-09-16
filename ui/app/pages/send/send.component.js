@@ -41,6 +41,7 @@ export default class SendTransactionScreen extends Component {
     primaryCurrency: PropTypes.string,
     resetSendState: PropTypes.func.isRequired,
     selectedAddress: PropTypes.string,
+    sendNFT: PropTypes.object,
     sendToken: PropTypes.object,
     showHexData: PropTypes.bool,
     to: PropTypes.string,
@@ -399,7 +400,7 @@ export default class SendTransactionScreen extends Component {
   }
 
   renderSendContent() {
-    const { history, showHexData, gasIsExcessive, gasPriceIsExtendMax, gasLimitIsExtendMax } = this.props;
+    const { history, showHexData, gasIsExcessive, gasPriceIsExtendMax, gasLimitIsExtendMax, sendNFT, sendToken } = this.props;
     const { toWarning, toError } = this.state;
 
     return [
@@ -414,6 +415,7 @@ export default class SendTransactionScreen extends Component {
         gasIsExcessive={gasIsExcessive}
         gasPriceIsExtendMax={gasPriceIsExtendMax}
         gasLimitIsExtendMax={gasLimitIsExtendMax}
+        sendNFT={sendNFT}
       />,
       <SendFooter key="send-footer" history={history} />,
     ];
