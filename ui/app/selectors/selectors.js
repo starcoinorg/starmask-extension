@@ -491,5 +491,5 @@ export function getAssets(state) {
 }
 
 export function getNFTs(state) {
-  return state.starmask.nfts[state.starmask.selectedAddress];
+  return state.starmask.nfts[state.starmask.selectedAddress] || [];
 }
