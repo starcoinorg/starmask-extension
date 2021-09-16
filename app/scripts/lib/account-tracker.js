@@ -284,7 +284,7 @@ export default class AccountTracker {
             );
             const T2Arr = T2.split(',');
             const meta = T2Arr[0];
-            const body = T2Arr[1];
+            const body = T2Arr[1].trim();
             const items = resources[key].json.items.map((item) => {
               return {
                 id: item.id,
