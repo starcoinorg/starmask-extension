@@ -34,18 +34,53 @@ export async function generateAcceptNFTGalleryPayloadHex(meta, body, rpcUrl) {
   const tyArgs = [meta, body];
   const args = [];
 
-  const scriptFunction = await utils.tx.encodeScriptFunctionByResolve(
+  const payloadInHex = await generateScriptFunctionPayloadHex(
     functionId,
     tyArgs,
     args,
     rpcUrl,
   );
 
+  return payloadInHex;
+}
+
+export async function generateTransferNFTPayloadHex(
+  meta,
+  body,
+  id,
+  to,
+  rpcUrl,
+) {
+  const functionId = '0x1::NFTGalleryScripts::transfer';
+  const tyArgs = [meta, body];
+  const args = [id, to];
+
+  const payloadInHex = await generateScriptFunctionPayloadHex(
+    functionId,
+    tyArgs,
+    args,
+    rpcUrl,
+  );
+
+  return payloadInHex;
+}
+
+async function generateScriptFunctionPayloadHex(
+  functionId,
+  tyArgs,
+  args,
+  rpcUrl,
+) {
+  const scriptFunction = await utils.tx.encodeScriptFunctionByResolve(
+    functionId,
+    tyArgs,
+    args,
+    rpcUrl,
+  );
   const payloadInHex = (function () {
     const se = new bcs.BcsSerializer();
     scriptFunction.serialize(se);
     return hexlify(se.getBytes());
   })();
-
   return payloadInHex;
 }

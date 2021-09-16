@@ -16,7 +16,9 @@ export default class SendFooter extends Component {
     gasTotal: PropTypes.string,
     history: PropTypes.object,
     inError: PropTypes.bool,
+    nft: PropTypes.object,
     sendToken: PropTypes.object,
+    transferNFT: PropTypes.func,
     sign: PropTypes.func,
     to: PropTypes.string,
     toAccounts: PropTypes.array,
@@ -53,7 +55,9 @@ export default class SendFooter extends Component {
       from: { address: from },
       gasLimit: gas,
       gasPrice,
+      nft,
       sendToken,
+      transferNFT,
       sign,
       to,
       toReceiptIdentifier,
@@ -75,20 +79,24 @@ export default class SendFooter extends Component {
 
     // TODO: add nickname functionality
     await addToAddressBookIfNew(to, toAccounts);
-    const promise = editingTransactionId
-      ? update({
-        amount,
-        data,
-        editingTransactionId,
-        from,
-        gas,
-        gasPrice,
-        sendToken,
-        to,
-        unapprovedTxs,
-      })
-      : sign({ data, sendToken, to, toReceiptIdentifier, amount, from, gas, gasPrice });
-
+    let promise;
+    if (nft) {
+      promise = transferNFT({ ...nft, to });
+    } else {
+      promise = editingTransactionId
+        ? update({
+          amount,
+          data,
+          editingTransactionId,
+          from,
+          gas,
+          gasPrice,
+          sendToken,
+          to,
+          unapprovedTxs,
+        })
+        : sign({ data, sendToken, to, toReceiptIdentifier, amount, from, gas, gasPrice });
+    }
     Promise.resolve(promise).then(() => {
       metricsEvent({
         eventOpts: {

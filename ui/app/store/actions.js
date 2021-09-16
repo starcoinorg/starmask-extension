@@ -11,7 +11,7 @@ import {
 } from '../helpers/utils/i18n-helper';
 import { getMethodDataAsync } from '../helpers/utils/transactions.util';
 import { fetchSymbolAndDecimals, generateAcceptTokenPayloadHex } from '../helpers/utils/token-util';
-import { generateAcceptNFTGalleryPayloadHex } from '../helpers/utils/nft-util';
+import { generateAcceptNFTGalleryPayloadHex, generateTransferNFTPayloadHex } from '../helpers/utils/nft-util';
 import switchDirection from '../helpers/utils/switch-direction';
 import { ENVIRONMENT_TYPE_NOTIFICATION } from '../../../shared/constants/app';
 import { TRANSACTION_TYPES } from '../../../shared/constants/transaction';
@@ -2871,6 +2871,34 @@ export function updateNFTs(newNFTs) {
   return {
     type: actionConstants.UPDATE_NFTS,
     newNFTs,
+  };
+}
+
+export function transferNFT(meta, body, id, to) {
+  return async (dispatch, getState) => {
+    try {
+      if (!meta || !body) {
+        throw new Error('StarMask - Cannot transfer nft without meta and body');
+      }
+      const state = getState();
+      const { selectedAddress } = state.starmask;
+      const rpcPrefs = getRpcPrefsForCurrentProvider(state);
+      const payloadInHex = await generateTransferNFTPayloadHex(
+        meta,
+        body,
+        id,
+        to,
+        rpcPrefs.rpcUrl,
+      );
+      const txData = {
+        from: selectedAddress,
+        data: payloadInHex,
+      };
+      await promisifiedBackground.addUnapprovedTransaction(txData, 'starmask');
+    } catch (error) {
+      log.error(error);
+    }
+    // dispatch(showConfTxPage());
   };
 }
 

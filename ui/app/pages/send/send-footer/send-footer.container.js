@@ -5,11 +5,13 @@ import {
   signTokenTx,
   signTx,
   updateTransaction,
+  transferNFT,
 } from '../../../store/actions';
 import {
   getGasLimit,
   getGasPrice,
   getGasTotal,
+  getSendNFT,
   getSendToken,
   getSendAmount,
   getSendEditingTransactionId,
@@ -62,6 +64,7 @@ function mapStateToProps(state) {
     gasPrice,
     gasTotal: getGasTotal(state),
     inError: isSendFormInError(state),
+    nft: getSendNFT(state),
     sendToken: getSendToken(state),
     to: getSendTo(state),
     toAccounts: getSendToAccounts(state),
@@ -80,6 +83,9 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     clearSend: () => dispatch(clearSend()),
+    transferNFT: async ({ meta, body, id, to }) => {
+      dispatch(transferNFT(meta, body, id, to));
+    },
     sign: async ({ sendToken, to, toReceiptIdentifier, amount, from, gas, gasPrice, data }) => {
       const txParams = constructTxParams({
         amount,
