@@ -18,7 +18,9 @@ class AddNFT extends Component {
     setPendingNFTs: PropTypes.func,
     pendingNFTs: PropTypes.object,
     clearPendingNFTs: PropTypes.func,
+    updateNFTMetas: PropTypes.func,
     nfts: PropTypes.array,
+    nftMetas: PropTypes.object,
     mostRecentOverviewPage: PropTypes.string.isRequired,
   };
 
@@ -121,15 +123,21 @@ class AddNFT extends Component {
 
   async attemptToAutoFillNFTParams(meta) {
     try {
-      const result = await this.getNFTGalleryInfo(meta);
-      const autoFilled = Boolean(result.name && result.description);
+      const { nftMetas, updateNFTMetas } = this.props;
+      let metaInfo = nftMetas[meta];
+      if (!metaInfo) {
+        metaInfo = await this.getNFTGalleryInfo(meta);
+        const newNFTMetas = { ...nftMetas, [meta]: metaInfo };
+        updateNFTMetas(newNFTMetas);
+      }
+      const autoFilled = Boolean(metaInfo.name && metaInfo.description);
       this.setState({
         autoFilled,
-        customImage: result.image,
-        customImageData: result.image_data,
+        customImage: metaInfo.image,
+        customImageData: metaInfo.image_data,
       });
-      this.handleCustomNameChange(result.name || '');
-      this.handleCustomDescriptionChange(result.description || '');
+      this.handleCustomNameChange(metaInfo.name || '');
+      this.handleCustomDescriptionChange(metaInfo.description || '');
     } catch (error) {
       console.log('dsdf', typeof error, JSON.stringify(error), error.Error);
       console.log(error);

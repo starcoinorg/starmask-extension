@@ -5,6 +5,10 @@ const { arrayify, hexlify } = ethers.utils;
 
 export const GENESIS_NFT_IMAGE = '';
 
+export function decodeNFTMeta(hex) {
+  return Buffer.from(arrayify(hex)).toString();
+}
+
 export async function getNFTGalleryInfo(meta) {
   const metaInfo = await new Promise((resolve, reject) => {
     return global.ethQuery.sendAsync(

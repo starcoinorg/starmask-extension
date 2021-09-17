@@ -16,6 +16,7 @@ import {
   getValueFromWeiHex,
   hexToDecimal,
 } from '../helpers/utils/conversions.util';
+import { getNFTGalleryInfo } from '../helpers/utils/nft-util';
 import {
   SWAPS_CHAINID_DEFAULT_TOKEN_MAP,
   ALLOWED_SWAPS_CHAIN_IDS,
@@ -490,6 +491,10 @@ export function getAssets(state) {
   return state.starmask.assets;
 }
 
-export function getNFTs(state) {
+export function getCurrentNFTs(state) {
   return state.starmask.nfts[state.starmask.selectedAddress] || [];
+}
+
+export function getNFTMetas(state) {
+  return state.starmask.nftMetas;
 }

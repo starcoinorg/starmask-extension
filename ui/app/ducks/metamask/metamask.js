@@ -16,6 +16,7 @@ export default function reduceMetamask(state = {}, action) {
     addressBook: [],
     contractExchangeRates: {},
     tokens: [],
+    nftMetas: {},
     pendingTokens: {},
     pendingNFTs: {},
     customNonceValue: '',
@@ -376,6 +377,12 @@ export default function reduceMetamask(state = {}, action) {
       };
     }
 
+    case actionConstants.UPDATE_NFT_METAS:
+      return {
+        ...metamaskState,
+        nftMetas: action.newNFTMetas,
+      };
+
     case actionConstants.UPDATE_PREFERENCES: {
       return {
         ...metamaskState,
@@ -426,5 +433,3 @@ export const getUnconnectedAccountAlertShown = (state) =>
   state.starmask.unconnectedAccountAlertShownOrigins;
 
 export const getTokens = (state) => state.starmask.tokens;
-
-export const getNFTs = (state) => state.starmask.nfts;

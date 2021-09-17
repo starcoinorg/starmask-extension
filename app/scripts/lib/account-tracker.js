@@ -29,6 +29,7 @@ import SINGLE_CALL_BALANCES_ABI from 'single-call-balance-checker-abi';
 //   SINGLE_CALL_BALANCES_ADDRESS_ROPSTEN,
 //   SINGLE_CALL_BALANCES_ADDRESS_KOVAN,
 // } from '../constants/contracts';
+import { decodeNFTMeta } from '../../../ui/app/helpers/utils/nft-util';
 import { bnToHex } from './util';
 
 /**
@@ -283,24 +284,20 @@ export default class AccountTracker {
               key.length - NFT_GALLERY.length - 2,
             );
             const T2Arr = T2.split(',');
-            const meta = T2Arr[0];
+            const meta = T2Arr[0].trim();
             const body = T2Arr[1].trim();
             const items = resources[key].json.items.map((item) => {
               return {
                 id: item.id,
-                name: Buffer.from(arrayify(item.base_meta.name)).toString(),
-                description: Buffer.from(arrayify(item.base_meta.description)).toString(),
-                image: Buffer.from(arrayify(item.base_meta.image)).toString(),
-                imageData: Buffer.from(arrayify(item.base_meta.image_data)).toString(),
+                name: decodeNFTMeta(item.base_meta.name),
+                description: decodeNFTMeta(item.base_meta.description),
+                image: decodeNFTMeta(item.base_meta.image),
+                imageData: decodeNFTMeta(item.base_meta.image_data),
               };
             });
             currentNFTs.push({
               meta,
               body,
-              name: 'SimpleNFT',
-              description: 'A NFT example, everyone can mint a SimpleNFT',
-              image: '',
-              imageData: '',
               items,
             });
           }

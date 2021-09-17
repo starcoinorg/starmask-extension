@@ -2867,10 +2867,10 @@ export function clearPendingNFTs() {
   };
 }
 
-export function updateNFTs(newNFTs) {
+export function updateNFTMetas(newNFTMetas) {
   return {
-    type: actionConstants.UPDATE_NFTS,
-    newNFTs,
+    type: actionConstants.UPDATE_NFT_METAS,
+    newNFTMetas,
   };
 }
 

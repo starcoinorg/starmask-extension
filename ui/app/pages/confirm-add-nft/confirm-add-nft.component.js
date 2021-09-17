@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ADD_NFT_ROUTE } from '../../helpers/constants/routes';
-import genesisNFTMeta from '../../helpers/constants/genesis-nft-meta.json';
 import Button from '../../components/ui/button';
+import NFTGallreyCard from '../../components/app/nft-galler-card';
 
 export default class ConfirmAddNFT extends Component {
   static contextTypes = {
@@ -47,24 +47,7 @@ export default class ConfirmAddNFT extends Component {
           <div className="confirm-add-token">
             <div className="confirm-add-token__token-list">
               {Object.entries(pendingNFTs).map(([meta, nft]) => {
-                let imgSrc = '';
-                if (nft.image.length) {
-                  imgSrc = nft.image;
-                } else if (nft.imageData.length) {
-                  imgSrc = nft.imageData;
-                }
-                if (!imgSrc.length) {
-                  imgSrc = genesisNFTMeta.image_data;
-                }
-                return (
-                  <div key={meta} className="nft-list__photo-card">
-                    <img src={imgSrc} />
-                    <div className="nft-list__photo-card_body">{nft.name}</div>
-                    <div className="nft-list__photo-card_description">
-                      {nft.description}
-                    </div>
-                  </div>
-                );
+                return <NFTGallreyCard key={meta} nft={nft} />;
               })}
             </div>
           </div>
