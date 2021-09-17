@@ -4,7 +4,7 @@ import { DEFAULT_ROUTE, SEND_ROUTE } from '../../helpers/constants/routes';
 import Button from '../../components/ui/button';
 import AssetNavigation from '../asset/components/asset-navigation';
 import genesisNFTMeta from '../../helpers/constants/genesis-nft-meta.json';
-import { getNFTGalleryInfo } from '../../helpers/utils/nft-util';
+// import { getNFTGalleryInfo } from '../../helpers/utils/nft-util';
 
 export default class NFTItems extends Component {
   static contextTypes = {
@@ -19,15 +19,15 @@ export default class NFTItems extends Component {
     selectedIdentity: PropTypes.object,
     nftMetas: PropTypes.object,
     updateSendNFT: PropTypes.func,
-    updateNFTMetas: PropTypes.func,
+    // updateNFTMetas: PropTypes.func,
   };
 
-  async getNFTGalleryInfo(meta) {
-    const metaInfo = await getNFTGalleryInfo(meta);
-    const { nftMetas, updateNFTMetas } = this.props;
-    const newNFTMetas = { ...nftMetas, [meta]: metaInfo };
-    updateNFTMetas(newNFTMetas);
-  }
+  // async getNFTGalleryInfo(meta) {
+  //   const metaInfo = await getNFTGalleryInfo(meta);
+  //   const { nftMetas, updateNFTMetas } = this.props;
+  //   const newNFTMetas = { ...nftMetas, [meta]: metaInfo };
+  //   updateNFTMetas(newNFTMetas);
+  // }
 
   render() {
     const {
@@ -42,10 +42,10 @@ export default class NFTItems extends Component {
     const selectedAccountName = selectedIdentity.name;
 
     const nft = nfts.find(({ meta }) => meta === nftMeta);
-    let metaInfo = nftMetas[nftMeta];
-    if (!metaInfo) {
-      metaInfo = this.getNFTGalleryInfo(nftMeta);
-    }
+    const metaInfo = nftMetas[nftMeta];
+    // if (!metaInfo) {
+    //   metaInfo = this.getNFTGalleryInfo(nftMeta);
+    // }
     const nftGallery = { ...nft, ...metaInfo };
 
     return (
@@ -104,7 +104,7 @@ export default class NFTItems extends Component {
                     </div>
                   </div>
                 </div>
-              )
+              );
             })
           ) : (
             <div className="nft-list__empty">

@@ -16,7 +16,6 @@ import {
   getValueFromWeiHex,
   hexToDecimal,
 } from '../helpers/utils/conversions.util';
-import { getNFTGalleryInfo } from '../helpers/utils/nft-util';
 import {
   SWAPS_CHAINID_DEFAULT_TOKEN_MAP,
   ALLOWED_SWAPS_CHAIN_IDS,

@@ -9,7 +9,7 @@ export function decodeNFTMeta(hex) {
   return Buffer.from(arrayify(hex)).toString();
 }
 
-export async function getNFTGalleryInfo(meta) {
+export async function getNFTGalleryInfo(meta, body) {
   const metaInfo = await new Promise((resolve, reject) => {
     return global.ethQuery.sendAsync(
       {
@@ -19,6 +19,23 @@ export async function getNFTGalleryInfo(meta) {
       (error, result) => {
         if (error) {
           return reject(error);
+        }
+        if (result === null && body) {
+          return global.ethQuery.sendAsync(
+            {
+              method: 'state.get_resource',
+              params: ['0x1', `0x1::NFT::NFTTypeInfo<${meta}, ${body}>`, { decode: true }],
+            },
+            (error2, result2) => {
+              if (error2) {
+                return reject(error2);
+              }
+              if (result2 && result2.json) {
+                return resolve(result2.json.meta);
+              }
+              return reject(new Error('invalid nft meta'));
+            },
+          );
         }
         if (result && result.json) {
           return resolve(result.json.meta);

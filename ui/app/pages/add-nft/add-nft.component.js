@@ -39,7 +39,7 @@ class AddNFT extends Component {
   };
 
   componentDidMount() {
-    this.getNFTGalleryInfo = (meta) => getNFTGalleryInfo(meta);
+    this.getNFTGalleryInfo = (meta, body) => getNFTGalleryInfo(meta, body);
     const { pendingNFTs = {} } = this.props;
     const pendingNFTKeys = Object.keys(pendingNFTs);
 
@@ -121,12 +121,15 @@ class AddNFT extends Component {
     history.push(CONFIRM_ADD_NFT_ROUTE);
   }
 
-  async attemptToAutoFillNFTParams(meta) {
+  async attemptToAutoFillNFTParams(meta, body) {
+    if (!meta || !body) {
+      return false;
+    }
     try {
       const { nftMetas, updateNFTMetas } = this.props;
       let metaInfo = nftMetas[meta];
       if (!metaInfo) {
-        metaInfo = await this.getNFTGalleryInfo(meta);
+        metaInfo = await this.getNFTGalleryInfo(meta, body);
         const newNFTMetas = { ...nftMetas, [meta]: metaInfo };
         updateNFTMetas(newNFTMetas);
       }
@@ -148,6 +151,7 @@ class AddNFT extends Component {
       //   customDescriptionError: null,
       // });
     }
+    return false;
   }
 
   handleCustomNameChange(value) {
@@ -189,7 +193,7 @@ class AddNFT extends Component {
 
         break;
       default:
-        this.attemptToAutoFillNFTParams(customMeta);
+        this.attemptToAutoFillNFTParams(customMeta, this.state.customBody);
     }
   }
 
@@ -215,6 +219,7 @@ class AddNFT extends Component {
 
         break;
       default:
+        this.attemptToAutoFillNFTParams(this.state.customMeta, customBody);
     }
   }
 
