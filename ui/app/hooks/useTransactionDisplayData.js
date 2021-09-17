@@ -209,6 +209,11 @@ export function useTransactionDisplayData(transactionGroup) {
     category = TRANSACTION_GROUP_CATEGORIES.SEND;
     title = t('send');
     subtitle = t('toAddress', [shortenAddress(recipientAddress)]);
+  } else if (type === TRANSACTION_TYPES.CANCEL) {
+    category = TRANSACTION_GROUP_CATEGORIES.INTERACTION;
+    title = t('cancel');
+    subtitle = origin;
+    subtitleContainsOrigin = true;
   }
 
   const primaryCurrencyPreferences = useUserPreferencedCurrency(PRIMARY);
