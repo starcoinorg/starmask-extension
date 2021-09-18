@@ -2070,7 +2070,7 @@
     "message": "转账"
   },
   "transferBetweenAccounts": {
-    "message": "在我的账户间转账"
+    "message": "在我的账户间交易"
   },
   "transferFrom": {
     "message": "转自"
