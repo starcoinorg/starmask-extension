@@ -62,7 +62,7 @@
     "message": "添加网络"
   },
   "addNFTGallery": {
-    "message": "添加NFT收藏集"
+    "message": "添加NFT陈列室"
   },
   "addRecipient": {
     "message": "添加接收方"
@@ -973,7 +973,7 @@
     "message": "第一次，立即开始设置！"
   },
   "likeToAddNFTs": {
-    "message": "您想添加这些NFT收藏集吗?"
+    "message": "您想添加这些NFT陈列室吗?"
   },
   "likeToAddTokens": {
     "message": "您想添加这些代币吗？"
