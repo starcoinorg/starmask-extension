@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.1.0] - 2021-09-18
+- New features:
+    1. Add a NFT tab in the home page
+    2. support `Add NFT Gallery`
+    3. support `Transfer NFT`
+
+- Bug fixes:
+    1. Do not display `0 STC` in the top of confirm transaction page.
+
 ## [2.0.2] - 2021-08-28
 - Bug fixes:
     1. Allow multi transactions，nonce is sync with sequenceNumber on chain
