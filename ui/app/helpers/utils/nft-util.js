@@ -105,3 +105,20 @@ async function generateScriptFunctionPayloadHex(
   })();
   return payloadInHex;
 }
+
+export function imageSourceUrls(imageUrl) {
+  const ipfsGatewayAPIs = [
+    'https://ipfs.infura.io:5001/api/v0/cat?arg=',
+    // 'https://dweb.link',
+    // 'https://cloudflare-ipfs.com',
+    // 'https://gateway.pinata.cloud',
+  ];
+  const urls = [];
+  if (imageUrl && imageUrl.length && imageUrl.indexOf('ipfs') === 0) {
+    const hash = imageUrl.split('//')[1];
+    ipfsGatewayAPIs.forEach((api) => urls.push(`${api}${hash}`));
+  } else {
+    urls.push(imageUrl);
+  }
+  return urls;
+}

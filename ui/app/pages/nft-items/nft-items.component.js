@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { DEFAULT_ROUTE, SEND_ROUTE } from '../../helpers/constants/routes';
 import Button from '../../components/ui/button';
 import AssetNavigation from '../asset/components/asset-navigation';
-import genesisNFTMeta from '../../helpers/constants/genesis-nft-meta.json';
-// import { getNFTGalleryInfo } from '../../helpers/utils/nft-util';
+import { imageSourceUrls } from '../../helpers/utils/nft-util';
 
 export default class NFTItems extends Component {
   static contextTypes = {
@@ -28,6 +27,26 @@ export default class NFTItems extends Component {
   //   const newNFTMetas = { ...nftMetas, [meta]: metaInfo };
   //   updateNFTMetas(newNFTMetas);
   // }
+
+  renderPicture(image, imageData, galleryImage, galleryImageData) {
+    const imageSources = (imageUrl) => {
+      const urls = imageSourceUrls(imageUrl);
+      return urls.map((url, index) => (
+        <source key={`${imageUrl}-${index}`} srcSet={url} />
+      ));
+    };
+
+    const picture = (
+      <picture>
+        {image && imageSources(image)}
+        {imageData && <source key="imageData" srcSet={imageData} />}
+        {galleryImage && imageSources(galleryImage)}
+        {galleryImageData && <source key="galleryImageData" srcSet={galleryImageData} />}
+        <img src="/images/imagenotfound.svg" />
+      </picture>
+    );
+    return picture;
+  }
 
   render() {
     const {
@@ -64,19 +83,10 @@ export default class NFTItems extends Component {
                 meta: nftGallery.meta,
                 body: nftGallery.body,
               };
-              let imgSrc = '';
-              if (nftItem.image && nftItem.image.length) {
-                imgSrc = nftItem.image;
-              } else if (nftItem.imageData && nftItem.imageData.length) {
-                imgSrc = nftItem.imageData;
-              }
-              if (!imgSrc.length) {
-                imgSrc = genesisNFTMeta.image_data;
-              }
 
               return (
                 <div key={index} className="nft-list__photo-card">
-                  <img src={imgSrc} />
+                  {this.renderPicture(nftItem.image, nftItem.imageData, nftGallery.image, nftGallery.imageData)}
                   <div className="nft-list__photo-card_body">
                     <div>{nftItem.name}</div>
                     <div>

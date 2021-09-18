@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import genesisNFTMeta from '../../../helpers/constants/genesis-nft-meta.json';
-import { getNFTGalleryInfo } from '../../../helpers/utils/nft-util';
+import {
+  getNFTGalleryInfo,
+  imageSourceUrls,
+} from '../../../helpers/utils/nft-util';
 
 export default class NFTGalleryCard extends Component {
   static contextTypes = {
@@ -23,6 +25,24 @@ export default class NFTGalleryCard extends Component {
     updateNFTMetas(newNFTMetas);
   }
 
+  renderPicture(image, imageData) {
+    const imageSources = (imageUrl) => {
+      const urls = imageSourceUrls(imageUrl);
+      return urls.map((url, index) => (
+        <source key={`${imageUrl}-${index}`} srcSet={url} />
+      ));
+    };
+
+    const picture = (
+      <picture>
+        {image && imageSources(image)}
+        {imageData && <source key="imageData" srcSet={imageData} />}
+        <img src="/images/imagenotfound.svg" />
+      </picture>
+    );
+    return picture;
+  }
+
   render() {
     const { nft, nftMetas, onClickNFT } = this.props;
     let metaInfo = nftMetas[nft.meta];
@@ -30,23 +50,14 @@ export default class NFTGalleryCard extends Component {
       metaInfo = this.getNFTGalleryInfo(nft.meta, nft.body);
     }
     const nftGallery = { ...nft, ...metaInfo };
-    let imgSrc = '';
-    if (nft.image && nft.image.length) {
-      imgSrc = nft.image;
-    } else if (nft.imageData && nft.imageData.length) {
-      imgSrc = nft.imageData;
-    }
-    if (!imgSrc.length) {
-      imgSrc = genesisNFTMeta.image_data;
-      // imgSrc = 'https://c3r.oss-cn-beijing.aliyuncs.com/8972542977126636.png';
-    }
     const props = {
       className: 'nft-list__photo-card',
       ...(onClickNFT ? { onClick: () => onClickNFT(nftGallery.meta) } : {}),
     };
+
     return (
       <div {...props}>
-        <img src={imgSrc} />
+        {this.renderPicture(nft.image, nft.imageData)}
         {onClickNFT ? (
           <div className="nft-list__photo-card_qty">{nftGallery.items.length}&nbsp;
             <svg
