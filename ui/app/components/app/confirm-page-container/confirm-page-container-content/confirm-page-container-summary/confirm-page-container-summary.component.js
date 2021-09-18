@@ -16,7 +16,6 @@ const ConfirmPageContainerSummary = (props) => {
     assetImage,
     origin,
   } = props;
-
   return (
     <div className={classnames('confirm-page-container-summary', className)}>
       {origin === 'starmask' ? null : (
@@ -30,19 +29,21 @@ const ConfirmPageContainerSummary = (props) => {
           </div>
         )}
       </div>
-      <div className="confirm-page-container-summary__title">
-        {identiconAddress && (
-          <Identicon
-            className="confirm-page-container-summary__identicon"
-            diameter={36}
-            address={identiconAddress}
-            image={assetImage}
-          />
-        )}
-        <div className="confirm-page-container-summary__title-text">
-          {titleComponent || title}
+      {action.trim() === 'Script Function' && !title ? null : (
+        <div className="confirm-page-container-summary__title">
+          {identiconAddress && (
+            <Identicon
+              className="confirm-page-container-summary__identicon"
+              diameter={36}
+              address={identiconAddress}
+              image={assetImage}
+            />
+          )}
+          <div className="confirm-page-container-summary__title-text">
+            {titleComponent || title}
+          </div>
         </div>
-      </div>
+      )}
       {hideSubtitle || (
         <div className="confirm-page-container-summary__subtitle">
           {subtitleComponent}
