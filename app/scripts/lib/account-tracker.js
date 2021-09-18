@@ -268,7 +268,7 @@ export default class AccountTracker {
         const ACCOUNT_BALANCE = '0x00000000000000000000000000000001::Account::Balance';
         const balanceKeys = [];
         const NFT_GALLERY = '0x00000000000000000000000000000001::NFTGallery::NFTGallery';
-
+        const nftKeys = [];
         Object.keys(resources).forEach((key) => {
           if (key.startsWith(ACCOUNT_BALANCE)) {
             const token = key.substr(
@@ -279,29 +279,8 @@ export default class AccountTracker {
               balanceKeys.push(key);
             }
           } else if (key.startsWith(NFT_GALLERY)) {
-            const T2 = key.substr(
-              NFT_GALLERY.length + 1,
-              key.length - NFT_GALLERY.length - 2,
-            );
-            const T2Arr = T2.split(',');
-            const meta = T2Arr[0].trim();
-            const body = T2Arr[1].trim();
-            const items = resources[key].json.items.map((item) => {
-              return {
-                id: item.id,
-                name: decodeNFTMeta(item.base_meta.name),
-                description: decodeNFTMeta(item.base_meta.description),
-                image: decodeNFTMeta(item.base_meta.image),
-                imageData: decodeNFTMeta(item.base_meta.image_data),
-              };
-            });
-            currentNFTs.push({
-              meta,
-              body,
-              items,
-            });
+            nftKeys.push(key);
           }
-          nfts[address] = currentNFTs;
         });
         if (balanceKeys.length === 0) {
           accounts[address] = { address, balance: '0x0' };
@@ -323,6 +302,31 @@ export default class AccountTracker {
           });
         }
         assets[address] = currentTokens;
+
+        nftKeys.forEach((key) => {
+          const T2 = key.substr(
+            NFT_GALLERY.length + 1,
+            key.length - NFT_GALLERY.length - 2,
+          );
+          const T2Arr = T2.split(',');
+          const meta = T2Arr[0].trim();
+          const body = T2Arr[1].trim();
+          const items = resources[key].json.items.map((item) => {
+            return {
+              id: item.id,
+              name: decodeNFTMeta(item.base_meta.name),
+              description: decodeNFTMeta(item.base_meta.description),
+              image: decodeNFTMeta(item.base_meta.image),
+              imageData: decodeNFTMeta(item.base_meta.image_data),
+            };
+          });
+          currentNFTs.push({
+            meta,
+            body,
+            items,
+          });
+        });
+        nfts[address] = currentNFTs;
       } catch (error) {
         log.info('_updateAccount error', error);
         // HD account will get error: Invalid params: unable to parse AccoutAddress
