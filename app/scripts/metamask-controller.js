@@ -18,7 +18,7 @@ import {
 import { encoding } from '@starcoin/starcoin';
 import BigNumber from 'bignumber.js';
 import log from 'loglevel';
-import TrezorKeyring from '@onekeyhq/eth-onekey-keyring';
+import TrezorKeyring from '@starcoin/stc-onekey-keyring';
 // import LedgerBridgeKeyring from '@metamask/eth-ledger-bridge-keyring';
 import EthQuery from '@starcoin/stc-query';
 import nanoid from 'nanoid';
