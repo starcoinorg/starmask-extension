@@ -39,12 +39,12 @@ export default class CreateAccountPage extends Component {
         >
           {this.context.t('import')}
         </div>
-        {/* <div
+        <div
           className={getClassNames(CONNECT_HARDWARE_ROUTE)}
           onClick={() => history.push(CONNECT_HARDWARE_ROUTE)}
         >
           {this.context.t('hardware')}
-        </div> */}
+        </div>
       </div>
     );
   }
