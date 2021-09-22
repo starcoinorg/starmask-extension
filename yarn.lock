@@ -2666,26 +2666,25 @@
   resolved "https://registry.npmjs.org/@starcoin/stc-ed25519/-/stc-ed25519-0.1.0.tgz#56e65b388889a5953e01806cc3deaa20ddaf8174"
   integrity sha512-H3oz8fNQD604Ak0cSNTDcbfzLxsB9XAKw1aJO7iBPuZWcHF8bgn7xxOzsinx5V5LGaPeleWc/Qw4vCKnK6cxHQ==
 
-"@starcoin/stc-hd-keyring@^1.4.1":
-  version "1.4.1"
-  resolved "https://registry.npmjs.org/@starcoin/stc-hd-keyring/-/stc-hd-keyring-1.4.1.tgz#a8c85f93904eb730febd5aee695dd05099d6257f"
-  integrity sha512-u5Umq8hUuGJpOPTuuPla0WdALNqus0c0JgX1y7ADARkZnI23+Qv3baOoSD8T6QE0iHhjqKSdzSzP5HMsKynipA==
+"@starcoin/stc-hd-keyring@^1.4.2":
+  version "1.4.2"
+  resolved "https://registry.npmjs.org/@starcoin/stc-hd-keyring/-/stc-hd-keyring-1.4.2.tgz#8f5c28bfbabf5f390dc5768ed856e4729d89d1a0"
+  integrity sha512-toeDXgka7gX57cFhdH70uVzeIvp9MFEx9vHGkEMPahkz0BgeI1sejLlMIZWylxsT/yZX/0fDR579cHz1cvPWTQ==
   dependencies:
     "@ethersproject/bytes" "^5.0.6"
     "@starcoin/starcoin" "^1.4.3"
-    "@starcoin/stc-simple-keyring" "^1.4.1"
+    "@starcoin/stc-simple-keyring" "^1.4.2"
     "@starcoin/stc-util" "^0.3.0"
-    "@starcoin/stc-wallet" "^1.2.1"
+    "@starcoin/stc-wallet" "^1.2.2"
     bip39 "^2.2.0"
     eth-sig-util "^3.0.1"
     ethereumjs-util "^7.0.9"
 
-"@starcoin/stc-hdkey@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.npmjs.org/@starcoin/stc-hdkey/-/stc-hdkey-0.2.0.tgz"
-  integrity sha512-PTs8WSDn9bdcicFW962pcc/fYc51IOLogpFaN57tqvE+Socpfpnt5l56yiQaGmpR8Th6aoeOb8XYdGWhDc59zw==
+"@starcoin/stc-hdkey@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.npmjs.org/@starcoin/stc-hdkey/-/stc-hdkey-0.3.0.tgz#58a9bc254357f9827d46d0d166afda216edcc4df"
+  integrity sha512-y8z4GUvttmph/0tJ3PCio2Q7F0kE/6ZuE2jssWcZd85Tvf/F6ztHfGDrj/6/t4QY5L/P7YhjLrrUCKWZtdNGZA==
   dependencies:
-    "@starcoin/stc-util" "^0.3.0"
     coinstring "^2.0.0"
     safe-buffer "^5.1.1"
     secp256k1 "^3.0.1"
@@ -2735,13 +2734,13 @@
     json-rpc-engine "^5.3.0"
     node-fetch "^2.6.1"
 
-"@starcoin/stc-keyring-controller@^1.4.1":
-  version "1.4.1"
-  resolved "https://registry.npmjs.org/@starcoin/stc-keyring-controller/-/stc-keyring-controller-1.4.1.tgz#aae0963d5a240b85eb5396cd2086c6e72f09c686"
-  integrity sha512-jS5DmbIqVjNx5MpU4Ge/Ma7TNA8o3iS4E+ooLqut17Gkh5G1xNmwN9xIi5tgbj6nEy0/CeFTvzfejrzFDXHQAA==
+"@starcoin/stc-keyring-controller@^1.4.2":
+  version "1.4.2"
+  resolved "https://registry.npmjs.org/@starcoin/stc-keyring-controller/-/stc-keyring-controller-1.4.2.tgz#c1b02f0790f8e03eec9e26c3c54d78c00e8ab6ca"
+  integrity sha512-RFpuwTUZSdmTEiQVYSMpiR38yqs0r6Q+vJNtpbllW8JoszXvPuPzRxY6hY9Roo+/4kFHJsPGjQpEzKELqoRqqA==
   dependencies:
-    "@starcoin/stc-hd-keyring" "^1.4.1"
-    "@starcoin/stc-simple-keyring" "^1.4.1"
+    "@starcoin/stc-hd-keyring" "^1.4.2"
+    "@starcoin/stc-simple-keyring" "^1.4.2"
     "@starcoin/stc-util" "^0.3.0"
     bip39 "^2.4.0"
     bluebird "^3.5.0"
@@ -2770,15 +2769,15 @@
     json-rpc-random-id "^1.0.0"
     xtend "^4.0.1"
 
-"@starcoin/stc-simple-keyring@^1.4.1":
-  version "1.4.1"
-  resolved "https://registry.npmjs.org/@starcoin/stc-simple-keyring/-/stc-simple-keyring-1.4.1.tgz#ceb26e09e450dd470198ebe0ffb6d15f1961ac97"
-  integrity sha512-jVdAN/vnbKIvcKc51LWOm4xoCJQW4n0PBUek6TpjrZ2p/VzSvsOZA8+e3XZrPDrJhIynQSO8kAwlRD6tkDm1eQ==
+"@starcoin/stc-simple-keyring@^1.4.2":
+  version "1.4.2"
+  resolved "https://registry.npmjs.org/@starcoin/stc-simple-keyring/-/stc-simple-keyring-1.4.2.tgz#3abcc59b949fa8ea4b5261752f121b2109ca0413"
+  integrity sha512-4/C1XD9lgHnVhVA7Gb5FICl+mMmUTj/GvpWJTPutEKcF+HhVXLYRjqbIne+687Bm3n2paG/3tf+Xe1ka7AuTMw==
   dependencies:
     "@ethersproject/bytes" "^5.0.6"
     "@starcoin/starcoin" "^1.4.3"
     "@starcoin/stc-util" "^0.3.0"
-    "@starcoin/stc-wallet" "^1.2.1"
+    "@starcoin/stc-wallet" "^1.2.2"
     eth-sig-util "^2.5.0"
     ethereumjs-abi "^0.6.5"
     events "^1.1.1"
@@ -2814,13 +2813,13 @@
     safe-buffer "^5.1.1"
     secp256k1 "^3.0.1"
 
-"@starcoin/stc-wallet@^1.2.1":
-  version "1.2.1"
-  resolved "https://registry.npmjs.org/@starcoin/stc-wallet/-/stc-wallet-1.2.1.tgz#d3c65bda99e608085b67c5052dd914bf15430a7e"
-  integrity sha512-QYygHaa/xPtDQ/+ffFtVkZCPSAXl51VhNrc4av9WCU5SVDc3aFGdsFjpstmKJgfFF6xAaDp+2reckjEK+gPp2Q==
+"@starcoin/stc-wallet@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.npmjs.org/@starcoin/stc-wallet/-/stc-wallet-1.2.2.tgz#7d13e615460a947cb86e8cb0b8f3e2e1aca41c22"
+  integrity sha512-Y6LjkZxMnUAu2UvFUsyoZqKw8KwvNBc60+CkMJ9pKbRxPZffD1DYRCaBVIrWZz319/+0XteJrW62bZa0G5+lpQ==
   dependencies:
     "@starcoin/starcoin" "^1.2.1"
-    "@starcoin/stc-hdkey" "^0.2.0"
+    "@starcoin/stc-hdkey" "^0.3.0"
     "@starcoin/stc-util" "^0.3.0"
     aes-js "^3.1.1"
     bs58check "^2.1.2"
