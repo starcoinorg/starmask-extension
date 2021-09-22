@@ -10,7 +10,11 @@ import createSubscriptionManager from 'eth-json-rpc-filters/subscriptionManager'
 import providerAsMiddleware from '@starcoin/stc-json-rpc-middleware/providerAsMiddleware';
 import KeyringController from '@starcoin/stc-keyring-controller';
 import { Mutex } from 'await-semaphore';
-import * as ethUtil from '@starcoin/stc-util';
+import {
+  stripHexPrefix,
+  toChecksumAddress,
+  privateToPublicED,
+} from '@starcoin/stc-util';
 import { encoding } from '@starcoin/starcoin';
 import BigNumber from 'bignumber.js';
 import log from 'loglevel';
@@ -1033,7 +1037,7 @@ export default class MetamaskController extends EventEmitter {
             } else {
               const balanceDecimal = res && res.value[0][1].Struct.value[0][1].U128 || 0;
               const balanceHex = new BigNumber(balanceDecimal, 10).toString(16);
-              const balance = ethUtil.addHexPrefix(balanceHex);
+              const balance = addHexPrefix(balanceHex);
               resolve(balance || '0x0');
             }
           },
@@ -1061,14 +1065,14 @@ export default class MetamaskController extends EventEmitter {
     // Filter ERC20 tokens
     const filteredAccountTokens = {};
     Object.keys(accountTokens).forEach((address) => {
-      const checksummedAddress = ethUtil.toChecksumAddress(address);
+      const checksummedAddress = toChecksumAddress(address);
       filteredAccountTokens[checksummedAddress] = {};
       Object.keys(accountTokens[address]).forEach((chainId) => {
         filteredAccountTokens[checksummedAddress][chainId] =
           chainId === MAINNET_CHAIN_ID
             ? accountTokens[address][chainId].filter(
               ({ address: tokenAddress }) => {
-                const checksumAddress = ethUtil.toChecksumAddress(
+                const checksumAddress = toChecksumAddress(
                   tokenAddress,
                 );
                 return contractMap[checksumAddress]
@@ -1107,10 +1111,10 @@ export default class MetamaskController extends EventEmitter {
     const accounts = {
       hd: hdAccounts
         .filter((item, pos) => hdAccounts.indexOf(item) === pos)
-        .map((address) => ethUtil.toChecksumAddress(address)),
+        .map((address) => toChecksumAddress(address)),
       simpleKeyPair: simpleKeyPairAccounts
         .filter((item, pos) => simpleKeyPairAccounts.indexOf(item) === pos)
-        .map((address) => ethUtil.toChecksumAddress(address)),
+        .map((address) => toChecksumAddress(address)),
       ledger: [],
       trezor: [],
     };
@@ -1120,7 +1124,7 @@ export default class MetamaskController extends EventEmitter {
     let { transactions } = this.txController.store.getState();
     // delete tx for other accounts that we're not importing
     transactions = transactions.filter((tx) => {
-      const checksummedTxFrom = ethUtil.toChecksumAddress(tx.txParams.from);
+      const checksummedTxFrom = toChecksumAddress(tx.txParams.from);
       return accounts.hd.includes(checksummedTxFrom);
     });
 
@@ -1416,7 +1420,7 @@ export default class MetamaskController extends EventEmitter {
    */
   async importAccountWithStrategy(strategy, args) {
     const privateKey = await accountImporter.importAccount(strategy, args);
-    const publicKeyBuff = await ethUtil.privateToPublicED(privateKey);
+    const publicKeyBuff = await privateToPublicED(privateKey);
     const publicKey = publicKeyBuff.toString('hex');
     const keyring = await this.keyringController.addNewKeyring(
       'Simple Key Pair',
@@ -1606,7 +1610,7 @@ export default class MetamaskController extends EventEmitter {
     const msgId = msgParams.metamaskId;
     const msg = this.decryptMessageManager.getMsg(msgId);
     try {
-      const stripped = ethUtil.stripHexPrefix(msgParams.data);
+      const stripped = stripHexPrefix(msgParams.data);
       const buff = Buffer.from(stripped, 'hex');
       msgParams.data = JSON.parse(buff.toString('utf8'));
 
@@ -1636,7 +1640,7 @@ export default class MetamaskController extends EventEmitter {
         msgParams,
       );
 
-      const stripped = ethUtil.stripHexPrefix(cleanMsgParams.data);
+      const stripped = stripHexPrefix(cleanMsgParams.data);
       const buff = Buffer.from(stripped, 'hex');
       cleanMsgParams.data = JSON.parse(buff.toString('utf8'));
 

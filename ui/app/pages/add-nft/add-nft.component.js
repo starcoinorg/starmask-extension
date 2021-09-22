@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import * as stcUtil from '@starcoin/stc-util';
+import { isValidAddress } from '@starcoin/stc-util';
 import { checkExistingNFT } from '../../helpers/utils/util';
 import { getNFTGalleryInfo } from '../../helpers/utils/nft-util';
 import { CONFIRM_ADD_NFT_ROUTE } from '../../helpers/constants/routes';
@@ -175,7 +175,7 @@ class AddNFT extends Component {
     });
 
     const arr = customMeta.split('::');
-    const isValidCode = arr.length / 3 >= 1 && stcUtil.isValidAddress(arr[0]);
+    const isValidCode = arr.length / 3 >= 1 && isValidAddress(arr[0]);
     switch (true) {
       case !isValidCode:
         this.setState({

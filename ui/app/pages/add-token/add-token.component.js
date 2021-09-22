@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import * as stcUtil from '@starcoin/stc-util';
+import { isValidAddress } from '@starcoin/stc-util';
 import { checkExistingCodes } from '../../helpers/utils/util';
 import { tokenInfoGetter } from '../../helpers/utils/token-util';
 import { CONFIRM_ADD_TOKEN_ROUTE } from '../../helpers/constants/routes';
@@ -164,7 +164,7 @@ class AddToken extends Component {
 
     const arr = customCode.split('::');
 
-    const isValidCode = arr.length === 3 && stcUtil.isValidAddress(arr[0]);
+    const isValidCode = arr.length === 3 && isValidAddress(arr[0]);
 
     switch (true) {
       case !isValidCode:

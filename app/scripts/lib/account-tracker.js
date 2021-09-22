@@ -8,7 +8,7 @@
  */
 
 import StcQuery from '@starcoin/stc-query';
-import * as ethUtil from '@starcoin/stc-util';
+import { addHexPrefix } from '@starcoin/stc-util';
 import { ObservableStore } from '@metamask/obs-store';
 import { arrayify } from '@ethersproject/bytes';
 import log from 'loglevel';
@@ -292,7 +292,7 @@ export default class AccountTracker {
               key.length - ACCOUNT_BALANCE.length - 2,
             );
             const balanceHex = new BigNumber(balanceDecimal, 10).toString(16);
-            const balance = ethUtil.addHexPrefix(balanceHex);
+            const balance = addHexPrefix(balanceHex);
             if (token === '0x00000000000000000000000000000001::STC::STC') {
               const result = { address, balance };
               accounts[address] = result;

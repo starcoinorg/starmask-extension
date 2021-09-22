@@ -1,6 +1,6 @@
 import EthQuery from '@starcoin/stc-query';
 import log from 'loglevel';
-import * as ethUtil from '@starcoin/stc-util';
+import { addHexPrefix } from '@starcoin/stc-util';
 // import { cloneDeep } from 'lodash';
 import BigNumber from 'bignumber.js';
 // eslint-disable-next-line camelcase
@@ -52,7 +52,7 @@ export default class TxGasUtil {
 
     // maxGasAmount is dynamical adjusted, today it is about 40000000
     const maxGasAmount = new BigNumber(40000000, 10).toString(16);
-    const gasLimit = ethUtil.addHexPrefix(maxGasAmount);
+    const gasLimit = addHexPrefix(maxGasAmount);
     const block = { number: blockNumber, gasLimit };
     log.debug({ block })
     // fallback to block gasLimit
@@ -212,7 +212,7 @@ export default class TxGasUtil {
 
     // add additional gas buffer to our estimation for safety
     const gasLimit = this.addGasBuffer(
-      ethUtil.addHexPrefix(estimatedGasHex),
+      addHexPrefix(estimatedGasHex),
       blockGasLimit,
       multiplier,
     );
