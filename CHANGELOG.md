@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.2.0] - 2021-09-26
+## [2.2.1] - 2021-09-26
 - New features:
     1. support encrypt/decrypt message
 
