@@ -18,15 +18,15 @@ export const PLATFORM_FIREFOX = 'Firefox';
 export const PLATFORM_OPERA = 'Opera';
 
 export const MESSAGE_TYPE = {
-  ETH_DECRYPT: 'eth_decrypt',
-  ETH_GET_ENCRYPTION_PUBLIC_KEY: 'eth_getEncryptionPublicKey',
+  ADD_ETHEREUM_CHAIN: 'wallet_addEthereumChain',
   ETH_SIGN: 'eth_sign',
   ETH_SIGN_TYPED_DATA: 'eth_signTypedData',
   GET_PROVIDER_STATE: 'starmask_getProviderState',
   LOG_WEB3_SHIM_USAGE: 'metamask_logWeb3ShimUsage',
   PERSONAL_SIGN: 'personal_sign',
+  STC_DECRYPT: 'stc_decrypt',
+  STC_GET_ENCRYPTION_PUBLIC_KEY: 'stc_getEncryptionPublicKey',
+  SWITCH_ETHEREUM_CHAIN: 'metamask_switchEthereumChain',
   WATCH_ASSET: 'wallet_watchAsset',
   WATCH_ASSET_LEGACY: 'metamask_watchAsset',
-  ADD_ETHEREUM_CHAIN: 'wallet_addEthereumChain',
-  SWITCH_ETHEREUM_CHAIN: 'metamask_switchEthereumChain',
 };

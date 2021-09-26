@@ -67,9 +67,9 @@ export default class ConfirmTransactionSwitch extends Component {
       return this.redirectToTransaction();
     } else if (txData.msgParams) {
       let pathname = `${CONFIRM_TRANSACTION_ROUTE}/${txData.id}${SIGNATURE_REQUEST_PATH}`;
-      if (txData.type === MESSAGE_TYPE.ETH_DECRYPT) {
+      if (txData.type === MESSAGE_TYPE.STC_DECRYPT) {
         pathname = `${CONFIRM_TRANSACTION_ROUTE}/${txData.id}${DECRYPT_MESSAGE_REQUEST_PATH}`;
-      } else if (txData.type === MESSAGE_TYPE.ETH_GET_ENCRYPTION_PUBLIC_KEY) {
+      } else if (txData.type === MESSAGE_TYPE.STC_GET_ENCRYPTION_PUBLIC_KEY) {
         pathname = `${CONFIRM_TRANSACTION_ROUTE}/${txData.id}${ENCRYPTION_PUBLIC_KEY_REQUEST_PATH}`;
       }
       return <Redirect to={{ pathname }} />;
