@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.2.0] - 2021-09-26
+- New features:
+    1. support encrypt/decrypt message
+
 ## [2.1.0] - 2021-09-18
 - New features:
     1. Add a NFT tab in the home page
