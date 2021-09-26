@@ -14,6 +14,7 @@ import {
   stripHexPrefix,
   toChecksumAddress,
   privateToPublicED,
+  addHexPrefix,
 } from '@starcoin/stc-util';
 import { encoding } from '@starcoin/starcoin';
 import BigNumber from 'bignumber.js';
