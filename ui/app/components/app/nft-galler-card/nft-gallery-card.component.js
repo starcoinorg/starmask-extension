@@ -20,6 +20,10 @@ export default class NFTGalleryCard extends Component {
 
   async getNFTGalleryInfo(meta, body) {
     const metaInfo = await getNFTGalleryInfo(meta, body);
+    if (metaInfo) {
+      metaInfo.imageData = metaInfo.image_data;
+      delete metaInfo.image_data;
+    }
     const { nftMetas, updateNFTMetas } = this.props;
     const newNFTMetas = { ...nftMetas, [meta]: metaInfo };
     updateNFTMetas(newNFTMetas);
@@ -45,6 +49,7 @@ export default class NFTGalleryCard extends Component {
 
   render() {
     const { nft, nftMetas, onClickNFT } = this.props;
+
     let metaInfo = nftMetas[nft.meta];
     if (!metaInfo) {
       metaInfo = this.getNFTGalleryInfo(nft.meta, nft.body);
@@ -57,7 +62,7 @@ export default class NFTGalleryCard extends Component {
 
     return (
       <div {...props}>
-        {this.renderPicture(nft.image, nft.imageData)}
+        {this.renderPicture(metaInfo.image, metaInfo.imageData)}
         {onClickNFT ? (
           <div className="nft-list__photo-card_qty">{nftGallery.items.length}&nbsp;
             <svg
