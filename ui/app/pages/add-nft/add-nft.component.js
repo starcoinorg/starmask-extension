@@ -206,7 +206,7 @@ class AddNFT extends Component {
 
     const arr = customBody.split('::');
 
-    const isValidCode = arr.length / 3 >= 1 && stcUtil.isValidAddress(arr[0]);
+    const isValidCode = arr.length / 3 >= 1 && isValidAddress(arr[0]);
 
     switch (true) {
       case !isValidCode:
