@@ -57,7 +57,6 @@ export default class NFTItems extends Component {
       nftMeta,
       nftMetas,
     } = this.props;
-    console.log(nfts, nftMeta, nftMetas)
     const selectedAccountName = selectedIdentity.name;
 
     const nft = nfts.find(({ meta }) => meta === nftMeta);
