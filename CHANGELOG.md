@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.2.2] - 2021-09-30
+- Bug fixes:
+    1. do not show NFT gallery image_data field
+
+
 ## [2.2.1] - 2021-09-26
 - New features:
     1. support encrypt/decrypt message
