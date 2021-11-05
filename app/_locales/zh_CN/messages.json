@@ -1656,7 +1656,7 @@
     "message": "3. 开始使用 web3 站点和更多功能！"
   },
   "step3HardwareWalletMsg": {
-    "message": "使用您的硬件钱包，操作与以太坊账户制作相同。登录 dApps，发送 ETH ，购买和保存 ERC20 代币和诸如 CryptoKitties 等不可替代代币。"
+    "message": "使用您的硬件钱包，操作与以太坊账户制作相同。登录 dApps，发送 STC ，购买和保存 ERC20 代币和诸如 CryptoKitties 等不可替代代币。"
   },
   "storePhrase": {
     "message": "通过如 1Password 等密码管理工具保存该账户助记词。"

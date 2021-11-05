@@ -1730,7 +1730,7 @@
     "message": "3. Start using web3 sites and more!"
   },
   "step3HardwareWalletMsg": {
-    "message": "Use your hardware account like you would with any Starcoin account. Connect to web3 sites, send ETH, buy and store ERC20 tokens and non-fungible tokens like CryptoKitties."
+    "message": "Use your hardware account like you would with any Starcoin account. Connect to web3 sites, send STC, buy and store ERC20 tokens and non-fungible tokens like CryptoKitties."
   },
   "storePhrase": {
     "message": "Store this phrase in a password manager like 1Password."
