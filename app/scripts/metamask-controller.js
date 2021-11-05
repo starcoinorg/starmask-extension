@@ -714,6 +714,10 @@ export default class MetamaskController extends EventEmitter {
         keyringController.exportAccount,
         keyringController,
       ),
+      getPublicKeyFor: nodeify(
+        keyringController.getPublicKeyFor,
+        keyringController,
+      ),
 
       // txController
       cancelTransaction: nodeify(txController.cancelTransaction, txController),

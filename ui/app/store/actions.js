@@ -1910,6 +1910,28 @@ export function hideWarning() {
   };
 }
 
+export function getPublicKeyFor(address) {
+  return function (dispatch) {
+    dispatch(showLoadingIndication());
+
+    return new Promise((resolve, reject) => {
+      log.debug(`background.getPublicKeyFor`);
+      background.getPublicKeyFor(address, function (err, result) {
+        dispatch(hideLoadingIndication());
+
+        if (err) {
+          log.error(err);
+          dispatch(displayWarning('Had a problem exporting PublicKey.'));
+          reject(err);
+          return;
+        }
+
+        resolve(result);
+      });
+    });
+  };
+}
+
 export function exportAccount(password, address) {
   return function (dispatch) {
     dispatch(showLoadingIndication());

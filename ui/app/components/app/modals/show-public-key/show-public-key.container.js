@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import {
-  exportAccount,
+  getPublicKeyFor,
   hideWarning,
   showModal,
   hideModal,
@@ -28,8 +28,8 @@ function mapStateToPropsFactory() {
 
 function mapDispatchToProps(dispatch) {
   return {
-    exportAccount: (password, address) => {
-      return dispatch(exportAccount(password, address)).then((res) => {
+    getPublicKeyFor: (address) => {
+      return dispatch(getPublicKeyFor(address)).then((res) => {
         dispatch(hideWarning());
         return res;
       });

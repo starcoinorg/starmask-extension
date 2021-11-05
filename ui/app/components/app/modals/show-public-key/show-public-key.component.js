@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import copyToClipboard from 'copy-to-clipboard';
+import log from 'loglevel';
 import { checksumAddress } from '../../../../helpers/utils/util';
 import ReadOnlyInput from '../../../ui/readonly-input';
 import Button from '../../../ui/button';
@@ -18,11 +19,28 @@ export default class ShowPublicKey extends Component {
   static propTypes = {
     selectedIdentity: PropTypes.object.isRequired,
     showAccountDetailModal: PropTypes.func.isRequired,
+    getPublicKeyFor: PropTypes.func.isRequired,
     hideModal: PropTypes.func.isRequired,
     hideWarning: PropTypes.func.isRequired,
     clearAccountDetails: PropTypes.func.isRequired,
     previousModalState: PropTypes.string,
   };
+
+  state = {
+    publicKey: '',
+  };
+
+  componentDidMount() {
+    const { selectedIdentity, getPublicKeyFor } = this.props;
+    const { address } = selectedIdentity;
+    getPublicKeyFor(address)
+      .then((publicKey) =>
+        this.setState({
+          publicKey,
+        }),
+      )
+      .catch((e) => log.error(e));
+  }
 
   componentWillUnmount() {
     this.props.clearAccountDetails();
@@ -36,7 +54,7 @@ export default class ShowPublicKey extends Component {
       hideModal,
       previousModalState,
     } = this.props;
-    const { name, address, publicKey } = selectedIdentity;
+    const { name, address } = selectedIdentity;
 
     return (
       <AccountModalContainer
@@ -61,8 +79,8 @@ export default class ShowPublicKey extends Component {
           <ReadOnlyInput
             textarea
             wrapperClass="ellip-address-wrapper"
-            value={publicKey}
-            onClick={() => copyToClipboard(publicKey)}
+            value={this.state.publicKey}
+            onClick={() => copyToClipboard(this.state.publicKey)}
           />
         </div>
         <div className="export-private-key-modal__buttons">
