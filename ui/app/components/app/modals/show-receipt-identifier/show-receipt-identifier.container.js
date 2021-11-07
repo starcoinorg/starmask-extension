@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import {
-  exportAccount,
+  getReceiptIdentifier,
   hideWarning,
   showModal,
   hideModal,
@@ -28,8 +28,8 @@ function mapStateToPropsFactory() {
 
 function mapDispatchToProps(dispatch) {
   return {
-    exportAccount: (password, address) => {
-      return dispatch(exportAccount(password, address)).then((res) => {
+    getReceiptIdentifier: (address) => {
+      return dispatch(getReceiptIdentifier(address)).then((res) => {
         dispatch(hideWarning());
         return res;
       });

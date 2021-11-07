@@ -1932,6 +1932,30 @@ export function getPublicKeyFor(address) {
   };
 }
 
+export function getReceiptIdentifier(address) {
+  return function (dispatch) {
+    dispatch(showLoadingIndication());
+
+    return new Promise((resolve, reject) => {
+      log.debug(`background.getReceiptIdentifier`);
+      background.getReceiptIdentifier(address, function (err, result) {
+        dispatch(hideLoadingIndication());
+
+        if (err) {
+          log.error(err);
+          dispatch(
+            displayWarning('Had a problem exporting ReceiptIdentifier.'),
+          );
+          reject(err);
+          return;
+        }
+
+        resolve(result);
+      });
+    });
+  };
+}
+
 export function exportAccount(password, address) {
   return function (dispatch) {
     dispatch(showLoadingIndication());

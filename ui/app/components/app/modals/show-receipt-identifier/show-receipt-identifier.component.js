@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import copyToClipboard from 'copy-to-clipboard';
+import log from 'loglevel';
 import { checksumAddress } from '../../../../helpers/utils/util';
 import ReadOnlyInput from '../../../ui/readonly-input';
 import Button from '../../../ui/button';
@@ -18,11 +19,28 @@ export default class ShowReceiptIdentifier extends Component {
   static propTypes = {
     selectedIdentity: PropTypes.object.isRequired,
     showAccountDetailModal: PropTypes.func.isRequired,
+    getReceiptIdentifier: PropTypes.func.isRequired,
     hideModal: PropTypes.func.isRequired,
     hideWarning: PropTypes.func.isRequired,
     clearAccountDetails: PropTypes.func.isRequired,
     previousModalState: PropTypes.string,
   };
+
+  state = {
+    receiptIdentifier: '',
+  };
+
+  componentDidMount() {
+    const { selectedIdentity, getReceiptIdentifier } = this.props;
+    const { address } = selectedIdentity;
+    getReceiptIdentifier(address)
+      .then((receiptIdentifier) =>
+        this.setState({
+          receiptIdentifier,
+        }),
+      )
+      .catch((e) => log.error(e));
+  }
 
   componentWillUnmount() {
     this.props.clearAccountDetails();
@@ -36,7 +54,7 @@ export default class ShowReceiptIdentifier extends Component {
       hideModal,
       previousModalState,
     } = this.props;
-    const { name, address, receiptIdentifier } = selectedIdentity;
+    const { name, address } = selectedIdentity;
 
     return (
       <AccountModalContainer
@@ -61,8 +79,8 @@ export default class ShowReceiptIdentifier extends Component {
           <ReadOnlyInput
             textarea
             wrapperClass="ellip-address-wrapper"
-            value={receiptIdentifier}
-            onClick={() => copyToClipboard(receiptIdentifier)}
+            value={this.state.receiptIdentifier}
+            onClick={() => copyToClipboard(this.state.receiptIdentifier)}
           />
         </div>
         <div className="export-private-key-modal__buttons">
