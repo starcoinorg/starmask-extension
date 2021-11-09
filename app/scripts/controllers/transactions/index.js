@@ -57,6 +57,7 @@ const MAX_MEMSTORE_TX_LIST_SIZE = 100; // Number of transactions (by unique nonc
   @param {Object} opts.blockTracker - An instance of eth-blocktracker
   @param {Object} opts.provider - A network provider.
   @param {Function} opts.signTransaction - function the signs an ethereumjs-tx(ethTx signer that returns a rawTx)
+  @param {Function} opts.getPublcKeyFor - function the signs an ethereumjs-tx(ethTx signer that returns a rawTx)
   @param {Object} opts.getPermittedAccounts - get accounts that an origin has permissions for
   @param {number} [opts.txHistoryLimit] - number *optional* for limiting how many transactions are in state
   @param {Object} opts.preferencesStore
@@ -78,7 +79,7 @@ export default class TransactionController extends EventEmitter {
 
     this.memStore = new ObservableStore({});
     this.query = new EthQuery(this.provider);
-    this.txGasUtil = new TxGasUtil(this.provider, this.preferencesStore);
+    this.txGasUtil = new TxGasUtil(this.provider, this.preferencesStore, opts.getPublicKeyFor);
     this._mapMethods();
     this.txStateManager = new TransactionStateManager({
       initState: opts.initState,

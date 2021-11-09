@@ -28,9 +28,10 @@ and used to get selected account publicKey.
 */
 
 export default class TxGasUtil {
-  constructor(provider, store) {
+  constructor(provider, store, getPublicKeyFor) {
     this.query = new EthQuery(provider);
     this.store = store;
+    this.getPublicKeyFor = getPublicKeyFor;
   }
 
   /**
@@ -98,7 +99,10 @@ export default class TxGasUtil {
     const gasUnitPrice = txMeta.txParams.gasPrice || 1;
     const expirationTimestampSecs = await this.getExpirationTimestampSecs(txMeta.txParams);
     const selectedAddressHex = txMeta.txParams.from;
-    const selectedPublicKeyHex = this.store.getState().identities[selectedAddressHex].publicKey;
+    const selectedPublicKeyHex = await this.getPublicKeyFor(selectedAddressHex);
+    if (!selectedPublicKeyHex) {
+      throw new Error(`Starmask: selected account's public key is null`);
+    }
     const selectedSequenceNumber = await new Promise((resolve, reject) => {
       return this.query.getResource(
         txMeta.txParams.from,

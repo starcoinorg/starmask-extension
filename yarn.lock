@@ -2264,76 +2264,22 @@
     puka "^1.0.1"
     read-package-json-fast "^1.1.3"
 
-"@onekeyhq/blockchain-link@1.0.18":
-  version "1.0.18"
-  resolved "https://npm.pkg.github.com/download/@onekeyhq/blockchain-link/1.0.18/3a7d001c51d810dfc369eaabadfd53004279088798f6df37515c45cb39c2e37c#fbbce52bef3bc31496468f89ef353e950426283e"
-  integrity sha512-/hbmQ8nwtFu0vNK6srcH533atAotOWrsXN8JKDY1Q4MhwyyISRO/fFDfFUJBRBvqOim83xs3D4ZZ9brK/new6g==
-  dependencies:
-    bignumber.js "^9.0.1"
-    es6-promise "^4.2.8"
-    events "^3.2.0"
-    ripple-lib "1.8.2"
-    tiny-worker "^2.3.0"
-    ws "^7.4.0"
-
-"@onekeyhq/connect@8.2.3-extended":
-  version "8.2.3-extended"
-  resolved "https://npm.pkg.github.com/download/@onekeyhq/connect/8.2.3-extended/0ab6381c709c41e1d0ef595847a8732ae697d3169db6e2a09eb86e18d35e80d4#091e96cb3da4ff3a67e7bad93a72c032498ea411"
-  integrity sha512-7nZI7CU+CzjevPA6UNupNK/5xgb2ciJzWeAO4l7jSLQVY3nwSmXyMM73saii3wlI4n1V9hvvGiUnaxaMJ63+mw==
+"@onekeyhq/connect@8.6.1":
+  version "8.6.1"
+  resolved "https://npm.pkg.github.com/download/@onekeyhq/connect/8.6.1/c4f0d45bb764081814fd35371e5408e44551166ee71ef2a348f29966455643f3#1dad64c532c6bd9ec7d5902bfcdb47d990da8e55"
+  integrity sha512-CtLwxvjo+mQvpgMoRoCw1sVx349bp5i2XvTbciIi/N+QrhlPV1lNTWic7pDBbRD27bEYlirHaMcOUaiRA2h8pg==
   dependencies:
     "@babel/runtime" "^7.12.5"
-    "@onekeyhq/blockchain-link" "1.0.18"
-    "@onekeyhq/link" "1.7.5"
-    "@onekeyhq/rollout" "1.0.6"
     "@sentry/browser" "^6.4.0"
     "@sentry/integrations" "^6.4.0"
     "@sentry/tracing" "^6.4.0"
-    "@trezor/utxo-lib" "^0.1.2"
-    bchaddrjs "0.4.9"
-    bignumber.js "^9.0.1"
-    bowser "^2.11.0"
+    base58-js "^1.0.0"
+    eth-sig-util "3.0.1"
     events "^3.2.0"
-    hd-wallet "9.1.0"
-    keccak "^3.0.1"
-    node-fetch "^2.6.1"
-    parse-uri "^1.0.3"
     patch-package "^6.2.2"
     postinstall-postinstall "^2.1.0"
-    tiny-worker "^2.3.0"
+    url-join "^4.0.1"
     whatwg-fetch "^3.5.0"
-
-"@onekeyhq/eth-onekey-keyring@^0.7.0":
-  version "0.7.0"
-  resolved "https://npm.pkg.github.com/download/@onekeyhq/eth-onekey-keyring/0.7.0/bc20290f86a6d22568ff948b36f870c2c9120ed51448638b8717bffeab745d58#91778c9309f147e455c899b8f22d71e9f757112b"
-  integrity sha512-Ufa5viCD8Y0Ql8EfZDtk26fyt8nRqk8QYb5sUB0W5xFEf0KCYtgF30TjxlnT+SXHOlA7iuS0o2PYjwUWl687Gg==
-  dependencies:
-    "@onekeyhq/connect" "8.2.3-extended"
-    eth-sig-util "^1.4.2"
-    ethereumjs-tx "^1.3.4"
-    ethereumjs-util "^7.0.9"
-    hdkey "0.8.0"
-
-"@onekeyhq/link@1.7.5":
-  version "1.7.5"
-  resolved "https://npm.pkg.github.com/download/@onekeyhq/link/1.7.5/1bdce865ec2d3341867e4a06a0e428b55865de7e2cca5191ae838b347a394fba#549f2a8fb54699f976e0ac260598c6cbc81c0f50"
-  integrity sha512-biDf4fVamQXroX/OVPG4KvTUvvh+MXNe0xwMJBm0Si7SuxWj3rYHh/+x/ROnjDwJJK/qNbpKrASMFhBOIAkk1A==
-  dependencies:
-    bigi "^1.4.1"
-    ecurve "^1.0.3"
-    json-stable-stringify "^1.0.1"
-    node-fetch "^2.6.1"
-    object.values "^1.1.2"
-    protobufjs-old-fixed-webpack "3.8.5"
-    semver-compare "^1.0.0"
-    whatwg-fetch "^3.5.0"
-
-"@onekeyhq/rollout@1.0.6":
-  version "1.0.6"
-  resolved "https://npm.pkg.github.com/download/@onekeyhq/rollout/1.0.6/dab197211436334fa96d5e9c4796aacf7ffc82e58c26e5b8110d5f5663175bd2#ecf85780b70827d566c5ed4bb48f4a2553b1cdd4"
-  integrity sha512-jMH5C+G9jEU7TeUnUSXvw54+VKq2jXFdN0eJrmFTMi8CybwcaQwlUfKtcbU5jm3KCX3+VBA7XK3ka/7e+lL1jg==
-  dependencies:
-    cross-fetch "^3.0.6"
-    runtypes "^5.0.1"
 
 "@pmmmwh/react-refresh-webpack-plugin@^0.4.2":
   version "0.4.3"
@@ -2666,19 +2612,29 @@
   resolved "https://registry.npmjs.org/@starcoin/stc-ed25519/-/stc-ed25519-0.1.0.tgz#56e65b388889a5953e01806cc3deaa20ddaf8174"
   integrity sha512-H3oz8fNQD604Ak0cSNTDcbfzLxsB9XAKw1aJO7iBPuZWcHF8bgn7xxOzsinx5V5LGaPeleWc/Qw4vCKnK6cxHQ==
 
-"@starcoin/stc-hd-keyring@^1.4.2":
-  version "1.4.2"
-  resolved "https://registry.npmjs.org/@starcoin/stc-hd-keyring/-/stc-hd-keyring-1.4.2.tgz#8f5c28bfbabf5f390dc5768ed856e4729d89d1a0"
-  integrity sha512-toeDXgka7gX57cFhdH70uVzeIvp9MFEx9vHGkEMPahkz0BgeI1sejLlMIZWylxsT/yZX/0fDR579cHz1cvPWTQ==
+"@starcoin/stc-hd-keyring@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.npmjs.org/@starcoin/stc-hd-keyring/-/stc-hd-keyring-1.5.0.tgz#a6ab0eb9c54f49a4c6c117174adf6cf65e8498b1"
+  integrity sha512-i9TYKhe/zDj1+QXvwF8tRb4kzx09eEZyp7jGtgY4qRvifbyVcKlZMx8OBrrCP4nAkIH3dpTJQQgehvyqI2+WTw==
   dependencies:
     "@ethersproject/bytes" "^5.0.6"
     "@starcoin/starcoin" "^1.4.3"
-    "@starcoin/stc-simple-keyring" "^1.4.2"
+    "@starcoin/stc-simple-keyring" "^1.5.0"
     "@starcoin/stc-util" "^0.3.0"
     "@starcoin/stc-wallet" "^1.2.2"
     bip39 "^2.2.0"
     eth-sig-util "^3.0.1"
     ethereumjs-util "^7.0.9"
+
+"@starcoin/stc-hdkey@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.npmjs.org/@starcoin/stc-hdkey/-/stc-hdkey-0.2.0.tgz#03f39fd2308df9811789ee57ad2c0bdc911663ca"
+  integrity sha512-PTs8WSDn9bdcicFW962pcc/fYc51IOLogpFaN57tqvE+Socpfpnt5l56yiQaGmpR8Th6aoeOb8XYdGWhDc59zw==
+  dependencies:
+    "@starcoin/stc-util" "^0.3.0"
+    coinstring "^2.0.0"
+    safe-buffer "^5.1.1"
+    secp256k1 "^3.0.1"
 
 "@starcoin/stc-hdkey@^0.3.0":
   version "0.3.0"
@@ -2707,10 +2663,10 @@
     pump "^3.0.0"
     webextension-polyfill-ts "^0.25.0"
 
-"@starcoin/stc-json-rpc-middleware@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.npmjs.org/@starcoin/stc-json-rpc-middleware/-/stc-json-rpc-middleware-0.1.0.tgz#e322a83519bef4d909446f22c27f277cf95eda16"
-  integrity sha512-Q5DY7VXLy6IdpA+8KEXU/0D4h8M8npgSUFzo+/dl1mTMYQufuPlZQOVXPkZBIqK0URNvQ3Ndcy70BJW6NYT/rg==
+"@starcoin/stc-json-rpc-middleware@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.npmjs.org/@starcoin/stc-json-rpc-middleware/-/stc-json-rpc-middleware-0.2.0.tgz#4dc6c310139ed5287a65a84f8001d3438a096de0"
+  integrity sha512-NEi94uTPYuG+xJTyeUjaDmI0g5mw8AQeeedYhGfKBLOVwR1CEWZZNNegNFTkEPt+D39Ltm+zi15sYXERDIui3g==
   dependencies:
     btoa "^1.2.1"
     clone "^2.1.1"
@@ -2734,13 +2690,13 @@
     json-rpc-engine "^5.3.0"
     node-fetch "^2.6.1"
 
-"@starcoin/stc-keyring-controller@^1.4.2":
-  version "1.4.2"
-  resolved "https://registry.npmjs.org/@starcoin/stc-keyring-controller/-/stc-keyring-controller-1.4.2.tgz#c1b02f0790f8e03eec9e26c3c54d78c00e8ab6ca"
-  integrity sha512-RFpuwTUZSdmTEiQVYSMpiR38yqs0r6Q+vJNtpbllW8JoszXvPuPzRxY6hY9Roo+/4kFHJsPGjQpEzKELqoRqqA==
+"@starcoin/stc-keyring-controller@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.npmjs.org/@starcoin/stc-keyring-controller/-/stc-keyring-controller-1.5.0.tgz#c8050dcf0ca695ab7a5f086e550c3935e5a81d62"
+  integrity sha512-ChtwbsnySHRRE+LHdiEWkjr99IY29ahtCXhAZh/Y4tpb/O/TuDnyWvBkq0mdHrtVS/Kq4N6WQkzQH4ugSkAYGg==
   dependencies:
-    "@starcoin/stc-hd-keyring" "^1.4.2"
-    "@starcoin/stc-simple-keyring" "^1.4.2"
+    "@starcoin/stc-hd-keyring" "^1.5.0"
+    "@starcoin/stc-simple-keyring" "^1.5.0"
     "@starcoin/stc-util" "^0.3.0"
     bip39 "^2.4.0"
     bluebird "^3.5.0"
@@ -2761,6 +2717,19 @@
     assert "^1.4.1"
     await-semaphore "^0.1.3"
 
+"@starcoin/stc-onekey-keyring@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.npmjs.org/@starcoin/stc-onekey-keyring/-/stc-onekey-keyring-0.2.0.tgz#ae1ece8fa4369bc58eb33b7874e3d9ec95ee497b"
+  integrity sha512-ugLWw3oUl46TulsOAvSCo4Vni/VBVPdskXyt/VSEmoa6j/6mwpezKmN5kMVWVyVrvjaVXPA0/WjRoq7zBb6VEQ==
+  dependencies:
+    "@onekeyhq/connect" "8.6.1"
+    "@starcoin/starcoin" "^1.5.3"
+    "@starcoin/stc-hdkey" "^0.2.0"
+    "@starcoin/stc-util" "^0.3.0"
+    eth-sig-util "^1.4.2"
+    ethereumjs-tx "^1.3.4"
+    loglevel "^1.7.1"
+
 "@starcoin/stc-query@^0.3.1":
   version "0.3.1"
   resolved "https://registry.npmjs.org/@starcoin/stc-query/-/stc-query-0.3.1.tgz#57f9d81bd9437337ecea9b63c418b87e0b6bdb14"
@@ -2769,10 +2738,10 @@
     json-rpc-random-id "^1.0.0"
     xtend "^4.0.1"
 
-"@starcoin/stc-simple-keyring@^1.4.2":
-  version "1.4.2"
-  resolved "https://registry.npmjs.org/@starcoin/stc-simple-keyring/-/stc-simple-keyring-1.4.2.tgz#3abcc59b949fa8ea4b5261752f121b2109ca0413"
-  integrity sha512-4/C1XD9lgHnVhVA7Gb5FICl+mMmUTj/GvpWJTPutEKcF+HhVXLYRjqbIne+687Bm3n2paG/3tf+Xe1ka7AuTMw==
+"@starcoin/stc-simple-keyring@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.npmjs.org/@starcoin/stc-simple-keyring/-/stc-simple-keyring-1.5.0.tgz#f00eb7a43b64c7d007cfcf8b1976141474c75104"
+  integrity sha512-jccekBChaVuN6U0mwV8SjL9L3JK0UTBPOcnBOzHP9WBu0SfZcLz2SsQCqq4fdnfzB2vAACL515GHx3ZbRS5YIg==
   dependencies:
     "@ethersproject/bytes" "^5.0.6"
     "@starcoin/starcoin" "^1.4.3"
@@ -3340,31 +3309,6 @@
   dependencies:
     cross-fetch "^3.0.6"
     runtypes "^5.0.1"
-
-"@trezor/utxo-lib@0.1.1":
-  version "0.1.1"
-  resolved "https://registry.npmjs.org/@trezor/utxo-lib/-/utxo-lib-0.1.1.tgz#63cb4b3accc90352a42a1c866fce8bfbb1c94b26"
-  integrity sha512-Wonj9ldKCeoajCV6lSE6+hJ2hdPxmVaysWRO9GxhnKyiOdRhiOIQcdKOiXYqpcxwkIbbL9eLGDg73tfn3MUa6w==
-  dependencies:
-    bech32 "0.0.3"
-    bigi "^1.4.0"
-    bip66 "^1.1.0"
-    bitcoin-ops "^1.3.0"
-    blake2b "https://github.com/BitGo/blake2b#6268e6dd678661e0acc4359e9171b97eb1ebf8ac"
-    bs58check "^2.0.0"
-    create-hash "^1.1.0"
-    create-hmac "^1.1.3"
-    debug "~3.1.0"
-    ecurve "^1.0.0"
-    merkle-lib "^2.0.10"
-    pushdata-bitcoin "^1.0.1"
-    randombytes "^2.0.1"
-    safe-buffer "^5.0.1"
-    typeforce "^1.11.3"
-    varuint-bitcoin "^1.0.4"
-    wif "^2.0.1"
-  optionalDependencies:
-    secp256k1 "^3.5.2"
 
 "@trezor/utxo-lib@0.1.2", "@trezor/utxo-lib@^0.1.2":
   version "0.1.2"
@@ -5730,6 +5674,11 @@ base-x@3.0.8, base-x@^3.0.2:
   dependencies:
     safe-buffer "^5.0.1"
 
+base58-js@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/base58-js/-/base58-js-1.0.0.tgz#08b6d745d811103114cc150f7da517b3c02a24ec"
+  integrity sha512-izVZ4M54gJYRk7VGsiRatRyUVCUaUDF15earKs3u9sUXlawvTwttC9xitGk8Xzlgib5rDL71WPOe4JsyJu9Scg==
+
 base64-arraybuffer@0.1.4:
   version "0.1.4"
   resolved "https://registry.npmjs.org/base64-arraybuffer/-/base64-arraybuffer-0.1.4.tgz"
@@ -5757,22 +5706,6 @@ batch-processor@1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/batch-processor/-/batch-processor-1.0.0.tgz"
   integrity sha1-dclcMrdI4IUNEMKxaPa9vpiRrOg=
-
-bchaddrjs@0.4.9:
-  version "0.4.9"
-  resolved "https://registry.npmjs.org/bchaddrjs/-/bchaddrjs-0.4.9.tgz#c17036bf5bab31bfbb9f3cec432c7c578f0faf46"
-  integrity sha512-Mf5Uf+P452ltYg1b/NncX/eAEKW+iAfUs8rO1mcgro8S+/WG6gRh8OqgBtyCK1jBHViajovWoAG+ZCkKbhZbNg==
-  dependencies:
-    bs58check "^2.1.2"
-    cashaddrjs "^0.3.12"
-
-bchaddrjs@^0.3.2:
-  version "0.3.2"
-  resolved "https://registry.npmjs.org/bchaddrjs/-/bchaddrjs-0.3.2.tgz#62d4915f8f69012b7a16ae9fd0c99eca3a8ccf91"
-  integrity sha512-jpoq2GX6PphcCpuvvrQG4oQmEzn4nGQSm5dT208W72r9GDdbmNPi0hG9TY/dFF3r9sNtdl0qKwNsh8dNL3Q62g==
-  dependencies:
-    bs58check "^2.1.2"
-    cashaddrjs "^0.3.3"
 
 bchaddrjs@^0.5.2:
   version "0.5.2"
@@ -6611,13 +6544,6 @@ cashaddrjs@0.4.4:
   version "0.4.4"
   resolved "https://registry.npmjs.org/cashaddrjs/-/cashaddrjs-0.4.4.tgz"
   integrity sha512-xZkuWdNOh0uq/mxJIng6vYWfTowZLd9F4GMAlp2DwFHlcCqCm91NtuAc47RuV4L7r4PYcY5p6Cr2OKNb4hnkWA==
-  dependencies:
-    big-integer "1.6.36"
-
-cashaddrjs@^0.3.12, cashaddrjs@^0.3.3:
-  version "0.3.12"
-  resolved "https://registry.npmjs.org/cashaddrjs/-/cashaddrjs-0.3.12.tgz#73089588113459741e854aa842db1f7816d8428d"
-  integrity sha512-GdjCYMVwd86HXcFcxyEZQLPLFv8a/u0ccYPsO0PpnUW26LhZzHX9l9QA+DjaeUah7tnebwPs33NWDbbUy8iVYQ==
   dependencies:
     big-integer "1.6.36"
 
@@ -9558,6 +9484,16 @@ eth-rpc-errors@^4.0.0, eth-rpc-errors@^4.0.2:
   dependencies:
     fast-safe-stringify "^2.0.6"
 
+eth-sig-util@3.0.1, eth-sig-util@^3.0.0, eth-sig-util@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.npmjs.org/eth-sig-util/-/eth-sig-util-3.0.1.tgz"
+  integrity sha512-0Us50HiGGvZgjtWTyAI/+qTzYPMLy5Q451D0Xy68bxq1QMWdoOddDwGvsqcFT27uohKgalM9z/yxplyt+mY2iQ==
+  dependencies:
+    ethereumjs-abi "^0.6.8"
+    ethereumjs-util "^5.1.1"
+    tweetnacl "^1.0.3"
+    tweetnacl-util "^0.15.0"
+
 eth-sig-util@^1.4.0, eth-sig-util@^1.4.2:
   version "1.4.2"
   resolved "https://registry.npmjs.org/eth-sig-util/-/eth-sig-util-1.4.2.tgz"
@@ -9572,16 +9508,6 @@ eth-sig-util@^2.0.0, eth-sig-util@^2.4.4, eth-sig-util@^2.5.0:
   integrity sha512-aCMBwp8q/4wrW4QLsF/HYBOSA7TpLKmkVwP3pYQNkEEseW2Rr8Z5Uxc9/h6HX+OG3tuHo+2bINVSihIeBfym6A==
   dependencies:
     ethereumjs-abi "0.6.8"
-    ethereumjs-util "^5.1.1"
-    tweetnacl "^1.0.3"
-    tweetnacl-util "^0.15.0"
-
-eth-sig-util@^3.0.0, eth-sig-util@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.npmjs.org/eth-sig-util/-/eth-sig-util-3.0.1.tgz"
-  integrity sha512-0Us50HiGGvZgjtWTyAI/+qTzYPMLy5Q451D0Xy68bxq1QMWdoOddDwGvsqcFT27uohKgalM9z/yxplyt+mY2iQ==
-  dependencies:
-    ethereumjs-abi "^0.6.8"
     ethereumjs-util "^5.1.1"
     tweetnacl "^1.0.3"
     tweetnacl-util "^0.15.0"
@@ -12132,17 +12058,6 @@ hastscript@^6.0.0:
     property-information "^5.0.0"
     space-separated-tokens "^1.0.0"
 
-hd-wallet@9.1.0:
-  version "9.1.0"
-  resolved "https://registry.npmjs.org/hd-wallet/-/hd-wallet-9.1.0.tgz#0cfdae4e0d7147438c7802fedce29b7d049c0f5f"
-  integrity sha512-Oto94Q1e9C9wPsrxErky8TFoOqERiL6EZEo3jZ3BSPu36hpz1KfsB3MqPorvoOWQt6AjC5FoIy/lIPLx3aDMew==
-  dependencies:
-    "@trezor/utxo-lib" "0.1.1"
-    bchaddrjs "^0.3.2"
-    bignumber.js "^9.0.1"
-    queue "^6.0.1"
-    socket.io-client "^2.2.0"
-
 hd-wallet@9.1.1:
   version "9.1.1"
   resolved "https://registry.npmjs.org/hd-wallet/-/hd-wallet-9.1.1.tgz"
@@ -14641,6 +14556,11 @@ loglevel@^1.4.1, loglevel@^1.5.0:
   version "1.6.0"
   resolved "https://registry.npmjs.org/loglevel/-/loglevel-1.6.0.tgz"
   integrity sha1-rgyqVhERSYxboTcj1vtjHSQAOTQ=
+
+loglevel@^1.7.1:
+  version "1.7.1"
+  resolved "https://registry.npmjs.org/loglevel/-/loglevel-1.7.1.tgz#005fde2f5e6e47068f935ff28573e125ef72f197"
+  integrity sha512-Hesni4s5UkWkwCGJMQGAh71PaLUmKFM60dHvq0zi/vDhhrzuk+4GgNbTXJ12YYQJn6ZKBDNIjYcuQGKudvqrIw==
 
 loglevelnext@^1.0.1:
   version "1.0.5"
@@ -21877,6 +21797,11 @@ urix@^0.1.0:
   version "0.1.0"
   resolved "https://registry.npmjs.org/urix/-/urix-0.1.0.tgz"
   integrity sha1-2pN/emLiH+wf0Y1Js1wpNQZ6bHI=
+
+url-join@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.npmjs.org/url-join/-/url-join-4.0.1.tgz#b642e21a2646808ffa178c4c5fda39844e12cde7"
+  integrity sha512-jk1+QP6ZJqyOiuEI9AEWQfju/nB2Pw466kbA0LEZljHwKeMgd9WrAEgEGxjPDD2+TNbbb37rTyhEfrCXfuKXnA==
 
 url-loader@^4.0.0:
   version "4.1.1"
