@@ -24,13 +24,13 @@ export default class SelectHardware extends Component {
     return null;
   };
 
-  renderConnectToTrezorButton() {
+  renderConnectToOneKeyButton() {
     return (
       <button
         className={classnames('hw-connect__btn', {
-          selected: this.state.selectedDevice === 'trezor',
+          selected: this.state.selectedDevice === 'onekey',
         })}
-        onClick={(_) => this.setState({ selectedDevice: 'trezor' })}
+        onClick={(_) => this.setState({ selectedDevice: 'onekey' })}
       >
         <img
           className="hw-connect__btn__img"
@@ -45,7 +45,7 @@ export default class SelectHardware extends Component {
     return (
       <>
         <div className="hw-connect__btn-wrapper">
-          {this.renderConnectToTrezorButton()}
+          {this.renderConnectToOneKeyButton()}
         </div>
         <Button
           type="primary"
@@ -115,7 +115,7 @@ export default class SelectHardware extends Component {
     );
   }
 
-  renderTrezorAffiliateLink() {
+  renderOneKeyAffiliateLink() {
     return (
       <div className="hw-connect__get-hw">
         <p className="hw-connect__get-hw__msg">
@@ -217,7 +217,7 @@ export default class SelectHardware extends Component {
       <div className="new-external-account-form">
         {this.renderHeader()}
         {this.renderButtons()}
-        {this.renderTrezorAffiliateLink()}
+        {this.renderOneKeyAffiliateLink()}
         {this.renderLearnMore()}
         {this.renderTutorialSteps()}
         {this.renderFooter()}

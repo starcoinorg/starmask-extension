@@ -1130,7 +1130,7 @@ export default class MetamaskController extends EventEmitter {
         .filter((item, pos) => simpleKeyPairAccounts.indexOf(item) === pos)
         .map((address) => toChecksumAddress(address)),
       ledger: [],
-      trezor: [],
+      onekey: [],
     };
 
     // transactions
@@ -1203,7 +1203,7 @@ export default class MetamaskController extends EventEmitter {
   async getKeyringForDevice(deviceName, hdPath = null) {
     let keyringName = null;
     switch (deviceName) {
-      case 'trezor':
+      case 'onekey':
         keyringName = OneKeyKeyring.type;
         break;
       // case 'ledger':
@@ -1230,7 +1230,7 @@ export default class MetamaskController extends EventEmitter {
   }
 
   /**
-   * Fetch account list from a trezor device.
+   * Fetch account list from a onekey device.
    *
    * @returns [] accounts
    */
@@ -1282,7 +1282,7 @@ export default class MetamaskController extends EventEmitter {
   }
 
   /**
-   * Imports an account from a Trezor or Ledger device.
+   * Imports an account from a OneKey or Ledger device.
    *
    * @returns {} keyState
    */
@@ -1303,7 +1303,7 @@ export default class MetamaskController extends EventEmitter {
       if (!oldAccounts.includes(address)) {
         const label = `${deviceName[0].toUpperCase()}${deviceName.slice(1)} ${parseInt(index, 10) + 1
           } ${hdPathDescription || ''}`.trim();
-        // Set the account label to Trezor 1 /  Ledger 1, etc
+        // Set the account label to OneKey 1 /  Ledger 1, etc
         this.preferencesController.setAccountLabel(address, label);
         // Select the account
         this.preferencesController.setSelectedAddress(address);
@@ -1718,7 +1718,7 @@ export default class MetamaskController extends EventEmitter {
       case 'OneKey Hardware': {
         return new Promise((_, reject) => {
           reject(
-            new Error('Trezor does not support stc_getEncryptionPublicKey.'),
+            new Error('OneKey does not support stc_getEncryptionPublicKey.'),
           );
         });
       }
