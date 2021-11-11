@@ -1,5 +1,7 @@
 import EventEmitter from 'events';
 import pump from 'pump';
+import { ethers } from 'ethers';
+const { arrayify, hexlify } = ethers.utils;
 import { ObservableStore } from '@metamask/obs-store';
 import { storeAsStream } from '@metamask/obs-store/dist/asStream';
 import { JsonRpcEngine } from 'json-rpc-engine';
@@ -16,7 +18,7 @@ import {
   privateToPublicED,
   addHexPrefix,
 } from '@starcoin/stc-util';
-import { encoding } from '@starcoin/starcoin';
+import { utils, starcoin_types, encoding } from '@starcoin/starcoin';
 import BigNumber from 'bignumber.js';
 import log from 'loglevel';
 import TrezorKeyring from '@starcoin/stc-onekey-keyring';
@@ -1561,13 +1563,21 @@ export default class MetamaskController extends EventEmitter {
   signPersonalMessage(msgParams) {
     log.info('StarMaskController - signPersonalMessage');
     const msgId = msgParams.metamaskId;
+    const signingMessage = new starcoin_types.SigningMessage(arrayify(msgParams.data));
+    const chainId = parseInt(msgParams.networkId, 10);
     // sets the status op the message to 'approved'
     // and removes the metamaskId for signing
     return this.personalMessageManager
       .approveMessage(msgParams)
       .then((cleanMsgParams) => {
         // signs the message
+        const rawData = Buffer.from(stripHexPrefix(cleanMsgParams.data), 'hex').toString('utf8')
+        cleanMsgParams.rawData = rawData;
         return this.keyringController.signPersonalMessage(cleanMsgParams);
+      })
+      .then((payload) => {
+        const { publicKey, signature } = payload;
+        return utils.signedMessage.generateSignedMessage(signingMessage, chainId, publicKey, signature)
       })
       .then((rawSig) => {
         // tells the listener that the message has been signed
