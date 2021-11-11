@@ -78,7 +78,7 @@ export function getAccountType(state) {
   const type = currentKeyring && currentKeyring.type;
 
   switch (type) {
-    case 'Trezor Hardware':
+    case 'OneKey Hardware':
     case 'Ledger Hardware':
       return 'hardware';
     case 'Simple Key Pair':

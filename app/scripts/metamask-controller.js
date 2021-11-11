@@ -21,7 +21,7 @@ import {
 import { utils, starcoin_types, encoding } from '@starcoin/starcoin';
 import BigNumber from 'bignumber.js';
 import log from 'loglevel';
-import TrezorKeyring from '@starcoin/stc-onekey-keyring';
+import OneKeyKeyring from '@starcoin/stc-onekey-keyring';
 // import LedgerBridgeKeyring from '@metamask/eth-ledger-bridge-keyring';
 import EthQuery from '@starcoin/stc-query';
 import nanoid from 'nanoid';
@@ -245,7 +245,7 @@ export default class MetamaskController extends EventEmitter {
     });
 
     // const additionalKeyrings = [TrezorKeyring, LedgerBridgeKeyring];
-    const additionalKeyrings = [TrezorKeyring];
+    const additionalKeyrings = [OneKeyKeyring];
     this.keyringController = new KeyringController({
       keyringTypes: additionalKeyrings,
       initState: initState.KeyringController,
@@ -1204,7 +1204,7 @@ export default class MetamaskController extends EventEmitter {
     let keyringName = null;
     switch (deviceName) {
       case 'trezor':
-        keyringName = TrezorKeyring.type;
+        keyringName = OneKeyKeyring.type;
         break;
       // case 'ledger':
       //   keyringName = LedgerBridgeKeyring.type;
@@ -1715,7 +1715,7 @@ export default class MetamaskController extends EventEmitter {
         });
       }
 
-      case 'Trezor Hardware': {
+      case 'OneKey Hardware': {
         return new Promise((_, reject) => {
           reject(
             new Error('Trezor does not support stc_getEncryptionPublicKey.'),

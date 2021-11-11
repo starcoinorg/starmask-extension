@@ -232,7 +232,7 @@ export default class AccountMenu extends Component {
     let label;
 
     switch (type) {
-      case 'Trezor Hardware':
+      case 'OneKey Hardware':
       case 'Ledger Hardware':
         label = t('hardware');
         break;
