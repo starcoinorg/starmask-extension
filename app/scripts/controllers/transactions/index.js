@@ -282,6 +282,7 @@ export default class TransactionController extends EventEmitter {
       ? addHexPrefix(txMeta.txParams.value)
       : '0x0';
 
+    txMeta.loadingDefaults = true;
     this.addTx(txMeta);
     this.emit('newUnapprovedTx', txMeta);
 

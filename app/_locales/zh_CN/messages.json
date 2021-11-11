@@ -730,6 +730,9 @@
   "functionType": {
     "message": "功能类型"
   },
+  "gasDefaultsLoading": {
+    "message": "燃料限制加载中..."
+  },
   "gasLimit": {
     "message": "燃料限制"
   },

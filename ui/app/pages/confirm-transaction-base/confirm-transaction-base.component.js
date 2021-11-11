@@ -11,6 +11,7 @@ import { CONFIRM_TRANSACTION_ROUTE } from '../../helpers/constants/routes';
 import {
   INSUFFICIENT_FUNDS_ERROR_KEY,
   TRANSACTION_ERROR_KEY,
+  GAS_DEFAULTS_LOADING_ERROR_KEY,
   GAS_LIMIT_TOO_LOW_ERROR_KEY,
   GAS_PRICE_EXTEND_MAX_ERROR_KEY,
   GAS_LIMIT_EXTEND_MAX_ERROR_KEY,
@@ -162,7 +163,7 @@ export default class ConfirmTransactionBase extends Component {
       balance,
       conversionRate,
       hexTransactionFee,
-      txData: { simulationFails, txParams: { value: amount } = {} } = {},
+      txData: { simulationFails, loadingDefaults, txParams: { value: amount } = {} } = {},
       customGas,
       gasPriceIsExtendMax,
       gasLimitIsExtendMax,
@@ -176,6 +177,13 @@ export default class ConfirmTransactionBase extends Component {
         balance,
         conversionRate,
       });
+
+    if (loadingDefaults) {
+      return {
+        valid: false,
+        errorKey: GAS_DEFAULTS_LOADING_ERROR_KEY,
+      };
+    }
 
     if (insufficientBalance) {
       return {

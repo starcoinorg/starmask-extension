@@ -777,6 +777,9 @@
   "functionType": {
     "message": "Function Type"
   },
+  "gasDefaultsLoading": {
+    "message": "Loading Gas Defaults"
+  },
   "gasLimit": {
     "message": "Gas Limit"
   },
