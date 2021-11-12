@@ -12,7 +12,7 @@
     "start:test": "yarn build testDev",
     "build:test": "yarn build test",
     "devtools:react": "react-devtools",
-    "devtools:redux": "remotedev --hostname=localhost --port=8000",
+    "devtools:redux": "remotedev --hostname=localhost --port=8100",
     "start:dev": "concurrently -k -n build,react,redux yarn:start yarn:devtools:react yarn:devtools:redux"
   },
   "resolutions": {

@@ -46,7 +46,7 @@ export default class TransactionStateManager extends EventEmitter {
     const netId = this.getNetwork();
     const chainId = this.getCurrentChainId();
     if (netId === 'loading') {
-      throw new Error('MetaMask is having trouble connecting to the network');
+      throw new Error('StarMask is having trouble connecting to the network');
     }
     return {
       id: createId(),

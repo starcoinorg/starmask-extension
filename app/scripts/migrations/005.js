@@ -19,7 +19,7 @@ export default {
       const newState = selectSubstateForKeyringController(state);
       versionedData.data = newState;
     } catch (err) {
-      console.warn(`MetaMask Migration #5${err.stack}`);
+      console.warn(`StarMask Migration #5${err.stack}`);
     }
     return Promise.resolve(versionedData);
   },

@@ -27,17 +27,17 @@ export default class MetaMetricsOptInModal extends Component {
               <img src="images/metrics-chart.svg" alt="" />
             </div>
             <div className="metametrics-opt-in__title">
-              Help Us Improve MetaMask
+              Help Us Improve StarMask
             </div>
             <div className="metametrics-opt-in__body">
               <div className="metametrics-opt-in__description">
-                MetaMask would like to gather usage data to better understand
+                StarMask would like to gather usage data to better understand
                 how our users interact with the extension. This data will be
                 used to continually improve the usability and user experience of
                 our product and the Ethereum ecosystem.
               </div>
               <div className="metametrics-opt-in__description">
-                MetaMask will..
+                StarMask will..
               </div>
 
               <div className="metametrics-opt-in__committments">

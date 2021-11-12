@@ -5,9 +5,9 @@ import rootReducer from '../ducks';
 
 export default function configureStore(initialState) {
   const composeEnhancers = composeWithDevTools({
-    name: 'MetaMask',
+    name: 'StarMask',
     hostname: 'localhost',
-    port: 8000,
+    port: 8100,
     realtime: Boolean(process.env.STARMASK_DEBUG),
   });
   return createStore(

@@ -88,17 +88,17 @@ export default class TypedMessageManager extends EventEmitter {
           case 'rejected':
             return reject(
               ethErrors.provider.userRejectedRequest(
-                'MetaMask Message Signature: User denied message signature.',
+                'StarMask Message Signature: User denied message signature.',
               ),
             );
           case 'errored':
             return reject(
-              new Error(`MetaMask Message Signature: ${data.error}`),
+              new Error(`StarMask Message Signature: ${data.error}`),
             );
           default:
             return reject(
               new Error(
-                `MetaMask Message Signature: Unknown problem: ${JSON.stringify(
+                `StarMask Message Signature: Unknown problem: ${JSON.stringify(
                   msgParams,
                 )}`,
               ),
@@ -200,7 +200,7 @@ export default class TypedMessageManager extends EventEmitter {
           const activeChainId = parseInt(this._getCurrentChainId(), 16);
           assert.ok(
             !Number.isNaN(activeChainId),
-            `Cannot sign messages for chainId "${chainId}", because MetaMask is switching networks.`,
+            `Cannot sign messages for chainId "${chainId}", because StarMask is switching networks.`,
           );
           assert.equal(
             chainId,

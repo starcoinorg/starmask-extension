@@ -18,7 +18,7 @@ gource \
   --date-format "%b %d, %Y" \
   --highlight-dirs \
   --user-friction 0.1 \
-  --title "MetaMask Development History" \
+  --title "StarMask Development History" \
   --output-ppm-stream - \
   --output-framerate 30 \
   | ffmpeg -y -r 30 -f image2pipe -vcodec ppm -i - -b 65536K starmask-dev-history.mp4

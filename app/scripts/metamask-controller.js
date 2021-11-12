@@ -1945,7 +1945,7 @@ export default class MetamaskController extends EventEmitter {
     const { hostname } = new URL(sender.url);
     // Check if new connection is blocked if phishing detection is on
     if (usePhishDetect && this.phishingController.test(hostname)) {
-      log.debug('MetaMask - sending phishing warning for', hostname);
+      log.debug('StarMask - sending phishing warning for', hostname);
       this.sendPhishingWarning(connectionStream, hostname);
       return;
     }

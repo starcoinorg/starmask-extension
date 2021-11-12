@@ -21,7 +21,7 @@ function detectAndRunEntryTask() {
   // get requested task name and execute
   const taskName = process.argv[2];
   if (!taskName) {
-    throw new Error(`MetaMask build: No task name specified`);
+    throw new Error(`StarMask build: No task name specified`);
   }
   const skipStats = process.argv.includes('--skip-stats');
 
@@ -30,7 +30,7 @@ function detectAndRunEntryTask() {
 
 async function runTask(taskName, { skipStats } = {}) {
   if (!(taskName in tasks)) {
-    throw new Error(`MetaMask build: Unrecognized task name "${taskName}"`);
+    throw new Error(`StarMask build: Unrecognized task name "${taskName}"`);
   }
   if (!skipStats) {
     setupTaskDisplay(taskEvents);
@@ -40,7 +40,7 @@ async function runTask(taskName, { skipStats } = {}) {
     await tasks[taskName]();
   } catch (err) {
     console.error(
-      `MetaMask build: Encountered an error while running task "${taskName}".`,
+      `StarMask build: Encountered an error while running task "${taskName}".`,
     );
     console.error(err);
     process.exit(1);
@@ -51,7 +51,7 @@ async function runTask(taskName, { skipStats } = {}) {
 function createTask(taskName, taskFn) {
   if (taskName in tasks) {
     throw new Error(
-      `MetaMask build: task "${taskName}" already exists. Refusing to redefine`,
+      `StarMask build: task "${taskName}" already exists. Refusing to redefine`,
     );
   }
   const task = instrumentForTaskStats(taskName, taskFn);
@@ -64,7 +64,7 @@ function runInChildProcess(task) {
   const taskName = typeof task === 'string' ? task : task.taskName;
   if (!taskName) {
     throw new Error(
-      `MetaMask build: runInChildProcess unable to identify task name`,
+      `StarMask build: runInChildProcess unable to identify task name`,
     );
   }
   return instrumentForTaskStats(taskName, async () => {
@@ -87,7 +87,7 @@ function runInChildProcess(task) {
         if (errCode !== 0) {
           reject(
             new Error(
-              `MetaMask build: runInChildProcess for task "${taskName}" encountered an error ${errCode}`,
+              `StarMask build: runInChildProcess for task "${taskName}" encountered an error ${errCode}`,
             ),
           );
           return;

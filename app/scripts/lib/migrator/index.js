@@ -56,7 +56,7 @@ export default class Migrator extends EventEmitter {
       } catch (err) {
         // rewrite error message to add context without clobbering stack
         const originalErrorMessage = err.message;
-        err.message = `MetaMask Migration Error #${migration.version}: ${originalErrorMessage}`;
+        err.message = `StarMask Migration Error #${migration.version}: ${originalErrorMessage}`;
         // emit error instead of throw so as to not break the run (gracefully fail)
         this.emit('error', err);
         // stop migrating and use state as is

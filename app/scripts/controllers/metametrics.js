@@ -112,7 +112,7 @@ export default class MetaMetricsController {
     return bufferToHex(
       sha3(
         String(Date.now()) +
-          String(Math.round(Math.random() * Number.MAX_SAFE_INTEGER)),
+        String(Math.round(Math.random() * Number.MAX_SAFE_INTEGER)),
       ),
     );
   }
@@ -156,7 +156,7 @@ export default class MetaMetricsController {
   _buildContext(referrer, page = METAMETRICS_BACKGROUND_PAGE_OBJECT) {
     return {
       app: {
-        name: 'MetaMask Extension',
+        name: 'StarMask Extension',
         version: this.version,
       },
       userAgent: window.navigator.userAgent,
