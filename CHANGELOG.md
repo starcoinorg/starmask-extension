@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.0.0] - 2021-11-13
+## [3.0.1] - 2021-11-13
 - New features:
     - Support hardware wallet OneKey (Firmware version >= 2.1.10)
 
