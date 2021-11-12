@@ -35,7 +35,7 @@ export default class AccountDetailsModal extends Component {
       keyrings,
       rpcPrefs,
     } = this.props;
-    const { name, address, receiptIdentifier } = selectedIdentity;
+    const { name, address } = selectedIdentity;
 
     const keyring = keyrings.find((kr) => {
       return kr.accounts.includes(address);
@@ -46,8 +46,6 @@ export default class AccountDetailsModal extends Component {
     if (keyring?.type?.search('Hardware') !== -1) {
       exportPrivateKeyFeatureEnabled = false;
     }
-
-    const showReceiptIdentifier = true;
 
     return (
       <AccountModalContainer className="account-details-modal">

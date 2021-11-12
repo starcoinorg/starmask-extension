@@ -936,11 +936,6 @@ export default class MetamaskController extends EventEmitter {
         if (!primaryKeyring) {
           throw new Error('StarMaskController - No HD Key Tree found');
         }
-        const receiptIdentifiers = await primaryKeyring.getReceiptIdentifiers();
-        this.preferencesController.setReceiptIdentifiers(receiptIdentifiers);
-
-        const publicKeys = await primaryKeyring.getPublicKeys();
-        this.preferencesController.setPublicKeys(publicKeys);
 
         this.selectFirstIdentity();
       }
@@ -1009,14 +1004,6 @@ export default class MetamaskController extends EventEmitter {
 
       // set new identities
       this.preferencesController.setAddresses(accounts);
-
-      // add receiptIdentifiers in identifies
-      const receiptIdentifiers = await primaryKeyring.getReceiptIdentifiers();
-      this.preferencesController.setReceiptIdentifiers(receiptIdentifiers);
-
-      // add publicKey in identifies
-      const publicKeys = await primaryKeyring.getPublicKeys();
-      this.preferencesController.setPublicKeys(publicKeys);
 
       this.selectFirstIdentity();
       return vault;
@@ -1339,12 +1326,6 @@ export default class MetamaskController extends EventEmitter {
 
     this.preferencesController.setAddresses(newAccounts);
 
-    const receiptIdentifiers = await primaryKeyring.getReceiptIdentifiers();
-    this.preferencesController.setReceiptIdentifiers(receiptIdentifiers);
-
-    const publicKeys = await primaryKeyring.getPublicKeys();
-    this.preferencesController.setPublicKeys(publicKeys);
-
     newAccounts.forEach((address) => {
       if (!oldAccounts.includes(address)) {
         this.preferencesController.setSelectedAddress(address);
@@ -1444,12 +1425,6 @@ export default class MetamaskController extends EventEmitter {
     // update accounts in preferences controller
     const allAccounts = await this.keyringController.getAccounts();
     this.preferencesController.setAddresses(allAccounts);
-    // add receiptIdentifier in identities
-    const receiptIdentifiers = await keyring.getReceiptIdentifiers();
-    this.preferencesController.setReceiptIdentifiers(receiptIdentifiers);
-    // add publicKey in identities
-    const publicKeys = await keyring.getPublicKeys();
-    this.preferencesController.setPublicKeys(publicKeys);
     // set new account as selected
     await this.preferencesController.setSelectedAddress(accounts[0]);
   }

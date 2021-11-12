@@ -1,4 +1,5 @@
 import abi from 'human-standard-token-abi';
+import log from 'loglevel';
 import { calcGasTotal } from '../pages/send/send.utils';
 import {
   accountsWithSendEtherInfoSelector,
@@ -116,17 +117,12 @@ export function getSendToReceiptIdentifier(state) {
   return state.starmask.send.toReceiptIdentifier;
 }
 
-export function getSendToReceiptIdentifierFromIdentities(state) {
-  const identify = state.starmask.identities[state.starmask.send.to];
-  const receiptIdentifier = identify && identify.receiptIdentifier || undefined;
-  return receiptIdentifier || state.starmask.send.toReceiptIdentifier || '';
-}
-
 export function getSendToAccounts(state) {
   const fromAccounts = accountsWithSendEtherInfoSelector(state);
   const addressBookAccounts = getAddressBook(state);
   return [...fromAccounts, ...addressBookAccounts];
 }
+
 export function getTokenBalance(state) {
   return state.starmask.send.tokenBalance;
 }

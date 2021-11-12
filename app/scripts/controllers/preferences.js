@@ -216,52 +216,6 @@ export default class PreferencesController {
   }
 
   /**
-   * add publicKey in identities
-   *
-   * @param [{string: string}] publicKeys - An array of  { addresses: publicKey } object
-   *
-   */
-  setPublicKeys(publicKeys) {
-    const oldIdentities = this.store.getState().identities;
-    const identities = publicKeys.reduce(
-      (ids, { address, publicKey }) => {
-        const oldId = oldIdentities[address] || {};
-        ids[address] = {
-          publicKey,
-          ...oldId,
-        };
-        return ids;
-      },
-      {},
-    );
-
-    this.store.updateState({ identities: { ...oldIdentities, ...identities } });
-  }
-
-  /**
-   * add receiptIdentifier in identities
-   *
-   * @param [{string: string}] receiptIdentifiers - An array of  { addresses: receiptIdentifier } object
-   *
-   */
-  setReceiptIdentifiers(receiptIdentifiers) {
-    const oldIdentities = this.store.getState().identities;
-    const identities = receiptIdentifiers.reduce(
-      (ids, { address, receiptIdentifier }) => {
-        const oldId = oldIdentities[address] || {};
-        ids[address] = {
-          receiptIdentifier,
-          ...oldId,
-        };
-        return ids;
-      },
-      {},
-    );
-
-    this.store.updateState({ identities: { ...oldIdentities, ...identities } });
-  }
-
-  /**
    * Removes an address from state
    *
    * @param {string} address - A hex address
