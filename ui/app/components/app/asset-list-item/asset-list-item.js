@@ -45,13 +45,13 @@ const AssetListItem = ({
       position="bottom"
       html={warning}
     >
-      <InfoIcon severity={SEVERITIES.WARNING} />
+      <InfoIcon severity={SEVERITIES.SUCCESS} />
     </Tooltip>
   ) : null;
 
   const midContent = warning ? (
     <>
-      <InfoIcon severity={SEVERITIES.WARNING} />
+      <InfoIcon severity={SEVERITIES.SUCCESS} />
       <div className="asset-list-item__warning">{warning}</div>
     </>
   ) : null;
