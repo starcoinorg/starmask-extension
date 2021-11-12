@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.0.0] - 2021-11-13
+- New features:
+    - Support hardware wallet OneKey (Firmware version >= 2.1.10)
+
+- Bug fixes:
+    - [#27 Invalid params: invalid type null, expected a string.](https://github.com/starcoinorg/starmask-extension/issues/27)
+    - [#28 The tips icon's color of custon token is yellow](https://github.com/starcoinorg/starmask-extension/issues/28)
+    - [#29 Always show 'Gas limit must be at least 13000' in the confirm transaction page](https://github.com/starcoinorg/starmask-extension/issues/29)
+
 ## [2.2.2] - 2021-09-30
 - Bug fixes:
     1. do not show NFT gallery image_data field
