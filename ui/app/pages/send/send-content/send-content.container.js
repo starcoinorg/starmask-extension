@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import {
+  getGasLoadingError,
   getSendTo,
   accountsWithSendEtherInfoSelector,
   getAddressBookEntry,
@@ -18,6 +19,7 @@ function mapStateToProps(state) {
       ),
     ),
     contact: getAddressBookEntry(state, to),
+    gasLoadingError: getGasLoadingError(state),
     to,
   };
 }

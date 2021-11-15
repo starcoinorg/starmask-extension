@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import ErrorMessage from '../../../components/ui/error-message';
 import PageContainerContent from '../../../components/ui/page-container/page-container-content.component';
 import Dialog from '../../../components/ui/dialog';
 import SendAmountRow from './send-amount-row';
@@ -14,6 +15,7 @@ export default class SendContent extends Component {
   };
 
   static propTypes = {
+    gasLoadingError: PropTypes.string,
     updateGas: PropTypes.func,
     showAddToAddressBookModal: PropTypes.func,
     showHexData: PropTypes.bool,
@@ -24,6 +26,22 @@ export default class SendContent extends Component {
     error: PropTypes.string,
     gasIsExcessive: PropTypes.bool.isRequired,
   };
+
+  state = {
+    gasLoadingError: null,
+  };
+
+  componentDidUpdate(prevProps) {
+    const { gasLoadingError } = this.props;
+
+    const { gasLoadingError: prefGasLoadingError } = prevProps;
+
+    if (gasLoadingError && prefGasLoadingError !== gasLoadingError) {
+      this.setState({
+        gasLoadingError,
+      });
+    }
+  }
 
   updateGas = (updateData) => this.props.updateGas(updateData);
 
@@ -91,13 +109,24 @@ export default class SendContent extends Component {
     );
   }
 
+  renderGasLoadingError() {
+    const { gasLoadingError } = this.state;
+
+    return gasLoadingError ? (
+      <div className="confirm-page-container-content__error-container">
+        <ErrorMessage errorMessage={gasLoadingError} errorKey={gasLoadingError} />
+      </div>
+    ) : null;
+  }
+
   renderAsset() {
     return (
       <>
         <SendAssetRow />
         <SendAmountRow updateGas={this.updateGas} />
         <SendGasRow />
+        {this.renderGasLoadingError()}
       </>
-    )
+    );
   }
 }
