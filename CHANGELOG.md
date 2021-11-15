@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.0.2] - 2021-11-16
+- Bug fixes:
+    - [#32 OneKey postmessage will get lost if the popup window lost focus](https://github.com/starcoinorg/starmask-extension/issues/32)
+    - [#33 Should display the error message while dry_run in the send page](https://github.com/starcoinorg/starmask-extension/issues/33)
+
 ## [3.0.1] - 2021-11-13
 - New features:
     - Support hardware wallet OneKey (Firmware version >= 2.1.10)
