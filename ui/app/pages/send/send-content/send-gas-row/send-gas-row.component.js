@@ -9,7 +9,7 @@ export default class SendGasRow extends Component {
   static propTypes = {
     balance: PropTypes.string,
     gasFeeError: PropTypes.bool,
-    gasLoadingError: PropTypes.bool,
+    gasLoadingError: PropTypes.string,
     gasTotal: PropTypes.string,
     maxModeOn: PropTypes.bool,
     showCustomizeGasModal: PropTypes.func,

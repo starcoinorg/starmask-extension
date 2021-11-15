@@ -27,6 +27,7 @@ import {
   getSelectedAddress,
   getRpcPrefsForCurrentProvider,
 } from '../selectors';
+import { updateSendErrors } from '../ducks/send/send.duck';
 import { switchedToUnconnectedAccount } from '../ducks/alerts/unconnected-account';
 import { getUnconnectedAccountAlertEnabledness } from '../ducks/metamask/metamask';
 import { LISTED_CONTRACT_ADDRESSES } from '../../../shared/constants/tokens';
@@ -683,28 +684,30 @@ export function updateGasData({
 }) {
   return (dispatch) => {
     dispatch(gasLoadingStarted());
-    return estimateGasForSend({
-      estimateGasMethod: promisifiedBackground.estimateGas,
-      blockGasLimit,
-      selectedAddress,
-      sendToken,
-      to,
-      toReceiptIdentifier,
-      value,
-      estimateGasPrice: gasPrice,
-      data,
-    })
-      .then((gas) => {
-        dispatch(setGasLimit(gas));
-        dispatch(setCustomGasLimit(gas));
-        dispatch(updateSendErrors({ gasLoadingError: null }));
-        dispatch(gasLoadingFinished());
+    if (to) {
+      return estimateGasForSend({
+        estimateGasMethod: promisifiedBackground.estimateGas,
+        blockGasLimit,
+        selectedAddress,
+        sendToken,
+        to,
+        toReceiptIdentifier,
+        value,
+        estimateGasPrice: gasPrice,
+        data,
       })
-      .catch((err) => {
-        log.error(err);
-        dispatch(updateSendErrors({ gasLoadingError: 'gasLoadingError' }));
-        dispatch(gasLoadingFinished());
-      });
+        .then((gas) => {
+          dispatch(setGasLimit(gas));
+          dispatch(setCustomGasLimit(gas));
+          dispatch(updateSendErrors({ gasLoadingError: null }));
+          dispatch(gasLoadingFinished());
+        })
+        .catch((err) => {
+          log.error(err);
+          dispatch(updateSendErrors({ gasLoadingError: err.message }));
+          dispatch(gasLoadingFinished());
+        });
+    }
   };
 }
 
@@ -736,13 +739,6 @@ export function updateSendTokenBalance({ sendToken, assets, address }) {
         log.error(err);
         updateSendErrors({ tokenBalance: 'tokenBalanceError' });
       });
-  };
-}
-
-export function updateSendErrors(errorObject) {
-  return {
-    type: actionConstants.UPDATE_SEND_ERRORS,
-    value: errorObject,
   };
 }
 

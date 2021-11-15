@@ -5,7 +5,7 @@ import { PRIMARY, SECONDARY } from '../../../../../helpers/constants/common';
 
 export default class GasFeeDisplay extends Component {
   static propTypes = {
-    gasLoadingError: PropTypes.bool,
+    gasLoadingError: PropTypes.string,
     gasTotal: PropTypes.string,
     onReset: PropTypes.func,
   };

@@ -144,7 +144,7 @@ export function getQrCodeData(state) {
 }
 
 export function getGasLoadingError(state) {
-  return state.send.errors.gasLoading;
+  return state.send.errors.gasLoadingError;
 }
 
 export function gasFeeIsInError(state) {
