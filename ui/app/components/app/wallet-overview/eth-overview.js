@@ -27,6 +27,7 @@ import {
   getCurrentKeyring,
   getSwapsDefaultToken,
   getIsSwapsChain,
+  getIsOneKey,
 } from '../../../selectors/selectors';
 import SwapIcon from '../../ui/icon/swap-icon.component';
 import BuyIcon from '../../ui/icon/overview-buy-icon.component';
@@ -72,6 +73,7 @@ const EthOverview = ({ className }) => {
   });
   const swapsEnabled = useSelector(getSwapsFeatureLiveness);
   const defaultSwapsToken = useSelector(getSwapsDefaultToken);
+  const isOneKey = useSelector(getIsOneKey);
 
   return (
     <WalletOverview
@@ -132,7 +134,12 @@ const EthOverview = ({ className }) => {
             label={t('send')}
             onClick={() => {
               sendEvent();
-              history.push(SEND_ROUTE);
+              // quick fix: OneKey postmessage will get lost if the popup window lost focus
+              if (isOneKey) {
+                global.platform.openExtensionInBrowser(SEND_ROUTE);
+              } else {
+                history.push(SEND_ROUTE);
+              }
             }}
           />
           {swapsEnabled ? (

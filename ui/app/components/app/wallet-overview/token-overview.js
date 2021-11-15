@@ -30,6 +30,7 @@ import {
   getSelectedAddress,
   getAssets,
   unconfirmedTransactionsCountSelector,
+  getIsOneKey,
 } from '../../../selectors';
 
 import ReceiveIcon from '../../ui/icon/receive-icon.component';
@@ -88,6 +89,7 @@ const TokenOverview = ({ className, token }) => {
     category: 'swaps',
   });
   const swapsEnabled = useSelector(getSwapsFeatureLiveness);
+  const isOneKey = useSelector(getIsOneKey);
 
   return (
     <WalletOverview
@@ -113,9 +115,15 @@ const TokenOverview = ({ className, token }) => {
             <IconButton
               className="token-overview__button"
               onClick={() => {
+                console.log('click 2')
                 sendTokenEvent();
                 dispatch(updateSendToken(token));
-                history.push(SEND_ROUTE);
+                // quick fix: OneKey postmessage will get lost if the popup window lost focus
+                if (isOneKey) {
+                  global.platform.openExtensionInBrowser(SEND_ROUTE);
+                } else {
+                  history.push(SEND_ROUTE);
+                }
               }}
               Icon={SendIcon}
               label={t('send')}

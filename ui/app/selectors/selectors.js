@@ -497,3 +497,8 @@ export function getCurrentNFTs(state) {
 export function getNFTMetas(state) {
   return state.starmask.nftMetas;
 }
+
+export function getIsOneKey(state) {
+  const keyring = getCurrentKeyring(state);
+  return keyring.type === 'OneKey Hardware';
+}
