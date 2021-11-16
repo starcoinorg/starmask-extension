@@ -119,7 +119,7 @@ const TokenOverview = ({ className, token }) => {
                 sendTokenEvent();
                 dispatch(updateSendToken(token));
                 // quick fix: OneKey postmessage will get lost if the popup window lost focus
-                if (isOneKey) {
+                if (isOneKey && global.platform.isPopup()) {
                   global.platform.openExtensionInBrowser(SEND_ROUTE);
                 } else {
                   history.push(SEND_ROUTE);

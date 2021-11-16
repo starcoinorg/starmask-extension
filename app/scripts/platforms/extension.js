@@ -12,6 +12,11 @@ export default class ExtensionPlatform {
     extension.runtime.reload();
   }
 
+  isPopup() {
+    const views = extension.extension.getViews({ type: 'popup' });
+    return views.length > 0;
+  }
+
   openTab(options) {
     return new Promise((resolve, reject) => {
       extension.tabs.create(options, (newTab) => {
