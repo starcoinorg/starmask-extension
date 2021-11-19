@@ -31,6 +31,9 @@
   "accountName": {
     "message": "Account Name"
   },
+  "accountsNumber": {
+    "message": "Number"
+  },
   "accountNotExists": {
     "message": "Account Address is not exists on the current network, please provide the Account ReceiptIdentifier."
   },
@@ -706,6 +709,9 @@
   "estimatedProcessingTimes": {
     "message": "Estimated Processing Times"
   },
+  "externalTemp": {
+    "message": "External Temp"
+  },
   "stc_accounts": {
     "message": "View the addresses of your permitted accounts (required)",
     "description": "The description for the `stc_accounts` permission"
@@ -1047,6 +1053,9 @@
   "localhost": {
     "message": "Localhost 8545"
   },
+  "localTemp": {
+    "message": "Local Temp"
+  },
   "lock": {
     "message": "Lock"
   },
@@ -1128,6 +1137,12 @@
   "mobileSyncText": {
     "message": "Please enter your password to confirm it's you!"
   },
+  "multiSign": {
+    "message": "MultiSign"
+  },
+  "multiSignAccount": {
+    "message": "MultiSign Account"
+  },
   "mustSelectOne": {
     "message": "Must select at least 1 token."
   },
@@ -1184,7 +1199,7 @@
     "message": "New address detected! Click here to add to your address book."
   },
   "newAccountNumberName": {
-    "message": "Account $1",
+    "message": "$1Account $2",
     "description": "Default name of next account to be created on create account screen"
   },
   "newContact": {
@@ -1268,6 +1283,9 @@
   },
   "nonceFieldHeading": {
     "message": "Custom Nonce"
+  },
+  "normalAccount": {
+    "message": "Normal Account"
   },
   "notCurrentAccount": {
     "message": "Is this the correct account? It's different from the currently selected account in your wallet"
@@ -2106,6 +2124,9 @@
   },
   "testFaucet": {
     "message": "Test Faucet"
+  },
+  "thresHold": {
+    "message": "thresHold"
   },
   "thisWillCreate": {
     "message": "This will create a new wallet and seed phrase"

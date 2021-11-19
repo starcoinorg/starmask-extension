@@ -31,6 +31,9 @@
   "accountName": {
     "message": "账户名称"
   },
+  "accountsNumber": {
+    "message": "子账户数量"
+  },
   "accountNotExists": {
     "message": "帐户地址在当前网络上不存在，请提供帐户 收款识别码(stc1p)。"
   },
@@ -659,6 +662,9 @@
   "estimatedProcessingTimes": {
     "message": "预计处理时间"
   },
+  "externalTemp": {
+    "message": "外部临时"
+  },
   "stc_accounts": {
     "message": "查看您允许的账户的地址（必填）",
     "description": "The description for the `stc_accounts` permission"
@@ -996,6 +1002,9 @@
   "localhost": {
     "message": "Localhost 8545"
   },
+  "localTemp": {
+    "message": "本地临时"
+  },
   "lock": {
     "message": "锁定"
   },
@@ -1069,6 +1078,12 @@
   "mobileSyncText": {
     "message": "请输入密码确认个人身份！"
   },
+  "multiSign": {
+    "message": "多签"
+  },
+  "multiSignAccount": {
+    "message": "多签账户"
+  },
   "mustSelectOne": {
     "message": "至少选择 1 种代币。"
   },
@@ -1113,7 +1128,7 @@
     "message": "检测到新地址！点击添加至地址簿。"
   },
   "newAccountNumberName": {
-    "message": "账户 $1",
+    "message": "$1账户 $2",
     "description": "Default name of next account to be created on create account screen"
   },
   "newContact": {
@@ -1197,6 +1212,9 @@
   },
   "nonceFieldHeading": {
     "message": "自定义 Nonce"
+  },
+  "normalAccount": {
+    "message": "普通账户"
   },
   "notCurrentAccount": {
     "message": "这是正确的账户吗？这与您钱包中当前选择的账户不同。"
@@ -1992,6 +2010,9 @@
   },
   "testFaucet": {
     "message": "测试水管"
+  },
+  "thresHold": {
+    "message": "阈值"
   },
   "thisWillCreate": {
     "message": "将为您创建新的钱包账户和账户助记词"
