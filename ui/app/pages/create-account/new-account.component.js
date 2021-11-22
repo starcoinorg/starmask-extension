@@ -112,7 +112,7 @@ export default class NewAccountCreateForm extends Component {
 
   render() {
     const menuItems = this.getMenuItemTexts();
-    const { newAccountName, defaultAccountName, type, number, threshold, externalPublicKeys, localAccount } = this.state;
+    const { newAccountName, defaultAccountName, type, externalPublicKeys, localAccount } = this.state;
     const { history, createAccount, mostRecentOverviewPage } = this.props;
     const createClick = (_) => {
       if (type === this.context.t('normalAccount')) {

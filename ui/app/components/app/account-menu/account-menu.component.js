@@ -239,6 +239,9 @@ export default class AccountMenu extends Component {
       case 'Simple Key Pair':
         label = t('imported');
         break;
+      case 'Multi Sign':
+        label = t('multiSign');
+        break;
       default:
         return null;
     }

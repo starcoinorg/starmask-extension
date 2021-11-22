@@ -83,6 +83,8 @@ export function getAccountType(state) {
       return 'hardware';
     case 'Simple Key Pair':
       return 'imported';
+    case 'Multi Sign':
+      return 'multisign';
     default:
       return 'default';
   }
