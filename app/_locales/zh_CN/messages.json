@@ -187,6 +187,12 @@
   "authorizedPermissions": {
     "message": "您已授权以下权限"
   },
+  "AutoAcceptToken": {
+    "message": "自动接受代币"
+  },
+  "AutoAcceptTokenDescription": {
+    "message": "选中该项可以在添加自定义代币的同时自动接受该代币，否则需要手动接受."
+  },
   "autoLockTimeLimit": {
     "message": "自动锁定定时（分钟）"
   },

@@ -2151,6 +2151,43 @@ export function setAutoLockTimeLimit(value) {
   return setPreference('autoLockTimeLimit', value);
 }
 
+export function getAutoAcceptToken() {
+  return function (dispatch) {
+    dispatch(showLoadingIndication());
+
+    return new Promise((resolve, reject) => {
+      log.debug(`background.getgetAutoAcceptToken`);
+      background.getAutoAcceptToken(function (err, result) {
+        dispatch(hideLoadingIndication());
+
+        if (err) {
+          log.error(err);
+          dispatch(displayWarning('Had a problem getting AutoAcceptToken.'));
+          reject(err);
+          return;
+        }
+        resolve(result);
+      });
+    });
+  };
+}
+
+export function setgetAutoAcceptToken(value) {
+  return async (dispatch) => {
+    dispatch(showLoadingIndication());
+
+    try {
+      // await promisifiedBackground.setgetAutoAcceptToken(value);
+      // dispatch(completeOnboarding());
+    } catch (err) {
+      dispatch(displayWarning(err.message));
+      throw err;
+    } finally {
+      dispatch(hideLoadingIndication());
+    }
+  };
+}
+
 export function setCompletedOnboarding() {
   return async (dispatch) => {
     dispatch(showLoadingIndication());

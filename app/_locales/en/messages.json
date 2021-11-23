@@ -207,6 +207,12 @@
   "authorizedPermissions": {
     "message": "You have authorized the following permissions"
   },
+  "AutoAcceptToken": {
+    "message": "Auto Accept Token"
+  },
+  "AutoAcceptTokenDescription": {
+    "message": "Select this to automatically accept custom token while you add it."
+  },
   "autoLockTimeLimit": {
     "message": "Auto-Lock Timer (minutes)"
   },
