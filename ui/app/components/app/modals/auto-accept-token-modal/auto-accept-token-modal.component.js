@@ -88,7 +88,10 @@ export default class AutoAcceptToken extends Component {
         </span>
         <ToggleButton
           value={autoAcceptToken}
-          onToggle={(value) => setAutoAcceptToken(!value, address)}
+          onToggle={(value) => {
+            setAutoAcceptToken(!value, address);
+            this.setState({ autoAcceptToken: !value });
+          }}
           offLabel={this.context.t('off')}
           onLabel={this.context.t('on')}
         />
