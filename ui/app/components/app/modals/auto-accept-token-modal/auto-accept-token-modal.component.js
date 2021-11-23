@@ -5,6 +5,7 @@ import { checksumAddress } from '../../../../helpers/utils/util';
 import ReadOnlyInput from '../../../ui/readonly-input';
 import ToggleButton from '../../../ui/toggle-button';
 import AccountModalContainer from '../account-modal-container';
+import { CONFIRM_TRANSACTION_ROUTE } from '../../../../helpers/constants/routes';
 
 export default class AutoAcceptToken extends Component {
   static contextTypes = {
@@ -16,10 +17,12 @@ export default class AutoAcceptToken extends Component {
   };
 
   static propTypes = {
+    history: PropTypes.object,
     selectedIdentity: PropTypes.object.isRequired,
     showAccountDetailModal: PropTypes.func.isRequired,
     hideWarning: PropTypes.func.isRequired,
     clearAccountDetails: PropTypes.func.isRequired,
+    txId: PropTypes.number,
     previousModalState: PropTypes.string,
     getAutoAcceptToken: PropTypes.func.isRequired,
     setAutoAcceptToken: PropTypes.func.isRequired,
@@ -32,6 +35,7 @@ export default class AutoAcceptToken extends Component {
   componentDidMount() {
     const { selectedIdentity, getAutoAcceptToken } = this.props;
     const { address } = selectedIdentity;
+
     getAutoAcceptToken(address)
       .then((autoAcceptToken) => {
         this.setState({
@@ -44,6 +48,14 @@ export default class AutoAcceptToken extends Component {
   componentWillUnmount() {
     this.props.clearAccountDetails();
     this.props.hideWarning();
+  }
+
+  UNSAFE_componentWillReceiveProps(nextProps, _) {
+    const { history, txId } = this.props;
+
+    if (nextProps.txId > 0 && !txId) {
+      history.push(CONFIRM_TRANSACTION_ROUTE);
+    }
   }
 
   render() {
@@ -76,7 +88,7 @@ export default class AutoAcceptToken extends Component {
         </span>
         <ToggleButton
           value={autoAcceptToken}
-          onToggle={(value) => setAutoAcceptToken(!value)}
+          onToggle={(value) => setAutoAcceptToken(!value, address)}
           offLabel={this.context.t('off')}
           onLabel={this.context.t('on')}
         />

@@ -1,4 +1,6 @@
 import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { withRouter } from 'react-router-dom';
 import {
   getPublicKeyFor,
   hideWarning,
@@ -20,6 +22,7 @@ function mapStateToPropsFactory() {
     // which is the expected behavior that we are side-stepping.
     selectedIdentity = selectedIdentity || getSelectedIdentity(state);
     return {
+      txId: state.appState.txId,
       warning: state.appState.warning,
       privateKey: state.appState.accountDetail.privateKey,
       selectedIdentity,
@@ -41,11 +44,8 @@ function mapDispatchToProps(dispatch) {
         return res;
       });
     },
-    setAutoAcceptToken: (value) => {
-      return dispatch(setAutoAcceptToken(value)).then((res) => {
-        return res;
-      });
-    },
+    setAutoAcceptToken: (value, address) =>
+      dispatch(setAutoAcceptToken(value, address)),
     showAccountDetailModal: () =>
       dispatch(showModal({ name: 'ACCOUNT_DETAILS' })),
     hideModal: () => dispatch(hideModal()),
@@ -54,7 +54,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToPropsFactory,
-  mapDispatchToProps,
+export default compose(
+  withRouter,
+  connect(mapStateToPropsFactory, mapDispatchToProps),
 )(AutoAcceptToken);

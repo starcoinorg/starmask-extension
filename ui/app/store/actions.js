@@ -10,7 +10,7 @@ import {
   loadRelativeTimeFormatLocaleData,
 } from '../helpers/utils/i18n-helper';
 import { getMethodDataAsync } from '../helpers/utils/transactions.util';
-import { fetchSymbolAndDecimals, generateAcceptTokenPayloadHex } from '../helpers/utils/token-util';
+import { fetchSymbolAndDecimals, generateAcceptTokenPayloadHex, generateAutoAcceptTokenPayloadHex } from '../helpers/utils/token-util';
 import { generateAcceptNFTGalleryPayloadHex, generateTransferNFTPayloadHex } from '../helpers/utils/nft-util';
 import switchDirection from '../helpers/utils/switch-direction';
 import { ENVIRONMENT_TYPE_NOTIFICATION } from '../../../shared/constants/app';
@@ -838,7 +838,6 @@ export function acceptToken(tokenCode, from) {
     } catch (error) {
       log.error(error);
     }
-    dispatch(showConfTxPage());
   };
 }
 
@@ -2155,7 +2154,6 @@ export function getAutoAcceptToken(address) {
   return function (dispatch) {
     dispatch(showLoadingIndication());
     return new Promise((resolve, reject) => {
-      log.debug(`background.getgetAutoAcceptToken`);
       background.getAutoAcceptToken(address, function (err, result) {
         dispatch(hideLoadingIndication());
         if (err) {
@@ -2170,19 +2168,35 @@ export function getAutoAcceptToken(address) {
   };
 }
 
-export function setgetAutoAcceptToken(value) {
+export function setAutoAcceptToken(value, from) {
   return async (dispatch) => {
     dispatch(showLoadingIndication());
-
-    try {
-      // await promisifiedBackground.setgetAutoAcceptToken(value);
-      // dispatch(completeOnboarding());
-    } catch (err) {
-      dispatch(displayWarning(err.message));
-      throw err;
-    } finally {
-      dispatch(hideLoadingIndication());
-    }
+    return new Promise((resolve, reject) => {
+      try {
+        const payloadInHex = generateAutoAcceptTokenPayloadHex(value);
+        const txData = {
+          from,
+          gasPrice: '0x1',
+          data: payloadInHex,
+        };
+        background.addUnapprovedTransaction(txData, 'starmask', function (err, result) {
+          if (err) {
+            log.error(err);
+            dispatch(displayWarning('Had a problem getting AutoAcceptToken.'));
+            reject(err);
+            return;
+          }
+          dispatch(showConfTxPage({ id: result.id }));
+          dispatch(hideModal());
+          resolve(result);
+        });
+      } catch (error) {
+        log.error(error);
+        reject(error);
+      } finally {
+        dispatch(hideLoadingIndication());
+      }
+    });
   };
 }
 

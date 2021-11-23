@@ -297,3 +297,21 @@ export function generateAcceptTokenPayloadHex(tokenCode) {
   })();
   return payloadInHex;
 }
+
+export function generateAutoAcceptTokenPayloadHex(value) {
+  const functionId = value
+    ? '0x1::AccountScripts::enable_auto_accept_token'
+    : '0x1::AccountScripts::disable_auto_accept_token';
+  const tyArgs = [];
+  const args = [];
+
+  const scriptFunction = utils.tx.encodeScriptFunction(functionId, tyArgs, args);
+
+  // Multiple BcsSerializers should be used in different closures, otherwise, the latter will be contaminated by the former.
+  const payloadInHex = (function () {
+    const se = new bcs.BcsSerializer();
+    scriptFunction.serialize(se);
+    return hexlify(se.getBytes());
+  })();
+  return payloadInHex;
+}
