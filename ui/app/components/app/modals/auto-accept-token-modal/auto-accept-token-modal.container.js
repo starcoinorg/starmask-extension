@@ -36,8 +36,8 @@ function mapDispatchToProps(dispatch) {
         return res;
       });
     },
-    getAutoAcceptToken: () => {
-      return dispatch(getAutoAcceptToken()).then((res) => {
+    getAutoAcceptToken: (address) => {
+      return dispatch(getAutoAcceptToken(address)).then((res) => {
         return res;
       });
     },

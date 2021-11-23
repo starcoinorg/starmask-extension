@@ -606,6 +606,10 @@ export default class MetamaskController extends EventEmitter {
       getRequestAccountTabIds: (cb) => cb(null, this.getRequestAccountTabIds()),
       getOpenMetamaskTabsIds: (cb) => cb(null, this.getOpenMetamaskTabsIds()),
 
+      // auto accept token
+      getAutoAcceptToken: nodeify(this.getAutoAcceptToken, this),
+      setAutoAcceptToken: nodeify(this.setAutoAcceptToken, this),
+
       // primary HD keyring management
       addNewAccount: nodeify(this.addNewAccount, this),
       verifySeedPhrase: nodeify(this.verifySeedPhrase, this),
@@ -2750,5 +2754,32 @@ export default class MetamaskController extends EventEmitter {
    */
   setLocked() {
     return this.keyringController.setLocked();
+  }
+
+  /**
+   * Get AutoAcceptToken for selected account.
+   * @param {string} address - The account address
+   */
+  getAutoAcceptToken(adress) {
+    const ethQuery = new EthQuery(this.provider);
+    return new Promise((resolve, reject) => {
+      ethQuery.sendAsync(
+        {
+          method: 'state.get_resource',
+          params: [adress, '0x1::Account::AutoAcceptToken'],
+        },
+        (error, result) => {
+          if (error) {
+            log.error(error);
+            reject(error);
+          } else {
+            const autoAcceptToken = result
+              ? result.raw && parseInt(result.raw, 16) > 0
+              : false;
+            resolve(autoAcceptToken);
+          }
+        },
+      );
+    });
   }
 }

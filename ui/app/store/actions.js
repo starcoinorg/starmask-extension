@@ -2151,15 +2151,13 @@ export function setAutoLockTimeLimit(value) {
   return setPreference('autoLockTimeLimit', value);
 }
 
-export function getAutoAcceptToken() {
+export function getAutoAcceptToken(address) {
   return function (dispatch) {
     dispatch(showLoadingIndication());
-
     return new Promise((resolve, reject) => {
       log.debug(`background.getgetAutoAcceptToken`);
-      background.getAutoAcceptToken(function (err, result) {
+      background.getAutoAcceptToken(address, function (err, result) {
         dispatch(hideLoadingIndication());
-
         if (err) {
           log.error(err);
           dispatch(displayWarning('Had a problem getting AutoAcceptToken.'));

@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import copyToClipboard from 'copy-to-clipboard';
 import log from 'loglevel';
 import { checksumAddress } from '../../../../helpers/utils/util';
 import ReadOnlyInput from '../../../ui/readonly-input';
 import ToggleButton from '../../../ui/toggle-button';
-import Button from '../../../ui/button';
 import AccountModalContainer from '../account-modal-container';
 
 export default class AutoAcceptToken extends Component {
@@ -32,14 +30,15 @@ export default class AutoAcceptToken extends Component {
   };
 
   componentDidMount() {
-    // const { getAutoAcceptToken } = this.props;
-    // getAutoAcceptToken()
-    //   .then((autoAcceptToken) =>
-    //     this.setState({
-    //       autoAcceptToken,
-    //     }),
-    //   )
-    //   .catch((e) => log.error(e));
+    const { selectedIdentity, getAutoAcceptToken } = this.props;
+    const { address } = selectedIdentity;
+    getAutoAcceptToken(address)
+      .then((autoAcceptToken) => {
+        this.setState({
+          autoAcceptToken,
+        });
+      })
+      .catch((e) => log.error(e));
   }
 
   componentWillUnmount() {
@@ -55,7 +54,7 @@ export default class AutoAcceptToken extends Component {
       setAutoAcceptToken,
     } = this.props;
     const { name, address } = selectedIdentity;
-
+    const { autoAcceptToken } = this.state;
     return (
       <AccountModalContainer
         className="export-private-key-modal"
@@ -76,7 +75,7 @@ export default class AutoAcceptToken extends Component {
           {this.context.t('AutoAcceptTokenDescription')}
         </span>
         <ToggleButton
-          value={this.state.autoAcceptToken}
+          value={autoAcceptToken}
           onToggle={(value) => setAutoAcceptToken(!value)}
           offLabel={this.context.t('off')}
           onLabel={this.context.t('on')}
