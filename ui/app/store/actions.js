@@ -2180,6 +2180,7 @@ export function setAutoAcceptToken(value, from) {
           data: payloadInHex,
         };
         background.addUnapprovedTransaction(txData, 'starmask', function (err, result) {
+          dispatch(hideLoadingIndication());
           if (err) {
             log.error(err);
             dispatch(displayWarning('Had a problem getting AutoAcceptToken.'));
@@ -2193,8 +2194,6 @@ export function setAutoAcceptToken(value, from) {
       } catch (error) {
         log.error(error);
         reject(error);
-      } finally {
-        dispatch(hideLoadingIndication());
       }
     });
   };

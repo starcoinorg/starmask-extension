@@ -17,6 +17,7 @@ export default class AutoAcceptToken extends Component {
   };
 
   static propTypes = {
+    isLoading: PropTypes.bool,
     history: PropTypes.object,
     selectedIdentity: PropTypes.object.isRequired,
     showAccountDetailModal: PropTypes.func.isRequired,
@@ -64,9 +65,11 @@ export default class AutoAcceptToken extends Component {
       showAccountDetailModal,
       previousModalState,
       setAutoAcceptToken,
+      isLoading,
     } = this.props;
     const { name, address } = selectedIdentity;
     const { autoAcceptToken } = this.state;
+
     return (
       <AccountModalContainer
         className="export-private-key-modal"
@@ -86,15 +89,19 @@ export default class AutoAcceptToken extends Component {
         <span className="export-private-key-modal__password-label export-private-key-modal__desc-label">
           {this.context.t('AutoAcceptTokenDescription')}
         </span>
-        <ToggleButton
-          value={autoAcceptToken}
-          onToggle={(value) => {
-            setAutoAcceptToken(!value, address);
-            this.setState({ autoAcceptToken: !value });
-          }}
-          offLabel={this.context.t('off')}
-          onLabel={this.context.t('on')}
-        />
+        {isLoading ? (
+          'Loading...'
+        ) : (
+          <ToggleButton
+            value={autoAcceptToken}
+            onToggle={(value) => {
+              this.setState({ autoAcceptToken: !value });
+              setAutoAcceptToken(!value, address);
+            }}
+            offLabel={this.context.t('off')}
+            onLabel={this.context.t('on')}
+          />
+        )}
       </AccountModalContainer>
     );
   }
