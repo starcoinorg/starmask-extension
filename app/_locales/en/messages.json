@@ -211,7 +211,7 @@
     "message": "Auto Accept Token"
   },
   "AutoAcceptTokenDescription": {
-    "message": "Select this to automatically accept custom token while you add it."
+    "message": "Select this to automatically accept the token when receiving a new type of token transfer, otherwise you must manually add and accept the token first."
   },
   "autoLockTimeLimit": {
     "message": "Auto-Lock Timer (minutes)"
@@ -1416,6 +1416,9 @@
   },
   "recipientAddress": {
     "message": "Recipient Address"
+  },
+  "recipientAccountNotAcceptToken": {
+    "message": "The recipient account has not accept this token yet. Please notify the recipient to either add and accept this token, or enable 'AutoAcceptToken' in the account settings page."
   },
   "recipientAddressPlaceholder": {
     "message": "Search Address (0x) or ReceiptIdentifier(stc1p)"

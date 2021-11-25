@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { debounce } from 'lodash';
+import log from 'loglevel';
 import { isValidAddress } from '@starcoin/stc-util';
 import { isValidReceipt } from '../../helpers/utils/util';
 import {
@@ -22,6 +23,7 @@ import {
   INVALID_RECIPIENT_ADDRESS_ERROR,
   KNOWN_RECIPIENT_ADDRESS_ERROR,
   CONTRACT_ADDRESS_ERROR,
+  RECIPIENT_ACCOUNT_NOT_ACCEPT_TOKEN_ERROR,
 } from './send.constants';
 
 export default class SendTransactionScreen extends Component {
@@ -117,6 +119,13 @@ export default class SendTransactionScreen extends Component {
       to: prevTo,
     } = prevProps;
 
+    if (to && sendToken && sendToken.code && to !== prevTo) {
+      this.setState({
+        toError: RECIPIENT_ACCOUNT_NOT_ACCEPT_TOKEN_ERROR,
+        validating: false,
+      });
+      return;
+    }
     const uninitialized = [prevBalance, prevGasTotal].every((n) => n === null);
     const amountErrorRequiresUpdate = doesAmountErrorRequireUpdate({
       balance,
@@ -264,8 +273,7 @@ export default class SendTransactionScreen extends Component {
 
   validate(query) {
     const { tokens, sendToken, chainId, sendTokenAddress } = this.props;
-
-    const { internalSearch } = this.state;
+    const { internalSearch, toError } = this.state;
 
     if (!query || internalSearch) {
       this.setState({ toError: '', toWarning: '', validating: false });
@@ -277,7 +285,7 @@ export default class SendTransactionScreen extends Component {
     const self = this;
     Promise.resolve(toErrorObject).then((object) => {
       self.setState({
-        toError: object.to,
+        toError: object.to || toError,
         toWarning: toWarningObject.to,
         validating: false,
       });

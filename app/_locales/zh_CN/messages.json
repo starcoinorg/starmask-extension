@@ -191,7 +191,7 @@
     "message": "自动接受代币"
   },
   "AutoAcceptTokenDescription": {
-    "message": "选中该项可以在添加自定义代币的同时自动接受该代币，否则需要手动接受."
+    "message": "选中该项可以在收到新种类的代币转账的同时自动接受该代币，否则必须先手动添加并接受该代币."
   },
   "autoLockTimeLimit": {
     "message": "自动锁定定时（分钟）"
@@ -295,6 +295,15 @@
   },
   "confirmed": {
     "message": "确认"
+  },
+  "confusableUnicode": {
+    "message": "'$1' is similar to '$2'."
+  },
+  "confusableZeroWidthUnicode": {
+    "message": "Zero-width character found."
+  },
+  "confusingEnsDomain": {
+    "message": "We have detected a confusable character in the ENS name. Check the ENS name to avoid a potential scam."
   },
   "congratulations": {
     "message": "恭喜"
@@ -1348,6 +1357,9 @@
   },
   "recipientAddressPlaceholder": {
     "message": "查找 帐户地址 (0x) 或 收款识别码(stc1p)"
+  },
+  "recipientAccountNotAcceptToken": {
+    "message": "接收方账户没有接收该代币，无法发送。请提醒对方先添加并接受该代币,或者在账户设置里面打开'自动接受代币'开关。"
   },
   "receiptIdentifier": {
     "message": "收款识别码"
