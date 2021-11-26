@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.1.0] - 2021-11-26
+- New features:
+    - [#30 Automatically trigger an accept token transaction while add token](https://github.com/starcoinorg/starmask-extension/issues/30)
+    - [#34 Add an account settings pop window with a switch of AutoAcceptToken inside it](https://github.com/starcoinorg/starmask-extension/issues/34)
+    - [#35 Check if the recipient account accepts the token before sending](https://github.com/starcoinorg/starmask-extension/issues/35)
+
 ## [3.0.3] - 2021-11-16
 - Bug fixes:
     - [#32 OneKey postmessage will get lost if the popup window lost focus](https://github.com/starcoinorg/starmask-extension/issues/32)
