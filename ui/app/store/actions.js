@@ -2168,6 +2168,24 @@ export function getAutoAcceptToken(address) {
   };
 }
 
+export function checkIsAcceptToken(address, code) {
+  return function (dispatch) {
+    dispatch(showLoadingIndication());
+    return new Promise((resolve, reject) => {
+      background.checkIsAcceptToken(address, code, function (err, result) {
+        dispatch(hideLoadingIndication());
+        if (err) {
+          log.error(err);
+          dispatch(displayWarning('Had a problem checkIsAcceptToken.'));
+          reject(err);
+          return;
+        }
+        resolve(result);
+      });
+    });
+  };
+}
+
 export function setAutoAcceptToken(value, from) {
   return async (dispatch) => {
     dispatch(showLoadingIndication());
@@ -2202,7 +2220,6 @@ export function setAutoAcceptToken(value, from) {
 export function setCompletedOnboarding() {
   return async (dispatch) => {
     dispatch(showLoadingIndication());
-
     try {
       await promisifiedBackground.completeOnboarding();
       dispatch(completeOnboarding());

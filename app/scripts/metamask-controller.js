@@ -608,7 +608,7 @@ export default class MetamaskController extends EventEmitter {
 
       // auto accept token
       getAutoAcceptToken: nodeify(this.getAutoAcceptToken, this),
-      setAutoAcceptToken: nodeify(this.setAutoAcceptToken, this),
+      checkIsAcceptToken: nodeify(this.checkIsAcceptToken, this),
 
       // primary HD keyring management
       addNewAccount: nodeify(this.addNewAccount, this),
@@ -2777,6 +2777,29 @@ export default class MetamaskController extends EventEmitter {
               ? result.raw && parseInt(result.raw, 16) > 0
               : false;
             resolve(autoAcceptToken);
+          }
+        },
+      );
+    });
+  }
+
+  /**
+   * Check if an account accepts the token or not
+   * @param {string} address - The account address
+   * @param {string} code - The token code
+   */
+  checkIsAcceptToken(address, code) {
+    const ethQuery = new EthQuery(this.provider);
+    return new Promise((resolve, reject) => {
+      ethQuery.getResource(
+        address,
+        `0x00000000000000000000000000000001::Account::Balance<${code}>`,
+        (error, res) => {
+          if (error) {
+            log.error(error);
+            reject(error);
+          } else {
+            resolve(Boolean(res));
           }
         },
       );

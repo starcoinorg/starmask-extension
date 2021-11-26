@@ -33,6 +33,8 @@ export default class SendTransactionScreen extends Component {
     blockGasLimit: PropTypes.string,
     conversionRate: PropTypes.number,
     editingTransactionId: PropTypes.string,
+    getAutoAcceptToken: PropTypes.func.isRequired,
+    checkIsAcceptToken: PropTypes.func.isRequired,
     fetchBasicGasEstimates: PropTypes.func.isRequired,
     from: PropTypes.object,
     gasLimit: PropTypes.string,
@@ -120,12 +122,25 @@ export default class SendTransactionScreen extends Component {
     } = prevProps;
 
     if (to && sendToken && sendToken.code && to !== prevTo) {
-      this.setState({
-        toError: RECIPIENT_ACCOUNT_NOT_ACCEPT_TOKEN_ERROR,
-        validating: false,
-      });
+      const { getAutoAcceptToken, checkIsAcceptToken } = this.props;
+      // if not AutoAcceptToken and not AcceptToken
+      getAutoAcceptToken(to)
+        .then((autoAcceptToken) => {
+          if (!autoAcceptToken) {
+            checkIsAcceptToken(to, sendToken.code).then((isAcceptToken) => {
+              if (!isAcceptToken) {
+                this.setState({
+                  toError: RECIPIENT_ACCOUNT_NOT_ACCEPT_TOKEN_ERROR,
+                  validating: false,
+                });
+              }
+            });
+          }
+        })
+        .catch((e) => log.error(e));
       return;
     }
+
     const uninitialized = [prevBalance, prevGasTotal].every((n) => n === null);
     const amountErrorRequiresUpdate = doesAmountErrorRequireUpdate({
       balance,
