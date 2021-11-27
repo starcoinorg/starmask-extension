@@ -4,7 +4,8 @@
 - New features:
     - [#30 Automatically trigger an accept token transaction while add token](https://github.com/starcoinorg/starmask-extension/issues/30)
     - [#34 Add an account settings pop window with a switch of AutoAcceptToken inside it](https://github.com/starcoinorg/starmask-extension/issues/34)
-    - [#35 Check if the recipient account accepts the token before sending](https://github.com/starcoinorg/starmask-extension/issues/35)
+    - [#35 Check whether the receiver has accepted the token before sending, if not, give a prompt](https://github.com/starcoinorg/starmask-extension/issues/35)
+    - [#36 Check whether the receiver has added the gallery before sending NFT, if not, give a prompt](https://github.com/starcoinorg/starmask-extension/issues/36)
 
 ## [3.0.3] - 2021-11-16
 - Bug fixes:
