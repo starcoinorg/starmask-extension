@@ -1418,7 +1418,10 @@
     "message": "Recipient Address"
   },
   "recipientAccountNotAcceptToken": {
-    "message": "The recipient account neither  accept this token, nor has enabled 'AutoAcceptToken'. Please notify the recipient to add and accept this token, or enable 'AutoAcceptToken' in the account settings page."
+    "message": "The recipient neither  accept this token, nor has enabled 'AutoAcceptToken'. Please notify the recipient to add and accept this token, or enable 'AutoAcceptToken' in the account settings page."
+  },
+  "recipientAccountNotAddNFTGallery": {
+    "message": "The recipient has not added this NFT gallery yet. Please notify the recipient to 'add NFT gallery' first."
   },
   "recipientAddressPlaceholder": {
     "message": "Search Address (0x) or ReceiptIdentifier(stc1p)"

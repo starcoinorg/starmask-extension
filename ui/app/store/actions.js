@@ -2168,6 +2168,24 @@ export function getAutoAcceptToken(address) {
   };
 }
 
+export function checkIsAddNFTGallery(address, meta, body) {
+  return function (dispatch) {
+    dispatch(showLoadingIndication());
+    return new Promise((resolve, reject) => {
+      background.checkIsAddNFTGallery(address, meta, body, function (err, result) {
+        dispatch(hideLoadingIndication());
+        if (err) {
+          log.error(err);
+          dispatch(displayWarning('Had a problem checkIsAddNFTGallery.'));
+          reject(err);
+          return;
+        }
+        resolve(result);
+      });
+    });
+  };
+}
+
 export function checkIsAcceptToken(address, code) {
   return function (dispatch) {
     dispatch(showLoadingIndication());

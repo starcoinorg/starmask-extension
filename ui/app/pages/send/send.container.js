@@ -41,6 +41,7 @@ import {
   updateSendEnsResolutionError,
   getAutoAcceptToken,
   checkIsAcceptToken,
+  checkIsAddNFTGallery,
 } from '../../store/actions';
 import { resetSendState, updateSendErrors } from '../../ducks/send/send.duck';
 import { fetchBasicGasEstimates } from '../../ducks/gas/gas.duck';
@@ -92,6 +93,11 @@ function mapDispatchToProps(dispatch) {
     },
     checkIsAcceptToken: (address, code) => {
       return dispatch(checkIsAcceptToken(address, code)).then((res) => {
+        return res;
+      });
+    },
+    checkIsAddNFTGallery: (address, meta, body) => {
+      return dispatch(checkIsAddNFTGallery(address, meta, body)).then((res) => {
         return res;
       });
     },

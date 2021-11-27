@@ -1361,6 +1361,9 @@
   "recipientAccountNotAcceptToken": {
     "message": "接收方账户没有接收该代币，也没有设置'自动接受代币'。请提醒对方添加并接受该代币,或者在账户设置里面设置'自动接受代币'。"
   },
+  "recipientAccountNotAddNFTGallery": {
+    "message": "接收方账户没有添加该NFT陈列室。请提醒对方先'添加NFT陈列室'。"
+  },
   "receiptIdentifier": {
     "message": "收款识别码"
   },

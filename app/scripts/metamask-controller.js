@@ -610,6 +610,9 @@ export default class MetamaskController extends EventEmitter {
       getAutoAcceptToken: nodeify(this.getAutoAcceptToken, this),
       checkIsAcceptToken: nodeify(this.checkIsAcceptToken, this),
 
+      // NFT
+      checkIsAddNFTGallery: nodeify(this.checkIsAddNFTGallery, this),
+
       // primary HD keyring management
       addNewAccount: nodeify(this.addNewAccount, this),
       verifySeedPhrase: nodeify(this.verifySeedPhrase, this),
@@ -2784,7 +2787,7 @@ export default class MetamaskController extends EventEmitter {
   }
 
   /**
-   * Check if an account accepts the token or not
+   * Check wether an account has accepted the token
    * @param {string} address - The account address
    * @param {string} code - The token code
    */
@@ -2794,6 +2797,30 @@ export default class MetamaskController extends EventEmitter {
       ethQuery.getResource(
         address,
         `0x00000000000000000000000000000001::Account::Balance<${code}>`,
+        (error, res) => {
+          if (error) {
+            log.error(error);
+            reject(error);
+          } else {
+            resolve(Boolean(res));
+          }
+        },
+      );
+    });
+  }
+
+  /**
+   * Check wether an account has added the NFT Gallery
+   * @param {string} address - The account address
+   * @param {string} meta - The NFT meta
+   * @param {string} body - The NFT body
+   */
+  checkIsAddNFTGallery(address, meta, body) {
+    const ethQuery = new EthQuery(this.provider);
+    return new Promise((resolve, reject) => {
+      ethQuery.getResource(
+        address,
+        `0x00000000000000000000000000000001::NFTGallery::NFTGallery<${meta}, ${body}>`,
         (error, res) => {
           if (error) {
             log.error(error);
