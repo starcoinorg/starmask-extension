@@ -32,7 +32,7 @@
     "message": "账户名称"
   },
   "accountNotExists": {
-    "message": "帐户地址在当前网络上不存在，请提供帐户 收款识别码(stc1p)。"
+    "message": "账户地址在当前网络上不存在，请提供账户 收款识别码(stc1p)。"
   },
   "accountOptions": {
     "message": "账户选项"
@@ -1317,7 +1317,7 @@
     "description": "select this type of file to use to import an account"
   },
   "privateKeyWarning": {
-    "message": "注意：永远不要公开这个私钥。任何拥有您的私钥的人都可以窃取您帐户中的任何资产。"
+    "message": "注意：永远不要公开这个私钥。任何拥有您的私钥的人都可以窃取您账户中的任何资产。"
   },
   "privateNetwork": {
     "message": "私有网络"
@@ -1341,7 +1341,7 @@
     "message": "队列中"
   },
   "readdToken": {
-    "message": "之后您还可以通过帐户选项菜单中的“添加代币”来添加此代币。"
+    "message": "之后您还可以通过账户选项菜单中的“添加代币”来添加此代币。"
   },
   "readyToConnect": {
     "message": "是否准备连接？"
@@ -1356,7 +1356,7 @@
     "message": "接收地址"
   },
   "recipientAddressPlaceholder": {
-    "message": "查找 帐户地址 (0x) 或 收款识别码(stc1p)"
+    "message": "查找 账户地址 (0x) 或 收款识别码(stc1p)"
   },
   "recipientAccountNotAcceptToken": {
     "message": "接收方账户没有接收该代币，也没有设置'自动接受代币'。请提醒对方添加并接受该代币,或者在账户设置里面设置'自动接受代币'。"
@@ -1432,13 +1432,13 @@
     "message": "显示账户助记词"
   },
   "revealSeedWordsDescription": {
-    "message": "如果您更换浏览器或计算机，则需要使用此账户助记词访问您的帐户。请将它们保存在安全秘密的地方。"
+    "message": "如果您更换浏览器或计算机，则需要使用此账户助记词访问您的账户。请将它们保存在安全秘密的地方。"
   },
   "revealSeedWordsTitle": {
     "message": "账户助记词"
   },
   "revealSeedWordsWarning": {
-    "message": "该账户助记词可以用来窃取您的所有帐户"
+    "message": "该账户助记词可以用来窃取您的所有账户"
   },
   "revealSeedWordsWarningTitle": {
     "message": "不要对任何人展示此账户助记词！"
