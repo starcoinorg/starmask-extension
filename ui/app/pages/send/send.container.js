@@ -39,6 +39,9 @@ import {
   qrCodeDetected,
   updateSendEnsResolution,
   updateSendEnsResolutionError,
+  getAutoAcceptToken,
+  checkIsAcceptToken,
+  checkIsAddNFTGallery,
 } from '../../store/actions';
 import { resetSendState, updateSendErrors } from '../../ducks/send/send.duck';
 import { fetchBasicGasEstimates } from '../../ducks/gas/gas.duck';
@@ -83,6 +86,21 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    getAutoAcceptToken: (address) => {
+      return dispatch(getAutoAcceptToken(address)).then((res) => {
+        return res;
+      });
+    },
+    checkIsAcceptToken: (address, code) => {
+      return dispatch(checkIsAcceptToken(address, code)).then((res) => {
+        return res;
+      });
+    },
+    checkIsAddNFTGallery: (address, meta, body) => {
+      return dispatch(checkIsAddNFTGallery(address, meta, body)).then((res) => {
+        return res;
+      });
+    },
     updateAndSetGasLimit: ({
       blockGasLimit,
       editingTransactionId,

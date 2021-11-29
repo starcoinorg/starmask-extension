@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ASSET_ROUTE, ADD_TOKEN_ROUTE } from '../../helpers/constants/routes';
+import log from 'loglevel';
+import { ASSET_ROUTE, ADD_TOKEN_ROUTE, CONFIRM_TRANSACTION_ROUTE } from '../../helpers/constants/routes';
 import Button from '../../components/ui/button';
 import Identicon from '../../components/ui/identicon';
 import TokenBalance from '../../components/ui/token-balance';
@@ -17,6 +18,11 @@ export default class ConfirmAddToken extends Component {
     addTokens: PropTypes.func,
     mostRecentOverviewPage: PropTypes.string.isRequired,
     pendingTokens: PropTypes.object,
+    selectedAddress: PropTypes.string,
+    unconfirmedTransactionsCount: PropTypes.number,
+    getAutoAcceptToken: PropTypes.func.isRequired,
+    checkIsAcceptToken: PropTypes.func.isRequired,
+    acceptToken: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
@@ -27,8 +33,28 @@ export default class ConfirmAddToken extends Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    const { unconfirmedTransactionsCount, history } = this.props;
+    const { unconfirmedTransactionsCount: prevUnconfirmedTransactionsCount } = prevProps;
+    if (
+      unconfirmedTransactionsCount > 0 &&
+      unconfirmedTransactionsCount !== prevUnconfirmedTransactionsCount
+    ) {
+      history.push(CONFIRM_TRANSACTION_ROUTE);
+    }
+  }
+
   getTokenName(name, symbol) {
     return typeof name === 'undefined' ? symbol : `${name} (${symbol})`;
+  }
+
+  redirect(firstTokenAddress) {
+    const { history, mostRecentOverviewPage } = this.props;
+    if (firstTokenAddress) {
+      history.push(`${ASSET_ROUTE}/${firstTokenAddress}`);
+    } else {
+      history.push(mostRecentOverviewPage);
+    }
   }
 
   render() {
@@ -36,8 +62,11 @@ export default class ConfirmAddToken extends Component {
       history,
       addTokens,
       clearPendingTokens,
-      mostRecentOverviewPage,
       pendingTokens,
+      selectedAddress,
+      getAutoAcceptToken,
+      checkIsAcceptToken,
+      acceptToken,
     } = this.props;
 
     return (
@@ -118,12 +147,26 @@ export default class ConfirmAddToken extends Component {
                     });
                   });
                   clearPendingTokens();
-                  const firstTokenAddress = pendingTokenValues?.[0].code?.toLowerCase();
-                  if (firstTokenAddress) {
-                    history.push(`${ASSET_ROUTE}/${firstTokenAddress}`);
-                  } else {
-                    history.push(mostRecentOverviewPage);
-                  }
+                  const code = pendingTokenValues?.[0].code;
+                  const firstTokenAddress = code?.toLowerCase();
+                  // trigger an accept token txn if not AutoAcceptToken and not AcceptToken
+                  getAutoAcceptToken(selectedAddress)
+                    .then((autoAcceptToken) => {
+                      if (autoAcceptToken) {
+                        this.redirect(firstTokenAddress);
+                      } else {
+                        checkIsAcceptToken(selectedAddress, code).then(
+                          (isAcceptToken) => {
+                            if (isAcceptToken) {
+                              this.redirect(firstTokenAddress);
+                            } else {
+                              acceptToken(code, selectedAddress);
+                            }
+                          },
+                        );
+                      }
+                    })
+                    .catch((e) => log.error(e));
                 });
               }}
             >

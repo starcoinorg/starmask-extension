@@ -10,7 +10,7 @@ import {
   loadRelativeTimeFormatLocaleData,
 } from '../helpers/utils/i18n-helper';
 import { getMethodDataAsync } from '../helpers/utils/transactions.util';
-import { fetchSymbolAndDecimals, generateAcceptTokenPayloadHex } from '../helpers/utils/token-util';
+import { fetchSymbolAndDecimals, generateAcceptTokenPayloadHex, generateAutoAcceptTokenPayloadHex } from '../helpers/utils/token-util';
 import { generateAcceptNFTGalleryPayloadHex, generateTransferNFTPayloadHex } from '../helpers/utils/nft-util';
 import switchDirection from '../helpers/utils/switch-direction';
 import { ENVIRONMENT_TYPE_NOTIFICATION } from '../../../shared/constants/app';
@@ -838,7 +838,6 @@ export function acceptToken(tokenCode, from) {
     } catch (error) {
       log.error(error);
     }
-    dispatch(showConfTxPage());
   };
 }
 
@@ -2151,10 +2150,94 @@ export function setAutoLockTimeLimit(value) {
   return setPreference('autoLockTimeLimit', value);
 }
 
+export function getAutoAcceptToken(address) {
+  return function (dispatch) {
+    dispatch(showLoadingIndication());
+    return new Promise((resolve, reject) => {
+      background.getAutoAcceptToken(address, function (err, result) {
+        dispatch(hideLoadingIndication());
+        if (err) {
+          log.error(err);
+          dispatch(displayWarning('Had a problem getting AutoAcceptToken.'));
+          reject(err);
+          return;
+        }
+        resolve(result);
+      });
+    });
+  };
+}
+
+export function checkIsAddNFTGallery(address, meta, body) {
+  return function (dispatch) {
+    dispatch(showLoadingIndication());
+    return new Promise((resolve, reject) => {
+      background.checkIsAddNFTGallery(address, meta, body, function (err, result) {
+        dispatch(hideLoadingIndication());
+        if (err) {
+          log.error(err);
+          dispatch(displayWarning('Had a problem checkIsAddNFTGallery.'));
+          reject(err);
+          return;
+        }
+        resolve(result);
+      });
+    });
+  };
+}
+
+export function checkIsAcceptToken(address, code) {
+  return function (dispatch) {
+    dispatch(showLoadingIndication());
+    return new Promise((resolve, reject) => {
+      background.checkIsAcceptToken(address, code, function (err, result) {
+        dispatch(hideLoadingIndication());
+        if (err) {
+          log.error(err);
+          dispatch(displayWarning('Had a problem checkIsAcceptToken.'));
+          reject(err);
+          return;
+        }
+        resolve(result);
+      });
+    });
+  };
+}
+
+export function setAutoAcceptToken(value, from) {
+  return async (dispatch) => {
+    dispatch(showLoadingIndication());
+    return new Promise((resolve, reject) => {
+      try {
+        const payloadInHex = generateAutoAcceptTokenPayloadHex(value);
+        const txData = {
+          from,
+          gasPrice: '0x1',
+          data: payloadInHex,
+        };
+        background.addUnapprovedTransaction(txData, 'starmask', function (err, result) {
+          dispatch(hideLoadingIndication());
+          if (err) {
+            log.error(err);
+            dispatch(displayWarning('Had a problem getting AutoAcceptToken.'));
+            reject(err);
+            return;
+          }
+          dispatch(showConfTxPage({ id: result.id }));
+          dispatch(hideModal());
+          resolve(result);
+        });
+      } catch (error) {
+        log.error(error);
+        reject(error);
+      }
+    });
+  };
+}
+
 export function setCompletedOnboarding() {
   return async (dispatch) => {
     dispatch(showLoadingIndication());
-
     try {
       await promisifiedBackground.completeOnboarding();
       dispatch(completeOnboarding());

@@ -606,6 +606,13 @@ export default class MetamaskController extends EventEmitter {
       getRequestAccountTabIds: (cb) => cb(null, this.getRequestAccountTabIds()),
       getOpenMetamaskTabsIds: (cb) => cb(null, this.getOpenMetamaskTabsIds()),
 
+      // auto accept token
+      getAutoAcceptToken: nodeify(this.getAutoAcceptToken, this),
+      checkIsAcceptToken: nodeify(this.checkIsAcceptToken, this),
+
+      // NFT
+      checkIsAddNFTGallery: nodeify(this.checkIsAddNFTGallery, this),
+
       // primary HD keyring management
       addNewAccount: nodeify(this.addNewAccount, this),
       verifySeedPhrase: nodeify(this.verifySeedPhrase, this),
@@ -2750,5 +2757,79 @@ export default class MetamaskController extends EventEmitter {
    */
   setLocked() {
     return this.keyringController.setLocked();
+  }
+
+  /**
+   * Get AutoAcceptToken for selected account.
+   * @param {string} address - The account address
+   */
+  getAutoAcceptToken(adress) {
+    const ethQuery = new EthQuery(this.provider);
+    return new Promise((resolve, reject) => {
+      ethQuery.sendAsync(
+        {
+          method: 'state.get_resource',
+          params: [adress, '0x1::Account::AutoAcceptToken'],
+        },
+        (error, result) => {
+          if (error) {
+            log.error(error);
+            reject(error);
+          } else {
+            const autoAcceptToken = result
+              ? result.raw && parseInt(result.raw, 16) > 0
+              : false;
+            resolve(autoAcceptToken);
+          }
+        },
+      );
+    });
+  }
+
+  /**
+   * Check wether an account has accepted the token
+   * @param {string} address - The account address
+   * @param {string} code - The token code
+   */
+  checkIsAcceptToken(address, code) {
+    const ethQuery = new EthQuery(this.provider);
+    return new Promise((resolve, reject) => {
+      ethQuery.getResource(
+        address,
+        `0x00000000000000000000000000000001::Account::Balance<${code}>`,
+        (error, res) => {
+          if (error) {
+            log.error(error);
+            reject(error);
+          } else {
+            resolve(Boolean(res));
+          }
+        },
+      );
+    });
+  }
+
+  /**
+   * Check wether an account has added the NFT Gallery
+   * @param {string} address - The account address
+   * @param {string} meta - The NFT meta
+   * @param {string} body - The NFT body
+   */
+  checkIsAddNFTGallery(address, meta, body) {
+    const ethQuery = new EthQuery(this.provider);
+    return new Promise((resolve, reject) => {
+      ethQuery.getResource(
+        address,
+        `0x00000000000000000000000000000001::NFTGallery::NFTGallery<${meta}, ${body}>`,
+        (error, res) => {
+          if (error) {
+            log.error(error);
+            reject(error);
+          } else {
+            resolve(Boolean(res));
+          }
+        },
+      );
+    });
   }
 }

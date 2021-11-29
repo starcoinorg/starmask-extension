@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { debounce } from 'lodash';
+import log from 'loglevel';
 import { isValidAddress } from '@starcoin/stc-util';
 import { isValidReceipt } from '../../helpers/utils/util';
 import {
@@ -22,6 +23,8 @@ import {
   INVALID_RECIPIENT_ADDRESS_ERROR,
   KNOWN_RECIPIENT_ADDRESS_ERROR,
   CONTRACT_ADDRESS_ERROR,
+  RECIPIENT_ACCOUNT_NOT_ACCEPT_TOKEN_ERROR,
+  RECIPIENT_ACCOUNT_NOT_ADD_NFT_GALLERY_ERROR,
 } from './send.constants';
 
 export default class SendTransactionScreen extends Component {
@@ -31,6 +34,9 @@ export default class SendTransactionScreen extends Component {
     blockGasLimit: PropTypes.string,
     conversionRate: PropTypes.number,
     editingTransactionId: PropTypes.string,
+    getAutoAcceptToken: PropTypes.func.isRequired,
+    checkIsAcceptToken: PropTypes.func.isRequired,
+    checkIsAddNFTGallery: PropTypes.func.isRequired,
     fetchBasicGasEstimates: PropTypes.func.isRequired,
     from: PropTypes.object,
     gasLimit: PropTypes.string,
@@ -93,6 +99,7 @@ export default class SendTransactionScreen extends Component {
       chainId,
       primaryCurrency,
       sendToken,
+      sendNFT,
       tokenBalance,
       updateSendErrors,
       updateSendTo,
@@ -116,6 +123,41 @@ export default class SendTransactionScreen extends Component {
       sendToken: prevSendToken,
       to: prevTo,
     } = prevProps;
+
+    if (to && sendToken && sendToken.code && to !== prevTo) {
+      const { getAutoAcceptToken, checkIsAcceptToken } = this.props;
+      // if not AutoAcceptToken and not AcceptToken
+      getAutoAcceptToken(to)
+        .then((autoAcceptToken) => {
+          if (!autoAcceptToken) {
+            checkIsAcceptToken(to, sendToken.code).then((isAcceptToken) => {
+              if (!isAcceptToken) {
+                this.setState({
+                  toError: RECIPIENT_ACCOUNT_NOT_ACCEPT_TOKEN_ERROR,
+                  validating: false,
+                });
+              }
+            });
+          }
+        })
+        .catch((e) => log.error(e));
+      return;
+    }
+
+    if (to && sendNFT && sendNFT.meta && to !== prevTo) {
+      const { checkIsAddNFTGallery } = this.props;
+      checkIsAddNFTGallery(to, sendNFT.meta, sendNFT.body)
+        .then((isAddNFTGallery) => {
+          if (!isAddNFTGallery) {
+            this.setState({
+              toError: RECIPIENT_ACCOUNT_NOT_ADD_NFT_GALLERY_ERROR,
+              validating: false,
+            });
+          }
+        })
+        .catch((e) => log.error(e));
+      return;
+    }
 
     const uninitialized = [prevBalance, prevGasTotal].every((n) => n === null);
     const amountErrorRequiresUpdate = doesAmountErrorRequireUpdate({
@@ -264,8 +306,7 @@ export default class SendTransactionScreen extends Component {
 
   validate(query) {
     const { tokens, sendToken, chainId, sendTokenAddress } = this.props;
-
-    const { internalSearch } = this.state;
+    const { internalSearch, toError } = this.state;
 
     if (!query || internalSearch) {
       this.setState({ toError: '', toWarning: '', validating: false });
@@ -277,7 +318,7 @@ export default class SendTransactionScreen extends Component {
     const self = this;
     Promise.resolve(toErrorObject).then((object) => {
       self.setState({
-        toError: object.to,
+        toError: object.to || toError,
         toWarning: toWarningObject.to,
         validating: false,
       });

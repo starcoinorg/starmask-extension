@@ -89,6 +89,16 @@ export default function AccountOptionsMenu({ anchorElement, onClose }) {
         {t('accountDetails')}
       </MenuItem>
       <MenuItem
+        data-testid="account-options-menu__account-details"
+        onClick={() => {
+          dispatch(showModal({ name: 'SHOW_AUTO_ACCEPT_TOKEN' }));
+          onClose();
+        }}
+        iconClassName="fas fa-hammer"
+      >
+        {t('account')}{t('settings')}
+      </MenuItem>
+      <MenuItem
         onClick={() => {
           viewOnEtherscanEvent();
           global.platform.openTab({
