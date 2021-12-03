@@ -1,5 +1,9 @@
 import { connect } from 'react-redux';
-import * as actions from '../../store/actions';
+import {
+  setAccountLabel,
+  addNewAccount,
+  createMultiSignAccount,
+} from '../../store/actions';
 import { getMostRecentOverviewPage } from '../../ducks/history/history';
 import NewAccountCreateForm from './new-account.component';
 
@@ -19,11 +23,20 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     createAccount: (newAccountName) => {
-      return dispatch(actions.addNewAccount()).then((newAccountAddress) => {
+      return dispatch(addNewAccount()).then((newAccountAddress) => {
         if (newAccountName) {
-          dispatch(actions.setAccountLabel(newAccountAddress, newAccountName));
+          dispatch(setAccountLabel(newAccountAddress, newAccountName));
         }
       });
+    },
+    createMultiSignAccount: (newAccountName, args) => {
+      return dispatch(createMultiSignAccount(args)).then(
+        (newAccountAddress) => {
+          if (newAccountName) {
+            dispatch(setAccountLabel(newAccountAddress, newAccountName));
+          }
+        },
+      );
     },
   };
 };

@@ -2542,7 +2542,7 @@
     read-bigint "^0.1.6"
     ws "7.2.3"
 
-"@starcoin/starcoin@^1.6.2":
+"@starcoin/starcoin@^1.6.2", "@starcoin/starcoin@^1.7.0":
   version "1.6.2"
   resolved "https://registry.npmjs.org/@starcoin/starcoin/-/starcoin-1.6.2.tgz#457e5f0ed7d7af44532aba64aab69ceee5ae200c"
   integrity sha512-zr5oYgBwi+xzfKD6+kCeqWqccbzMdBwz+kMr9hGIX915L4T2POgK8Y9w98r/0WqgEuMsx4iB9JHUBg3K1DNdOg==
@@ -2679,6 +2679,21 @@
     eth-sig-util "^1.4.0"
     loglevel "^1.5.0"
     obs-store "^4.0.3"
+
+"@starcoin/stc-multisign-keyring@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.npmjs.org/@starcoin/stc-multisign-keyring/-/stc-multisign-keyring-0.3.0.tgz#1e7452eb3ac8ed8952717b88638550c2d6c8c2ab"
+  integrity sha512-eYrMmCucWBguCVu/0puik0gULCU5cVka4sW50R5kCRwixukLjBytQSWn+hXBaFFBbuZHCpnonlhYKNAQS+h0NA==
+  dependencies:
+    "@ethersproject/bytes" "^5.0.6"
+    "@starcoin/starcoin" "^1.7.0"
+    "@starcoin/stc-util" "^0.3.0"
+    "@starcoin/stc-wallet" "^1.2.2"
+    eth-sig-util "^2.5.0"
+    ethereumjs-abi "^0.6.5"
+    events "^1.1.1"
+    loglevel "^1.8.0"
+    xtend "^4.0.1"
 
 "@starcoin/stc-nonce-tracker@^0.2.0":
   version "0.2.0"
@@ -14178,6 +14193,11 @@ loglevel@^1.7.1:
   version "1.7.1"
   resolved "https://registry.npmjs.org/loglevel/-/loglevel-1.7.1.tgz#005fde2f5e6e47068f935ff28573e125ef72f197"
   integrity sha512-Hesni4s5UkWkwCGJMQGAh71PaLUmKFM60dHvq0zi/vDhhrzuk+4GgNbTXJ12YYQJn6ZKBDNIjYcuQGKudvqrIw==
+
+loglevel@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.npmjs.org/loglevel/-/loglevel-1.8.0.tgz#e7ec73a57e1e7b419cb6c6ac06bf050b67356114"
+  integrity sha512-G6A/nJLRgWOuuwdNuA6koovfEV1YpqqAG4pRUlFaz3jj2QNZ8M4vBqnVA+HBTmU/AMNUtlOsMmSpF6NyOjztbA==
 
 loglevelnext@^1.0.1:
   version "1.0.5"

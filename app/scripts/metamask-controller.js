@@ -22,6 +22,7 @@ import { utils, starcoin_types, encoding } from '@starcoin/starcoin';
 import BigNumber from 'bignumber.js';
 import log from 'loglevel';
 import OneKeyKeyring from '@starcoin/stc-onekey-keyring';
+import MutiSignKeyring from '@starcoin/stc-multisign-keyring';
 // import LedgerBridgeKeyring from '@metamask/eth-ledger-bridge-keyring';
 import EthQuery from '@starcoin/stc-query';
 import nanoid from 'nanoid';
@@ -245,7 +246,7 @@ export default class MetamaskController extends EventEmitter {
     });
 
     // const additionalKeyrings = [TrezorKeyring, LedgerBridgeKeyring];
-    const additionalKeyrings = [OneKeyKeyring];
+    const additionalKeyrings = [OneKeyKeyring, MutiSignKeyring];
     this.keyringController = new KeyringController({
       keyringTypes: additionalKeyrings,
       initState: initState.KeyringController,
@@ -619,6 +620,7 @@ export default class MetamaskController extends EventEmitter {
       resetAccount: nodeify(this.resetAccount, this),
       removeAccount: nodeify(this.removeAccount, this),
       importAccountWithStrategy: nodeify(this.importAccountWithStrategy, this),
+      createMultiSignAccount: nodeify(this.createMultiSignAccount, this),
 
       // hardware wallets
       connectHardware: nodeify(this.connectHardware, this),
@@ -1428,6 +1430,18 @@ export default class MetamaskController extends EventEmitter {
       'Simple Key Pair',
       [{ privateKey, publicKey }],
     );
+    const accounts = await keyring.getAccounts();
+    // update accounts in preferences controller
+    const allAccounts = await this.keyringController.getAccounts();
+    this.preferencesController.setAddresses(allAccounts);
+    // set new account as selected
+    await this.preferencesController.setSelectedAddress(accounts[0]);
+  }
+
+  async createMultiSignAccount(args) {
+    const keyring = await this.keyringController.addNewKeyring('Multi Sign', [
+      args,
+    ]);
     const accounts = await keyring.getAccounts();
     // update accounts in preferences controller
     const allAccounts = await this.keyringController.getAccounts();

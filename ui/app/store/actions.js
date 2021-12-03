@@ -333,6 +333,34 @@ export function importNewAccount(strategy, args) {
   };
 }
 
+export function createMultiSignAccount(args) {
+  return async (dispatch) => {
+    let newState;
+    dispatch(
+      showLoadingIndication('This may take a while, please be patient.'),
+    );
+    try {
+      log.debug(`background.createMultiSignAccount`);
+      await promisifiedBackground.createMultiSignAccount(args);
+      newState = await promisifiedBackground.getState();
+    } catch (err) {
+      dispatch(displayWarning(err.message));
+      throw err;
+    } finally {
+      dispatch(hideLoadingIndication());
+    }
+
+    dispatch(updateMetamaskState(newState));
+    if (newState.selectedAddress) {
+      dispatch({
+        type: actionConstants.SHOW_ACCOUNT_DETAIL,
+        value: newState.selectedAddress,
+      });
+    }
+    return newState;
+  };
+}
+
 export function addNewAccount() {
   log.debug(`background.addNewAccount`);
   return async (dispatch, getState) => {

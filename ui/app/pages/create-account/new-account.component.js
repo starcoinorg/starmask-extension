@@ -55,7 +55,7 @@ export default class NewAccountCreateForm extends Component {
             placeholder="3"
             onChange={(event) => this.setState({ number: event.target.value })}
           />
-          &nbsp;&nbsp;&nbsp;&nbsp;{this.context.t('thresHold')}
+          &nbsp;&nbsp;&nbsp;&nbsp;{this.context.t('threshold')}
           <input
             className="new-account-create-form__input new-account-create-form__input-threshold"
             value={threshold}
@@ -87,7 +87,8 @@ export default class NewAccountCreateForm extends Component {
       contents.push(
         <div key={index}>
           <div className="new-account-create-form__input-label">
-            {this.context.t('externalTemp')}{this.context.t('publicKey')} {index}
+            {this.context.t('externalTemp')}
+            {this.context.t('publicKey')}&nbsp;{index}
           </div>
           <div>
             <textarea
@@ -112,8 +113,20 @@ export default class NewAccountCreateForm extends Component {
 
   render() {
     const menuItems = this.getMenuItemTexts();
-    const { newAccountName, defaultAccountName, type, externalPublicKeys, localAccount } = this.state;
-    const { history, createAccount, mostRecentOverviewPage } = this.props;
+    const {
+      newAccountName,
+      defaultAccountName,
+      type,
+      externalPublicKeys,
+      localAccount,
+      threshold,
+    } = this.state;
+    const {
+      history,
+      createAccount,
+      createMultiSignAccount,
+      mostRecentOverviewPage,
+    } = this.props;
     const createClick = (_) => {
       if (type === this.context.t('normalAccount')) {
         createAccount(newAccountName || defaultAccountName)
@@ -143,11 +156,30 @@ export default class NewAccountCreateForm extends Component {
         const publicKeys = Object.values(externalPublicKeys);
         const privateKeys = [localAccount.privateKey];
 
-        utils.multiSign
-          .createMultiEd25519KeyShard(publicKeys, privateKeys, this.state.threshold)
-          .then((shard) => {
-            const multiAccount = utils.account.showMultiEd25519Account(shard);
+        const accountName = newAccountName || defaultAccountName;
+        const args = { privateKeys, publicKeys, threshold };
+        createMultiSignAccount(accountName, args)
+          .then(() => {
+            this.context.metricsEvent({
+              eventOpts: {
+                category: 'Accounts',
+                action: 'Add New Account',
+                name: 'Added New Account',
+              },
+            });
             history.push(mostRecentOverviewPage);
+          })
+          .catch((e) => {
+            this.context.metricsEvent({
+              eventOpts: {
+                category: 'Accounts',
+                action: 'Add New Account',
+                name: 'Error',
+              },
+              customVariables: {
+                errorMessage: e.message,
+              },
+            });
           });
       }
     };
@@ -220,6 +252,7 @@ export default class NewAccountCreateForm extends Component {
 
 NewAccountCreateForm.propTypes = {
   createAccount: PropTypes.func,
+  createMultiSignAccount: PropTypes.func,
   newAccountNumber: PropTypes.number,
   history: PropTypes.object,
   mostRecentOverviewPage: PropTypes.string.isRequired,

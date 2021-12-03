@@ -2032,7 +2032,7 @@
   "testFaucet": {
     "message": "测试水管"
   },
-  "thresHold": {
+  "threshold": {
     "message": "阈值"
   },
   "thisWillCreate": {

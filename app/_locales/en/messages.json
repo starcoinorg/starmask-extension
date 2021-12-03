@@ -2137,8 +2137,8 @@
   "testFaucet": {
     "message": "Test Faucet"
   },
-  "thresHold": {
-    "message": "thresHold"
+  "threshold": {
+    "message": "threshold"
   },
   "thisWillCreate": {
     "message": "This will create a new wallet and seed phrase"
