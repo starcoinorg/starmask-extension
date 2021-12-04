@@ -1423,13 +1423,37 @@ export default class MetamaskController extends EventEmitter {
    * @param {Function} cb - A callback function called with a state update on success.
    */
   async importAccountWithStrategy(strategy, args) {
+    log.debug('importAccountWithStrategy', { strategy, args })
     const privateKey = await accountImporter.importAccount(strategy, args);
-    const publicKeyBuff = await privateToPublicED(privateKey);
-    const publicKey = publicKeyBuff.toString('hex');
-    const keyring = await this.keyringController.addNewKeyring(
-      'Simple Key Pair',
-      [{ privateKey, publicKey }],
-    );
+    log.debug({ privateKey })
+    const bytes = arrayify(addHexPrefix(privateKey));
+    log.debug({ bytes })
+    const len = bytes.length;
+    log.debug('len=', len, len - 3, (len - 3) / 32, (len - 3) % 32)
+    let keyring;
+    if ((len - 3) / 32 < 1 && (len - 3) % 32 > 0) {
+      // Single
+      log.debug('single')
+      const publicKeyBuff = await privateToPublicED(privateKey);
+      const publicKey = publicKeyBuff.toString('hex');
+      keyring = await this.keyringController.addNewKeyring('Simple Key Pair', [
+        { privateKey, publicKey },
+      ]);
+    } else {
+      // Multi
+      log.debug('multi');
+      const {
+        publicKeys,
+        threshold,
+        privateKeys,
+      } = utils.account.decodeMultiEd25519AccountPrivateKey(
+        addHexPrefix(privateKey),
+      );
+      keyring = await this.keyringController.addNewKeyring('Multi Sign', [
+        { privateKeys, publicKeys, threshold },
+      ]);
+    }
+
     const accounts = await keyring.getAccounts();
     // update accounts in preferences controller
     const allAccounts = await this.keyringController.getAccounts();
