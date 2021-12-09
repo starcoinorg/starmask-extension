@@ -16,6 +16,7 @@ import AccountDetailsModal from './account-details-modal';
 import ShowPublicKey from './show-public-key';
 import ShowReceiptIdentifier from './show-receipt-identifier';
 import AutoAcceptTokenModal from './auto-accept-token-modal';
+import SignMultiSignTxnModal from './sign-multi-sign-txn-modal';
 import ExportPrivateKeyModal from './export-private-key-modal';
 import HideTokenConfirmationModal from './hide-token-confirmation-modal';
 import QRScanner from './qr-scanner';
@@ -186,6 +187,11 @@ const MODALS = {
 
   SHOW_AUTO_ACCEPT_TOKEN: {
     contents: <AutoAcceptTokenModal />,
+    ...accountModalStyle,
+  },
+
+  SHOW_SIGN_MULTI_SIGN_TXN: {
+    contents: <SignMultiSignTxnModal />,
     ...accountModalStyle,
   },
 

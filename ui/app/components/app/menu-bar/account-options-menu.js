@@ -99,6 +99,16 @@ export default function AccountOptionsMenu({ anchorElement, onClose }) {
         {t('account')}{t('settings')}
       </MenuItem>
       <MenuItem
+        data-testid="account-options-menu__account-details"
+        onClick={() => {
+          dispatch(showModal({ name: 'SHOW_SIGN_MULTI_SIGN_TXN' }));
+          onClose();
+        }}
+        iconClassName="fas fa-pencil-alt"
+      >
+        {t('signMultiSignTxn')}
+      </MenuItem>
+      <MenuItem
         onClick={() => {
           viewOnEtherscanEvent();
           global.platform.openTab({

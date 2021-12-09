@@ -252,6 +252,9 @@
   "basic": {
     "message": "Basic"
   },
+  "binaryFile": {
+    "message": "Binary File"
+  },
   "blockExplorerUrl": {
     "message": "Block Explorer URL"
   },
@@ -1149,6 +1152,12 @@
   "multiSignAccount": {
     "message": "MultiSign Account"
   },
+  "multiSignTxn": {
+    "message": "MultiSign Transaction"
+  },
+  "multiSignTxnHex": {
+    "message": "Transaction Hex"
+  },
   "mustSelectOne": {
     "message": "Must select at least 1 token."
   },
@@ -1360,6 +1369,9 @@
   "pastePrivateKey": {
     "message": "Paste your private key string here:",
     "description": "For importing an account from a private key"
+  },
+  "pasteTxnHex": {
+    "message": "Paste the transaction's hex string:"
   },
   "pending": {
     "message": "Pending"
@@ -1682,6 +1694,9 @@
   },
   "sign": {
     "message": "Sign"
+  },
+  "signMultiSignTxn": {
+    "message": "Sign MultiSign Txn"
   },
   "signNotice": {
     "message": "Signing this message can have \ndangerous side effects. Only sign messages from \nsites you fully trust with your entire account.\n This dangerous method will be removed in a future version. "

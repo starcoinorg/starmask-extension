@@ -232,6 +232,9 @@
   "basic": {
     "message": "基本"
   },
+  "binaryFile": {
+    "message": "二进制文件"
+  },
   "blockExplorerUrl": {
     "message": "区块浏览器"
   },
@@ -1099,6 +1102,12 @@
   "multiSignAccount": {
     "message": "多签账户"
   },
+  "multiSignTxn": {
+    "message": "多签交易"
+  },
+  "multiSignTxnHex": {
+    "message": "多签交易Hex串"
+  },
   "mustSelectOne": {
     "message": "至少选择 1 种代币。"
   },
@@ -1298,6 +1307,9 @@
   "pastePrivateKey": {
     "message": "请粘贴您的私钥:",
     "description": "For importing an account from a private key"
+  },
+  "pasteTxnHex": {
+    "message": "请粘贴多签交易的Hex串:"
   },
   "pending": {
     "message": "待处理"
@@ -1617,6 +1629,9 @@
   },
   "sign": {
     "message": "签名"
+  },
+  "signMultiSignTxn": {
+    "message": "签名多签交易"
   },
   "signNotice": {
     "message": "签署此消息可能会产生危险的副作用。 \n只从您完全信任的网站上签名。 未来的版本将移除这种危险的方法。"
