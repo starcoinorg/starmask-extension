@@ -69,6 +69,9 @@ const DECRYPT_MESSAGE_REQUEST_PATH = '/decrypt-message-request';
 const ENCRYPTION_PUBLIC_KEY_REQUEST_PATH = '/encryption-public-key-request';
 const CONFIRMATION_V_NEXT_ROUTE = '/confirmation';
 
+const MULTI_SIGN_TXN_ROUTE = '/multi-sign-txn';
+const MULTI_SIGN_TXN_EXPORT_ROUTE = '/multi-sign-txn/export';
+
 // Used to pull a convenient name for analytics tracking events. The key must
 // be react-router ready path, and can include params such as :id for popup windows
 const PATH_NAME_MAP = {
@@ -141,6 +144,8 @@ const PATH_NAME_MAP = {
   [SWAPS_ERROR_ROUTE]: 'Swaps Error Page',
   [ADD_NFT_ROUTE]: 'Add NFT Page',
   [CONFIRM_ADD_NFT_ROUTE]: 'Confirm Add NFT Page',
+  [MULTI_SIGN_TXN_ROUTE]: 'Sign Multi Sign Txn Page',
+  [MULTI_SIGN_TXN_EXPORT_ROUTE]: 'Export Multi Sign Txn Page',
 };
 
 export {
@@ -210,4 +215,6 @@ export {
   SWAPS_MAINTENANCE_ROUTE,
   ADD_NFT_ROUTE,
   CONFIRM_ADD_NFT_ROUTE,
+  MULTI_SIGN_TXN_ROUTE,
+  MULTI_SIGN_TXN_EXPORT_ROUTE,
 };

@@ -35,8 +35,10 @@ import Asset from '../asset';
 import NFTItems from '../nft-items';
 import AddNFTPage from '../add-nft';
 import ConfirmAddNFTPage from '../confirm-add-nft';
+import MultiSignTxnPage from '../multi-sign-txn';
 
 import {
+  MULTI_SIGN_TXN_ROUTE,
   ADD_NFT_ROUTE,
   ADD_TOKEN_ROUTE,
   ASSET_ROUTE,
@@ -182,6 +184,10 @@ export default class Routes extends Component {
           path={CONFIRM_ADD_NFT_ROUTE}
           component={ConfirmAddNFTPage}
           exact
+        />
+        <Authenticated
+          path={MULTI_SIGN_TXN_ROUTE}
+          component={MultiSignTxnPage}
         />
         <Authenticated path={DEFAULT_ROUTE} component={Home} />
       </Switch>

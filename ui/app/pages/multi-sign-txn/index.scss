@@ -22,12 +22,8 @@
     display: flex;
     flex-flow: column;
     border-bottom: 1px solid $geyser;
-
-    &__no-boder-bottom {
-      border-bottom: none;
-    }
   }
-  
+
   &__title {
     @include H2;
 

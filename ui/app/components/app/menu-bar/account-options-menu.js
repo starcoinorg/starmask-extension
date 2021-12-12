@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { showModal } from '../../../store/actions';
-import { CONNECTED_ROUTE } from '../../../helpers/constants/routes';
+import { CONNECTED_ROUTE, MULTI_SIGN_TXN_ROUTE } from '../../../helpers/constants/routes';
 import { Menu, MenuItem } from '../../ui/menu';
 import getAccountLink from '../../../../lib/account-link';
 import {
@@ -17,7 +17,6 @@ import { useI18nContext } from '../../../hooks/useI18nContext';
 import { useMetricEvent } from '../../../hooks/useMetricEvent';
 import { getEnvironmentType } from '../../../../../app/scripts/lib/util';
 import { ENVIRONMENT_TYPE_FULLSCREEN } from '../../../../../shared/constants/app';
-
 export default function AccountOptionsMenu({ anchorElement, onClose }) {
   const t = useI18nContext();
   const dispatch = useDispatch();
@@ -101,12 +100,13 @@ export default function AccountOptionsMenu({ anchorElement, onClose }) {
       <MenuItem
         data-testid="account-options-menu__account-details"
         onClick={() => {
-          dispatch(showModal({ name: 'SHOW_SIGN_MULTI_SIGN_TXN' }));
+          history.push(MULTI_SIGN_TXN_ROUTE);
           onClose();
         }}
         iconClassName="fas fa-pencil-alt"
       >
-        {t('signMultiSignTxn')}
+        {t('multiSign')}
+        {t('transaction')}
       </MenuItem>
       <MenuItem
         onClick={() => {

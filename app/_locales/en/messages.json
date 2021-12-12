@@ -87,6 +87,9 @@
   "addRecipient": {
     "message": "Add Recipient"
   },
+  "addSign": {
+    "message": "Add Sign"
+  },
   "addSuggestedTokens": {
     "message": "Add Suggested Tokens"
   },
@@ -736,6 +739,9 @@
   },
   "expandView": {
     "message": "Expand view"
+  },
+  "exportTxn": {
+    "message": "Export Transaction"
   },
   "exportPrivateKey": {
     "message": "Export Private Key"
@@ -1694,9 +1700,6 @@
   },
   "sign": {
     "message": "Sign"
-  },
-  "signMultiSignTxn": {
-    "message": "Sign MultiSign Txn"
   },
   "signNotice": {
     "message": "Signing this message can have \ndangerous side effects. Only sign messages from \nsites you fully trust with your entire account.\n This dangerous method will be removed in a future version. "

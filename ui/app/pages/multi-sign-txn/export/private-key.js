@@ -3,12 +3,12 @@ import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import * as actions from '../../../../store/actions';
-import { getMetaMaskAccounts } from '../../../../selectors';
-import Button from '../../../ui/button';
-import { getMostRecentOverviewPage } from '../../../../ducks/history/history';
+import * as actions from '../../../store/actions';
+import { getMetaMaskAccounts } from '../../../selectors';
+import Button from '../../../components/ui/button';
+import { getMostRecentOverviewPage } from '../../../ducks/history/history';
 
-class TxnHexImportView extends Component {
+class PrivateKeyImportView extends Component {
   static contextTypes = {
     t: PropTypes.func,
     metricsEvent: PropTypes.func,
@@ -18,7 +18,6 @@ class TxnHexImportView extends Component {
     importNewAccount: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
     displayWarning: PropTypes.func.isRequired,
-    hideModal: PropTypes.func.isRequired,
     setSelectedAddress: PropTypes.func.isRequired,
     firstAddress: PropTypes.string.isRequired,
     error: PropTypes.node,
@@ -85,16 +84,17 @@ class TxnHexImportView extends Component {
   }
 
   render() {
-    const { error, hideModal } = this.props;
+    const { error, displayWarning } = this.props;
 
     return (
       <div className="new-account-import-form__private-key">
         <span className="new-account-create-form__instruction">
-          {this.context.t('pasteTxnHex')}
+          {this.context.t('pastePrivateKey')}
         </span>
         <div className="new-account-import-form__private-key-password-container">
           <input
             className="new-account-import-form__input-password"
+            type="password"
             id="private-key-box"
             onKeyPress={(e) => this.createKeyringOnEnter(e)}
             onChange={() => this.checkInputEmpty()}
@@ -108,7 +108,9 @@ class TxnHexImportView extends Component {
             large
             className="new-account-create-form__button"
             onClick={() => {
-              hideModal();
+              const { history, mostRecentOverviewPage } = this.props;
+              displayWarning(null);
+              history.push(mostRecentOverviewPage);
             }}
           >
             {this.context.t('cancel')}
@@ -120,7 +122,7 @@ class TxnHexImportView extends Component {
             onClick={() => this.createNewKeychain()}
             disabled={this.state.isEmpty}
           >
-            {this.context.t('sign')}
+            {this.context.t('import')}
           </Button>
         </div>
         {error ? <span className="error">{error}</span> : null}
@@ -132,7 +134,7 @@ class TxnHexImportView extends Component {
 export default compose(
   withRouter,
   connect(mapStateToProps, mapDispatchToProps),
-)(TxnHexImportView);
+)(PrivateKeyImportView);
 
 function mapStateToProps(state) {
   return {
@@ -144,9 +146,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    hideModal: () => {
-      dispatch(actions.hideModal());
-    },
     importNewAccount: (strategy, [privateKey]) => {
       return dispatch(actions.importNewAccount(strategy, [privateKey]));
     },

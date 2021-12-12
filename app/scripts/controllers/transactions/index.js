@@ -542,8 +542,25 @@ export default class TransactionController extends EventEmitter {
       }
       this.txStateManager.updateTx(txMeta, 'transactions#approveTransaction');
       // sign transaction
-      const rawTx = await this.signTransaction(txId);
-      await this.publishTransaction(txId, rawTx);
+      const signedTransactionHex = await this.signTransaction(txId);
+      const signedTransaction = encoding.bcsDecode(
+        starcoin_types.SignedUserTransaction,
+        signedTransactionHex,
+      );
+      log.debug({ signedTransaction })
+      log.debug('is multi sign=', signedTransaction.authenticator instanceof starcoin_types.TransactionAuthenticatorVariantMultiEd25519)
+      if (
+        signedTransaction.authenticator instanceof
+        starcoin_types.TransactionAuthenticatorVariantMultiEd25519
+      ) {
+        const existingSignatureShards = new starcoin_types.MultiEd25519SignatureShard(
+          signedTransaction.authenticator.signature,
+          signedTransaction.authenticator.public_key.threshold,
+        );
+        log.debug('is_enough=', existingSignatureShards.is_enough())
+      }
+
+      await this.publishTransaction(txId, signedTransactionHex);
       // must set transaction to submitted/failed before releasing lock
       nonceLock.releaseLock();
     } catch (err) {
@@ -658,22 +675,22 @@ export default class TransactionController extends EventEmitter {
       expirationTimestampSecs,
       chainId,
     );
-    const rawUserTransactionHex = await this.signEthTx(
+    const signedTransactionHex = await this.signEthTx(
       rawUserTransaction,
       fromAddress,
     );
-    return rawUserTransactionHex;
+    return signedTransactionHex;
   }
 
   /**
     publishes the raw tx and sets the txMeta to submitted
     @param {number} txId - the tx's Id
-    @param {string} rawTx - the hex string of the serialized signed transaction
+    @param {string} signedTransactionHex - the hex string of the serialized signed transaction
     @returns {Promise<void>}
   */
-  async publishTransaction(txId, rawTx) {
+  async publishTransaction(txId, signedTransactionHex) {
     const txMeta = this.txStateManager.getTx(txId);
-    txMeta.rawTx = rawTx;
+    txMeta.rawTx = signedTransactionHex;
     if (txMeta.type === TRANSACTION_TYPES.SWAP) {
       const preTxBalance = await this.query.getBalance(txMeta.txParams.from);
       txMeta.preTxBalance = preTxBalance.toString(16);
@@ -682,16 +699,21 @@ export default class TransactionController extends EventEmitter {
     let txHash;
     try {
       txHash = await new Promise((resolve, reject) => {
-        return this.query.sendRawTransaction(rawTx, (err, res) => {
-          if (err) {
-            return reject(err);
-          }
-          return resolve(res);
-        });
+        return this.query.sendRawTransaction(
+          signedTransactionHex,
+          (err, res) => {
+            if (err) {
+              return reject(err);
+            }
+            return resolve(res);
+          },
+        );
       });
     } catch (error) {
       if (error.message.toLowerCase().includes('known transaction')) {
-        txHash = ethUtil.sha3(addHexPrefix(rawTx)).toString('hex');
+        txHash = ethUtil
+          .sha3(addHexPrefix(signedTransactionHex))
+          .toString('hex');
         txHash = addHexPrefix(txHash);
       } else {
         throw error;
