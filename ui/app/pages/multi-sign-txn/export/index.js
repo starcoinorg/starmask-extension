@@ -1,62 +1,92 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
+import { compose } from 'redux';
 import PropTypes from 'prop-types';
-
-import Dropdown from '../../../components/ui/dropdown';
-
-// Subviews
-import JsonImportView from './json';
-import PrivateKeyImportView from './private-key';
-
-export default class AccountImportSubview extends Component {
+import { connect } from 'react-redux';
+import copyToClipboard from 'copy-to-clipboard';
+import * as actions from '../../../store/actions';
+import Button from '../../../components/ui/button';
+import TextField from '../../../components/ui/text-field';
+import { getMostRecentOverviewPage } from '../../../ducks/history/history';
+class ExportMultiSignTxn extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
 
-  state = {};
+  static propTypes = {
+    hideModal: PropTypes.func.isRequired,
+    error: PropTypes.node,
+    mostRecentOverviewPage: PropTypes.string.isRequired,
+    history: PropTypes.object.isRequired,
+  };
 
-  getMenuItemTexts() {
-    return [this.context.t('privateKey'), this.context.t('jsonFile')];
-  }
-
-  renderImportView() {
-    const { type } = this.state;
-    const menuItems = this.getMenuItemTexts();
-    const current = type || menuItems[0];
-
-    switch (current) {
-      case this.context.t('privateKey'):
-        return <PrivateKeyImportView />;
-      case this.context.t('jsonFile'):
-        return <JsonImportView />;
-      default:
-        return <JsonImportView />;
-    }
-  }
+  state = {
+    txn: "0xb555d8b06fed69769821e189b5168870000000000000000002000000000000000000000000000000010f5472616e73666572536372697074730f706565725f746f5f706565725f76320107000000000000000000000000000000010353544303535443000210dcd7ae3232acb938c68ee088305b83f61000ca9a3b000000000000000000000000809698000000000001000000000000000d3078313a3a5354433a3a535443c0a8000000000000fe0161547c6a1ef36e9e99865ce7ac028ee79aff404d279b568272bc7154802d4856bbc95ddc2b2926d1a451ea68fa74274aa04af97d8e2aefccb297e6ef61992d42e8e8cdd5b17a37fe7e8fe446d067e7a9907cf7783aca204ccb623972176614c0a00244b85039581d7352164ab4805ad0cb2efac0707f19ae4cb238164c89799a8d5d598ecc36ac0aaa2c97c7a5aec5b553586a348d8100735c50afe655e776a529bf0480000000"
+  };
 
   render() {
-    const menuItems = this.getMenuItemTexts();
-    const { type } = this.state;
+    const { error, history, mostRecentOverviewPage } = this.props;
 
     return (
-      <div className="new-account-import-form">
-        <div className="new-account-import-disclaimer">
-          <span>{this.context.t('importAccountMsg')}</span>
+      <div className="new-account-create-form">
+        <TextField
+          id="custom-nft-meta"
+          label={this.context.t('copyToClipboardOnClick')}
+          type="text"
+          value={this.state.txn}
+          fullWidth
+          margin="normal"
+          multiline
+          rows="5"
+          classes={{
+            inputMultiline: 'address-book__view-contact__text-area',
+            inputRoot: 'address-book__view-contact__text-area-wrapper',
+          }}
+        />
+        <a
+          className="warning"
+          href={void (0)}
+          onClick={() => console.log(123)}
+          rel="noopener noreferrer"
+        >
+          {this.context.t('clickToDownload')}
+        </a>
+        <div className="export-private-key-modal__buttons">
+          <Button
+            onClick={() => history.push(mostRecentOverviewPage)}
+            type="secondary"
+            large
+            className="export-private-key-modal__button"
+          >
+            {this.context.t('done')}
+          </Button>
         </div>
-        <div className="new-account-import-form__select-section">
-          <div className="new-account-import-form__select-label">
-            {this.context.t('selectType')}
-          </div>
-          <Dropdown
-            className="new-account-import-form__select"
-            options={menuItems.map((text) => ({ value: text }))}
-            selectedOption={type || menuItems[0]}
-            onChange={(value) => {
-              this.setState({ type: value });
-            }}
-          />
-        </div>
-        {this.renderImportView()}
       </div>
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    error: state.appState.warning,
+    mostRecentOverviewPage: getMostRecentOverviewPage(state),
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    hideModal: () => {
+      dispatch(actions.hideModal());
+    },
+    displayWarning: (warning) => dispatch(actions.displayWarning(warning)),
+    importNewJsonAccount: (options) =>
+      dispatch(actions.importNewAccount('JSON File', options)),
+    setSelectedAddress: (address) =>
+      dispatch(actions.setSelectedAddress(address)),
+  };
+};
+
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps),
+)(ExportMultiSignTxn);

@@ -287,6 +287,9 @@
   "chromeRequiredForHardwareWallets": {
     "message": "您需要在谷歌浏览器（Google Chrome）上使用 StarMask 才能连接到您的硬件钱包。"
   },
+  "clickToDownload": {
+    "message": "点击下载二进制文件"
+  },
   "clickToRevealSeed": {
     "message": "点击此处显示密语"
   },

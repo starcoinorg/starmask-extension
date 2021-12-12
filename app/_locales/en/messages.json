@@ -316,6 +316,9 @@
   "clickToRevealSeed": {
     "message": "Click here to reveal secret words"
   },
+  "clickToDownload": {
+    "message": "Click to download binary file"
+  },
   "close": {
     "message": "Close"
   },

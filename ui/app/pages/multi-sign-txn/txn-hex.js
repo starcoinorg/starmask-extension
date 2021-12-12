@@ -95,7 +95,7 @@ class TxnHexImportView extends Component {
   }
 
   render() {
-    const { error, hideModal } = this.props;
+    const { error, history, mostRecentOverviewPage } = this.props;
 
     return (
       <div className="new-account-import-form__private-key">
@@ -118,7 +118,7 @@ class TxnHexImportView extends Component {
             large
             className="new-account-create-form__button"
             onClick={() => {
-              hideModal();
+              history.push(mostRecentOverviewPage);
             }}
           >
             {this.context.t('cancel')}
