@@ -87,8 +87,6 @@ MultiSignTxnSign.propTypes = {
   createAccount: PropTypes.func,
   createMultiSignAccount: PropTypes.func,
   newAccountNumber: PropTypes.number,
-  history: PropTypes.object,
-  mostRecentOverviewPage: PropTypes.string.isRequired,
 };
 
 MultiSignTxnSign.contextTypes = {

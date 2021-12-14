@@ -7,7 +7,6 @@ import copyToClipboard from 'copy-to-clipboard';
 import * as actions from '../../../store/actions';
 import Button from '../../../components/ui/button';
 import TextField from '../../../components/ui/text-field';
-import { getMostRecentOverviewPage } from '../../../ducks/history/history';
 
 class ExportMultiSignTxn extends Component {
   static contextTypes = {
@@ -17,8 +16,6 @@ class ExportMultiSignTxn extends Component {
   static propTypes = {
     hideModal: PropTypes.func.isRequired,
     error: PropTypes.node,
-    mostRecentOverviewPage: PropTypes.string.isRequired,
-    history: PropTypes.object.isRequired,
   };
 
   state = {
@@ -26,7 +23,7 @@ class ExportMultiSignTxn extends Component {
   };
 
   render() {
-    const { error, history, mostRecentOverviewPage } = this.props;
+    const { error } = this.props;
 
     return (
       <div className="new-account-create-form">
@@ -53,16 +50,6 @@ class ExportMultiSignTxn extends Component {
         >
           {this.context.t('clickToDownload')}
         </a>
-        <div className="export-private-key-modal__buttons">
-          <Button
-            onClick={() => history.push(mostRecentOverviewPage)}
-            type="secondary"
-            large
-            className="export-private-key-modal__button"
-          >
-            {this.context.t('done')}
-          </Button>
-        </div>
       </div>
     );
   }
@@ -71,7 +58,6 @@ class ExportMultiSignTxn extends Component {
 const mapStateToProps = (state) => {
   return {
     error: state.appState.warning,
-    mostRecentOverviewPage: getMostRecentOverviewPage(state),
   };
 };
 

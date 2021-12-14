@@ -9,7 +9,6 @@ import * as actions from '../../store/actions';
 import { getMetaMaskAccounts } from '../../selectors';
 import Button from '../../components/ui/button';
 import TextField from '../../components/ui/text-field';
-import { getMostRecentOverviewPage } from '../../ducks/history/history';
 import { MULTI_SIGN_TXN_EXPORT_ROUTE } from '../../helpers/constants/routes';
 
 class TxnHexImportView extends Component {
@@ -26,7 +25,6 @@ class TxnHexImportView extends Component {
     setSelectedAddress: PropTypes.func.isRequired,
     firstAddress: PropTypes.string.isRequired,
     error: PropTypes.node,
-    mostRecentOverviewPage: PropTypes.string.isRequired,
   };
 
   state = { txnHex: '', isEmpty: true };
@@ -37,7 +35,6 @@ class TxnHexImportView extends Component {
       //   importNewAccount,
       history,
       //   displayWarning,
-      //   mostRecentOverviewPage,
       //   setSelectedAddress,
       //   firstAddress,
     } = this.props;
@@ -94,7 +91,7 @@ class TxnHexImportView extends Component {
   }
 
   render() {
-    const { error, history, mostRecentOverviewPage } = this.props;
+    const { error } = this.props;
     const { txnHex } = this.state;
     return (
       <div className="new-account-import-form__private-key">
@@ -120,17 +117,6 @@ class TxnHexImportView extends Component {
         </div>
         <div className="new-account-import-form__buttons">
           <Button
-            type="default"
-            large
-            className="new-account-create-form__button"
-            onClick={() => {
-              history.push(mostRecentOverviewPage);
-            }}
-          >
-            {this.context.t('cancel')}
-          </Button>
-          &nbsp;
-          <Button
             type="secondary"
             large
             className="new-account-create-form__button"
@@ -155,7 +141,6 @@ function mapStateToProps(state) {
   return {
     error: state.appState.warning,
     firstAddress: Object.keys(getMetaMaskAccounts(state))[0],
-    mostRecentOverviewPage: getMostRecentOverviewPage(state),
   };
 }
 
