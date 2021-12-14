@@ -8,6 +8,7 @@ import { encoding, starcoin_types } from '@starcoin/starcoin';
 import * as actions from '../../store/actions';
 import { getMetaMaskAccounts } from '../../selectors';
 import Button from '../../components/ui/button';
+import TextField from '../../components/ui/text-field';
 import { getMostRecentOverviewPage } from '../../ducks/history/history';
 import { MULTI_SIGN_TXN_EXPORT_ROUTE } from '../../helpers/constants/routes';
 
@@ -28,12 +29,10 @@ class TxnHexImportView extends Component {
     mostRecentOverviewPage: PropTypes.string.isRequired,
   };
 
-  inputRef = React.createRef();
-
-  state = { isEmpty: true };
+  state = { txnHex: '', isEmpty: true };
 
   signMultiSignTxn() {
-    const txnHex = this.inputRef.current.value;
+    const { txnHex } = this.state;
     const {
       //   importNewAccount,
       history,
@@ -85,31 +84,38 @@ class TxnHexImportView extends Component {
     }
   };
 
-  checkInputEmpty() {
-    const txnHex = this.inputRef.current.value;
+  checkInputEmpty(value) {
+    const txnHex = value.trim();
     let isEmpty = true;
     if (txnHex !== '') {
       isEmpty = false;
     }
-    this.setState({ isEmpty });
+    this.setState({ txnHex, isEmpty });
   }
 
   render() {
     const { error, history, mostRecentOverviewPage } = this.props;
-
+    const { txnHex } = this.state;
     return (
       <div className="new-account-import-form__private-key">
         <span className="new-account-create-form__instruction">
           {this.context.t('pasteTxnHex')}
         </span>
         <div className="new-account-import-form__private-key-password-container">
-          <input
-            className="new-account-import-form__input-password"
-            id="private-key-box"
+          <TextField
+            id="custom-nft-meta"
+            type="text"
+            value={txnHex}
             onKeyPress={(e) => this.signTxnOnEnter(e)}
-            onChange={() => this.checkInputEmpty()}
-            ref={this.inputRef}
-            autoFocus
+            onChange={(e) => this.checkInputEmpty(e.target.value)}
+            fullWidth
+            margin="normal"
+            multiline
+            rows="5"
+            classes={{
+              inputMultiline: 'address-book__view-contact__text-area',
+              inputRoot: 'address-book__view-contact__text-area-wrapper',
+            }}
           />
         </div>
         <div className="new-account-import-form__buttons">
@@ -123,6 +129,7 @@ class TxnHexImportView extends Component {
           >
             {this.context.t('cancel')}
           </Button>
+          &nbsp;
           <Button
             type="secondary"
             large
