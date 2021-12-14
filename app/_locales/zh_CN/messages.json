@@ -1117,6 +1117,12 @@
   "multiSignTxnHex": {
     "message": "多签交易Hex串"
   },
+  "multiSignTxnCreate": {
+    "message": "创建多签交易"
+  },
+  "multiSignTxnAddSign": {
+    "message": "添加签名"
+  },
   "mustSelectOne": {
     "message": "至少选择 1 种代币。"
   },

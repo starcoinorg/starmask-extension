@@ -1167,6 +1167,12 @@
   "multiSignTxnHex": {
     "message": "Transaction Hex"
   },
+  "multiSignTxnCreate": {
+    "message": "Create MultiSign Txn"
+  },
+  "multiSignTxnAddSign": {
+    "message": "Add Signature"
+  },
   "mustSelectOne": {
     "message": "Must select at least 1 token."
   },

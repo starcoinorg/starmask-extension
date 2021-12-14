@@ -28,6 +28,14 @@
  *  resubmitting the same transaction with a higher gas fee. This type is also used
  *  to speed up pending transactions. This is accomplished by creating a new tx with
  *  the same nonce and higher gas fees.
+ * @property {'multiSignCreate'} MULTI_SIGN_CREATE - When a transaction is failed it can be retried by
+ *  resubmitting the same transaction with a higher gas fee. This type is also used
+ *  to speed up pending transactions. This is accomplished by creating a new tx with
+ *  the same nonce and higher gas fees.
+ * @property {'multiSignAddSign'} multiSignAddSign - When a transaction is failed it can be retried by
+ *  resubmitting the same transaction with a higher gas fee. This type is also used
+ *  to speed up pending transactions. This is accomplished by creating a new tx with
+ *  the same nonce and higher gas fees.
  */
 
 /**
@@ -51,6 +59,8 @@ export const TRANSACTION_TYPES = {
   DEPLOY_CONTRACT: 'contractDeployment',
   SWAP: 'swap',
   SWAP_APPROVAL: 'swapApproval',
+  MULTI_SIGN_CREATE: 'multiSignCreate',
+  MULTI_SIGN_ADD_SIGN: 'multiSignAddSign',
 };
 
 /**
@@ -131,6 +141,16 @@ export const TRANSACTION_GROUP_STATUSES = {
  *  on context. If the user is viewing an asset page for a token received from a swap,
  *  the primary currency will be the received token. Otherwise the token exchanged
  *  will be shown.
+ * @property {'multi-sign-create'} MULTI_SIGN_CREATE - Transaction group representing a token swap through
+ *  MetaMask Swaps. This transaction group's primary currency changes depending
+ *  on context. If the user is viewing an asset page for a token received from a swap,
+ *  the primary currency will be the received token. Otherwise the token exchanged
+ *  will be shown.
+ * @property {'multi-sign-add-sign'} MULTI_SIGN_ADD_SIGN - Transaction group representing a token swap through
+ *  MetaMask Swaps. This transaction group's primary currency changes depending
+ *  on context. If the user is viewing an asset page for a token received from a swap,
+ *  the primary currency will be the received token. Otherwise the token exchanged
+ *  will be shown.
  */
 
 /**
@@ -143,6 +163,8 @@ export const TRANSACTION_GROUP_CATEGORIES = {
   APPROVAL: 'approval',
   SIGNATURE_REQUEST: 'signature-request',
   SWAP: 'swap',
+  MULTI_SIGN_CREATE: 'multi-sign-create',
+  MULTI_SIGN_ADD_SIGN: 'multi-sign-add-sign',
 };
 
 /**
