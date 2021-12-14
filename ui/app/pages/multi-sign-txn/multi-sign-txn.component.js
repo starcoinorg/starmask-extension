@@ -5,9 +5,11 @@ import classnames from 'classnames';
 import {
   MULTI_SIGN_TXN_ROUTE,
   MULTI_SIGN_TXN_EXPORT_ROUTE,
+  MULTI_SIGN_TXN_HISTORY_ROUTE,
 } from '../../helpers/constants/routes';
 import MultiSignTxnSign from './sign.container';
 import MultiSignTxnExport from './export';
+import MultiSignTxnHistory from './history';
 
 export default class MultiSignTxnPage extends Component {
   renderTabs() {
@@ -36,6 +38,12 @@ export default class MultiSignTxnPage extends Component {
           onClick={() => history.push(MULTI_SIGN_TXN_EXPORT_ROUTE)}
         >
           {this.context.t('exportTxn')}
+        </div>
+        <div
+          className={getClassNames(MULTI_SIGN_TXN_HISTORY_ROUTE)}
+          onClick={() => history.push(MULTI_SIGN_TXN_HISTORY_ROUTE)}
+        >
+          {this.context.t('history')}
         </div>
       </div>
     );
@@ -68,6 +76,11 @@ export default class MultiSignTxnPage extends Component {
               exact
               path={MULTI_SIGN_TXN_EXPORT_ROUTE}
               component={MultiSignTxnExport}
+            />
+            <Route
+              exact
+              path={MULTI_SIGN_TXN_HISTORY_ROUTE}
+              component={MultiSignTxnHistory}
             />
           </Switch>
         </div>

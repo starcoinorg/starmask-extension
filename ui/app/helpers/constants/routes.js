@@ -71,6 +71,7 @@ const CONFIRMATION_V_NEXT_ROUTE = '/confirmation';
 
 const MULTI_SIGN_TXN_ROUTE = '/multi-sign-txn';
 const MULTI_SIGN_TXN_EXPORT_ROUTE = '/multi-sign-txn/export';
+const MULTI_SIGN_TXN_HISTORY_ROUTE = '/multi-sign-txn/history';
 
 // Used to pull a convenient name for analytics tracking events. The key must
 // be react-router ready path, and can include params such as :id for popup windows
@@ -146,6 +147,7 @@ const PATH_NAME_MAP = {
   [CONFIRM_ADD_NFT_ROUTE]: 'Confirm Add NFT Page',
   [MULTI_SIGN_TXN_ROUTE]: 'Sign Multi Sign Txn Page',
   [MULTI_SIGN_TXN_EXPORT_ROUTE]: 'Export Multi Sign Txn Page',
+  [MULTI_SIGN_TXN_HISTORY_ROUTE]: 'Multi Sign Txn Hisotry Page',
 };
 
 export {
@@ -217,4 +219,5 @@ export {
   CONFIRM_ADD_NFT_ROUTE,
   MULTI_SIGN_TXN_ROUTE,
   MULTI_SIGN_TXN_EXPORT_ROUTE,
+  MULTI_SIGN_TXN_HISTORY_ROUTE,
 };
