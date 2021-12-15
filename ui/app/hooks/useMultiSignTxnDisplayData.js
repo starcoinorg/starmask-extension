@@ -240,7 +240,7 @@ export function useMultiSignTxnDisplayData(transactionGroup) {
   //   ...primaryCurrencyPreferences,
   // });
 
-  const primaryCurrency = '1/3';
+  const primaryCurrency = type === TRANSACTION_TYPES.MULTI_SIGN_CREATE ? '1/3' : '2/3';
 
   // const [secondaryCurrency] = useCurrencyDisplay(primaryValue, {
   //   prefix,

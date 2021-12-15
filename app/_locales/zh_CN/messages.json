@@ -1118,10 +1118,22 @@
     "message": "多签交易Hex串"
   },
   "multiSignTxnCreate": {
-    "message": "创建多签交易"
+    "message": "创建"
   },
   "multiSignTxnAddSign": {
     "message": "添加签名"
+  },
+  "multiSignTxnCopyHex": {
+    "message": "复制多签交易Hex"
+  },
+  "multiSignTxnCopiedHex": {
+    "message": "多签交易 Hex 复制成功"
+  },
+  "multiSignTxnAmount": {
+    "message": "签名数量"
+  },
+  "multiSignTxnTime": {
+    "message": "时间"
   },
   "mustSelectOne": {
     "message": "至少选择 1 种代币。"

@@ -70,7 +70,6 @@ const ENCRYPTION_PUBLIC_KEY_REQUEST_PATH = '/encryption-public-key-request';
 const CONFIRMATION_V_NEXT_ROUTE = '/confirmation';
 
 const MULTI_SIGN_TXN_ROUTE = '/multi-sign-txn';
-const MULTI_SIGN_TXN_EXPORT_ROUTE = '/multi-sign-txn/export';
 const MULTI_SIGN_TXN_HISTORY_ROUTE = '/multi-sign-txn/history';
 
 // Used to pull a convenient name for analytics tracking events. The key must
@@ -146,7 +145,6 @@ const PATH_NAME_MAP = {
   [ADD_NFT_ROUTE]: 'Add NFT Page',
   [CONFIRM_ADD_NFT_ROUTE]: 'Confirm Add NFT Page',
   [MULTI_SIGN_TXN_ROUTE]: 'Sign Multi Sign Txn Page',
-  [MULTI_SIGN_TXN_EXPORT_ROUTE]: 'Export Multi Sign Txn Page',
   [MULTI_SIGN_TXN_HISTORY_ROUTE]: 'Multi Sign Txn Hisotry Page',
 };
 
@@ -218,6 +216,5 @@ export {
   ADD_NFT_ROUTE,
   CONFIRM_ADD_NFT_ROUTE,
   MULTI_SIGN_TXN_ROUTE,
-  MULTI_SIGN_TXN_EXPORT_ROUTE,
   MULTI_SIGN_TXN_HISTORY_ROUTE,
 };

@@ -9,7 +9,7 @@ import * as actions from '../../store/actions';
 import { getMetaMaskAccounts } from '../../selectors';
 import Button from '../../components/ui/button';
 import TextField from '../../components/ui/text-field';
-import { MULTI_SIGN_TXN_EXPORT_ROUTE } from '../../helpers/constants/routes';
+import { MULTI_SIGN_TXN_HISTORY_ROUTE } from '../../helpers/constants/routes';
 
 class TxnHexImportView extends Component {
   static contextTypes = {
@@ -45,7 +45,7 @@ class TxnHexImportView extends Component {
       txnHex,
     );
     console.log({ txn });
-    history.push(MULTI_SIGN_TXN_EXPORT_ROUTE);
+    history.push(MULTI_SIGN_TXN_HISTORY_ROUTE);
     // importNewAccount('Private Key', [privateKey])
     //   .then(({ selectedAddress }) => {
     //     console.log('selectedAddress', selectedAddress);

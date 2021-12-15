@@ -1168,10 +1168,22 @@
     "message": "Transaction Hex"
   },
   "multiSignTxnCreate": {
-    "message": "Create MultiSign Txn"
+    "message": "Create"
   },
   "multiSignTxnAddSign": {
     "message": "Add Signature"
+  },
+  "multiSignTxnCopyHex": {
+    "message": "Copy Multi Sign Transaction Hex"
+  },
+  "multiSignTxnCopiedHex": {
+    "message": "Copied Multi Sign Transaction Hex"
+  },
+  "multiSignTxnAmount": {
+    "message": "Signatures Amount"
+  },
+  "multiSignTxnTime": {
+    "message": "Time"
   },
   "mustSelectOne": {
     "message": "Must select at least 1 token."

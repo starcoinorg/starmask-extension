@@ -9,7 +9,7 @@ import { useCancelTransaction } from '../../../hooks/useCancelTransaction';
 import { useRetryTransaction } from '../../../hooks/useRetryTransaction';
 import Button from '../../ui/button';
 import Tooltip from '../../ui/tooltip';
-import TransactionListItemDetails from '../transaction-list-item-details';
+import MultiSignTxnListItemDetails from '../multi-sign-txn-list-item-details';
 import { CONFIRM_TRANSACTION_ROUTE } from '../../../helpers/constants/routes';
 import { useShouldShowSpeedUp } from '../../../hooks/useShouldShowSpeedUp';
 import TransactionStatus from '../transaction-status/transaction-status.component';
@@ -187,7 +187,7 @@ export default function MultiSignTxnListItem({
         </div>
       </ListItem>
       {showDetails && (
-        <TransactionListItemDetails
+        <MultiSignTxnListItemDetails
           title={title}
           onClose={toggleShowDetails}
           transactionGroup={transactionGroup}

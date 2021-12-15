@@ -388,7 +388,7 @@ class MultiSignTxnHistory extends Component {
                   "nonce": "0x3e",
                   "value": "0x0"
                 },
-                "type": "cancel"
+                "type": "MultiSignTxnAddSign"
               },
               [
                 {
@@ -535,7 +535,7 @@ class MultiSignTxnHistory extends Component {
               "transaction_hash": "0x285316e1160e77fa907c9a98962d3b8eeb55cb64ec2e79542866d87b784f695f",
               "transaction_index": 1
             },
-            "type": "cancel"
+            "type": "MultiSignTxnAddSign"
           }
         ],
         "initialTransaction": {
@@ -879,6 +879,7 @@ class MultiSignTxnHistory extends Component {
         "primaryTransaction": {
           "chainId": "0xfb",
           "hash": "0x285316e1160e77fa907c9a98962d3b8eeb55cb64ec2e79542866d87b784f695f",
+          "timestamp": 1639449735514,
           "history": [
             {
               "chainId": "0xfb",
@@ -899,7 +900,7 @@ class MultiSignTxnHistory extends Component {
                 "nonce": "0x3e",
                 "value": "0x0"
               },
-              "type": "cancel"
+              "type": "MultiSignTxnAddSign"
             },
             [
               {
@@ -1046,7 +1047,7 @@ class MultiSignTxnHistory extends Component {
             "transaction_hash": "0x285316e1160e77fa907c9a98962d3b8eeb55cb64ec2e79542866d87b784f695f",
             "transaction_index": 1
           },
-          "type": "cancel"
+          "type": "MultiSignTxnAddSign"
         },
         "hasRetried": false,
         "hasCancelled": true
@@ -1588,6 +1589,7 @@ class MultiSignTxnHistory extends Component {
         "primaryTransaction": {
           "chainId": "0xfb",
           "hash": "0xc9ebd8b3bdaa644c8c0e48ca3904e7e006cf2a2040835e91bf4402ccdb4b7a1d",
+          "timestamp": 1639384293393,
           "history": [
             {
               "chainId": "0xfb",
