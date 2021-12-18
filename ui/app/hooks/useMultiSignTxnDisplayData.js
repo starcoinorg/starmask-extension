@@ -58,6 +58,7 @@ import { useCurrentAsset } from './useCurrentAsset';
  * @return {TransactionDisplayData}
  */
 export function useMultiSignTxnDisplayData(transactionGroup) {
+  log.debug('useMultiSignTxnDisplayData', { transactionGroup })
   // To determine which primary currency to display for swaps transactions we need to be aware
   // of which asset, if any, we are viewing at present
   const currentAsset = useCurrentAsset();
@@ -217,21 +218,21 @@ export function useMultiSignTxnDisplayData(transactionGroup) {
     title = t('cancel');
     subtitle = origin;
     subtitleContainsOrigin = true;
-  } else if (type === TRANSACTION_TYPES.MULTI_SIGN_CREATE) {
-    category = TRANSACTION_GROUP_CATEGORIES.MULTI_SIGN_CREATE;
-    title = t('multiSignTxnCreate');
-    subtitle = origin;
-    subtitleContainsOrigin = true;
-  } else if (type === TRANSACTION_TYPES.MULTI_SIGN_ADD_SIGN) {
-    category = TRANSACTION_GROUP_CATEGORIES.MULTI_SIGN_ADD_SIGN;
-    title = t('multiSignTxnAddSign');
-    subtitle = origin;
-    subtitleContainsOrigin = true;
+    // } else if (type === TRANSACTION_TYPES.MULTI_SIGN_CREATE) {
+    //   category = TRANSACTION_GROUP_CATEGORIES.MULTI_SIGN_CREATE;
+    //   title = t('multiSignTxnCreate');
+    //   subtitle = origin;
+    //   subtitleContainsOrigin = true;
+    // } else if (type === TRANSACTION_TYPES.MULTI_SIGN_ADD_SIGN) {
+    //   category = TRANSACTION_GROUP_CATEGORIES.MULTI_SIGN_ADD_SIGN;
+    //   title = t('multiSignTxnAddSign');
+    //   subtitle = origin;
+    //   subtitleContainsOrigin = true;
   }
 
   log.debug({ type, title, subtitle })
-  const primaryCurrencyPreferences = useUserPreferencedCurrency(PRIMARY);
-  const secondaryCurrencyPreferences = useUserPreferencedCurrency(SECONDARY);
+  // const primaryCurrencyPreferences = useUserPreferencedCurrency(PRIMARY);
+  // const secondaryCurrencyPreferences = useUserPreferencedCurrency(SECONDARY);
 
   // const [primaryCurrency] = useCurrencyDisplay(primaryValue, {
   //   prefix,
@@ -240,7 +241,7 @@ export function useMultiSignTxnDisplayData(transactionGroup) {
   //   ...primaryCurrencyPreferences,
   // });
 
-  const primaryCurrency = type === TRANSACTION_TYPES.MULTI_SIGN_CREATE ? '1/3' : '2/3';
+  const primaryCurrency = type === TRANSACTION_TYPES.MULTI_SIGN_CREATE ? '2/3' : '1/3';
 
   // const [secondaryCurrency] = useCurrencyDisplay(primaryValue, {
   //   prefix,

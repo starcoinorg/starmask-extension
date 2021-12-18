@@ -15,7 +15,7 @@ const mapStateToProps = (state, ownProps) => {
   const {
     txParams: { gas, gasPrice, value } = {},
     txReceipt: { gasUsed: gasUsedStr } = {},
-    timestamp,
+    time,
   } = transaction;
 
   // const { showFiatInTestnets } = getPreferences(state);
@@ -44,7 +44,7 @@ const mapStateToProps = (state, ownProps) => {
     gasPrice,
     gasUsed,
     isTokenApprove,
-    timestamp,
+    time,
   };
 };
 

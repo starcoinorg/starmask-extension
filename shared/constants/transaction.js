@@ -32,7 +32,7 @@
  *  resubmitting the same transaction with a higher gas fee. This type is also used
  *  to speed up pending transactions. This is accomplished by creating a new tx with
  *  the same nonce and higher gas fees.
- * @property {'multiSignAddSign'} multiSignAddSign - When a transaction is failed it can be retried by
+ * @property {'multiSignAddSign'} MULTI_SIGN_ADD_SIGN - When a transaction is failed it can be retried by
  *  resubmitting the same transaction with a higher gas fee. This type is also used
  *  to speed up pending transactions. This is accomplished by creating a new tx with
  *  the same nonce and higher gas fees.
@@ -79,6 +79,8 @@ export const TRANSACTION_TYPES = {
  * @property {'dropped'} DROPPED - The transaction was dropped due to a tx with same
  *  nonce being accepted
  * @property {'confirmed'} CONFIRMED - The transaction was confirmed by the network
+ * nonce being accepted
+ * @property {'confirmed'} MULTISIGN - the multi sign transaction need more sinatures for publishing
  */
 
 /**
@@ -99,6 +101,7 @@ export const TRANSACTION_STATUSES = {
   FAILED: 'failed',
   DROPPED: 'dropped',
   CONFIRMED: 'confirmed',
+  MULTISIGN: 'multiSign',
 };
 
 /**

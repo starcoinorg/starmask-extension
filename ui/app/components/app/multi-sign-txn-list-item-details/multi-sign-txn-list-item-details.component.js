@@ -148,7 +148,10 @@ export default class MultiSignTxnListItemDetails extends PureComponent {
       <Popover title={title} onClose={onClose}>
         <div className="transaction-list-item-details">
           <div className="transaction-list-item-details__header">
-            <div>{t('details')}</div>
+            <div>
+              {t('multiSign')}
+              {t('transaction')}
+            </div>
             <div className="transaction-list-item-details__header-buttons">
               <Tooltip
                 wrapperClassName="transaction-list-item-details__header-button"
@@ -181,7 +184,11 @@ export default class MultiSignTxnListItemDetails extends PureComponent {
           <div className="transaction-list-item-details__body">
             <div className="transaction-list-item-details__cards-container">
               <MultiSignTxnBreakdown
-                nonce={transactionGroup.initialTransaction.txParams.nonce}
+                nonce={
+                  type === TRANSACTION_TYPES.MULTI_SIGN_ADD_SIGN
+                    ? transactionGroup.initialTransaction.txParams.nonce
+                    : ''
+                }
                 isTokenApprove={type === TRANSACTION_TYPES.TOKEN_METHOD_APPROVE}
                 transaction={transaction}
                 primaryCurrency={primaryCurrency}

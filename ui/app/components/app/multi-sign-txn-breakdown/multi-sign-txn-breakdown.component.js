@@ -15,7 +15,7 @@ export default class MultiSignTxnBreakdown extends PureComponent {
 
   static propTypes = {
     className: PropTypes.string,
-    timestamp: PropTypes.string,
+    time: PropTypes.string,
     nativeCurrency: PropTypes.string,
     showFiat: PropTypes.bool,
     nonce: PropTypes.string,
@@ -33,23 +33,17 @@ export default class MultiSignTxnBreakdown extends PureComponent {
 
   render() {
     const { t } = this.context;
-    const { primaryCurrency, className, nonce, timestamp } = this.props;
+    const { primaryCurrency, className, nonce, time } = this.props;
 
     const titleAmountThreshold = `${t('multiSignTxnAmount')}/${t('threshold')}`;
-    const formattedTimestamp = timestamp ? formatDate(timestamp, "T 'on' M/d/y") : '';
+    const formattedTimestamp = time ? formatDate(time, "T 'on' M/d/y") : '';
     return (
       <div className={classnames('transaction-breakdown', className)}>
-        <div className="transaction-breakdown__title">
-          {t('multiSign')}
-          {t('transaction')}
-        </div>
         <TransactionBreakdownRow title={t('sequenceNumber')}>
-          {typeof nonce === 'undefined' ? null : (
-            <HexToDecimal
-              className="transaction-breakdown__value"
-              value={nonce}
-            />
-          )}
+          <HexToDecimal
+            className="transaction-breakdown__value"
+            value={nonce}
+          />
         </TransactionBreakdownRow>
         <TransactionBreakdownRow title={titleAmountThreshold}>
           <span className="transaction-breakdown__value">

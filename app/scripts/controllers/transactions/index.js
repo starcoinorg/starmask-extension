@@ -547,20 +547,26 @@ export default class TransactionController extends EventEmitter {
         starcoin_types.SignedUserTransaction,
         signedTransactionHex,
       );
-      log.debug({ signedTransaction })
-      log.debug('is multi sign=', signedTransaction.authenticator instanceof starcoin_types.TransactionAuthenticatorVariantMultiEd25519)
-      if (
+      const isMultiSign =
         signedTransaction.authenticator instanceof
-        starcoin_types.TransactionAuthenticatorVariantMultiEd25519
-      ) {
+        starcoin_types.TransactionAuthenticatorVariantMultiEd25519;
+      log.debug({ signedTransaction })
+      log.debug({ isMultiSign })
+      let isEnoughMultiSignatures = false;
+      if (isMultiSign) {
         const existingSignatureShards = new starcoin_types.MultiEd25519SignatureShard(
           signedTransaction.authenticator.signature,
           signedTransaction.authenticator.public_key.threshold,
         );
-        log.debug('is_enough=', existingSignatureShards.is_enough())
+        isEnoughMultiSignatures = existingSignatureShards.is_enough();
       }
-
-      await this.publishTransaction(txId, signedTransactionHex);
+      log.debug({ isEnoughMultiSignatures })
+      if (isMultiSign && !isEnoughMultiSignatures) {
+        log.debug('do not publish')
+        this.txStateManager.setTxStatusMultiSign(txId);
+      } else {
+        await this.publishTransaction(txId, signedTransactionHex);
+      }
       // must set transaction to submitted/failed before releasing lock
       nonceLock.releaseLock();
     } catch (err) {

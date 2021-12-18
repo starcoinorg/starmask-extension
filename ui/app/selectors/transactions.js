@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import log from 'loglevel';
 import {
   PRIORITY_STATUS_HASH,
   PENDING_STATUS_HASH,
@@ -229,7 +230,7 @@ export const nonceSortedTransactionsSelector = createSelector(
         type,
         time: txTime,
       } = transaction;
-
+      log.debug({ nonce, status, type })
       if (typeof nonce === 'undefined' || type === TRANSACTION_TYPES.INCOMING) {
         const transactionGroup = {
           transactions: [transaction],
@@ -350,5 +351,13 @@ export const submittedPendingTransactionsSelector = createSelector(
   (transactions = []) =>
     transactions.filter(
       (transaction) => transaction.status === TRANSACTION_STATUSES.SUBMITTED,
+    ),
+);
+
+export const multiSignTransactionsSelector = createSelector(
+  transactionsSelector,
+  (transactions = []) =>
+    transactions.filter(
+      (transaction) => transaction.status === TRANSACTION_STATUSES.MULTISIGN,
     ),
 );

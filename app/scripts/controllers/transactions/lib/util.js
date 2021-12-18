@@ -114,5 +114,6 @@ export function getFinalStates() {
     TRANSACTION_STATUSES.CONFIRMED, // the tx has been included in a block.
     TRANSACTION_STATUSES.FAILED, // the tx failed for some reason, included on tx data.
     TRANSACTION_STATUSES.DROPPED, // the tx nonce was already used
+    TRANSACTION_STATUSES.MULTISIGN, // the multi sign tx nedds more signature
   ];
 }

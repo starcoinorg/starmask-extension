@@ -53,8 +53,12 @@ export default function TransactionStatus({
       : QUEUED_PSEUDO_STATUS;
   }
 
-  const statusText =
-    statusKey === TRANSACTION_STATUSES.CONFIRMED ? date : t(statusKey);
+  const statusText = [
+    TRANSACTION_STATUSES.CONFIRMED,
+    TRANSACTION_STATUSES.MULTISIGN,
+  ].includes(statusKey)
+    ? date
+    : t(statusKey);
 
   return (
     <Tooltip

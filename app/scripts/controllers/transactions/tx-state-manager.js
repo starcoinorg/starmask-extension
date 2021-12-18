@@ -430,6 +430,19 @@ export default class TransactionStateManager extends EventEmitter {
   }
 
   /**
+   * Update the status of the tx to 'dropped'.
+   * @param {number} txId - the txMeta Id
+   */
+  setTxStatusMultiSign(txId) {
+    const txMeta = this.getTx(txId);
+    this.updateTx(
+      txMeta,
+      'transactions:tx-state-manager#multi sign - add signature',
+    );
+    this._setTxStatus(txId, TRANSACTION_STATUSES.MULTISIGN);
+  }
+
+  /**
    * Updates the status of the tx to 'failed' and put the error on the txMeta
    * @param {number} txId - the txMeta Id
    * @param {erroObject} err - error object
@@ -439,7 +452,7 @@ export default class TransactionStateManager extends EventEmitter {
 
     const txMeta = this.getTx(txId);
     txMeta.err = {
-      message: error.toString(),
+      message: JSON.stringify(error),
       rpc: error.value,
       stack: error.stack,
     };
@@ -484,6 +497,7 @@ export default class TransactionStateManager extends EventEmitter {
    * @emits 'updateBadge'
    */
   _setTxStatus(txId, status) {
+    log.debug('_setTxStatus', { txId, status });
     const txMeta = this.getTx(txId);
 
     if (!txMeta) {
@@ -532,5 +546,35 @@ export default class TransactionStateManager extends EventEmitter {
       (tx) => tx.status !== TRANSACTION_STATUSES.UNAPPROVED,
     );
     this._saveTxList(nonUnapprovedTxs);
+  }
+
+  getFullMultiSignTxList() {
+    return this.store.getState().multiSignTxns;
+  }
+
+  addMultiSignTxn(txMeta) {
+    const transactions = this.getFullMultiSignTxList();
+    const txCount = transactions.length;
+    const { txHistoryLimit } = this;
+
+    // checks if the length of the tx history is
+    // longer then desired persistence limit
+    // and then if it is removes the oldest one.
+    if (txCount > txHistoryLimit - 1) {
+      transactions.splice(txHistoryLimit - 1, 1);
+    }
+    const newTxIndex = transactions.findIndex(
+      (currentTxMeta) => currentTxMeta.time > txMeta.time,
+    );
+
+    newTxIndex === -1
+      ? transactions.push(txMeta)
+      : transactions.splice(newTxIndex, 0, txMeta);
+    this._saveMultiSignTxList(transactions);
+    return txMeta;
+  }
+
+  _saveMultiSignTxList(multiSignTxns) {
+    this.store.updateState({ multiSignTxns });
   }
 }

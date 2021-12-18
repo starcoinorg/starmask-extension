@@ -2,16 +2,12 @@ import React, { useMemo, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { useHistory } from 'react-router-dom';
+import log from 'loglevel';
 import ListItem from '../../ui/list-item';
 import { useMultiSignTxnDisplayData } from '../../../hooks/useMultiSignTxnDisplayData';
 import { useI18nContext } from '../../../hooks/useI18nContext';
-import { useCancelTransaction } from '../../../hooks/useCancelTransaction';
-import { useRetryTransaction } from '../../../hooks/useRetryTransaction';
-import Button from '../../ui/button';
-import Tooltip from '../../ui/tooltip';
 import MultiSignTxnListItemDetails from '../multi-sign-txn-list-item-details';
 import { CONFIRM_TRANSACTION_ROUTE } from '../../../helpers/constants/routes';
-import { useShouldShowSpeedUp } from '../../../hooks/useShouldShowSpeedUp';
 import TransactionStatus from '../transaction-status/transaction-status.component';
 import TransactionIcon from '../transaction-icon';
 import {
@@ -28,18 +24,14 @@ export default function MultiSignTxnListItem({
   const { hasCancelled } = transactionGroup;
   const [showDetails, setShowDetails] = useState(false);
 
-  const {
-    initialTransaction: { id },
-    primaryTransaction: { err, status },
-  } = transactionGroup;
-  const [cancelEnabled, cancelTransaction] = useCancelTransaction(
-    transactionGroup,
-  );
-  const retryTransaction = useRetryTransaction(transactionGroup);
-  const shouldShowSpeedUp = useShouldShowSpeedUp(
-    transactionGroup,
-    isEarliestNonce,
-  );
+  const err = null;
+  const { id, status } = transactionGroup;
+
+  const newTransactionGroup = {
+    ...transactionGroup,
+    initialTransaction: transactionGroup,
+    primaryTransaction: transactionGroup,
+  };
 
   const {
     title,
@@ -53,8 +45,21 @@ export default function MultiSignTxnListItem({
     displayedStatusKey,
     isPending,
     senderAddress,
-  } = useMultiSignTxnDisplayData(transactionGroup);
+  } = useMultiSignTxnDisplayData(newTransactionGroup);
 
+  log.debug('useMultiSignTxnDisplayData', {
+    title,
+    subtitle,
+    subtitleContainsOrigin,
+    date,
+    category,
+    primaryCurrency,
+    recipientAddress,
+    secondaryCurrency,
+    displayedStatusKey,
+    isPending,
+    senderAddress,
+  })
   const isSignatureReq =
     category === TRANSACTION_GROUP_CATEGORIES.SIGNATURE_REQUEST;
   const isApproval = category === TRANSACTION_GROUP_CATEGORIES.APPROVAL;
@@ -62,13 +67,7 @@ export default function MultiSignTxnListItem({
   const isSwap = category === TRANSACTION_GROUP_CATEGORIES.SWAP;
 
   const className = classnames('transaction-list-item', {
-    'transaction-list-item--unconfirmed':
-      isPending ||
-      [
-        TRANSACTION_STATUSES.FAILED,
-        TRANSACTION_STATUSES.DROPPED,
-        TRANSACTION_STATUSES.REJECTED,
-      ].includes(displayedStatusKey),
+    'transaction-list-item--unconfirmed': false,
   });
 
   const toggleShowDetails = useCallback(() => {
@@ -78,61 +77,6 @@ export default function MultiSignTxnListItem({
     }
     setShowDetails((prev) => !prev);
   }, [isUnapproved, history, id]);
-
-  const cancelButton = useMemo(() => {
-    const btn = (
-      <Button
-        onClick={cancelTransaction}
-        rounded
-        className="transaction-list-item__header-button"
-        disabled={!cancelEnabled}
-      >
-        {t('cancel')}
-      </Button>
-    );
-    if (hasCancelled || !isPending || isUnapproved) {
-      return null;
-    }
-
-    return cancelEnabled ? (
-      btn
-    ) : (
-      <Tooltip title={t('notEnoughGas')} position="bottom">
-        <div>{btn}</div>
-      </Tooltip>
-    );
-  }, [
-    isPending,
-    t,
-    isUnapproved,
-    cancelEnabled,
-    cancelTransaction,
-    hasCancelled,
-  ]);
-
-  const speedUpButton = useMemo(() => {
-    if (!shouldShowSpeedUp || !isPending || isUnapproved) {
-      return null;
-    }
-    return (
-      <Button
-        type="secondary"
-        rounded
-        onClick={hasCancelled ? cancelTransaction : retryTransaction}
-        style={hasCancelled ? { width: 'auto' } : null}
-      >
-        {hasCancelled ? t('speedUpCancellation') : t('speedUp')}
-      </Button>
-    );
-  }, [
-    shouldShowSpeedUp,
-    isUnapproved,
-    t,
-    isPending,
-    retryTransaction,
-    hasCancelled,
-    cancelTransaction,
-  ]);
 
   return (
     <>
@@ -180,27 +124,18 @@ export default function MultiSignTxnListItem({
             </>
           )
         }
-      >
-        <div className="transaction-list-item__pending-actions">
-          {speedUpButton}
-          {cancelButton}
-        </div>
-      </ListItem>
+      />
       {showDetails && (
         <MultiSignTxnListItemDetails
           title={title}
           onClose={toggleShowDetails}
-          transactionGroup={transactionGroup}
+          transactionGroup={newTransactionGroup}
           primaryCurrency={primaryCurrency}
           senderAddress={senderAddress}
           recipientAddress={recipientAddress}
-          onRetry={retryTransaction}
           showRetry={status === TRANSACTION_STATUSES.FAILED && !isSwap}
-          showSpeedUp={shouldShowSpeedUp}
           isEarliestNonce={isEarliestNonce}
-          onCancel={cancelTransaction}
           showCancel={isPending && !hasCancelled}
-          cancelDisabled={!cancelEnabled}
         />
       )}
     </>
