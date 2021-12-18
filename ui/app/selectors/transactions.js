@@ -223,85 +223,87 @@ export const nonceSortedTransactionsSelector = createSelector(
     const orderedNonces = [];
     const nonceToTransactionsMap = {};
 
-    transactions.forEach((transaction) => {
-      const {
-        txParams: { nonce } = {},
-        status,
-        type,
-        time: txTime,
-      } = transaction;
-      log.debug({ nonce, status, type })
-      if (typeof nonce === 'undefined' || type === TRANSACTION_TYPES.INCOMING) {
-        const transactionGroup = {
-          transactions: [transaction],
-          initialTransaction: transaction,
-          primaryTransaction: transaction,
-          hasRetried: false,
-          hasCancelled: false,
-        };
+    transactions
+      .filter((t) => t.status !== TRANSACTION_STATUSES.MULTISIGN)
+      .forEach((transaction) => {
+        const {
+          txParams: { nonce } = {},
+          status,
+          type,
+          time: txTime,
+        } = transaction;
+        log.debug({ nonce, status, type })
+        if (typeof nonce === 'undefined' || type === TRANSACTION_TYPES.INCOMING) {
+          const transactionGroup = {
+            transactions: [transaction],
+            initialTransaction: transaction,
+            primaryTransaction: transaction,
+            hasRetried: false,
+            hasCancelled: false,
+          };
 
-        if (type === TRANSACTION_TYPES.INCOMING) {
-          incomingTransactionGroups.push(transactionGroup);
+          if (type === TRANSACTION_TYPES.INCOMING) {
+            incomingTransactionGroups.push(transactionGroup);
+          } else {
+            insertTransactionGroupByTime(
+              unapprovedTransactionGroups,
+              transactionGroup,
+            );
+          }
+        } else if (nonce in nonceToTransactionsMap) {
+          const nonceProps = nonceToTransactionsMap[nonce];
+          insertTransactionByTime(nonceProps.transactions, transaction);
+
+          const {
+            primaryTransaction: { time: primaryTxTime = 0 } = {},
+          } = nonceProps;
+
+          const previousPrimaryIsNetworkFailure =
+            nonceProps.primaryTransaction.status ===
+            TRANSACTION_STATUSES.FAILED &&
+            nonceProps.primaryTransaction?.txReceipt?.status !== '0x0';
+          const currentTransactionIsOnChainFailure =
+            transaction?.txReceipt?.status === '0x0';
+
+          if (
+            status === TRANSACTION_STATUSES.CONFIRMED ||
+            currentTransactionIsOnChainFailure ||
+            previousPrimaryIsNetworkFailure ||
+            (txTime > primaryTxTime && status in PRIORITY_STATUS_HASH)
+          ) {
+            nonceProps.primaryTransaction = transaction;
+          }
+
+          const {
+            initialTransaction: { time: initialTxTime = 0 } = {},
+          } = nonceProps;
+
+          // Used to display the transaction action, since we don't want to overwrite the action if
+          // it was replaced with a cancel attempt transaction.
+          if (txTime < initialTxTime) {
+            nonceProps.initialTransaction = transaction;
+          }
+
+          if (type === TRANSACTION_TYPES.RETRY) {
+            nonceProps.hasRetried = true;
+          }
+
+          if (type === TRANSACTION_TYPES.CANCEL) {
+            nonceProps.hasCancelled = true;
+          }
         } else {
-          insertTransactionGroupByTime(
-            unapprovedTransactionGroups,
-            transactionGroup,
-          );
+          nonceToTransactionsMap[nonce] = {
+            nonce,
+            transactions: [transaction],
+            initialTransaction: transaction,
+            primaryTransaction: transaction,
+            hasRetried: transaction.type === TRANSACTION_TYPES.RETRY,
+            hasCancelled: transaction.type === TRANSACTION_TYPES.CANCEL,
+          };
+
+          insertOrderedNonce(orderedNonces, nonce);
         }
-      } else if (nonce in nonceToTransactionsMap) {
-        const nonceProps = nonceToTransactionsMap[nonce];
-        insertTransactionByTime(nonceProps.transactions, transaction);
-
-        const {
-          primaryTransaction: { time: primaryTxTime = 0 } = {},
-        } = nonceProps;
-
-        const previousPrimaryIsNetworkFailure =
-          nonceProps.primaryTransaction.status ===
-          TRANSACTION_STATUSES.FAILED &&
-          nonceProps.primaryTransaction?.txReceipt?.status !== '0x0';
-        const currentTransactionIsOnChainFailure =
-          transaction?.txReceipt?.status === '0x0';
-
-        if (
-          status === TRANSACTION_STATUSES.CONFIRMED ||
-          currentTransactionIsOnChainFailure ||
-          previousPrimaryIsNetworkFailure ||
-          (txTime > primaryTxTime && status in PRIORITY_STATUS_HASH)
-        ) {
-          nonceProps.primaryTransaction = transaction;
-        }
-
-        const {
-          initialTransaction: { time: initialTxTime = 0 } = {},
-        } = nonceProps;
-
-        // Used to display the transaction action, since we don't want to overwrite the action if
-        // it was replaced with a cancel attempt transaction.
-        if (txTime < initialTxTime) {
-          nonceProps.initialTransaction = transaction;
-        }
-
-        if (type === TRANSACTION_TYPES.RETRY) {
-          nonceProps.hasRetried = true;
-        }
-
-        if (type === TRANSACTION_TYPES.CANCEL) {
-          nonceProps.hasCancelled = true;
-        }
-      } else {
-        nonceToTransactionsMap[nonce] = {
-          nonce,
-          transactions: [transaction],
-          initialTransaction: transaction,
-          primaryTransaction: transaction,
-          hasRetried: transaction.type === TRANSACTION_TYPES.RETRY,
-          hasCancelled: transaction.type === TRANSACTION_TYPES.CANCEL,
-        };
-
-        insertOrderedNonce(orderedNonces, nonce);
-      }
-    });
+      });
 
     const orderedTransactionGroups = orderedNonces.map(
       (nonce) => nonceToTransactionsMap[nonce],
