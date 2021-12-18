@@ -15,11 +15,10 @@ const mapStateToProps = (state, ownProps) => {
   const {
     txParams: { gas, gasPrice, value } = {},
     txReceipt: { gasUsed: gasUsedStr } = {},
-    time,
   } = transaction;
 
-  // const { showFiatInTestnets } = getPreferences(state);
-  // const isMainnet = getIsMainnet(state);
+  const { showFiatInTestnets } = getPreferences(state);
+  const isMainnet = getIsMainnet(state);
 
   let gasUsed = gasUsedStr;
   // check gasUsedStr first in case txReceipt is undefined before txn is confirmed
@@ -44,7 +43,6 @@ const mapStateToProps = (state, ownProps) => {
     gasPrice,
     gasUsed,
     isTokenApprove,
-    time,
   };
 };
 

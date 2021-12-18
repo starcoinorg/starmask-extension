@@ -4,6 +4,8 @@ import { tryReverseResolveAddress } from '../../../store/actions';
 import {
   getAddressBook,
   getRpcPrefsForCurrentProvider,
+  conversionRateSelector,
+  getNativeCurrency,
 } from '../../../selectors';
 import MultiSignTxnListItemDetails from './multi-sign-txn-list-item-details.component';
 
@@ -27,6 +29,8 @@ const mapStateToProps = (state, ownProps) => {
   const rpcPrefs = getRpcPrefsForCurrentProvider(state);
 
   return {
+    conversionRate: conversionRateSelector(state),
+    nativeCurrency: getNativeCurrency(state),
     rpcPrefs,
     recipientEns,
     senderNickname: getNickName(senderAddress),

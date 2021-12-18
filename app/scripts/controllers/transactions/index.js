@@ -563,6 +563,7 @@ export default class TransactionController extends EventEmitter {
       log.debug({ isEnoughMultiSignatures })
       if (isMultiSign && !isEnoughMultiSignatures) {
         log.debug('do not publish')
+        txMeta.multiSign = { signedTransactionHex };
         this.txStateManager.setTxStatusMultiSign(txId);
       } else {
         await this.publishTransaction(txId, signedTransactionHex);

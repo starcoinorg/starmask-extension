@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import log from 'loglevel';
 import copyToClipboard from 'copy-to-clipboard';
 import MultiSignTxnBreakdown from '../multi-sign-txn-breakdown';
 import Button from '../../ui/button';
@@ -8,7 +9,10 @@ import Copy from '../../ui/icon/copy-icon.component';
 import Popover from '../../ui/popover';
 import { getBlockExplorerUrlForTx } from '../../../../../shared/modules/transaction.utils';
 import { TRANSACTION_TYPES } from '../../../../../shared/constants/transaction';
-
+import { TRANSACTION_CREATED_EVENT } from '../transaction-activity-log/transaction-activity-log.constants';
+import TransactionActivityLogIcon from '../transaction-activity-log/transaction-activity-log-icon';
+import { getValueFromWeiHex } from '../../../helpers/utils/conversions.util';
+import { formatDate } from '../../../helpers/utils/util';
 export default class MultiSignTxnListItemDetails extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
@@ -38,6 +42,8 @@ export default class MultiSignTxnListItemDetails extends PureComponent {
     tryReverseResolveAddress: PropTypes.func.isRequired,
     senderNickname: PropTypes.string.isRequired,
     recipientNickname: PropTypes.string,
+    conversionRate: PropTypes.number,
+    nativeCurrency: PropTypes.string,
   };
 
   state = {
@@ -78,7 +84,9 @@ export default class MultiSignTxnListItemDetails extends PureComponent {
   handleCopyTxId = () => {
     const { transactionGroup } = this.props;
     const { primaryTransaction: transaction } = transactionGroup;
-    const { hash } = transaction;
+    const {
+      multiSign: { signedTransactionHex: hash },
+    } = transaction;
 
     this.context.metricsEvent({
       eventOpts: {
@@ -137,21 +145,39 @@ export default class MultiSignTxnListItemDetails extends PureComponent {
   render() {
     const { t } = this.context;
     const { justCopied } = this.state;
-    const { transactionGroup, primaryCurrency, title, onClose } = this.props;
+    const { transactionGroup, primaryCurrency, title, onClose, isEarliestNonce, conversionRate, nativeCurrency } = this.props;
+    log.debug({ transactionGroup })
     const {
       primaryTransaction: transaction,
       initialTransaction: { type },
+      time: timestamp,
+      txParams: { value },
     } = transactionGroup;
-    const { hash } = transaction;
+    const {
+      multiSign: { signedTransactionHex: hash },
+    } = transaction;
+    const index = 0;
+    const eventKey = TRANSACTION_CREATED_EVENT;
+    const ethValue = `${getValueFromWeiHex({
+      value,
+      fromCurrency: 'STC',
+      toCurrency: 'STC',
+      conversionRate,
+      numberOfDecimals: 6,
+    })} ${nativeCurrency}`;
 
+    const formattedTimestamp = timestamp
+      ? formatDate(timestamp, "T 'on' M/d/y")
+      : '';
+    const activityText = this.context.t(eventKey, [
+      ethValue,
+      formattedTimestamp,
+    ]);
     return (
       <Popover title={title} onClose={onClose}>
         <div className="transaction-list-item-details">
           <div className="transaction-list-item-details__header">
-            <div>
-              {t('multiSign')}
-              {t('transaction')}
-            </div>
+            <div>{t('details')}</div>
             <div className="transaction-list-item-details__header-buttons">
               <Tooltip
                 wrapperClassName="transaction-list-item-details__header-button"
@@ -194,6 +220,30 @@ export default class MultiSignTxnListItemDetails extends PureComponent {
                 primaryCurrency={primaryCurrency}
                 className="transaction-list-item-details__transaction-breakdown"
               />
+              <div className="transaction-activity-log transaction-list-item-details__transaction-activity-log">
+                <div className="transaction-activity-log__title">
+                  {t('activityLog')}
+                </div>
+                <div className="transaction-activity-log__activities-container">
+                  <div
+                    key={index}
+                    className="transaction-activity-log__activity"
+                  >
+                    <TransactionActivityLogIcon
+                      className="transaction-activity-log__activity-icon"
+                      eventKey={eventKey}
+                    />
+                    <div className="transaction-activity-log__entry-container">
+                      <div
+                        className="transaction-activity-log__activity-text"
+                        title={activityText}
+                      >
+                        {activityText}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

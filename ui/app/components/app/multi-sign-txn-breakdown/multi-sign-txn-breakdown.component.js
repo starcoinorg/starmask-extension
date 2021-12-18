@@ -33,27 +33,87 @@ export default class MultiSignTxnBreakdown extends PureComponent {
 
   render() {
     const { t } = this.context;
-    const { primaryCurrency, className, nonce, time } = this.props;
-
+    const {
+      gas,
+      gasPrice,
+      primaryCurrency,
+      className,
+      nonce,
+      nativeCurrency,
+      showFiat,
+      totalInHex,
+      gasUsed,
+      isTokenApprove,
+    } = this.props;
     const titleAmountThreshold = `${t('multiSignTxnAmount')}/${t('threshold')}`;
-    const formattedTimestamp = time ? formatDate(time, "T 'on' M/d/y") : '';
     return (
       <div className={classnames('transaction-breakdown', className)}>
         <TransactionBreakdownRow title={t('sequenceNumber')}>
-          <HexToDecimal
-            className="transaction-breakdown__value"
-            value={nonce}
-          />
+          {typeof nonce === 'undefined' ? null : (
+            <HexToDecimal
+              className="transaction-breakdown__value"
+              value={nonce}
+            />
+          )}
         </TransactionBreakdownRow>
         <TransactionBreakdownRow title={titleAmountThreshold}>
           <span className="transaction-breakdown__value">
             {primaryCurrency}
           </span>
         </TransactionBreakdownRow>
-        <TransactionBreakdownRow title={t('multiSignTxnTime')}>
-          <span className="transaction-breakdown__value">
-            {formattedTimestamp}
-          </span>
+        <TransactionBreakdownRow
+          title={`${t('gasLimit')} (${t('units')})`}
+          className="transaction-breakdown__row-title"
+        >
+          {typeof gas === 'undefined' ? (
+            '?'
+          ) : (
+            <HexToDecimal
+              className="transaction-breakdown__value"
+              value={gas}
+            />
+          )}
+        </TransactionBreakdownRow>
+        {typeof gasUsed === 'string' && (
+          <TransactionBreakdownRow
+            title={`${t('gasUsed')} (${t('units')})`}
+            className="transaction-breakdown__row-title"
+          >
+            <HexToDecimal
+              className="transaction-breakdown__value"
+              value={gasUsed}
+            />
+          </TransactionBreakdownRow>
+        )}
+        <TransactionBreakdownRow title={t('gasPrice')}>
+          {typeof gasPrice === 'undefined' ? (
+            '?'
+          ) : (
+            <CurrencyDisplay
+              className="transaction-breakdown__value"
+              data-testid="transaction-breakdown__gas-price"
+              currency={nativeCurrency}
+              denomination={NANOSTC}
+              value={gasPrice}
+              hideLabel
+            />
+          )}
+        </TransactionBreakdownRow>
+        <TransactionBreakdownRow title={t('total')}>
+          <div>
+            <UserPreferencedCurrencyDisplay
+              className="transaction-breakdown__value transaction-breakdown__value--eth-total"
+              type={PRIMARY}
+              value={totalInHex}
+            />
+            {showFiat && (
+              <UserPreferencedCurrencyDisplay
+                className="transaction-breakdown__value"
+                type={SECONDARY}
+                value={totalInHex}
+              />
+            )}
+          </div>
         </TransactionBreakdownRow>
       </div>
     );

@@ -45,7 +45,7 @@ class MultiSignTxnHistory extends Component {
             ) : (
               <div className="transaction-list__empty">
                 <div className="transaction-list__empty-text">
-                  {t('noTransactions')}
+                  {this.context.t('noTransactions')}
                 </div>
               </div>
             )}
