@@ -482,7 +482,7 @@
     "message": "小数精度"
   },
   "decimalsMustZerotoTen": {
-    "message": "小数位最小为0并且不超过36位."
+    "message": "小数位最小为0并且不超过18位."
   },
   "decrypt": {
     "message": "解密"

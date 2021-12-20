@@ -11,7 +11,7 @@ import TokenList from './token-list';
 import TokenSearch from './token-search';
 
 const MIN_DECIMAL_VALUE = 0;
-const MAX_DECIMAL_VALUE = 9;
+const MAX_DECIMAL_VALUE = 18;
 
 class AddToken extends Component {
   static contextTypes = {

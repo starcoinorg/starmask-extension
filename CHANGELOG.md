@@ -1,5 +1,10 @@
 # Changelog
 
+
+## [3.1.1] - 2021-12-20
+- Bug fixes:
+    - support max decimals up to 18
+
 ## [3.1.0] - 2021-11-26
 - New features:
     - [#30 Automatically trigger an accept token transaction while add token](https://github.com/starcoinorg/starmask-extension/issues/30)
