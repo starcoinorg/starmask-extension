@@ -25,7 +25,7 @@ import OneKeyKeyring from '@starcoin/stc-onekey-keyring';
 // import LedgerBridgeKeyring from '@metamask/eth-ledger-bridge-keyring';
 import EthQuery from '@starcoin/stc-query';
 import nanoid from 'nanoid';
-import contractMap from '@metamask/contract-metadata';
+import contractMap from '@starcoin/contract-metadata';
 import {
   AddressBookController,
   ApprovalController,

@@ -30,7 +30,7 @@ import {
 import { updateSendErrors } from '../ducks/send/send.duck';
 import { switchedToUnconnectedAccount } from '../ducks/alerts/unconnected-account';
 import { getUnconnectedAccountAlertEnabledness } from '../ducks/metamask/metamask';
-import { LISTED_CONTRACT_ADDRESSES } from '../../../shared/constants/tokens';
+import { LISTED_CONTRACT_CODES } from '../../../shared/constants/tokens';
 import * as actionConstants from './actionConstants';
 
 let background = null;
@@ -2436,7 +2436,7 @@ export function setPendingTokens(pendingTokens) {
       : selectedTokens;
 
   Object.keys(tokens).forEach((tokenCode) => {
-    tokens[tokenCode].unlisted = !LISTED_CONTRACT_ADDRESSES.includes(
+    tokens[tokenCode].unlisted = !LISTED_CONTRACT_CODES.includes(
       tokenCode.toLowerCase(),
     );
   });
@@ -2977,7 +2977,7 @@ export function setPendingNFTs(pendingNFTs) {
       : selectedNFTs;
 
   Object.keys(nfts).forEach((key) => {
-    nfts[key].unlisted = !LISTED_CONTRACT_ADDRESSES.includes(key.toLowerCase());
+    nfts[key].unlisted = !LISTED_CONTRACT_CODES.includes(key.toLowerCase());
   });
 
   return {

@@ -5,7 +5,7 @@ import { normalize as normalizeAddress } from 'eth-sig-util';
 import { isValidAddress } from 'ethereumjs-util';
 import ethers from 'ethers';
 import log from 'loglevel';
-import { LISTED_CONTRACT_ADDRESSES } from '../../../shared/constants/tokens';
+import { LISTED_CONTRACT_CODES } from '../../../shared/constants/tokens';
 import { NETWORK_TYPE_TO_ID_MAP } from '../../../shared/constants/network';
 import { isPrefixedFormattedHexString } from '../../../shared/modules/network.utils';
 import { NETWORK_EVENTS } from './network';
@@ -811,16 +811,16 @@ export default class PreferencesController {
     }
   }
 
-  _addSuggestedERC20Asset(address, symbol, decimals, image) {
+  _addSuggestedERC20Asset(code, symbol, decimals, image) {
     const newEntry = {
-      address,
+      code,
       symbol,
       decimals,
       image,
-      unlisted: !LISTED_CONTRACT_ADDRESSES.includes(address),
+      unlisted: !LISTED_CONTRACT_CODES.includes(code),
     };
     const suggested = this.getSuggestedTokens();
-    suggested[address] = newEntry;
+    suggested[code] = newEntry;
     this.store.updateState({ suggestedTokens: suggested });
   }
 }
