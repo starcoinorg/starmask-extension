@@ -1465,15 +1465,19 @@ export function addTokens(tokens) {
   return (dispatch) => {
     if (Array.isArray(tokens)) {
       return Promise.all(
-        tokens.map(({ code, symbol, decimals }) =>
-          dispatch(addToken(code, symbol, decimals)),
-        ),
+        tokens.map(({ code, symbol, decimals, logo }) => {
+          const image = logo ? `images/contract/${logo}` : undefined;
+          console.log({ image });
+          return dispatch(addToken(code, symbol, decimals, image));
+        }),
       );
     }
     return Promise.all(
-      Object.entries(tokens).map(([_, { code, symbol, decimals }]) =>
-        dispatch(addToken(code, symbol, decimals)),
-      ),
+      Object.entries(tokens).map(([_, { code, symbol, decimals, logo }]) => {
+        const image = logo ? `images/contract/${logo}` : undefined;
+        console.log({ image });
+        return dispatch(addToken(code, symbol, decimals, image));
+      }),
     );
   };
 }
