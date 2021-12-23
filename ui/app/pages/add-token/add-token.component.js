@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { isValidAddress } from '@starcoin/stc-util';
+import contractMap from '@starcoin/contract-metadata';
+
 import { checkExistingCodes } from '../../helpers/utils/util';
 import { tokenInfoGetter } from '../../helpers/utils/token-util';
 import { CONFIRM_ADD_TOKEN_ROUTE } from '../../helpers/constants/routes';
@@ -134,10 +136,16 @@ class AddToken extends Component {
       selectedTokens,
     } = this.state;
 
+    let logo;
+    if (contractMap[code]) {
+      logo = contractMap[code].logo;
+    }
+
     const customToken = {
       code,
       symbol,
       decimals,
+      logo,
     };
 
     setPendingTokens({ customToken, selectedTokens });

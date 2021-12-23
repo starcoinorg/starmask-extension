@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import log from 'loglevel';
-import contractMap from '@starcoin/contract-metadata';
 
 import {
   ASSET_ROUTE,
@@ -97,11 +96,7 @@ export default class ConfirmAddToken extends Component {
             </div>
             <div className="confirm-add-token__token-list">
               {Object.entries(pendingTokens).map(([code, token]) => {
-                const { name, symbol } = token;
-                let { logo } = token;
-                if (!logo && contractMap[code]) {
-                  logo = contractMap[code].logo;
-                }
+                const { name, symbol, logo } = token;
                 return (
                   <div
                     className="confirm-add-token__token-list-item"
