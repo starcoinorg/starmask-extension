@@ -1,9 +1,16 @@
 # Changelog
 
+## [3.2.0] - 2021-12-23
+- New features:
+    - Support search and add custom token with customize logo
+
+- Bug fixes:
+    - Delete unused token logo images
+    - Shrink published zip file size from 10M to 6M
 
 ## [3.1.1] - 2021-12-20
 - Bug fixes:
-    - support max decimals up to 18
+    - Support max decimals up to 18
 
 ## [3.1.0] - 2021-11-26
 - New features:

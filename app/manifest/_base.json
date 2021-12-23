@@ -1,5 +1,5 @@
 {
-  "author": "https://westar.io",
+  "author": "westar.io",
   "background": {
     "scripts": [
       "globalthis.js",
@@ -84,7 +84,7 @@
     "notifications"
   ],
   "short_name": "__MSG_appName__",
-  "version": "3.1.1",
+  "version": "3.2.0",
   "web_accessible_resources": [
     "inpage.js",
     "phishing.html"
