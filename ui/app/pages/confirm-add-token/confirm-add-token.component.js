@@ -91,18 +91,27 @@ export default class ConfirmAddToken extends Component {
             </div>
             <div className="confirm-add-token__token-list">
               {Object.entries(pendingTokens).map(([code, token]) => {
-                const { name, symbol } = token;
+                const { name, symbol, logo } = token;
                 return (
                   <div
                     className="confirm-add-token__token-list-item"
                     key={code}
                   >
                     <div className="confirm-add-token__token confirm-add-token__data">
-                      <Identicon
-                        className="confirm-add-token__token-icon"
-                        diameter={48}
-                        address={code}
-                      />
+                      {logo ? (
+                        <div
+                          className="token-list__token-icon"
+                          style={{
+                            backgroundImage: `url(images/contract/${logo})`,
+                          }}
+                        />
+                      ) : (
+                        <Identicon
+                          className="confirm-add-token__token-icon"
+                          diameter={48}
+                          address={code}
+                        />
+                      )}
                       <div className="confirm-add-token__name">
                         {this.getTokenName(name, symbol)}
                       </div>

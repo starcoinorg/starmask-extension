@@ -2514,6 +2514,11 @@
   resolved "https://registry.npmjs.org/@sinonjs/text-encoding/-/text-encoding-0.7.1.tgz"
   integrity sha512-+iTbntw2IZPb/anVDbypzfQa+ay64MW0Zo8aJ8gZPWMMK6/OubMVb6lUPMagqjOPnmtauXnFCACVl3O7ogjeqQ==
 
+"@starcoin/contract-metadata@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.npmjs.org/@starcoin/contract-metadata/-/contract-metadata-0.1.0.tgz#04b1e63b157a59d0181db7e22027e54e8238f4ab"
+  integrity sha512-Q/LTZM3Es5DRWlS5//CJxTSD5Rq1gtG+nWddn6t9oOWO2ujTq2FDnWH3B0pOlZBrCpJZVIT/oxsGAYpS+kJMSw==
+
 "@starcoin/starcoin@^1.2.1":
   version "1.4.2"
   resolved "https://registry.npmjs.org/@starcoin/starcoin/-/starcoin-1.4.2.tgz#4327fdccfe963ad2fe30ab8bbe5f9081adea7400"

@@ -17,7 +17,7 @@ export default class TokenListPlaceholder extends Component {
         <Button
           type="link"
           className="token-list-placeholder__link"
-          href="https://metamask.zendesk.com/hc/en-us/articles/360015489031"
+          href="https://github.com/starcoinorg/starmask-contract-metadata/blob/master/contract-map.json"
           target="_blank"
           rel="noopener noreferrer"
         >
