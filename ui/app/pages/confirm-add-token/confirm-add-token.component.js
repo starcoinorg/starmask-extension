@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import log from 'loglevel';
-import { ASSET_ROUTE, ADD_TOKEN_ROUTE, CONFIRM_TRANSACTION_ROUTE } from '../../helpers/constants/routes';
+import contractMap from '@starcoin/contract-metadata';
+
+import {
+  ASSET_ROUTE,
+  ADD_TOKEN_ROUTE,
+  CONFIRM_TRANSACTION_ROUTE,
+} from '../../helpers/constants/routes';
 import Button from '../../components/ui/button';
 import Identicon from '../../components/ui/identicon';
 import TokenBalance from '../../components/ui/token-balance';
@@ -91,7 +97,11 @@ export default class ConfirmAddToken extends Component {
             </div>
             <div className="confirm-add-token__token-list">
               {Object.entries(pendingTokens).map(([code, token]) => {
-                const { name, symbol, logo } = token;
+                const { name, symbol } = token;
+                let { logo } = token;
+                if (!logo && contractMap[code]) {
+                  logo = contractMap[code].logo;
+                }
                 return (
                   <div
                     className="confirm-add-token__token-list-item"
