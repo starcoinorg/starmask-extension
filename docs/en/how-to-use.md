@@ -1,89 +1,102 @@
-# 使用指南
+# How To Use StarMask
 
-## 1. 查看账户 Account1 地址和收款识别码，导出私钥
-- a 点击 账户名称 Account1 右侧 图标，在弹窗里面选择 `账户详情`
+> Imageine you have [installed StarMask extension in Google Chrome](./how-to-install.md).
+
+## 1. Check Account1's Address,PublickKey,and PrivateKey
+- a. Click `Account Options` on the right side of account name，choose `Account details` in the pop window
     
-    ![](./images/16.jpg)
+    ![](./images/16.png)
 
 
-- b 地址二维码和地址， 收款识别码，和 导出私钥
+- b. View Address(QR code), PublicKey, ReceiptIdentifer, and export PrivateKey
+
+    ![](./images/17.png)
+
+## 2. Import Account2 through private key
+- a. Click the circle image on the right-top corner, choose `Import Account` in the pop window
+
+    ![](./images/13.png)
+
+- b. Paste private key, click  `Import`
+
+    ![](./images/14.png)
+
+- c. Account2 is imported successfully
+
+    ![](./images/15.png)
+
+- d. Switch btween multi accounts
+
+    ![](./images/33.png)
+
+## 3. Account2 send 1 STC to Account1
+
+- a. Switch to Account2, click `Send`
+
+    ![](./images/18.png)
+
+- b. Paste Account1's address or receiptIdentifier(see 1b) in the text input box, 
     
-    ![](./images/17.jpg)
+    ![](./images/19a.png)
 
-## 2. 通过导入私钥创建账户 Account2
-- a 点击 右上角头像图标, 在弹窗里面，选择 `导入账户`
+    or, click `Transfer between my accounts`, then choose Account1 in the list
 
-    ![](./images/13.jpg)
+    ![](./images/19b.png)
 
-- b 粘贴私钥，点击 `导入`
+- c. in the next send page,
 
-    ![](./images/14.jpg)
+    ![](./images/20.png)
 
-- c 账户 Account2 导入成功
+- d. modify Amount from 0 STC to 1 STC, click `Next`
 
-    ![](./images/15.jpg)
+    ![](./images/21.png)
 
-## 3. 通过收款识别码发送STC (Account2 给 Account1 发送1STC)
+- e. in the next page, click `Confirm`
 
-- a 在 Account2  页面， 点击 `发送`
+    ![](./images/22.png)
 
-    ![](./images/18.jpg)
+> Tips: Click `Edit`, then go back to previous page to modify amount or gas fee
 
-- b 在文本输入框里面粘贴 通过步骤 1b 拷贝的 Account1 收款识别码
-
-    ![](./images/19.jpg)
-
-- c 进入 发送 页面
-
-    ![](./images/20.jpg)
-
-- d 修改 数额 为 1 STC， 点击 `下一步`
-
-    ![](./images/21.jpg)
-
-- e 在发送确认页面，点击 `确认`
-
-    ![](./images/22.jpg)
-
-> 提示: 可以点击左上方的 `编辑`， 返回上一个页面 修改 金额 和 gas费用
-
-- f 发送成功后，Account2 的 余额被扣减 1 STC，点击 `活动` 可以查看发送记录
-
-    ![](./images/23.jpg)
-
-- g 点击交易记录所在行，可以查看交易详情
-
-    ![](./images/24.jpg)
-
-- h 点击 右上方 头像图标，切换账户到 Account1， Account1 余额增加 1 STC
-
-    ![](./images/25.jpg)
+- f. One pending transaction will be added in the `Activity` tab
 
 
-## 4. 其他功能
-- a  设置 -> 通用 -> 当前语言
+    ![](./images/34.png)
 
-    ![](./images/27.jpg)
-
-- b 锁定/解锁
-
-    ![](./images/28.jpg)
-
-    ![](./images/29.jpg)
-
-- c 切换网络
-
-    ![](./images/30.jpg)
-
-- d 交易确认/失败 通知
+- g. Wait a few seconds/minutes, a system alert will notify wether the transaction is successful or failed
 
     ![](./images/31.jpg)
-
-    > 注意: mac 系统需要前往 `系统偏好设置` -> `通知`, 
-    >      选中 `Google Chrome`, 打开 `允许通知`
     
-    ![](./images/32.jpg)
+    > Tips:  in MacOS,  go to `System Preferences` -> `Notifications & Focus`, 
+    > 
+    > choose `Google Chrome`, enable `Allow Notifications`
+    
+    ![](./images/32.png)
+- h. After the tranaction is confirmed, Account2's balance will  be deducted by 1 STC
 
-# References
+    ![](./images/23.png)
 
-- [How To Install](./how-to-install.md)
+- i. Click the item in the Activity list, will popup a window, display the transaction details.
+
+    ![](./images/24.png)
+
+- j. Swith to Account1, the balance will be 1 STC
+
+    ![](./images/25.png)
+
+
+## 4. Others
+- a. Settings -> General -> Current Language
+
+    ![](./images/35.png)
+
+    ![](./images/36.png)
+
+- b. Lock/Unlock
+
+    ![](./images/28.png)
+
+    ![](./images/29.png)
+
+- c. Switch networks
+
+    ![](./images/30.png)

@@ -82,7 +82,7 @@
 
     ![](./images/26.png)
 
-11. Click the settings icon on the right side of account name, then click `Expand view`, will go to 9.
+11. Click the settings icon on the right side of account name, then click `Expand view`, will open a new tab showing the home page
     ![](./images/27.png)
 
 ## Step 4: Learn [How To Use StarMask](./how-to-use.md)
