@@ -40,6 +40,33 @@ yarn add @starcoin/xxx
 yarn setup:postinstall
 ```
 
+# How to transfer the old state in local storage to new state
+1. check the last_version_number in `app/scripts/migrations/index.js`
+2. NEW_VERSION = last_version_number + 1
+3. `yarn generate:migration <NEW_VERSION>` to generate `app/scripts/migrations/<NEW_VERSION>.js` and `app/scripts/migrations/<NEW_VERSION>.test.js`
+4. modify `transformState` in  `app/scripts/migrations/<NEW_VERSION>.js`, add test cases in `app/scripts/migrations/<NEW_VERSION>.test.js`
+5. add following line in `app/scripts/migrations/index.js`:
+
+```
+require('./<NEW_VERSION>').default, 
+```
+
+6. run `yarn start` or wait until it reloaded, then the old state will be migrated to the new state.
+
+Tips:
+if you want to debug and re-run <NEW_VERSION>.js multi times ,you can add following in `app/scripts/background.js` -> loadStateFromPersistence  
+
+```
+ versionedData.meta.version = <last_version_number>;
+```
+
+before this line:
+
+```
+  const { TransactionController } = versionedData.data;
+```
+
+
 # Add build to Chrome
 - For security reason, highly reommand add a new profile: 
     - open Chrome

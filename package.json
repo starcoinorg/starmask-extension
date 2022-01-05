@@ -13,6 +13,7 @@
     "build:test": "yarn build test",
     "devtools:react": "react-devtools",
     "devtools:redux": "remotedev --hostname=localhost --port=8100",
+    "generate:migration": "./development/generate-migration.sh",
     "start:dev": "concurrently -k -n build,react,redux yarn:start yarn:devtools:react yarn:devtools:redux"
   },
   "resolutions": {
