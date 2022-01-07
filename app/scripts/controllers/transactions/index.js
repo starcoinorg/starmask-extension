@@ -154,7 +154,7 @@ export default class TransactionController extends EventEmitter {
   */
   addTx(txMeta) {
     this.txStateManager.addTx(txMeta);
-    this.emit(`${txMeta.id}:unapproved`, txMeta);
+    this.emit(`${ txMeta.id }:unapproved`, txMeta);
   }
 
   /**
@@ -174,7 +174,7 @@ export default class TransactionController extends EventEmitter {
    */
   async newUnapprovedTransaction(txParams, opts = {}) {
     log.debug(
-      `StarMaskController newUnapprovedTransaction ${JSON.stringify(txParams)}`,
+      `StarMaskController newUnapprovedTransaction ${ JSON.stringify(txParams) }`,
     );
 
     const initialTxMeta = await this.addUnapprovedTransaction(
@@ -185,7 +185,7 @@ export default class TransactionController extends EventEmitter {
     // listen for tx completion (success, fail)
     return new Promise((resolve, reject) => {
       this.txStateManager.once(
-        `${initialTxMeta.id}:finished`,
+        `${ initialTxMeta.id }:finished`,
         (finishedTxMeta) => {
           switch (finishedTxMeta.status) {
             case TRANSACTION_STATUSES.SUBMITTED:
@@ -208,9 +208,9 @@ export default class TransactionController extends EventEmitter {
               return reject(
                 cleanErrorStack(
                   ethErrors.rpc.internal(
-                    `StarMask Tx Signature: Unknown problem: ${JSON.stringify(
+                    `StarMask Tx Signature: Unknown problem: ${ JSON.stringify(
                       finishedTxMeta.txParams,
-                    )}`,
+                    ) }`,
                   ),
                 ),
               );
@@ -228,7 +228,7 @@ export default class TransactionController extends EventEmitter {
    */
   async addUnapprovedTransaction(txParams, origin) {
     log.debug(
-      `StarMaskController addUnapprovedTransaction ${JSON.stringify(txParams)}`,
+      `StarMaskController addUnapprovedTransaction ${ JSON.stringify(txParams) }`,
     );
     // validate
     const normalizedTxParams = txUtils.normalizeTxParams(txParams);
@@ -1102,18 +1102,18 @@ export default class TransactionController extends EventEmitter {
           txMeta.chainId,
         );
 
-        const quoteVsExecutionRatio = `${new BigNumber(tokensReceived, 10)
+        const quoteVsExecutionRatio = `${ new BigNumber(tokensReceived, 10)
           .div(txMeta.swapMetaData.token_to_amount, 10)
           .times(100)
-          .round(2)}%`;
+          .round(2) }%`;
 
-        const estimatedVsUsedGasRatio = `${new BigNumber(
+        const estimatedVsUsedGasRatio = `${ new BigNumber(
           txMeta.txReceipt.gasUsed,
           16,
         )
           .div(txMeta.swapMetaData.estimated_gas, 10)
           .times(100)
-          .round(2)}%`;
+          .round(2) }%`;
 
         this._trackMetaMetricsEvent({
           event: 'Swap Completed',
