@@ -191,7 +191,7 @@
     "message": "自动接受代币"
   },
   "AutoAcceptTokenDescription": {
-    "message": "选中该项可以在收到新种类的代币转账的同时自动接受该代币，否则必须先手动添加并接受该代币."
+    "message": "选中该项可以自动接收代币转账，否则必须先手动添加代币并接受方可接收转账."
   },
   "autoLockTimeLimit": {
     "message": "自动锁定定时（分钟）"
