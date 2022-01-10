@@ -716,7 +716,7 @@
     "message": "View the addresses of your permitted accounts (required)",
     "description": "The description for the `stc_accounts` permission"
   },
-  "ethereumPublicAddress": {
+  "starcoinPublicAddress": {
     "message": "Starcoin Public Address"
   },
   "etherscan": {

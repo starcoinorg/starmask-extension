@@ -92,7 +92,7 @@ export default class EditContact extends PureComponent {
 
           <div className="address-book__view-contact__group">
             <div className="address-book__view-contact__group__label">
-              {t('ethereumPublicAddress')}
+              {t('starcoinPublicAddress')}
             </div>
             <TextField
               type="text"
@@ -165,7 +165,7 @@ export default class EditContact extends PureComponent {
             }
           }}
           onCancel={() => {
-            history.push(`${viewRoute}/${address}`);
+            history.push(`${ viewRoute }/${ address }`);
           }}
           submitText={this.context.t('save')}
           submitButtonType="confirm"

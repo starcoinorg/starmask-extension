@@ -11,10 +11,10 @@ import { useI18nContext } from '../../../../hooks/useI18nContext';
 import { useCopyToClipboard } from '../../../../hooks/useCopyToClipboard';
 
 function quadSplit(address) {
-  return `0x ${address
+  return `0x ${ address
     .slice(2)
     .match(/.{1,4}/gu)
-    .join(' ')}`;
+    .join(' ') }`;
 }
 
 function ViewContact({
@@ -44,7 +44,7 @@ function ViewContact({
           <Button
             type="secondary"
             onClick={() => {
-              history.push(`${editRoute}/${address}`);
+              history.push(`${ editRoute }/${ address }`);
             }}
           >
             {t('edit')}
@@ -52,7 +52,7 @@ function ViewContact({
         </div>
         <div className="address-book__view-contact__group">
           <div className="address-book__view-contact__group__label">
-            {t('ethereumPublicAddress')}
+            {t('starcoinPublicAddress')}
           </div>
           <div className="address-book__view-contact__group__value">
             <div className="address-book__view-contact__group__static-address">
