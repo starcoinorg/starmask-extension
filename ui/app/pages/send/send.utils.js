@@ -212,7 +212,7 @@ async function estimateGasForSend({
   // if recipient has no code, gas is 21k max:
   if (!sendToken && !data) {
     const code = await new Promise((resolve, reject) => {
-      return global.ethQuery.getCode('0x00000000000000000000000000000001::Account', (error, result) => {
+      return global.stcQuery.getCode('0x00000000000000000000000000000001::Account', (error, result) => {
         if (error) {
           return reject(error);
         }
@@ -265,7 +265,7 @@ async function estimateGasForSend({
   try {
     // get sequence_number from contract.get_resource
     const sequenceNumber = await new Promise((resolve, reject) => {
-      return global.ethQuery.getResource(
+      return global.stcQuery.getResource(
         paramsForGasEstimate.from,
         '0x00000000000000000000000000000001::Account::Account',
         (err, res) => {
@@ -402,7 +402,7 @@ function generateTokenTransferData({
           ['address', 'uint256'],
           [toAddress, addHexPrefix(amount)],
         ),
-        (x) => `00${x.toString(16)}`.slice(-2),
+        (x) => `00${ x.toString(16) }`.slice(-2),
       )
       .join('')
   );
@@ -419,5 +419,5 @@ function removeLeadingZeroes(str) {
 }
 
 function ellipsify(text, first = 6, last = 4) {
-  return `${text.slice(0, first)}...${text.slice(-last)}`;
+  return `${ text.slice(0, first) }...${ text.slice(-last) }`;
 }

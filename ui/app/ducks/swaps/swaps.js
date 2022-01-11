@@ -606,7 +606,7 @@ export const signAndSendTransactions = (history, metaMetricsEvent) => {
       customSwapsGas ||
       (usedQuote?.gasEstimate
         ? estimatedGasLimitWithMultiplier
-        : `0x${decimalToHex(usedQuote?.maxGas || 0)}`);
+        : `0x${ decimalToHex(usedQuote?.maxGas || 0) }`);
 
     const usedGasPrice = getUsedSwapsGasPrice(state);
     usedTradeTxParams.gas = maxGasLimit;
@@ -619,7 +619,7 @@ export const signAndSendTransactions = (history, metaMetricsEvent) => {
     ).toPrecision(8);
     const usedGasLimitEstimate =
       usedQuote?.gasEstimateWithRefund ||
-      `0x${decimalToHex(usedQuote?.averageGas || 0)}`;
+      `0x${ decimalToHex(usedQuote?.averageGas || 0) }`;
     const totalGasLimitEstimate = new BigNumber(usedGasLimitEstimate, 16)
       .plus(usedQuote.approvalNeeded?.gas || '0x0', 16)
       .toString(16);
@@ -759,7 +759,7 @@ export function fetchMetaSwapsGasPriceEstimates() {
       dispatch(swapGasPriceEstimatesFetchFailed());
 
       try {
-        const gasPrice = await global.ethQuery.gasPrice();
+        const gasPrice = await global.stcQuery.gasPrice();
         const gasPriceInDecGWEI = hexWEIToDecGWEI(gasPrice.toString(10));
         // const gasPriceInDecGWEI = gasPrice.toString(10);
 

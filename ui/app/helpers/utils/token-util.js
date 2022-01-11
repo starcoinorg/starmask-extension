@@ -27,7 +27,7 @@ async function getSymbolFromContract(tokenAddress) {
     return result[0];
   } catch (error) {
     log.warn(
-      `symbol() call for token at address ${tokenAddress} resulted in error:`,
+      `symbol() call for token at address ${ tokenAddress } resulted in error:`,
       error,
     );
     return undefined;
@@ -43,7 +43,7 @@ async function getDecimalsFromContract(tokenAddress) {
     return decimalsBN?.toString();
   } catch (error) {
     log.warn(
-      `decimals() call for token at address ${tokenAddress} resulted in error:`,
+      `decimals() call for token at address ${ tokenAddress } resulted in error:`,
       error,
     );
     return undefined;
@@ -73,7 +73,7 @@ function getSymbol(tokenCode) {
 
 async function getDecimals(tokenCode) {
   const decimals = await new Promise((resolve, reject) => {
-    return global.ethQuery.sendAsync(
+    return global.stcQuery.sendAsync(
       {
         method: 'contract.call_v2',
         params: [
@@ -117,7 +117,7 @@ export async function fetchSymbolAndDecimals(tokenAddress) {
     decimals = await getDecimals(tokenAddress);
   } catch (error) {
     log.warn(
-      `symbol() and decimal() calls for token at address ${tokenAddress} resulted in error:`,
+      `symbol() and decimal() calls for token at address ${ tokenAddress } resulted in error:`,
       error,
     );
   }
@@ -145,7 +145,7 @@ export async function getSymbolAndDecimals(tokenCode, existingTokens = []) {
     decimals = await getDecimals(tokenCode);
   } catch (error) {
     log.warn(
-      `symbol() and decimal() calls for token ${tokenCode} resulted in error:`,
+      `symbol() and decimal() calls for token ${ tokenCode } resulted in error:`,
       error,
     );
   }
@@ -271,10 +271,10 @@ export function getTokenFiatAmount(
   if (hideCurrencySymbol) {
     result = formatCurrency(currentTokenInFiat, currentCurrency);
   } else if (formatted) {
-    result = `${formatCurrency(
+    result = `${ formatCurrency(
       currentTokenInFiat,
       currentCurrency,
-    )} ${currentCurrency.toUpperCase()}`;
+    ) } ${ currentCurrency.toUpperCase() }`;
   } else {
     result = currentTokenInFiat;
   }
