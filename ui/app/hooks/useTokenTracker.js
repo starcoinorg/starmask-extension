@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 import { getSelectedAddress, getAssets } from '../selectors';
 import { stringifyBalance } from '../helpers/utils/confirm-tx.util';
+import { tokenInfoGetter } from '../helpers/utils/token-util';
 
 export function useTokenTracker(
   tokens,
@@ -55,4 +56,15 @@ export function useTokenTracker(
   const loading = false;
   const error = null;
   return { loading, tokensWithBalances, error };
+}
+
+export async function getTokenInfos(currentAssets) {
+  return Promise.all(
+    Object.keys(currentAssets).map(async (code) => {
+      const result = await tokenInfoGetter()(code)
+      return { code, ...result };
+    })
+  ).then((tokens) => {
+    return tokens;
+  });
 }
