@@ -8,6 +8,8 @@ import { conversionUtil, multiplyCurrencies } from './conversion-util';
 import { formatCurrency } from './confirm-tx.util';
 
 const { arrayify, hexlify } = ethers.utils;
+// tokens should be single instance at global level
+const tokens = {};
 
 const casedContractMap = Object.keys(contractMap).reduce((acc, base) => {
   return {
@@ -157,8 +159,6 @@ export async function getSymbolAndDecimals(tokenCode, existingTokens = []) {
 }
 
 export function tokenInfoGetter() {
-  const tokens = {};
-
   return async (code) => {
     if (tokens[code]) {
       return tokens[code];
