@@ -23,7 +23,7 @@ import BigNumber from 'bignumber.js';
 import log from 'loglevel';
 import OneKeyKeyring from '@starcoin/stc-onekey-keyring';
 // import LedgerBridgeKeyring from '@metamask/eth-ledger-bridge-keyring';
-import EthQuery from '@starcoin/stc-query';
+import StcQuery from '@starcoin/stc-query';
 import nanoid from 'nanoid';
 import contractMap from '@starcoin/contract-metadata';
 import {
@@ -478,7 +478,7 @@ export default class MetamaskController extends EventEmitter {
     const providerOpts = {
       static: {
         eth_syncing: false,
-        web3_clientVersion: `MetaMask/v${version}`,
+        web3_clientVersion: `MetaMask/v${ version }`,
       },
       version,
       // account mgmt
@@ -985,11 +985,11 @@ export default class MetamaskController extends EventEmitter {
         seed,
       );
 
-      const ethQuery = new EthQuery(this.provider);
+      const stcQuery = new StcQuery(this.provider);
       accounts = await keyringController.getAccounts();
       lastBalance = await this.getBalance(
         accounts[accounts.length - 1],
-        ethQuery,
+        stcQuery,
       );
 
       const primaryKeyring = keyringController.getKeyringsByType(
@@ -1005,7 +1005,7 @@ export default class MetamaskController extends EventEmitter {
         accounts = await keyringController.getAccounts();
         lastBalance = await this.getBalance(
           accounts[accounts.length - 1],
-          ethQuery,
+          stcQuery,
         );
       }
 
@@ -1022,16 +1022,16 @@ export default class MetamaskController extends EventEmitter {
   /**
    * Get an account balance from the AccountTracker or request it directly from the network.
    * @param {string} address - The account address
-   * @param {EthQuery} ethQuery - The EthQuery instance to use when asking the network
+   * @param {StcQuery} stcQuery - The StcQuery instance to use when asking the network
    */
-  getBalance(address, ethQuery) {
+  getBalance(address, stcQuery) {
     return new Promise((resolve, reject) => {
       const cached = this.accountTracker.store.getState().accounts[address];
 
       if (cached && cached.balance) {
         resolve(cached.balance);
       } else {
-        ethQuery.getResource(
+        stcQuery.getResource(
           address,
           '0x00000000000000000000000000000001::Account::Balance<0x00000000000000000000000000000001::STC::STC>',
           (error, res) => {
@@ -1295,8 +1295,8 @@ export default class MetamaskController extends EventEmitter {
     this.preferencesController.setAddresses(newAccounts);
     newAccounts.forEach((address) => {
       if (!oldAccounts.includes(address)) {
-        const label = `${deviceName[0].toUpperCase()}${deviceName.slice(1)} ${parseInt(index, 10) + 1
-          } ${hdPathDescription || ''}`.trim();
+        const label = `${ deviceName[0].toUpperCase() }${ deviceName.slice(1) } ${ parseInt(index, 10) + 1
+          } ${ hdPathDescription || '' }`.trim();
         // Set the account label to OneKey 1 /  Ledger 1, etc
         this.preferencesController.setAccountLabel(address, label);
         // Select the account
@@ -1886,7 +1886,7 @@ export default class MetamaskController extends EventEmitter {
             script: {
               code: '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2',
               type_args: [tokenCode],
-              args: [estimateGasParams.to, `${hexToDecimal(estimateGasParams.gas)}u128`]
+              args: [estimateGasParams.to, `${ hexToDecimal(estimateGasParams.gas) }u128`]
             },
           };
           if (!estimateGasParams.to) {
@@ -2764,9 +2764,9 @@ export default class MetamaskController extends EventEmitter {
    * @param {string} address - The account address
    */
   getAutoAcceptToken(adress) {
-    const ethQuery = new EthQuery(this.provider);
+    const stcQuery = new StcQuery(this.provider);
     return new Promise((resolve, reject) => {
-      ethQuery.sendAsync(
+      stcQuery.sendAsync(
         {
           method: 'state.get_resource',
           params: [adress, '0x1::Account::AutoAcceptToken'],
@@ -2792,11 +2792,11 @@ export default class MetamaskController extends EventEmitter {
    * @param {string} code - The token code
    */
   checkIsAcceptToken(address, code) {
-    const ethQuery = new EthQuery(this.provider);
+    const stcQuery = new StcQuery(this.provider);
     return new Promise((resolve, reject) => {
-      ethQuery.getResource(
+      stcQuery.getResource(
         address,
-        `0x00000000000000000000000000000001::Account::Balance<${code}>`,
+        `0x00000000000000000000000000000001::Account::Balance<${ code }>`,
         (error, res) => {
           if (error) {
             log.error(error);
@@ -2816,11 +2816,11 @@ export default class MetamaskController extends EventEmitter {
    * @param {string} body - The NFT body
    */
   checkIsAddNFTGallery(address, meta, body) {
-    const ethQuery = new EthQuery(this.provider);
+    const stcQuery = new StcQuery(this.provider);
     return new Promise((resolve, reject) => {
-      ethQuery.getResource(
+      stcQuery.getResource(
         address,
-        `0x00000000000000000000000000000001::NFTGallery::NFTGallery<${meta}, ${body}>`,
+        `0x00000000000000000000000000000001::NFTGallery::NFTGallery<${ meta }, ${ body }>`,
         (error, res) => {
           if (error) {
             log.error(error);

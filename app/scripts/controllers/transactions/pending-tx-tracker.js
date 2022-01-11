@@ -1,6 +1,6 @@
 import EventEmitter from 'safe-event-emitter';
 import log from 'loglevel';
-import EthQuery from '@starcoin/stc-query';
+import StcQuery from '@starcoin/stc-query';
 import BigNumber from 'bignumber.js';
 import { TRANSACTION_STATUSES } from '../../../../shared/constants/transaction';
 
@@ -40,7 +40,7 @@ export default class PendingTransactionTracker extends EventEmitter {
 
   constructor(config) {
     super();
-    this.query = config.query || new EthQuery(config.provider);
+    this.query = config.query || new StcQuery(config.provider);
     this.nonceTracker = config.nonceTracker;
     this.getPendingTransactions = config.getPendingTransactions;
     this.getCompletedTransactions = config.getCompletedTransactions;

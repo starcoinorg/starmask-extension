@@ -8,7 +8,7 @@ import {
   createSwappableProxy,
   createEventEmitterProxy,
 } from 'swappable-obj-proxy';
-import EthQuery from '@starcoin/stc-query';
+import StcQuery from '@starcoin/stc-query';
 import {
   BARNARD,
   MAINNET,
@@ -156,9 +156,9 @@ export default class NetworkController extends EventEmitter {
     }
 
     // Ping the RPC endpoint so we can confirm that it works
-    const ethQuery = new EthQuery(this._provider);
+    const stcQuery = new StcQuery(this._provider);
     const initialNetwork = this.getNetworkState();
-    ethQuery.sendAsync({ method: 'chain.id' }, (err, networkVersion) => {
+    stcQuery.sendAsync({ method: 'chain.id' }, (err, networkVersion) => {
 
       const currentNetwork = this.getNetworkState();
       if (initialNetwork === currentNetwork) {
@@ -180,11 +180,11 @@ export default class NetworkController extends EventEmitter {
   setRpcTarget(rpcUrl, chainId, ticker = 'STC', nickname = '', rpcPrefs) {
     assert.ok(
       isPrefixedFormattedHexString(chainId),
-      `Invalid chain ID "${chainId}": invalid hex string.`,
+      `Invalid chain ID "${ chainId }": invalid hex string.`,
     );
     assert.ok(
       isSafeChainId(parseInt(chainId, 16)),
-      `Invalid chain ID "${chainId}": numerical value greater than max safe value.`,
+      `Invalid chain ID "${ chainId }": numerical value greater than max safe value.`,
     );
     this.setProviderConfig({
       type: NETWORK_TYPE_RPC,
@@ -200,11 +200,11 @@ export default class NetworkController extends EventEmitter {
     assert.notStrictEqual(
       type,
       NETWORK_TYPE_RPC,
-      `NetworkController - cannot call "setProviderType" with type "${NETWORK_TYPE_RPC}". Use "setRpcTarget"`,
+      `NetworkController - cannot call "setProviderType" with type "${ NETWORK_TYPE_RPC }". Use "setRpcTarget"`,
     );
     assert.ok(
       INFURA_PROVIDER_TYPES.includes(type),
-      `Unknown Infura provider type "${type}".`,
+      `Unknown Infura provider type "${ type }".`,
     );
     const { chainId } = NETWORK_TYPE_TO_ID_MAP[type];
     this.setProviderConfig({ type, rpcUrl, chainId, ticker, nickname });
@@ -259,7 +259,7 @@ export default class NetworkController extends EventEmitter {
       this._configureStandardProvider(rpcUrl, chainId);
     } else {
       throw new Error(
-        `NetworkController - _configureProvider - unknown type "${type}"`,
+        `NetworkController - _configureProvider - unknown type "${ type }"`,
       );
     }
   }

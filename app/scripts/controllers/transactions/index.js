@@ -1,7 +1,7 @@
 import EventEmitter from 'safe-event-emitter';
 import { ObservableStore } from '@metamask/obs-store';
 import ethUtil from 'ethereumjs-util';
-import EthQuery from '@starcoin/stc-query';
+import StcQuery from '@starcoin/stc-query';
 import { ethErrors } from 'eth-rpc-errors';
 // import abi from 'human-standard-token-abi';
 // import { ethers } from 'ethers';
@@ -78,7 +78,7 @@ export default class TransactionController extends EventEmitter {
     this._getParticipateInMetrics = opts.getParticipateInMetrics;
 
     this.memStore = new ObservableStore({});
-    this.query = new EthQuery(this.provider);
+    this.query = new StcQuery(this.provider);
     this.txGasUtil = new TxGasUtil(this.provider, this.preferencesStore, opts.getPublicKeyFor);
     this._mapMethods();
     this.txStateManager = new TransactionStateManager({

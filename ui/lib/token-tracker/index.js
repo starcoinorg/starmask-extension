@@ -1,4 +1,4 @@
-import Eth from '@starcoin/stc-query';
+import StcQuery from '@starcoin/stc-query';
 // const EthContract = require('ethjs-contract')
 import { PollingBlockTracker } from '@starcoin/stc-block-tracker';
 // const abi = require('human-standard-token-abi')
@@ -20,8 +20,8 @@ class TokenTracker extends SafeEventEmitter {
       pollingInterval,
     })
 
-    this.eth = new Eth(this.provider)
-    // this.contract = new EthContract(this.eth)
+    this.query = new StcQuery(this.provider)
+    // this.contract = new EthContract(this.query)
     // this.TokenContract = this.contract(abi)
 
     const tokens = opts.tokens || []
