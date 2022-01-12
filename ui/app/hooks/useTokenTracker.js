@@ -24,8 +24,9 @@ export function useTokenTracker(
       if (hideZeroBalanceTokens && Number(currentAssets[key]) === 0) {
         return;
       }
-      const numberOfDecimals = 4;
+
       const { decimals } = currentToken;
+      const numberOfDecimals = decimals <= 9 ? 4 : 9;
       const symbol = key.split('::')[2];
       const token = {
         code: key,
@@ -41,7 +42,7 @@ export function useTokenTracker(
   // added to wallet but not enabled accept_tokens ones
   const unAcceptTokens = tokens.filter((token) => token.code.split('::').length === 3 && !currentAssets[token.code]);
   unAcceptTokens.map(({ code, decimals }) => {
-    const numberOfDecimals = 4;
+    const numberOfDecimals = decimals <= 9 ? 4 : 9;;
     const symbol = code.split('::')[2];
     const token = {
       code,
