@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { isEqual } from 'lodash';
-import log from 'loglevel';
 import { useSelector } from 'react-redux';
 import TokenCell from '../token-cell';
 import { useI18nContext } from '../../../hooks/useI18nContext';
@@ -20,12 +19,14 @@ export default function TokenList({ onTokenClick }) {
   const shouldHideZeroBalanceTokens = useSelector(
     getShouldHideZeroBalanceTokens,
   );
-  const [tokens, setTokens] = useState([]);
-  const [loadingTokenInfos, setLoadingTokenInfos] = useState(false);
+
   // use `isEqual` comparison function because the token array is serialized
   // from the background so it has a new reference with each background update,
   // even if the tokens haven't changed
-  // const tokens = useSelector(getTokens, isEqual);
+  const tokens = useSelector(getTokens, isEqual);
+
+  const [allTokens, setAllTokens] = useState([]);
+  const [loadingTokenInfos, setLoadingTokenInfos] = useState(false);
   const userAddress = useSelector(getSelectedAddress);
   const assets = useSelector(getAssets, isEqual);
   useEffect(() => {
@@ -34,9 +35,10 @@ export default function TokenList({ onTokenClick }) {
       if (currentAssets) {
         if (!loadingTokenInfos) {
           setLoadingTokenInfos(true);
-          const tokens = await getTokenInfos(currentAssets);
+          const assetTokens = await getTokenInfos(currentAssets);
           setLoadingTokenInfos(false);
-          setTokens(tokens);
+          const allTokens = tokens.concat(assetTokens)
+          setAllTokens(allTokens);
         }
       }
     };
@@ -44,11 +46,10 @@ export default function TokenList({ onTokenClick }) {
   }, [userAddress, assets]);
 
   const { loading, tokensWithBalances } = useTokenTracker(
-    tokens,
+    allTokens,
     true,
     shouldHideZeroBalanceTokens,
   );
-
   if (loadingTokenInfos || loading) {
     return (
       <div
