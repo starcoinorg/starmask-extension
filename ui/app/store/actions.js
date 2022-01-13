@@ -269,7 +269,7 @@ export function resetAccount() {
           return;
         }
 
-        log.info(`Transaction history reset for ${account}`);
+        log.info(`Transaction history reset for ${ account }`);
         dispatch(showAccountsPage());
         resolve(account);
       });
@@ -299,7 +299,7 @@ export function removeAccount(address) {
       dispatch(hideLoadingIndication());
     }
 
-    log.info(`Account removed: ${address}`);
+    log.info(`Account removed: ${ address }`);
     dispatch(showAccountsPage());
   };
 }
@@ -404,7 +404,7 @@ export function connectHardware(deviceName, page, hdPath) {
   log.debug(`background.connectHardware`, deviceName, page, hdPath);
   return async (dispatch) => {
     dispatch(
-      showLoadingIndication(`Looking for your ${capitalize(deviceName)}...`),
+      showLoadingIndication(`Looking for your ${ capitalize(deviceName) }...`),
     );
 
     let accounts;
@@ -1420,6 +1420,7 @@ export function addToken(
   decimals,
   image,
   dontShowLoadingIndicator,
+  checkHiddenTokenFirst,
 ) {
   return (dispatch) => {
     if (!code) {
@@ -1429,7 +1430,7 @@ export function addToken(
       dispatch(showLoadingIndication());
     }
     return new Promise((resolve, reject) => {
-      background.addToken(code, symbol, decimals, image, (err, tokens) => {
+      background.addToken(code, symbol, decimals, image, checkHiddenTokenFirst, (err, tokens) => {
         dispatch(hideLoadingIndication());
         if (err) {
           dispatch(displayWarning(err.message));
@@ -1461,22 +1462,20 @@ export function removeToken(code) {
   };
 }
 
-export function addTokens(tokens) {
+export function addTokens(tokens, checkHiddenTokenFirst) {
   return (dispatch) => {
     if (Array.isArray(tokens)) {
       return Promise.all(
         tokens.map(({ code, symbol, decimals, logo }) => {
-          const image = logo ? `images/contract/${logo}` : undefined;
-          console.log({ image });
-          return dispatch(addToken(code, symbol, decimals, image));
+          const image = logo ? `images/contract/${ logo }` : undefined;
+          return dispatch(addToken(code, symbol, decimals, image, false, checkHiddenTokenFirst));
         }),
       );
     }
     return Promise.all(
       Object.entries(tokens).map(([_, { code, symbol, decimals, logo }]) => {
-        const image = logo ? `images/contract/${logo}` : undefined;
-        console.log({ image });
-        return dispatch(addToken(code, symbol, decimals, image));
+        const image = logo ? `images/contract/${ logo }` : undefined;
+        return dispatch(addToken(code, symbol, decimals, image, false, checkHiddenTokenFirst));
       }),
     );
   };
@@ -1645,7 +1644,7 @@ export function updateAndSetCustomRpc(
 ) {
   return async (dispatch) => {
     log.debug(
-      `background.updateAndSetCustomRpc: ${newRpc} ${chainId} ${ticker} ${nickname}`,
+      `background.updateAndSetCustomRpc: ${ newRpc } ${ chainId } ${ ticker } ${ nickname }`,
     );
 
     try {
@@ -1678,7 +1677,7 @@ export function editRpc(
   rpcPrefs,
 ) {
   return async (dispatch) => {
-    log.debug(`background.delRpcTarget: ${oldRpc}`);
+    log.debug(`background.delRpcTarget: ${ oldRpc }`);
     try {
       promisifiedBackground.delCustomRpc(oldRpc);
     } catch (error) {
@@ -1711,7 +1710,7 @@ export function editRpc(
 export function setRpcTarget(newRpc, chainId, ticker = 'STC', nickname) {
   return async (dispatch) => {
     log.debug(
-      `background.setRpcTarget: ${newRpc} ${chainId} ${ticker} ${nickname}`,
+      `background.setRpcTarget: ${ newRpc } ${ chainId } ${ ticker } ${ nickname }`,
     );
 
     try {
@@ -1741,7 +1740,7 @@ export function rollbackToPreviousProvider() {
 
 export function delRpcTarget(oldRpc) {
   return (dispatch) => {
-    log.debug(`background.delRpcTarget: ${oldRpc}`);
+    log.debug(`background.delRpcTarget: ${ oldRpc }`);
     return new Promise((resolve, reject) => {
       background.delCustomRpc(oldRpc, (err) => {
         if (err) {

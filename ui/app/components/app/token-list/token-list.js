@@ -42,7 +42,7 @@ export default function TokenList({ onTokenClick }) {
             !(tokensCode.includes(token.code.toLowerCase()) || hiddenTokens.includes(token.code.toLowerCase()))
           )
           if (addedTokens.length) {
-            dispatch(addTokens(addedTokens));
+            dispatch(addTokens(addedTokens, true));
           }
           setLoadingTokenInfos(false);
         }
