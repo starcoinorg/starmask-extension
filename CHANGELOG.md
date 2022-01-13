@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.4.0] - 2022-01-12
+
+- Bug fixes:
+  - [#40 Import token with checksum address will be failed](https://github.com/starcoinorg/starmask-extension/issues/40)
+  - [#42 Automatically display accepted token in the asset list, should not adding token first](https://github.com/starcoinorg/starmask-extension/issues/42)
+
 ## [3.3.0] - 2022-01-07
 
 - New features:
