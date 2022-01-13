@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { isValidAddress } from '@starcoin/stc-util';
+import { isValidAddress, isValidChecksumAddress } from '@starcoin/stc-util';
 import contractMap from '@starcoin/contract-metadata';
 
 import { checkExistingCodes } from '../../helpers/utils/util';
@@ -162,17 +162,27 @@ class AddToken extends Component {
   }
 
   handleCustomCodeChange(value) {
-    const customCode = value.trim();
+    let customCode = value.trim();
+
+    const arr = customCode.split('::');
+
+    const isValidCode = arr.length === 3 && isValidAddress(arr[0]);
+
+    // fix #40
+    if (isValidCode) {
+      const _isValidChecksumAddress = isValidChecksumAddress(arr[0])
+      if (_isValidChecksumAddress) {
+        arr[0] = arr[0].toLowerCase()
+        customCode = arr.join('::')
+      }
+    }
+
     this.setState({
       customCode,
       customCodeError: null,
       tokenSelectorError: null,
       autoFilled: false,
     });
-
-    const arr = customCode.split('::');
-
-    const isValidCode = arr.length === 3 && isValidAddress(arr[0]);
 
     switch (true) {
       case !isValidCode:
