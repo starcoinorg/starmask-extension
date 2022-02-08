@@ -356,7 +356,7 @@
   },
   "connectToAllAccounts": {
     "message": "comptes",
-    "description": "remplacera $1 dans connectToAll, en complétant la phrase "se connecter à tous vos comptes", sera un texte qui affiche la liste des comptes au survol"
+    "description": "remplacera $1 dans connectToAll, en complétant la phrase 'se connecter à tous vos comptes', sera un texte qui affiche la liste des comptes au survol"
   },
   "connectToMultiple": {
     "message": "Se connecter à $1",
@@ -647,7 +647,7 @@
   },
   "endOfFlowMessage7": {
     "message": "Si jamais vous avez des questions ou voyez quelque chose d'inhabituelle, contactez notre support $1.",
-    "description": "$1 est un lien cliquable avec du texte défini par la clé "ici". Le lien s'ouvrira sur un formulaire où les utilisateurs pourront soumettre des tickets d'assistance."
+    "description": "$1 est un lien cliquable avec du texte défini par la clé \"ici\". Le lien s'ouvrira sur un formulaire où les utilisateurs pourront soumettre des tickets d'assistance."
   },
   "endOfFlowMessage8": {
     "message": "- StarMask ne peut pas récupérer votre phrase de sauvegarde ?"
@@ -695,11 +695,11 @@
   },
   "errorPageMessage": {
     "message": "Réessayez en rechargeant la page ou contactez l'assistance $1.",
-    "description": "Message affiché sur la page d'erreur générique dans l'interface utilisateur plein écran ou de notification, $1 est un lien cliquable avec un texte défini par la clé "ici". Le lien s'ouvrira sur un formulaire où les utilisateurs pourront soumettre des tickets d'assistance."
+    "description": "Message affiché sur la page d'erreur générique dans l'interface utilisateur plein écran ou de notification, $1 est un lien cliquable avec un texte défini par la clé \"ici\". Le lien s'ouvrira sur un formulaire où les utilisateurs pourront soumettre des tickets d'assistance."
   },
   "errorPagePopupMessage": {
     "message": "Réessayez en fermant et en rouvrant la fenêtre contextuelle, ou contactez l'assistance $1.",
-    "description": "Message affiché sur la page d'erreur générique dans l'interface utilisateur contextuelle, $1 est un lien cliquable avec un texte défini par la clé "ici". Le lien s'ouvrira sur un formulaire où les utilisateurs pourront soumettre des tickets d'assistance."
+    "description": "Message affiché sur la page d'erreur générique dans l'interface utilisateur contextuelle, $1 est un lien cliquable avec un texte défini par la clé \"ici\". Le lien s'ouvrira sur un formulaire où les utilisateurs pourront soumettre des tickets d'assistance."
   },
   "errorPageTitle": {
     "message": "StarMask a rencontré une erreur",
@@ -1112,7 +1112,7 @@
   },
   "metametricsCommitmentsNeverSellDataForProfit": {
     "message": "ne vendra $1 des données à des fins lucratives. Jamais!",
-    "description": "Le $1 est le mot en gras "Jamais", de 'metametricsCommitmentsBoldNever'"
+    "description": "Le $1 est le mot en gras 'Jamais', de 'metametricsCommitmentsBoldNever'"
   },
   "metametricsCommitmentsSendAnonymizedEvents": {
     "message": "Envoyer des événements de clics et de pages vues anonymisés"
@@ -1421,7 +1421,7 @@
     "message": "Le destinataire n'accepte pas ce Token et n'a pas activé 'AutoAcceptToken'. Veuillez demander au destinataire d'ajouter et d'accepter ce Token ou d'activer 'AutoAcceptToken' dans la page des paramètres du compte."
   },
   "recipientAccountNotAddNFTGallery": {
-    "message": "Le destinataire n'a pas encore ajouté cette galerie NFT. Veuillez d'abord informer le destinataire qu'il doit "ajouter une galerie NFT"."
+    "message": "Le destinataire n'a pas encore ajouté cette galerie NFT. Veuillez d'abord informer le destinataire qu'il doit \"ajouter une galerie NFT\"."
   },
   "recipientAddressPlaceholder": {
     "message": "Adresse de recherche (0x) ou ReceiptIdentifier(stc1p)"

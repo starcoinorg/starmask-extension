@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.5.0] - 2022-02-08
+## [3.5.1] - 2022-02-08
 
 - New features:
   - i18n supports francais
