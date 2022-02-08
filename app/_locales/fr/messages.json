@@ -1,0 +1,2366 @@
+{
+  "about": {
+    "message": "A propos"
+  },
+  "aboutSettingsDescription": {
+    "message": "Version, centre d'assistance et informations de contact"
+  },
+  "acceleratingATransaction": {
+    "message": "* Accélérer une transaction en utilisant un prix du gaz plus élevé augmente ses chances d'être traité plus rapidement par le réseau, mais ce n'est pas toujours garanti."
+  },
+  "acceptTermsOfUse": {
+    "message": "j'ai lu et accepté les $1",
+    "description": "$1 est le message `termes`"
+  },
+  "acceptToken": {
+    "message": "AcceptToken"
+  },
+  "accessAndSpendNotice": {
+    "message": "$1 peut accéder et dépenser jusqu'à ce montant maximum",
+    "description": "$1 est l'URL du site demandant la capacité de dépenser"
+  },
+  "accessingYourCamera": {
+    "message": "Accéder à votre caméra..."
+  },
+  "account": {
+    "message": "Compte"
+  },
+  "accountDetails": {
+    "message": "Détails du compte"
+  },
+  "accountName": {
+    "message": "Nom du compte"
+  },
+  "accountNotExists": {
+    "message": "L'adresse du compte n'existe pas sur le réseau actuel, veuillez fournir l'identifiant de réception du compte."
+  },
+  "accountOptions": {
+    "message": "Options de compte"
+  },
+  "accountSelectionRequired": {
+    "message": "Vous devez sélectionner un compte!"
+  },
+  "active": {
+    "message": "Actif"
+  },
+  "activity": {
+    "message": "Activité"
+  },
+  "activityLog": {
+    "message": "journal d'activité"
+  },
+  "addAccount": {
+    "message": "Ajouter un compte"
+  },
+  "addAcquiredTokens": {
+    "message": "Ajoutez les Token que vous avez acquis à l'aide de StarMask"
+  },
+  "addAlias": {
+    "message": "Ajouter un alias"
+  },
+  "addEthereumChainConfirmationDescription": {
+    "message": "Cela permettra à ce réseau d'être utilisé dans StarMask."
+  },
+  "addEthereumChainConfirmationRisks": {
+    "message": "StarMask ne vérifie pas les réseaux personnalisés."
+  },
+  "addEthereumChainConfirmationRisksLearnMore": {
+    "message": "En savoir plus sur $1.",
+    "description": "$1 est un lien avec du texte qui est fourni par la clé 'addEthereumChainConfirmationRisksLearnMoreLink'"
+  },
+  "addEthereumChainConfirmationRisksLearnMoreLink": {
+    "message": "escroqueries et risques de sécurité réseau",
+    "description": "Texte du lien pour la clé de traduction 'addEthereumChainConfirmationRisksLearnMore'"
+  },
+  "addEthereumChainConfirmationTitle": {
+    "message": "Autoriser ce site à ajouter un réseau?"
+  },
+  "addNetwork": {
+    "message": "Ajouter un réseau"
+  },
+  "addNFTGallery": {
+    "message": "Ajouter une galerie NFT"
+  },
+  "addRecipient": {
+    "message": "Ajouter un destinataire"
+  },
+  "addSuggestedTokens": {
+    "message": "Ajouter des Tokens suggérés"
+  },
+  "addToAddressBook": {
+    "message": "Ajouter au carnet d'adresses"
+  },
+  "addToAddressBookModalPlaceholder": {
+    "message": "ex: John D."
+  },
+  "addToken": {
+    "message": "Ajouter un Token"
+  },
+  "addTokens": {
+    "message": "Ajouter des Tokens"
+  },
+  "advanced": {
+    "message": "Avancé"
+  },
+  "advancedOptions": {
+    "message": "Options avancées"
+  },
+  "advancedSettingsDescription": {
+    "message": "Accédez aux fonctionnalités du développeur, téléchargez les journaux d'état, réinitialisez le compte, configurez les testnets et le RPC personnalisé"
+  },
+  "affirmAgree": {
+    "message": "Je suis d'accord"
+  },
+  "aggregatorFeeCost": {
+    "message": "Frais d'agrégateur de réseau"
+  },
+  "alertDisableTooltip": {
+    "message": "Cela peut être modifié dans \"Paramètres > Alertes\""
+  },
+  "alertSettingsUnconnectedAccount": {
+    "message": "Naviguer sur un site Web avec un compte non connecté sélectionné"
+  },
+  "alertSettingsUnconnectedAccountDescription": {
+    "message": "Cette alerte s'affiche dans la popup lorsque vous naviguez sur un site web3 connecté, mais que le compte actuellement sélectionné n'est pas connecté."
+  },
+  "alertSettingsWeb3ShimUsage": {
+    "message": "Lorsqu'un site Web tente d'utiliser l'API window.web3 supprimée"
+  },
+  "alertSettingsWeb3ShimUsageDescription": {
+    "message": "Cette alerte s'affiche dans la fenêtre contextuelle lorsque vous naviguez sur un site qui tente d'utiliser l'API window.web3 supprimée et peut être interrompue en conséquence."
+  },
+  "alerts": {
+    "message": "Alertes"
+  },
+  "alertsSettingsDescription": {
+    "message": "Activer ou désactiver chaque alerte"
+  },
+  "allowExternalExtensionTo": {
+    "message": "Autoriser cette extension externe à:"
+  },
+  "allowOriginSpendToken": {
+    "message": "Permettez à $1 de dépenser vos $2 ?",
+    "description": "$1 est l'URL du site et $2 est le symbole du Token qu'ils demandent à dépenser"
+  },
+  "allowThisSiteTo": {
+    "message": "Autoriser ce site à:"
+  },
+  "allowWithdrawAndSpend": {
+    "message": "Permettez à $1 de retirer et de dépenser jusqu'au montant suivant:",
+    "description": "L'URL du site qui a demandé l'autorisation de 'retirer et dépenser'"
+  },
+  "amount": {
+    "message": "Montant"
+  },
+  "amountInEth": {
+    "message": "$1 ETH",
+    "description": "Affiche un montant en eth à l'utilisateur. $1 est un nombre décimal"
+  },
+  "amountWithColon": {
+    "message": "Montant:"
+  },
+  "appDescription": {
+    "message": "Un wallet Starcoin dans votre navigateur",
+    "description": "Le descriptif de l'application"
+  },
+  "appName": {
+    "message": "StarMask",
+    "description": "Le nom de l'application"
+  },
+  "approvalAndAggregatorTxFeeCost": {
+    "message": "Frais d'approbation et d'agrégateur de réseau"
+  },
+  "approvalTxGasCost": {
+    "message": "Approbation du coût Tx Gaz"
+  },
+  "approve": {
+    "message": "Approuver la limite de dépenses"
+  },
+  "approveButtonText": {
+    "message": "Approuver"
+  },
+  "approveSpendLimit": {
+    "message": "Approuver la limite de dépenses de $1",
+    "description": "Le symbole du Token en cours d'approbation"
+  },
+  "approved": {
+    "message": "Approuvé"
+  },
+  "asset": {
+    "message": "Asset"
+  },
+  "assets": {
+    "message": "Assets"
+  },
+  "attemptToCancel": {
+    "message": "Tentative d'annulation ?"
+  },
+  "attemptToCancelDescription": {
+    "message": "La soumission de cette tentative ne garantit pas que votre transaction originale sera annulée. Si la tentative d'annulation réussit, les frais de transaction ci-dessus vous seront facturés."
+  },
+  "attemptingConnect": {
+    "message": "Tentative de connexion à la blockchain."
+  },
+  "attributions": {
+    "message": "Attributions"
+  },
+  "authorizedPermissions": {
+    "message": "Vous avez accepté les autorisations suivantes"
+  },
+  "AutoAcceptToken": {
+    "message": "Accepter automatiquement les Tokens"
+  },
+  "AutoAcceptTokenDescription": {
+    "message": "Sélectionnez cette option pour accepter automatiquement les nouveaux Tokens, sinon vous devrez d'abord ajouter et accepter manuellement le nouveau Token."
+  },
+  "autoLockTimeLimit": {
+    "message": "Verrouillage automatique (minutes)"
+  },
+  "autoLockTimeLimitDescription": {
+    "message": "Définissez le temps d'inactivité en minutes avant que StarMask ne se verrouille."
+  },
+  "average": {
+    "message": "Moyenne"
+  },
+  "back": {
+    "message": "Retour"
+  },
+  "backToAll": {
+    "message": "Retour à Tout"
+  },
+  "backupApprovalInfo": {
+    "message": "Ce code secret est nécessaire pour récupérer votre portefeuille en cas de perte de votre appareil, d'oubli de votre mot de passe, de réinstallation de StarMask ou d'accès à votre portefeuille sur un autre appareil."
+  },
+  "backupApprovalNotice": {
+    "message": "Sauvegardez votre code secret de récupération pour protéger votre portefeuille et vos fonds."
+  },
+  "backupNow": {
+    "message": "Sauvegarder maintenant"
+  },
+  "balance": {
+    "message": "Solde"
+  },
+  "balanceOutdated": {
+    "message": "Le solde peut être obsolète"
+  },
+  "barnard": {
+    "message": "Réseau de test Barnard"
+  },
+  "basic": {
+    "message": "Basic"
+  },
+  "blockExplorerUrl": {
+    "message": "URL de l'explorateur de blocs"
+  },
+  "blockExplorerUrlDefinition": {
+    "message": "L'URL utilisée comme explorateur de blocs pour ce réseau."
+  },
+  "blockExplorerView": {
+    "message": "Voir le compte sur $1",
+    "description": "$1 remplacé par l'URL de l'explorateur de blocs personnalisé"
+  },
+  "blockiesIdenticon": {
+    "message": "Utiliser Blockies Identicon"
+  },
+  "browserNotSupported": {
+    "message": "Votre navigateur n'est pas supporté..."
+  },
+  "builtInCalifornia": {
+    "message": "StarMask est conçu et fabriqué en Californie."
+  },
+  "builtInChina": {
+    "message": "StarMask est conçu et fabriqué en Chine."
+  },
+  "buy": {
+    "message": "Acheter"
+  },
+  "buyWithWyre": {
+    "message": "Achetez des ETH avec Wyre"
+  },
+  "buyWithWyreDescription": {
+    "message": "Wyre vous permet d'utiliser une carte de débit pour déposer des ETH directement sur votre compte StarMask."
+  },
+  "bytes": {
+    "message": "Octets"
+  },
+  "canToggleInSettings": {
+    "message": "Vous pouvez réactiver cette notification dans Paramètres -> Alertes."
+  },
+  "cancel": {
+    "message": "Annuler"
+  },
+  "cancellationGasFee": {
+    "message": "Frais d'annulation de gaz"
+  },
+  "cancelled": {
+    "message": "Annulé"
+  },
+  "chainId": {
+    "message": "ID de chaîne"
+  },
+  "chainIdDefinition": {
+    "message": "L'ID de chaîne utilisé pour signer les transactions pour ce réseau."
+  },
+  "chromeRequiredForHardwareWallets": {
+    "message": "Vous devez utiliser StarMask sur Google Chrome pour vous connecter à votre Hardware Wallet."
+  },
+  "clickToRevealSeed": {
+    "message": "Cliquez ici pour révéler les mots secrets"
+  },
+  "close": {
+    "message": "Fermer"
+  },
+  "confirm": {
+    "message": "Confirmer"
+  },
+  "confirmPassword": {
+    "message": "Confirmez le mot de passe"
+  },
+  "confirmSecretBackupPhrase": {
+    "message": "Confirmez votre phrase de sauvegarde secrète"
+  },
+  "confirmed": {
+    "message": "Confirmé"
+  },
+  "confusableUnicode": {
+    "message": "'$1' est similaire à '$2'."
+  },
+  "confusableZeroWidthUnicode": {
+    "message": "Caractère de largeur nulle trouvé."
+  },
+  "confusingEnsDomain": {
+    "message": "Nous avons détecté un caractère prêtant à confusion dans le nom de l'ENS. Vérifiez le nom de l'ENS pour éviter une arnaque potentielle."
+  },
+  "congratulations": {
+    "message": "Félicitations"
+  },
+  "connect": {
+    "message": "Connecter"
+  },
+  "connectAccountOrCreate": {
+    "message": "Connecter un compte ou créer un nouveau"
+  },
+  "connectHardwareWallet": {
+    "message": "Connectez le wallet matériel"
+  },
+  "connectManually": {
+    "message": "Se connecter manuellement au site actuel"
+  },
+  "connectTo": {
+    "message": "Se connecter à $1",
+    "description": "$1 est le nom/origine d'un site/application web3 que l'utilisateur peut connecter à starmask"
+  },
+  "connectToAll": {
+    "message": "Connectez-vous à tous vos $1",
+    "description": "$1 sera remplacé par la traduction de connectToAllAccounts"
+  },
+  "connectToAllAccounts": {
+    "message": "comptes",
+    "description": "remplacera $1 dans connectToAll, en complétant la phrase "se connecter à tous vos comptes", sera un texte qui affiche la liste des comptes au survol"
+  },
+  "connectToMultiple": {
+    "message": "Se connecter à $1",
+    "description": "$1 sera remplacé par la traduction de connectToMultipleNumberOfAccounts"
+  },
+  "connectToMultipleNumberOfAccounts": {
+    "message": "$1 comptes",
+    "description": "$1 est le nombre de comptes auxquels le site/l'application web3 demande à se connecter ; cela remplacera $1 en connectToMultiple"
+  },
+  "connectWithMetaMask": {
+    "message": "Se connecter avec StarMask"
+  },
+  "connectedAccountsDescriptionPlural": {
+    "message": "Vous avez $1 comptes connectés à ce site.",
+    "description": "$1 est le nombre de comptes"
+  },
+  "connectedAccountsDescriptionSingular": {
+    "message": "Vous avez 1 compte connecté à ce site."
+  },
+  "connectedAccountsEmptyDescription": {
+    "message": "StarMask n'est pas connecté à ce site. Pour vous connecter à un site web3, trouvez le bouton de connexion sur leur site."
+  },
+  "connectedSites": {
+    "message": "Sites connectés"
+  },
+  "connectedSitesDescription": {
+    "message": "$1 est connecté à ces sites. Ils peuvent voir l'adresse de votre compte.",
+    "description": "$1 est le nom du compte"
+  },
+  "connectedSitesEmptyDescription": {
+    "message": "$1 n'est connecté à aucun site.",
+    "description": "$1 est le nom du compte"
+  },
+  "connecting": {
+    "message": "Connexion..."
+  },
+  "connectingTo": {
+    "message": "Connexion à $1"
+  },
+  "connectingToBarnard": {
+    "message": "Connexion au réseau de test Barnard"
+  },
+  "connectingToGoerli": {
+    "message": "Connexion au réseau de test Goerli"
+  },
+  "connectingToHalley": {
+    "message": "Connexion au réseau de test Halley"
+  },
+  "connectingToKovan": {
+    "message": "Connexion au réseau de test Kovan"
+  },
+  "connectingToMainnet": {
+    "message": "Connexion à Starcoin Mainnet"
+  },
+  "connectingToPrxima": {
+    "message": "Connexion au réseau de test Proxima"
+  },
+  "connectingToRinkeby": {
+    "message": "Connexion au réseau de test Rinkeby"
+  },
+  "connectingToRopsten": {
+    "message": "Connexion au réseau de test Ropsten"
+  },
+  "contactUs": {
+    "message": "Nous contacter"
+  },
+  "contacts": {
+    "message": "Contacts"
+  },
+  "contactsSettingsDescription": {
+    "message": "Ajouter, modifier, supprimer et gérer vos contacts"
+  },
+  "continue": {
+    "message": "Continuer"
+  },
+  "continueToWyre": {
+    "message": "Continuer vers Wyre"
+  },
+  "contractAddressError": {
+    "message": "Vous allez envoyer des Tokens à l'adresse de contrat du Token. Cela peut entraîner la perte de ces Tokens."
+  },
+  "contractDeployment": {
+    "message": "Déploiement de contrat"
+  },
+  "contractInteraction": {
+    "message": "Interaction avec un contrat"
+  },
+  "copiedExclamation": {
+    "message": "Copié!"
+  },
+  "copiedTransactionId": {
+    "message": "ID de transaction copié"
+  },
+  "copyAddress": {
+    "message": "Copier l'adresse dans le presse-papiers"
+  },
+  "copyPrivateKey": {
+    "message": "Ceci est votre clé privée (cliquez pour copier)"
+  },
+  "copyToClipboard": {
+    "message": "Copier dans le presse-papier"
+  },
+  "copyToClipboardOnClick": {
+    "message": "Copier dans le presse-papiers en un clic"
+  },
+  "copyTransactionId": {
+    "message": "Copier l'ID de transaction"
+  },
+  "create": {
+    "message": "Créer"
+  },
+  "createAWallet": {
+    "message": "Créer un Wallet"
+  },
+  "createAccount": {
+    "message": "Créer un compte"
+  },
+  "createPassword": {
+    "message": "Créer un mot de passe"
+  },
+  "currencyConversion": {
+    "message": "Conversion de devises"
+  },
+  "currencySymbol": {
+    "message": "Symbole de la devise"
+  },
+  "currencySymbolDefinition": {
+    "message": "Le symbole boursier affiché pour la devise de ce réseau."
+  },
+  "currentAccountNotConnected": {
+    "message": "Votre compte actuel n'est pas connecté"
+  },
+  "currentExtension": {
+    "message": "Page de l'extension actuelle"
+  },
+  "currentLanguage": {
+    "message": "Langue actuelle"
+  },
+  "customGas": {
+    "message": "Personnaliser le gaz"
+  },
+  "customGasSubTitle": {
+    "message": "L'augmentation des frais peut réduire les délais de traitement, mais ce n'est pas garanti."
+  },
+  "customNFT": {
+    "message": "NFT personnalisé"
+  },
+  "customRPC": {
+    "message": "RPC personnalisé"
+  },
+  "customSpendLimit": {
+    "message": "Limite de dépenses personnalisée"
+  },
+  "customToken": {
+    "message": "Token personnalisé"
+  },
+  "dataBackupFoundInfo": {
+    "message": "Certaines données de votre compte ont été sauvegardées lors d'une précédente installation de StarMask. Cela peut inclure vos paramètres, vos contacts et vos Tokens. Souhaitez-vous restaurer ces données maintenant ?"
+  },
+  "decimal": {
+    "message": "Décimales de précision"
+  },
+  "decimalsMustZerotoTen": {
+    "message": "Les décimales doivent être au moins 0 et pas plus de 18."
+  },
+  "decrypt": {
+    "message": "Décrypter"
+  },
+  "decryptCopy": {
+    "message": "Copier le message crypté"
+  },
+  "decryptInlineError": {
+    "message": "Ce message ne peut pas être déchiffré en raison d'une erreur: $1",
+    "description": "$1 est un message d'erreur"
+  },
+  "decryptMessageNotice": {
+    "message": "$1 souhaite lire ce message pour compléter votre action",
+    "description": "$1 est le nom du site web3"
+  },
+  "decryptMetamask": {
+    "message": "Décrypter le message"
+  },
+  "decryptRequest": {
+    "message": "Décrypter la demande"
+  },
+  "defaultNetwork": {
+    "message": "Le réseau par défaut pour les transactions STC est Mainnet."
+  },
+  "delete": {
+    "message": "Supprimer"
+  },
+  "deleteAccount": {
+    "message": "Supprimer le compte"
+  },
+  "deleteNetwork": {
+    "message": "Supprimer le réseau ?"
+  },
+  "deleteNetworkDescription": {
+    "message": "Voulez-vous vraiment supprimer ce réseau ?"
+  },
+  "depositEther": {
+    "message": "Dépôt STC"
+  },
+  "details": {
+    "message": "Détails"
+  },
+  "directDepositEther": {
+    "message": "Dépôt direct STC"
+  },
+  "directDepositEtherExplainer": {
+    "message": "Si vous avez déjà des STC, le moyen le plus rapide d'obtenir des STC dans votre nouveau wallet par dépôt direct."
+  },
+  "disconnect": {
+    "message": "Déconnecter"
+  },
+  "disconnectAllAccounts": {
+    "message": "Déconnecter tous les comptes"
+  },
+  "disconnectAllAccountsConfirmationDescription": {
+    "message": "Voulez-vous vraiment vous déconnecter ? Vous risquez de perdre la fonctionnalité du site."
+  },
+  "disconnectPrompt": {
+    "message": "Déconnecter $1"
+  },
+  "disconnectThisAccount": {
+    "message": "Déconnecter ce compte"
+  },
+  "dismiss": {
+    "message": "Rejeter"
+  },
+  "done": {
+    "message": "Fait"
+  },
+  "dontHaveAHardwareWallet": {
+    "message": "Vous n'avez pas de portefeuille matériel ?"
+  },
+  "dontShowThisAgain": {
+    "message": "Ne plus afficher cette notification"
+  },
+  "downloadGoogleChrome": {
+    "message": "Télécharger Google Chrome"
+  },
+  "downloadSecretBackup": {
+    "message": "Téléchargez cette phrase de sauvegarde secrète et conservez-la en toute sécurité sur un disque dur externe crypté ou un support de stockage."
+  },
+  "downloadStateLogs": {
+    "message": "Télécharger les journaux d'état"
+  },
+  "dropped": {
+    "message": "Chuté"
+  },
+  "edit": {
+    "message": "Editer"
+  },
+  "editContact": {
+    "message": "Modifier le contact"
+  },
+  "editPermission": {
+    "message": "Modifier l'autorisation"
+  },
+  "encryptionPublicKeyNotice": {
+    "message": "$1 souhaite votre clé de cryptage publique. En y consentant, ce site pourra vous composer des messages cryptés.",
+    "description": "$1 est le nom du site web3"
+  },
+  "encryptionPublicKeyRequest": {
+    "message": "Demander la clé publique de chiffrement"
+  },
+  "endOfFlowMessage1": {
+    "message": "Vous avez réussi le test - gardez votre phrase de sauvegarde en sécurité, c'est votre responsabilité !"
+  },
+  "endOfFlowMessage10": {
+    "message": "Terminé"
+  },
+  "endOfFlowMessage2": {
+    "message": "Conseils pour le conserver en toute sécurité"
+  },
+  "endOfFlowMessage3": {
+    "message": "Enregistrer une sauvegarde à plusieurs endroits."
+  },
+  "endOfFlowMessage4": {
+    "message": "Ne partagez jamais la phrase avec qui que ce soit."
+  },
+  "endOfFlowMessage5": {
+    "message": "Attention au phishing ! StarMask ne vous demandera jamais spontanément votre phrase de sauvegarde."
+  },
+  "endOfFlowMessage6": {
+    "message": "Si vous avez besoin de sauvegarder à nouveau votre phrase de départ, vous pouvez la trouver dans Paramètres -> Sécurité."
+  },
+  "endOfFlowMessage7": {
+    "message": "Si jamais vous avez des questions ou voyez quelque chose d'inhabituelle, contactez notre support $1.",
+    "description": "$1 est un lien cliquable avec du texte défini par la clé "ici". Le lien s'ouvrira sur un formulaire où les utilisateurs pourront soumettre des tickets d'assistance."
+  },
+  "endOfFlowMessage8": {
+    "message": "- StarMask ne peut pas récupérer votre phrase de sauvegarde ?"
+  },
+  "endOfFlowMessage9": {
+    "message": "En savoir plus."
+  },
+  "endpointReturnedDifferentChainId": {
+    "message": "Le point de terminaison a renvoyé un ID de chaîne différent : $1",
+    "description": "$1 est la valeur de retour de chain.id à partir d'un point de terminaison RPC"
+  },
+  "ensNotFoundOnCurrentNetwork": {
+    "message": "Nom ENS introuvable sur le réseau actuel. Essayez de passer à Starcoin Mainnet."
+  },
+  "ensRegistrationError": {
+    "message": "Erreur dans l'enregistrement du nom ENS"
+  },
+  "enterAnAlias": {
+    "message": "Entrez un alias"
+  },
+  "enterMaxSpendLimit": {
+    "message": "Entrez la limite de dépenses maximale"
+  },
+  "enterPassword": {
+    "message": "Entrer le mot de passe"
+  },
+  "enterPasswordContinue": {
+    "message": "Entrez le mot de passe pour continuer"
+  },
+  "errorCode": {
+    "message": "Code: $1",
+    "description": "Code d'erreur affiché à des fins de débogage. $1 est le code d'erreur"
+  },
+  "errorDetails": {
+    "message": "Détails de l'erreur",
+    "description": "Titre de la section réductible qui affiche les détails de l'erreur à des fins de débogage"
+  },
+  "errorMessage": {
+    "message": "Message: $1",
+    "description": "Message d'erreur affiché à des fins de débogage. $1 est le message d'erreur"
+  },
+  "errorName": {
+    "message": "Code: $1",
+    "description": "Nom d'erreur affiché à des fins de débogage. $1 est le nom de l'erreur"
+  },
+  "errorPageMessage": {
+    "message": "Réessayez en rechargeant la page ou contactez l'assistance $1.",
+    "description": "Message affiché sur la page d'erreur générique dans l'interface utilisateur plein écran ou de notification, $1 est un lien cliquable avec un texte défini par la clé "ici". Le lien s'ouvrira sur un formulaire où les utilisateurs pourront soumettre des tickets d'assistance."
+  },
+  "errorPagePopupMessage": {
+    "message": "Réessayez en fermant et en rouvrant la fenêtre contextuelle, ou contactez l'assistance $1.",
+    "description": "Message affiché sur la page d'erreur générique dans l'interface utilisateur contextuelle, $1 est un lien cliquable avec un texte défini par la clé "ici". Le lien s'ouvrira sur un formulaire où les utilisateurs pourront soumettre des tickets d'assistance."
+  },
+  "errorPageTitle": {
+    "message": "StarMask a rencontré une erreur",
+    "description": "Titre de la page d'erreur générique"
+  },
+  "errorStack": {
+    "message": "Pile:",
+    "description": "Titre de la pile d'erreurs, affiché à des fins de débogage"
+  },
+  "estimatedProcessingTimes": {
+    "message": "Estimation du délais de traitement"
+  },
+  "stc_accounts": {
+    "message": "Afficher les adresses de vos comptes autorisés (obligatoire)",
+    "description": "La description de l'autorisation `stc_accounts`"
+  },
+  "starcoinPublicAddress": {
+    "message": "Adresse publique Starcoin"
+  },
+  "etherscan": {
+    "message": "Explorateur Starcoins"
+  },
+  "etherscanView": {
+    "message": "Voir le compte sur l'explorateur Starcoin"
+  },
+  "expandView": {
+    "message": "Agrandir la vue"
+  },
+  "exportPrivateKey": {
+    "message": "Exporter la clé privée"
+  },
+  "externalExtension": {
+    "message": "Extension externe"
+  },
+  "extraApprovalGas": {
+    "message": "+$1 gaz approuvé",
+    "description": "Exprime un montant de gaz supplémentaire que l'utilisateur devra payer, en plus d'un autre montant affiché. $1 est une quantité décimale de gaz"
+  },
+  "failed": {
+    "message": "Échec"
+  },
+  "failedToFetchChainId": {
+    "message": "Impossible de récupérer l'ID de la chaîne. Votre URL RPC est-elle correcte ?"
+  },
+  "failureMessage": {
+    "message": "Une erreur s'est produite et nous n'avons pas pu terminer l'action"
+  },
+  "fast": {
+    "message": "Rapide"
+  },
+  "fastest": {
+    "message": "Le plus rapide"
+  },
+  "feeAssociatedRequest": {
+    "message": "Des frais sont associés à cette demande."
+  },
+  "fiat": {
+    "message": "Fiat",
+    "description": "Type d'échange"
+  },
+  "fileImportFail": {
+    "message": "L'importation de fichiers ne fonctionne pas ? Cliquez ici!",
+    "description": "Aide l'utilisateur à importer son compte à partir d'un fichier JSON"
+  },
+  "forbiddenIpfsGateway": {
+    "message": "Passerelle IPFS interdite : veuillez spécifier une passerelle CID"
+  },
+  "forgetDevice": {
+    "message": "Oubliez cet appareil"
+  },
+  "from": {
+    "message": "De"
+  },
+  "fromAddress": {
+    "message": "De: $1",
+    "description": "$1 est l'adresse à inclure dans l'étiquette De. Il est généralement raccourci en premier en utilisant shortenAddress"
+  },
+  "functionApprove": {
+    "message": "Fonction : Approuver"
+  },
+  "functionType": {
+    "message": "Type de fonction"
+  },
+  "gasDefaultsLoading": {
+    "message": "Chargement des paramètres de gaz par défaut"
+  },
+  "gasLimit": {
+    "message": "Limite de gaz"
+  },
+  "gasLimitExtendMax": {
+    "message": "Votre limite de gaz est d'étendre la valeur maximale : 40 000 000."
+  },
+  "gasLimitInfoTooltipContent": {
+    "message": "La limite de gaz est la quantité maximale d'unités de gaz que vous êtes prêt à dépenser."
+  },
+  "gasLimitTooLow": {
+    "message": "La limite de gaz doit être d'au moins 13000"
+  },
+  "gasLimitTooLowWithDynamicFee": {
+    "message": "La limite de gaz doit être d'au moins $1",
+    "description": "$1 est la limite de gaz personnalisée, en décimal."
+  },
+  "gasPrice": {
+    "message": "Prix du gaz (NanoSTC)"
+  },
+  "gasPriceExcessive": {
+    "message": "Vos frais de gaz sont inutilement élevés. Pensez à baisser le montant."
+  },
+  "gasPriceExtendMax": {
+    "message": "Votre prix du gaz est d'étendre la valeur maximale : 10000."
+  },
+  "gasPriceExcessiveInput": {
+    "message": "Le prix du gaz est excessif"
+  },
+  "gasPriceExtremelyLow": {
+    "message": "Prix du gaz extrêmement bas"
+  },
+  "gasPriceInfoTooltipContent": {
+    "message": "Le prix du gaz spécifie le montant de STC que vous êtes prêt à payer pour chaque unité de gaz."
+  },
+  "gasUsed": {
+    "message": "Gaz utilisé"
+  },
+  "gdprMessage": {
+    "message": "Ces données sont agrégées et donc anonymes au sens du Règlement général sur la protection des données (UE) 2016/679.",
+    "description": "dont la traduction est destinée à être utilisée exclusivement dans le contexte de gdprMessage"
+  },
+  "gdprMessagePrivacyPolicy": {
+    "message": "Politique de confidentialité ici",
+    "description": "cette traduction est destinée à être exclusivement utilisée en remplacement de $1 dans la traduction gdprMessage"
+  },
+  "general": {
+    "message": "General"
+  },
+  "generalSettingsDescription": {
+    "message": "Conversion de devises, devise principale, langue, identicon blockies"
+  },
+  "getEther": {
+    "message": "Obtenir STC"
+  },
+  "getEtherFromFaucet": {
+    "message": "Obtenez STC d'un faucet pour $1",
+    "description": "Affiche le nom du réseau pour le faucet STC"
+  },
+  "getHelp": {
+    "message": "Obtenir de l'aide."
+  },
+  "getStarted": {
+    "message": "Commencer"
+  },
+  "goerli": {
+    "message": "Réseau de test Goerli"
+  },
+  "halley": {
+    "message": "Réseau de test Halley"
+  },
+  "happyToSeeYou": {
+    "message": "Nous sommes heureux de vous voir."
+  },
+  "hardware": {
+    "message": "Matériel"
+  },
+  "hardwareWalletConnected": {
+    "message": "Wallet matériel connecté"
+  },
+  "hardwareWalletLegacyDescription": {
+    "message": "(héritage)",
+    "description": "Texte représentant le chemin MEW"
+  },
+  "hardwareWallets": {
+    "message": "Connecter un wallet matériel"
+  },
+  "hardwareWalletsMsg": {
+    "message": "Sélectionnez un wallet matériel que vous souhaitez utiliser avec StarMask"
+  },
+  "havingTroubleConnecting": {
+    "message": "Vous rencontrez des difficultés pour vous connecter ?"
+  },
+  "here": {
+    "message": "ici",
+    "description": "comme dans -cliquez ici- pour plus d'informations (va avec troubleTokenBalances)"
+  },
+  "hexData": {
+    "message": "Données HEX"
+  },
+  "hide": {
+    "message": "Cacher"
+  },
+  "hideTokenPrompt": {
+    "message": "Masquer le Token ?"
+  },
+  "hideTokenSymbol": {
+    "message": "Masquer $1",
+    "description": "$1 est le symbole d'un Token (par exemple, 'DAI')"
+  },
+  "hideZeroBalanceTokens": {
+    "message": "Cacher les Tokens sans solde"
+  },
+  "history": {
+    "message": "Historique"
+  },
+  "import": {
+    "message": "Importer",
+    "description": "Bouton pour importer un compte à partir d'un fichier sélectionné"
+  },
+  "importAccount": {
+    "message": "Importer un compte"
+  },
+  "importAccountMsg": {
+    "message": " Les comptes importés ne seront pas associés à la phrase de sauvegarde de votre compte StarMask créé à l'origine."
+  },
+  "importAccountSeedPhrase": {
+    "message": "Importer un compte avec une phrase de sauvegarde"
+  },
+  "importUsingSeed": {
+    "message": "Importer à l'aide de la phrase de sauvegarde du compte"
+  },
+  "importWallet": {
+    "message": "Importer un wallet"
+  },
+  "importYourExisting": {
+    "message": "Importez votre wallet existant à l'aide d'une phrase de sauvegarde"
+  },
+  "imported": {
+    "message": "Importé",
+    "description": "statut indiquant qu'un compte a été entièrement chargé dans le trousseau de clés"
+  },
+  "infoHelp": {
+    "message": "Infos & Aide"
+  },
+  "initialTransactionConfirmed": {
+    "message": "Votre transaction initiale a été confirmée par le réseau. Cliquez sur OK pour revenir en arrière."
+  },
+  "insufficientBalance": {
+    "message": "Solde insuffisant."
+  },
+  "insufficientFunds": {
+    "message": "Fonds insuffisants."
+  },
+  "insufficientTokens": {
+    "message": "Tokens insuffisants."
+  },
+  "invalidAddress": {
+    "message": "Adresse invalide"
+  },
+  "invalidAddressRecipient": {
+    "message": "Adresse du destinataire invalide"
+  },
+  "invalidAddressRecipientNotEthNetwork": {
+    "message": "Pas de réseau ETH, mis en minuscules"
+  },
+  "invalidBlockExplorerURL": {
+    "message": "URL de l'explorateur de blocs non valide"
+  },
+  "invalidChainIdTooBig": {
+    "message": "ID de chaîne non valide. L'ID de chaîne est trop grand."
+  },
+  "invalidContractCode": {
+    "message": "code de contrat invalide"
+  },
+  "invalidCustomNetworkAlertContent1": {
+    "message": "L'ID de chaîne pour le réseau personnalisé '$1' doit être ressaisi.",
+    "description": "$1 est le nom/identifiant du réseau."
+  },
+  "invalidCustomNetworkAlertContent2": {
+    "message": "Pour vous protéger contre les fournisseurs de réseau malveillants ou défectueux, des ID de chaîne sont désormais requis pour tous les réseaux personnalisés."
+  },
+  "invalidCustomNetworkAlertContent3": {
+    "message": "Accédez à Paramètres > Réseau et entrez l'ID de la chaîne. Vous pouvez trouver les ID de chaîne des réseaux les plus populaires sur $1.",
+    "description": "$1 est un lien vers https://chainid.network"
+  },
+  "invalidCustomNetworkAlertTitle": {
+    "message": "Réseau personnalisé non valide"
+  },
+  "invalidHexNumber": {
+    "message": "Nombre hexadécimal non valide."
+  },
+  "invalidHexNumberLeadingZeros": {
+    "message": "Nombre hexadécimal non valide. Supprimez tous les zéros non significatifs."
+  },
+  "invalidIpfsGateway": {
+    "message": "Passerelle IPFS non valide : la valeur doit être une URL valide"
+  },
+  "invalidNFTMeta": {
+    "message": "Méta NFT non valide."
+  },
+  "invalidNFTBody": {
+    "message": "Corps NFT non valide."
+  },
+  "invalidNumber": {
+    "message": "Numéro invalide. Saisissez un nombre décimal ou hexadécimal précédé de '0x'."
+  },
+  "invalidNumberLeadingZeros": {
+    "message": "Numéro invalide. Supprimez tous les zéros non significatifs."
+  },
+  "invalidRPC": {
+    "message": "URL RPC invalide"
+  },
+  "invalidSeedPhrase": {
+    "message": "Phrase de sauvegarde invalide"
+  },
+  "ipfsGateway": {
+    "message": "Passerelle IPFS"
+  },
+  "ipfsGatewayDescription": {
+    "message": "Entrez l'URL de la passerelle IPFS CID à utiliser pour la résolution de contenu ENS."
+  },
+  "jsonFile": {
+    "message": "JSON File",
+    "description": "format pour importer un compte"
+  },
+  "knownAddressRecipient": {
+    "message": "Adresse contractuelle connue."
+  },
+  "knownTokenWarning": {
+    "message": "Cette action modifiera les Tokens déjà répertoriés dans votre wallet, qui peuvent être utilisés pour vous hameçonner. N'approuvez que si vous êtes certain de vouloir modifier ce que ces Tokens représentent."
+  },
+  "kovan": {
+    "message": "Réseau de test Kovan"
+  },
+  "lastConnected": {
+    "message": "Dernière connexion"
+  },
+  "learnMore": {
+    "message": "En savoir plus"
+  },
+  "ledgerAccountRestriction": {
+    "message": "Vous devez utiliser votre dernier compte avant de pouvoir en ajouter un nouveau."
+  },
+  "letsGoSetUp": {
+    "message": "Oui, installons-nous !"
+  },
+  "likeToAddNFTs": {
+    "message": "Souhaitez-vous ajouter ces galeries nft ?"
+  },
+  "likeToAddTokens": {
+    "message": "Souhaitez-vous ajouter ces Tokens ?"
+  },
+  "links": {
+    "message": "Liens"
+  },
+  "loadMore": {
+    "message": "Charger plus"
+  },
+  "loading": {
+    "message": "Chargement..."
+  },
+  "loadingTokens": {
+    "message": "Chargement des Tokens..."
+  },
+  "localhost": {
+    "message": "Localhost 8545"
+  },
+  "lock": {
+    "message": "Verrouiller"
+  },
+  "lockTimeTooGreat": {
+    "message": "Le temps de verrouillage est trop long"
+  },
+  "main": {
+    "message": "Starcoin Mainnet"
+  },
+  "max": {
+    "message": "Max"
+  },
+  "memo": {
+    "message": "memo"
+  },
+  "memorizePhrase": {
+    "message": "Memoriser cette phrase."
+  },
+  "message": {
+    "message": "Message"
+  },
+  "metaMaskConnectStatusParagraphOne": {
+    "message": "Vous avez maintenant plus de contrôle sur les connexions de votre compte dans StarMask."
+  },
+  "metaMaskConnectStatusParagraphThree": {
+    "message": "Cliquez dessus pour gérer vos comptes connectés."
+  },
+  "metaMaskConnectStatusParagraphTwo": {
+    "message": "Le bouton d'état de connexion indique si le site Web que vous visitez est connecté à votre compte actuellement sélectionné."
+  },
+  "metamaskDescription": {
+    "message": "Connexion à Starcoin et au Web décentralisé."
+  },
+  "metamaskSwapsOfflineDescription": {
+    "message": "StarMask Swaps est en cours de maintenance. Veuillez revenir plus tard."
+  },
+  "metamaskVersion": {
+    "message": "Version StarMask"
+  },
+  "metametricsCommitmentsAllowOptOut": {
+    "message": "vous permettra toujours de vous désabonner via les paramètres"
+  },
+  "metametricsCommitmentsBoldNever": {
+    "message": "Jamais",
+    "description": "Cette chaîne est localisée séparément de certains des engagements afin que nous puissions la mettre en gras"
+  },
+  "metametricsCommitmentsIntro": {
+    "message": "StarMask"
+  },
+  "metametricsCommitmentsNeverCollectIP": {
+    "message": "ne collectera $1 votre adresse IP complète",
+    "description": "Le $1 est le mot en gras 'Jamais', de 'metametricsCommitmentsBoldNever'"
+  },
+  "metametricsCommitmentsNeverCollectKeysEtc": {
+    "message": "ne collectera $1 des clés, des adresses, des transactions, des soldes, des hachages ou toute autre information personnelle",
+    "description": "Le $1 est le mot en gras 'Jamais', de 'metametricsCommitmentsBoldNever'"
+  },
+  "metametricsCommitmentsNeverSellDataForProfit": {
+    "message": "ne vendra $1 des données à des fins lucratives. Jamais!",
+    "description": "Le $1 est le mot en gras "Jamais", de 'metametricsCommitmentsBoldNever'"
+  },
+  "metametricsCommitmentsSendAnonymizedEvents": {
+    "message": "Envoyer des événements de clics et de pages vues anonymisés"
+  },
+  "metametricsHelpImproveMetaMask": {
+    "message": "Aidez-nous à améliorer StarMask"
+  },
+  "metametricsOptInDescription": {
+    "message": "StarMask souhaite collecter des données d'utilisation pour mieux comprendre comment nos utilisateurs interagissent avec l'extension. Ces données seront utilisées pour améliorer continuellement la convivialité et l'expérience utilisateur de notre produit et de l'écosystème Starcoin."
+  },
+  "mismatchedChain": {
+    "message": "Les détails du réseau pour cet ID de chaîne ne correspondent pas à nos enregistrements. Nous vous recommandons de payer $1 avant de continuer.",
+    "description": "$1 est un lien cliquable avec du texte défini par la clé 'mismatchedChainLinkText'"
+  },
+  "mismatchedChainLinkText": {
+    "message": "vérifier les détails du réseau",
+    "description": "Sert de texte de lien pour la clé 'mismatchedChain'. Ce texte sera intégré dans la traduction de cette clé."
+  },
+  "mobileSyncText": {
+    "message": "Veuillez saisir votre mot de passe pour confirmer qu'il s'agit bien de vous !"
+  },
+  "mustSelectOne": {
+    "message": "Vous devez sélectionner au moins 1 Token."
+  },
+  "myAccounts": {
+    "message": "Mes comptes"
+  },
+  "myWalletAccounts": {
+    "message": "Mes comptes de wallet"
+  },
+  "myWalletAccountsDescription": {
+    "message": "Tous vos comptes créés par StarMask seront automatiquement ajoutés à cette section."
+  },
+  "needEtherInWallet": {
+    "message": "Pour interagir avec des applications décentralisées à l'aide de StarMask, vous aurez besoin de STC dans votre wallet."
+  },
+  "needImportFile": {
+    "message": "Vous devez sélectionner un fichier à importer.",
+    "description": "L'utilisateur est un compte important et doit ajouter un fichier pour continuer"
+  },
+  "negativeETH": {
+    "message": "Impossible d'envoyer des montants négatifs d'ETH."
+  },
+  "networkDetails": {
+    "message": "Détails du réseau"
+  },
+  "networkName": {
+    "message": "Nom de réseau"
+  },
+  "networkNameDefinition": {
+    "message": "Nom associé à ce réseau."
+  },
+  "networkSettingsChainIdDescription": {
+    "message": "L'ID de chaîne est utilisé pour signer les transactions. Il doit correspondre à l'ID de chaîne renvoyé par le réseau. Vous pouvez entrer un nombre décimal ou hexadécimal préfixé par '0x', mais nous afficherons le nombre en décimal."
+  },
+  "networkSettingsDescription": {
+    "message": "Ajouter et modifier des réseaux RPC personnalisés"
+  },
+  "networkURL": {
+    "message": "URL du réseau"
+  },
+  "networkURLDefinition": {
+    "message": "L'URL utilisée pour accéder à ce réseau."
+  },
+  "networks": {
+    "message": "Réseaux"
+  },
+  "nevermind": {
+    "message": "Je comprends"
+  },
+  "newAccount": {
+    "message": "Nouveau compte"
+  },
+  "newAccountDetectedDialogMessage": {
+    "message": "Nouvelle adresse détectée ! Cliquez ici pour ajouter à votre carnet d'adresses."
+  },
+  "newAccountNumberName": {
+    "message": "Compte $1",
+    "description": "Nom par défaut du prochain compte à créer sur l'écran de création de compte"
+  },
+  "newContact": {
+    "message": "Nouveau contact"
+  },
+  "newContract": {
+    "message": "Nouveau contrat"
+  },
+  "newNetwork": {
+    "message": "Nouveau réseau"
+  },
+  "newPassword": {
+    "message": "Nouveau mot de passe (min 8 caractères)"
+  },
+  "newToMetaMask": {
+    "message": "Nouveau sur StarMask ?"
+  },
+  "newTotal": {
+    "message": "Nouveau total"
+  },
+  "newTransactionFee": {
+    "message": "Nouveaux frais de transaction"
+  },
+  "next": {
+    "message": "Suivant"
+  },
+  "nextNonceWarning": {
+    "message": "Le nonce est supérieur au nonce suggéré de $1",
+    "description": "Le prochain nonce selon la logique interne de StarMask"
+  },
+  "nftBody": {
+    "message": "Corps NFT"
+  },
+  "nftDescription": {
+    "message": "Description NFT"
+  },
+  "nftMeta": {
+    "message": "Meta NFT"
+  },
+  "nftName": {
+    "message": "Nom NFT"
+  },
+  "nftAlreadyAdded": {
+    "message": "NFT déjà ajouté"
+  },
+  "nfts": {
+    "message": "NFTs"
+  },
+  "noAccountsFound": {
+    "message": "Aucun compte trouvé pour la requête de recherche donnée"
+  },
+  "noAddressForName": {
+    "message": "Aucune adresse n'a été définie pour ce nom."
+  },
+  "noAlreadyHaveSeed": {
+    "message": "Non, j'ai déjà une phrase de sauvegarde"
+  },
+  "noConversionRateAvailable": {
+    "message": "Aucun taux de conversion disponible"
+  },
+  "noNFTs": {
+    "message": "Vous n'avez pas de NFT"
+  },
+  "noThanks": {
+    "message": "Non merci"
+  },
+  "noTransactions": {
+    "message": "Vous n'avez aucune transaction"
+  },
+  "noWebcamFound": {
+    "message": "La webcam de votre ordinateur est introuvable. Veuillez réessayer."
+  },
+  "noWebcamFoundTitle": {
+    "message": "Webcam introuvable"
+  },
+  "nonceField": {
+    "message": "Personnaliser la transaction nonce"
+  },
+  "nonceFieldDescription": {
+    "message": "Activez cette option pour modifier le nonce (numéro de transaction) sur les écrans de confirmation. Il s'agit d'une fonctionnalité avancée, à utiliser avec prudence."
+  },
+  "nonceFieldHeading": {
+    "message": "Nonce personnalisé"
+  },
+  "notCurrentAccount": {
+    "message": "Est-ce le bon compte ? Il est différent du compte actuellement sélectionné dans votre portefeuille"
+  },
+  "notEnoughGas": {
+    "message": "Pas assez de gaz"
+  },
+  "ofTextNofM": {
+    "message": "de"
+  },
+  "off": {
+    "message": "Off"
+  },
+  "offlineForMaintenance": {
+    "message": "Hors ligne pour maintenance"
+  },
+  "ok": {
+    "message": "Ok"
+  },
+  "on": {
+    "message": "On"
+  },
+  "onboardingReturnNotice": {
+    "message": "\"$1\" fermera cet onglet et redirigera vers $2",
+    "description": "Redirigez l'utilisateur vers le site qui a initié l'intégration"
+  },
+  "onlyAddTrustedNetworks": {
+    "message": "Un fournisseur de réseau malveillant peut mentir sur l'état de la blockchain et enregistrer votre activité réseau. N'ajoutez que des réseaux personnalisés auxquels vous faites confiance."
+  },
+  "onlyAvailableOnMainnet": {
+    "message": "Uniquement disponible sur le réseau principal"
+  },
+  "onlyConnectTrust": {
+    "message": "Connectez-vous uniquement aux sites de confiance."
+  },
+  "optionalBlockExplorerUrl": {
+    "message": "URL de l'explorateur de blocs (facultatif)"
+  },
+  "optionalCurrencySymbol": {
+    "message": "Symbole de la devise (facultatif)"
+  },
+  "orderOneHere": {
+    "message": "Commandez une OneKey et gardez vos fonds sur un stockage à froid"
+  },
+  "origin": {
+    "message": "Origine"
+  },
+  "parameters": {
+    "message": "Paramètres"
+  },
+  "participateInMetaMetrics": {
+    "message": "Participer à MetaMetrics"
+  },
+  "participateInMetaMetricsDescription": {
+    "message": "Participez à MetaMetrics pour nous aider à améliorer StarMask"
+  },
+  "password": {
+    "message": "Mot de passe"
+  },
+  "passwordNotLongEnough": {
+    "message": "Mot de passe pas assez long"
+  },
+  "passwordsDontMatch": {
+    "message": "Les mots de passe ne correspondent pas"
+  },
+  "pastePrivateKey": {
+    "message": "Collez votre clé privée ici :",
+    "description": "Pour importer un compte depuis une clé privée"
+  },
+  "pending": {
+    "message": "En attente"
+  },
+  "permissionCheckedIconDescription": {
+    "message": "Vous avez approuvé cette autorisation"
+  },
+  "permissionUncheckedIconDescription": {
+    "message": "Vous n'avez pas approuvé cette autorisation"
+  },
+  "permissions": {
+    "message": "Autorisations"
+  },
+  "personalAddressDetected": {
+    "message": "Adresse personnelle détectée. Saisissez l'adresse de contrat du Token."
+  },
+  "plusXMore": {
+    "message": "+ $1 plus",
+    "description": "$1 est un certain nombre d'éléments supplémentaires mais non affichés dans une liste - ce message sera affiché à la place de ces éléments"
+  },
+  "prev": {
+    "message": "Préc"
+  },
+  "primaryCurrencySetting": {
+    "message": "Devise principale"
+  },
+  "primaryCurrencySettingDescription": {
+    "message": "Sélectionnez natif pour donner la priorité à l'affichage des valeurs dans la devise native de la chaîne (par exemple, ETH). Sélectionnez Fiat pour donner la priorité à l'affichage des valeurs dans la devise fiduciaire que vous avez sélectionnée."
+  },
+  "privacyMsg": {
+    "message": "Politique de confidentialité"
+  },
+  "privateKey": {
+    "message": "Clé privée",
+    "description": "sélectionnez ce type de fichier à utiliser pour importer un compte"
+  },
+  "privateKeyWarning": {
+    "message": "Avertissement : ne divulguez jamais cette clé. Toute personne disposant de vos clés privées peut voler tous les actifs détenus sur votre compte."
+  },
+  "privateNetwork": {
+    "message": "Réseau privé"
+  },
+  "proposedApprovalLimit": {
+    "message": "Limite d'approbation proposée"
+  },
+  "provide": {
+    "message": "Fournir"
+  },
+  "proxima": {
+    "message": "Réseau de test Proxima"
+  },
+  "publicKey": {
+    "message": "Clé publique"
+  },
+  "queue": {
+    "message": "File d'attente"
+  },
+  "queued": {
+    "message": "En file d'attente"
+  },
+  "readdToken": {
+    "message": "Vous pouvez rajouter ce Token ultérieurement en accédant à “Ajouter un Token” dans le menu des options de votre compte."
+  },
+  "readyToConnect": {
+    "message": "Prêt à vous connecter ?"
+  },
+  "receive": {
+    "message": "Recevoir"
+  },
+  "recents": {
+    "message": "Récents"
+  },
+  "recipientAddress": {
+    "message": "Adresse du destinataire"
+  },
+  "recipientAccountNotAcceptToken": {
+    "message": "Le destinataire n'accepte pas ce Token et n'a pas activé 'AutoAcceptToken'. Veuillez demander au destinataire d'ajouter et d'accepter ce Token ou d'activer 'AutoAcceptToken' dans la page des paramètres du compte."
+  },
+  "recipientAccountNotAddNFTGallery": {
+    "message": "Le destinataire n'a pas encore ajouté cette galerie NFT. Veuillez d'abord informer le destinataire qu'il doit "ajouter une galerie NFT"."
+  },
+  "recipientAddressPlaceholder": {
+    "message": "Adresse de recherche (0x) ou ReceiptIdentifier(stc1p)"
+  },
+  "receiptIdentifier": {
+    "message": "ReceiptIdentifier"
+  },
+  "reject": {
+    "message": "Rejeter"
+  },
+  "rejectAll": {
+    "message": "Rejeter tout"
+  },
+  "rejectTxsDescription": {
+    "message": "Vous êtes sur le point de rejeter par lot des transactions de $1."
+  },
+  "rejectTxsN": {
+    "message": "Refuser les transactions de $1"
+  },
+  "rejected": {
+    "message": "Rejeté"
+  },
+  "remindMeLater": {
+    "message": "Rappelez-moi plus tard"
+  },
+  "remove": {
+    "message": "Supprimer"
+  },
+  "removeAccount": {
+    "message": "Supprimer le compte"
+  },
+  "removeAccountDescription": {
+    "message": "Ce compte sera supprimé de votre wallet. Veuillez vous assurer que vous disposez de la phrase de sauvegarde ou de la clé privée d'origine pour ce compte importé avant de continuer. Vous pouvez importer ou créer à nouveau des comptes à partir de la liste déroulante des comptes. "
+  },
+  "requestsAwaitingAcknowledgement": {
+    "message": "demandes en attente d'acquittement"
+  },
+  "required": {
+    "message": "Obligatoire"
+  },
+  "reset": {
+    "message": "Réinitialiser"
+  },
+  "resetAccount": {
+    "message": "Réinitialiser le compte"
+  },
+  "resetAccountDescription": {
+    "message": "La réinitialisation de votre compte effacera l'historique de vos transactions. Cela ne modifiera pas les soldes de vos comptes et ne vous obligera pas à ressaisir votre phrase de sauvegarde."
+  },
+  "restore": {
+    "message": "Restaurer"
+  },
+  "restoreAccountWithSeed": {
+    "message": "Restaurer votre compte avec une phrase de sauvegarde"
+  },
+  "restoreFromSeed": {
+    "message": "Restaurer le compte ?"
+  },
+  "restoreWalletPreferences": {
+    "message": "Une sauvegarde de vos données de $1 a été trouvée. Souhaitez-vous restaurer vos préférences de wallet ?",
+     "description": "$1 est la date à laquelle les données ont été sauvegardées"
+  },
+  "retryTransaction": {
+    "message": "Réessayer la transaction"
+  },
+  "reusedTokenNameWarning": {
+    "message": "Un autre Token utilise déjà ce symbole, cela peut être trompeur."
+  },
+  "revealSeedWords": {
+    "message": "Révéler la phrase"
+  },
+  "revealSeedWordsDescription": {
+    "message": "Si jamais vous changez de navigateur ou déplacez des ordinateurs, vous aurez besoin de cette phrase de sauvegarde pour accéder à vos comptes. Gardez-les dans un endroit sûr et secret."
+  },
+  "revealSeedWordsTitle": {
+    "message": "Phrase de sauvegarde"
+  },
+  "revealSeedWordsWarning": {
+    "message": "Ces mots peuvent être utilisés pour voler tous vos comptes."
+  },
+  "revealSeedWordsWarningTitle": {
+    "message": "NE partagez PAS cette phrase avec qui que ce soit !"
+  },
+  "rinkeby": {
+    "message": "Réseau de test Rinkeby"
+  },
+  "ropsten": {
+    "message": "Réseau de test Ropsten"
+  },
+  "rpcUrl": {
+    "message": "Nouvelle URL RPC"
+  },
+  "save": {
+    "message": "Sauvegarder"
+  },
+  "saveAsCsvFile": {
+    "message": "Enregistrer en fichier CSV"
+  },
+  "scanInstructions": {
+    "message": "Placez le QR code devant votre caméra"
+  },
+  "scanQrCode": {
+    "message": "Scanner le code QR"
+  },
+  "scrollDown": {
+    "message": "Défiler vers le bas"
+  },
+  "search": {
+    "message": "Chercher"
+  },
+  "searchAccounts": {
+    "message": "Rechercher des comptes"
+  },
+  "searchResults": {
+    "message": "Résultats de recherche"
+  },
+  "searchTokens": {
+    "message": "Rechercher des Tokens"
+  },
+  "secretBackupPhrase": {
+    "message": "Phrase de sauvegarde secrète"
+  },
+  "secretBackupPhraseDescription": {
+    "message": "Votre phrase de sauvegarde secrète facilite la sauvegarde et la restauration de votre compte."
+  },
+  "secretBackupPhraseWarning": {
+    "message": "AVERTISSEMENT : ne divulguez jamais votre phrase de sauvegarde. N'importe qui avec cette phrase peut prendre vos STC pour toujours."
+  },
+  "secretPhrase": {
+    "message": "Entrez votre phrase secrète ici pour restaurer votre coffre-fort."
+  },
+  "securityAndPrivacy": {
+    "message": "Sécurité et confidentialité"
+  },
+  "securitySettingsDescription": {
+    "message": "Paramètres de confidentialité et phrase de sauvegarde du wallet"
+  },
+  "seedPhrasePlaceholder": {
+    "message": "Séparez chaque mot par un seul espace"
+  },
+  "seedPhrasePlaceholderPaste": {
+    "message": "Coller la phrase de sauvegarde du presse-papiers"
+  },
+  "seedPhraseReq": {
+    "message": "Les phrases de sauvegarde contiennent 12, 15, 18, 21 ou 24 mots"
+  },
+  "selectAHigherGasFee": {
+    "message": "Sélectionnez des frais d'essence plus élevés pour accélérer le traitement de votre transaction.*"
+  },
+  "selectAccounts": {
+    "message": "Sélectionnez le(s) compte(s)"
+  },
+  "selectAll": {
+    "message": "Tout sélectionner"
+  },
+  "selectAnAccount": {
+    "message": "Sélectionnez un compte"
+  },
+  "selectAnAccountAlreadyConnected": {
+    "message": "Ce compte a déjà été connecté à StarMask"
+  },
+  "selectAnAccountHelp": {
+    "message": "Sélectionnez le compte à afficher dans StarMask"
+  },
+  "selectEachPhrase": {
+    "message": "Veuillez sélectionner chaque mot en vous assurant qu'ils sont corrects."
+  },
+  "selectHdPath": {
+    "message": "Sélectionnez le chemin HD"
+  },
+  "selectPathHelp": {
+    "message": "Si vous ne voyez pas vos comptes Ledger existants ci-dessous, essayez de changer de chemin vers \"Legacy (MEW / MyCrypto)\""
+  },
+  "selectType": {
+    "message": "Sélectionner le type"
+  },
+  "selectingAllWillAllow": {
+    "message": "Si vous sélectionnez tout, ce site pourra afficher tous vos comptes actuels. Assurez-vous de faire confiance à ce site."
+  },
+  "send": {
+    "message": "Envoyer"
+  },
+  "sendAmount": {
+    "message": "Envoyer le montant"
+  },
+  "sendSpecifiedTokens": {
+    "message": "Envoyer $1",
+    "description": "Symbole du Token spécifié"
+  },
+  "sendTokens": {
+    "message": "Envoyer Tokens"
+  },
+  "sentEther": {
+    "message": "STC envoyé"
+  },
+  "separateEachWord": {
+    "message": "Séparez chaque mot par un seul espace"
+  },
+  "settings": {
+    "message": "Paramètres"
+  },
+  "sequenceNumber": {
+    "message": "Numéro de séquence"
+  },
+  "showAdvancedGasInline": {
+    "message": "Control de gaz avancées"
+  },
+  "showAdvancedGasInlineDescription": {
+    "message": "Sélectionnez cette option pour afficher le prix du gaz et les contrôles de limite directement sur les écrans d'envoi et de confirmation."
+  },
+  "showFiatConversionInTestnets": {
+    "message": "Afficher la conversion sur les réseaux de test"
+  },
+  "showFiatConversionInTestnetsDescription": {
+    "message": "Sélectionnez ceci pour afficher la conversion fiat sur Testnets"
+  },
+  "showHexData": {
+    "message": "Afficher les données HEX"
+  },
+  "showHexDataDescription": {
+    "message": "Sélectionnez cette option pour afficher le champ de données HEX sur l'écran d'envoi"
+  },
+  "showIncomingTransactions": {
+    "message": "Afficher les transactions entrantes"
+  },
+  "showIncomingTransactionsDescription": {
+    "message": "Sélectionnez ceci pour utiliser Starcoin Explorer pour afficher les transactions entrantes dans la liste des transactions"
+  },
+  "showPermissions": {
+    "message": "Afficher les autorisations"
+  },
+  "showPrivateKeys": {
+    "message": "Afficher les clés privées"
+  },
+  "showSeedPhrase": {
+    "message": "Afficher la phrase de sauvegarde"
+  },
+  "sigRequest": {
+    "message": "Demande de signature"
+  },
+  "sign": {
+    "message": "Signer"
+  },
+  "signNotice": {
+    "message": "Signer ce message peut avoir des effets secondaires \n dangereux. Signez uniquement les messages provenant de \n sites auxquels vous faites entièrement confiance avec l'ensemble de votre compte.\n Cette méthode dangereuse sera supprimée dans une future version. "
+  },
+  "signatureRequest": {
+    "message": "Demande de signature"
+  },
+  "signatureRequest1": {
+    "message": "Message"
+  },
+  "signed": {
+    "message": "Signé"
+  },
+  "slow": {
+    "message": "Lent"
+  },
+  "somethingWentWrong": {
+    "message": "Oups! Quelque chose s'est mal passé."
+  },
+  "speedUp": {
+    "message": "Accélérer"
+  },
+  "speedUpCancellation": {
+    "message": "Accélérez cette annulation"
+  },
+  "speedUpTransaction": {
+    "message": "Accélérez cette transaction"
+  },
+  "spendLimitAmount": {
+    "message": "Montant de la limite de dépenses"
+  },
+  "spendLimitInsufficient": {
+    "message": "Limite de dépenses insuffisante"
+  },
+  "spendLimitInvalid": {
+    "message": "Limite de dépenses invalide; Doit être un nombre positif"
+  },
+  "spendLimitPermission": {
+    "message": "Autorisation de limite de dépenses"
+  },
+  "spendLimitRequestedBy": {
+    "message": "Limite de dépenses demandée par $1",
+    "description": "Origine du site demandant la limite de dépenses"
+  },
+  "spendLimitTooLarge": {
+    "message": "Limite de dépenses trop élevée"
+  },
+  "stateLogError": {
+    "message": "Erreur lors de la récupération des journaux d'état."
+  },
+  "stateLogFileName": {
+    "message": "Journaux d'état de StarMask"
+  },
+  "stateLogs": {
+    "message": "Journaux d'état"
+  },
+  "stateLogsDescription": {
+    "message": "Les journaux d'état contiennent les adresses de vos comptes publics et les transactions envoyées."
+  },
+  "statusConnected": {
+    "message": "Connecté"
+  },
+  "statusNotConnected": {
+    "message": "Non connecté"
+  },
+  "step1HardwareWallet": {
+    "message": "1. Connectez le wallet matériel"
+  },
+  "step1HardwareWalletMsg": {
+    "message": "Connectez votre wallet matériel directement à votre ordinateur."
+  },
+  "step2HardwareWallet": {
+    "message": "2. Sélectionnez un compte"
+  },
+  "step2HardwareWalletMsg": {
+    "message": "Sélectionnez le compte que vous souhaitez afficher. Vous ne pouvez en choisir qu'un à la fois."
+  },
+  "step3HardwareWallet": {
+    "message": "3. Commencez à utiliser les sites Web3 et plus encore !"
+  },
+  "step3HardwareWalletMsg": {
+    "message": "Utilisez votre compte matériel comme vous le feriez avec n'importe quel compte Starcoin. Connectez-vous à des sites Web3, envoyez des STC, achetez et stockez des Tokens ERC20 et des Tokens non fongibles comme CryptoKitties."
+  },
+  "storePhrase": {
+    "message": "Stockez cette phrase dans un gestionnaire de mots de passe comme 1Password."
+  },
+  "submit": {
+    "message": "Soumettre"
+  },
+  "submitted": {
+    "message": "Soumis"
+  },
+  "supportCenter": {
+    "message": "Visitez notre centre d'assistance"
+  },
+  "swap": {
+    "message": "Swap"
+  },
+  "swapAdvancedSlippageInfo": {
+    "message": "Si le prix change entre le moment où votre commande est passée et confirmée, cela s'appelle un “glissement”. Votre échange s'annulera automatiquement si le glissement dépasse votre paramètre de “glissement max”."
+  },
+  "swapAggregator": {
+    "message": "Agrégateur"
+  },
+  "swapAmountReceived": {
+    "message": "Montant garanti"
+  },
+  "swapAmountReceivedInfo": {
+    "message": "C'est le montant minimum que vous recevrez. Vous pouvez recevoir plus en fonction du glissement."
+  },
+  "swapApproval": {
+    "message": "Approuver $1 pour les swaps",
+    "description": "Utilisé dans la liste d'affichage des transactions pour décrire une transaction qui est un appel d'approbation sur un Token qui doit être échangé. $1 est le symbole d'un Token qui a été approuvé."
+  },
+  "swapApproveNeedMoreTokens": {
+    "message": "Vous avez besoin de $1 de plus que $2 pour terminer cet échange",
+    "description": "Indique à l'utilisateur le nombre de Tokens supplémentaires dont il a besoin pour un échange spécifique. $1 est une quantité de Tokens et $2 est le symbole du Token."
+  },
+  "swapBetterQuoteAvailable": {
+    "message": "Un meilleur devis est disponible"
+  },
+  "swapBuildQuotePlaceHolderText": {
+    "message": "Aucun Token disponible correspondant à $1",
+    "description": "Indique à l'utilisateur qu'une recherche donnée ne correspond à aucun Token de nos listes de Tokens. $1 peut être n'importe quelle chaîne de texte"
+  },
+  "swapCheckingQuote": {
+    "message": "Vérifie $1",
+    "description": "Présenté à l'utilisateur lors du chargement du devis. $1 est le nom d'un agrégateur. Le message indique que StarMask vérifie actuellement si cet agrégateur a un échange/devis pour leur échange demandé."
+  },
+  "swapCustom": {
+    "message": "custom"
+  },
+  "swapDecentralizedExchange": {
+    "message": "Échange décentralisé"
+  },
+  "swapEditLimit": {
+    "message": "Modifier la limite"
+  },
+  "swapEnableDescription": {
+    "message": "Ceci est requis et donne à StarMask la permission d'échanger $1.",
+    "description": "Fournit à l'utilisateur des informations sur la transaction d'approbation requise pour les swaps. $1 sera le symbole d'un Token approuvé pour les échanges."
+  },
+  "swapEstimatedNetworkFee": {
+    "message": "Frais de réseau estimés"
+  },
+  "swapEstimatedNetworkFeeSummary": {
+    "message": "Le “$1” correspond à ce que nous attendons des frais réels. Le montant exact dépend des conditions du réseau.",
+    "description": "$1 sera la traduction de swapEstimatedNetworkFee, avec la police en gras"
+  },
+  "swapEstimatedNetworkFees": {
+    "message": "Estimation des frais de réseau"
+  },
+  "swapEstimatedNetworkFeesInfo": {
+    "message": "Il s'agit d'une estimation des frais de réseau qui seront utilisés pour effectuer votre échange. Le montant réel peut varier en fonction des conditions du réseau."
+  },
+  "swapFailedErrorDescriptionWithSupportLink": {
+    "message": "Des échecs de transaction se produisent et nous sommes là pour vous aider. Si ce problème persiste, vous pouvez contacter notre service client à $1 pour obtenir de l'aide.",
+    "description": "Ce message s'affiche pour un utilisateur si son échange échoue. Le $1 sera remplacé par notices@starmask.io"
+  },
+  "swapFailedErrorTitle": {
+    "message": "Échec du swap"
+  },
+  "swapFetchingQuotesErrorDescription": {
+    "message": "Hum... quelque chose s'est mal passé. Réessayez, ou si les erreurs persistent, contactez le support client."
+  },
+  "swapFetchingQuotesErrorTitle": {
+    "message": "Erreur lors de la récupération des devis"
+  },
+  "swapFetchingTokens": {
+    "message": "Récupération des Tokens..."
+  },
+  "swapFinalizing": {
+    "message": "Finalisation..."
+  },
+  "swapHighSlippageWarning": {
+    "message": "Le montant du glissement est très élevé. Assurez-vous de savoir ce que vous faites !"
+  },
+  "swapIntroLearnMoreHeader": {
+    "message": "Vous voulez en savoir plus ?"
+  },
+  "swapIntroLearnMoreLink": {
+    "message": "En savoir plus sur les échanges StarMask"
+  },
+  "swapIntroLiquiditySourcesLabel": {
+    "message": "Les sources de liquidité comprennent:"
+  },
+  "swapIntroPopupSubTitle": {
+    "message": "Vous pouvez désormais échanger des Tokens directement dans votre wallet StarMask. StarMask Swaps combine plusieurs agrégateurs d'échange décentralisés, des teneurs de marché professionnels et des DEX individuels pour garantir que les utilisateurs de StarMask obtiennent toujours le meilleur prix avec les frais de réseau les plus bas."
+  },
+  "swapIntroPopupTitle": {
+    "message": "Le swap de Tokens est arrivé !"
+  },
+  "swapLearnMoreContractsAuditReview": {
+    "message": "Consultez notre audit officiel des contrats"
+  },
+  "swapLowSlippageError": {
+    "message": "La transaction peut échouer, glissement maximum trop faible."
+  },
+  "swapMaxNetworkFeeInfo": {
+    "message": "“$1” est le maximum que vous dépenserez. Lorsque le réseau est volatil, cela peut être une grande quantité.",
+    "description": "$1 sera la traduction de swapMaxNetworkFees, avec la police en gras"
+  },
+  "swapMaxNetworkFees": {
+    "message": "Frais de réseau maximum"
+  },
+  "swapMaxSlippage": {
+    "message": "Glissement maximum"
+  },
+  "swapMetaMaskFee": {
+    "message": "Frais StarMask"
+  },
+  "swapMetaMaskFeeDescription": {
+    "message": "Nous trouvons le meilleur prix parmi les principales sources de liquidité, à chaque fois. Des frais de $1 sont automatiquement pris en compte dans ce devis.",
+    "description": "Fournit des informations sur les frais que starmask prend pour les swaps. $1 est un nombre décimal."
+  },
+  "swapNQuotes": {
+    "message": "$1 devis",
+    "description": "$1 est le nombre de devis que l'utilisateur peut sélectionner lors de l'ouverture de la liste des devis sur l'écran 'Afficher les devis'"
+  },
+  "swapNetworkFeeSummary": {
+    "message": "Les frais de réseau couvrent le coût de traitement de votre échange et de son stockage sur le réseau Starcoin. StarMask ne profite pas de ces frais."
+  },
+  "swapNewQuoteIn": {
+    "message": "Nouvelles devises dans $1",
+    "description": "Indique à l'utilisateur le temps jusqu'à ce que les cotations actuellement affichées soient mises à jour. $1 est un temps qui compte à rebours de 1:00 à 0:00"
+  },
+  "swapOnceTransactionHasProcess": {
+    "message": "Votre $1 sera ajouté à votre compte une fois cette transaction traitée.",
+    "description": "Ce message communique le Token en cours de transfert. Il est affiché sur l'écran d'échange en attente. Le $1 sera un symbole symbolique."
+  },
+  "swapPriceDifference": {
+    "message": "Vous êtes sur le point d'échanger $1 $2 (~ $3) contre $4 $5 (~ $6).",
+    "description": "Ce message représente le glissement de prix pour le swap. $1 et $4 sont un nombre (ex : 2.89), $2 et $5 sont des symboles (ex : ETH), et $3 et $6 sont des montants en monnaie fiduciaire."
+  },
+  "swapPriceDifferenceAcknowledgement": {
+    "message": "Je suis au courant"
+  },
+  "swapPriceDifferenceTitle": {
+    "message": "Différence de prix de ~$1%",
+    "description": "$1 est un nombre (ex : 1.23) qui représente la différence de prix."
+  },
+  "swapPriceDifferenceTooltip": {
+    "message": "La différence de prix du marché peut être affectée par les frais prélevés par les intermédiaires, la taille du marché, la taille des échanges ou les inefficacités du marché."
+  },
+  "swapPriceDifferenceUnavailable": {
+    "message": "Le prix du marché n'est pas disponible. Assurez-vous que vous vous sentez à l'aise avec le montant retourné avant de continuer."
+  },
+  "swapProcessing": {
+    "message": "Traitement"
+  },
+  "swapQuoteDetails": {
+    "message": "Détails du devis"
+  },
+  "swapQuoteDetailsSlippageInfo": {
+    "message": "Si le prix change entre le moment où votre commande est passée et celle où elle est confirmée, cela s'appelle \"glissement\". Votre échange s'annulera automatiquement si le glissement dépasse votre paramètre de \"tolérance de glissement\"."
+  },
+  "swapQuoteIncludesRate": {
+    "message": "Le devis comprend des frais StarMask de $1",
+    "description": "Fournit des informations sur les frais que starmask prend pour les swaps. $1 est un nombre décimal."
+  },
+  "swapQuoteNofN": {
+    "message": "Devis $1 de $2",
+    "description": "Un nombre de devis chargés affichés à l'utilisateur pendant qu'il attend que les devis soient récupérés. $1 est le nombre de devis déjà chargés et $2 est le nombre total de devis à charger."
+  },
+  "swapQuoteSource": {
+    "message": "Origine du devis"
+  },
+  "swapQuotesAreRefreshed": {
+    "message": "Les cotations sont souvent actualisées pour refléter les conditions actuelles du marché."
+  },
+  "swapQuotesExpiredErrorDescription": {
+    "message": "Veuillez demander de nouveaux devis pour obtenir les derniers tarifs."
+  },
+  "swapQuotesExpiredErrorTitle": {
+    "message": "Expiration des devis"
+  },
+  "swapQuotesNotAvailableErrorDescription": {
+    "message": "Essayez d'ajuster les paramètres de quantité ou de glissement et réessayez."
+  },
+  "swapQuotesNotAvailableErrorTitle": {
+    "message": "Aucun devis disponible"
+  },
+  "swapRate": {
+    "message": "Taux"
+  },
+  "swapReceiving": {
+    "message": "Reçu"
+  },
+  "swapReceivingInfoTooltip": {
+    "message": "Ceci est une estimation. Le montant exact dépend du glissement."
+  },
+  "swapRequestForQuotation": {
+    "message": "Demande de devis"
+  },
+  "swapReviewSwap": {
+    "message": "Voir le swap"
+  },
+  "swapSearchForAToken": {
+    "message": "Rechercher un Token"
+  },
+  "swapSelect": {
+    "message": "Sélectionner"
+  },
+  "swapSelectAQuote": {
+    "message": "Sélectionnez un devis"
+  },
+  "swapSelectAToken": {
+    "message": "Sélectionnez un Token"
+  },
+  "swapSelectQuotePopoverDescription": {
+    "message": "Vous trouverez ci-dessous tous les devis recueillis auprès de plusieurs sources de liquidité."
+  },
+  "swapSlippageTooLow": {
+    "message": "Le glissement doit être supérieur à zéro"
+  },
+  "swapSource": {
+    "message": "Source de liquidité"
+  },
+  "swapSourceInfo": {
+    "message": "Nous recherchons plusieurs sources de liquidité (bourses, agrégateurs et teneurs de marché professionnels) pour trouver les meilleurs tarifs et les frais de réseau les plus bas."
+  },
+  "swapStartSwapping": {
+    "message": "Commencer à swapper"
+  },
+  "swapSwapFrom": {
+    "message": "Swap de"
+  },
+  "swapSwapSwitch": {
+    "message": "Basculer de et vers les Tokens"
+  },
+  "swapSwapTo": {
+    "message": "Swap vers"
+  },
+  "swapThisWillAllowApprove": {
+    "message": "Cela permettra d'échanger $1."
+  },
+  "swapTokenAvailable": {
+    "message": "Votre $1 a été ajouté à votre compte.",
+    "description": "Ce message s'affiche après la réussite d'un échange et communique le nombre exact de Tokens que l'utilisateur a reçus pour un échange. Le $1 est un nombre décimal de Tokens suivi du symbole du Token."
+  },
+  "swapTokenBalanceUnavailable": {
+    "message": "Nous n'avons pas pu récupérer votre solde de $1",
+    "description": "Ce message communique à l'utilisateur que son solde d'un Token donné est actuellement indisponible. $1 sera remplacé par un symbole symbolique"
+  },
+  "swapTokenToToken": {
+    "message": "Swap $1 vers $2",
+    "description": "Utilisé dans la liste d'affichage des transactions pour décrire un swap. $1 et $2 sont les symboles des Tokens impliqués dans un échange."
+  },
+  "swapTokenVerificationMessage": {
+    "message": "Confirmez toujours l'adresse du Token sur $1.",
+    "description": "Dirige l'utilisateur vers Starcoin Explorer comme un endroit où il peut vérifier les informations sur un Token. $1 est remplacé par la traduction de \"Starcoin Explorer\" suivie d'une icône d'informations qui affiche plus d'informations au survol."
+  },
+  "swapTokenVerificationNoSource": {
+    "message": "Ce Token n'a pas été vérifié."
+  },
+  "swapTokenVerificationOnlyOneSource": {
+    "message": "Vérifié seulement sur 1 source."
+  },
+  "swapTokenVerificationSources": {
+    "message": "Vérifié sur $1 sources.",
+    "description": "Indique le nombre de sources d'informations de Tokens qui reconnaissent le symbole + l'adresse. $1 est un nombre décimal."
+  },
+  "swapTransactionComplete": {
+    "message": "Transaction terminée"
+  },
+  "swapUnknown": {
+    "message": "Inconnu"
+  },
+  "swapUsingBestQuote": {
+    "message": "Utilisant le meilleur devis"
+  },
+  "swapVerifyTokenExplanation": {
+    "message": "Plusieurs Tokens peuvent utiliser le même nom et le même symbole. Vérifiez $1 pour être sûr qu'il s'agit du Token que vous recherchez.",
+    "description": "Cela apparaît dans une info-bulle à côté du message verifyThisTokenOn. Il donne à l'utilisateur plus d'informations sur les raisons pour lesquelles il doit vérifier le Token sur un explorateur de blocs. $1 sera le nom ou l'URL de l'explorateur de blocs, qui sera la traduction de 'etherscan' ou une URL d'explorateur de blocs spécifiée pour un réseau personnalisé."
+  },
+  "swapViewToken": {
+    "message": "Voir $1"
+  },
+  "swapYourTokenBalance": {
+    "message": "$1 $2 disponible pour swap",
+    "description": "Indique à l'utilisateur le montant d'un Token dont il dispose dans son solde. $1 est un nombre décimal de Tokens et $2 est un symbole de Token"
+  },
+  "swapZeroSlippage": {
+    "message": "0% Glissement"
+  },
+  "swapsAdvancedOptions": {
+    "message": "Options avancées"
+  },
+  "swapsExcessiveSlippageWarning": {
+    "message": "Le montant du glissement est trop élevé et entraînera un mauvais taux. Veuillez réduire votre tolérance de glissement à une valeur inférieure à 15%."
+  },
+  "swapsMaxSlippage": {
+    "message": "Tolérance de glissement"
+  },
+  "swapsNotEnoughForTx": {
+    "message": "Pas assez de $1 pour effectuer cette transaction",
+    "description": "Indique à l'utilisateur qu'il n'a pas assez de Token pour un échange proposé. $1 est un symbole symbolique"
+  },
+  "swapsViewInActivity": {
+    "message": "Voir en activité"
+  },
+  "switchEthereumChainConfirmationDescription": {
+    "message": "Cela basculera le réseau sélectionné dans StarMask vers un réseau précédemment ajouté:"
+  },
+  "switchEthereumChainConfirmationTitle": {
+    "message": "Autoriser ce site à changer de réseau ?"
+  },
+  "switchNetwork": {
+    "message": "Changer de réseau"
+  },
+  "switchNetworks": {
+    "message": "Changer de réseau"
+  },
+  "switchToThisAccount": {
+    "message": "Passer à ce compte"
+  },
+  "switchingNetworksCancelsPendingConfirmations": {
+    "message": "Changer de réseau annulera toutes les confirmations en attente"
+  },
+  "symbol": {
+    "message": "Symbole"
+  },
+  "symbolBetweenZeroTwelve": {
+    "message": "Le symbole doit comporter 11 caractères ou moins."
+  },
+  "syncWithMobile": {
+    "message": "Synchroniser avec le mobile"
+  },
+  "syncWithMobileBeCareful": {
+    "message": "Assurez-vous que personne d'autre ne regarde votre écran lorsque vous scannez ce code"
+  },
+  "syncWithMobileComplete": {
+    "message": "Vos données ont été synchronisées avec succès. Profitez de l'application mobile StarMask !"
+  },
+  "syncWithMobileDesc": {
+    "message": "Vous pouvez synchroniser vos comptes et informations avec votre appareil mobile. Ouvrez l'application mobile StarMask, accédez à \"Paramètres\" et appuyez sur \"Synchroniser depuis l'extension du navigateur\""
+  },
+  "syncWithMobileDescNewUsers": {
+    "message": "Si vous venez d'ouvrir l'application StarMask Mobile pour la première fois, suivez simplement les étapes sur votre téléphone."
+  },
+  "syncWithMobileScanThisCode": {
+    "message": "Scannez ce code avec votre application mobile StarMask"
+  },
+  "syncWithMobileTitle": {
+    "message": "Synchroniser avec le mobile"
+  },
+  "terms": {
+    "message": "Conditions d'utilisation"
+  },
+  "termsOfService": {
+    "message": "Conditions d'utilisation"
+  },
+  "testFaucet": {
+    "message": "Faucet d'essai"
+  },
+  "thisWillCreate": {
+    "message": "Cela créera un nouveau portefeuille et une phrase de sauvegarde"
+  },
+  "tips": {
+    "message": "Astuces"
+  },
+  "to": {
+    "message": "À"
+  },
+  "toAddress": {
+    "message": "À: $1",
+    "description": "$1 est l'adresse à inclure dans l'étiquette À. Il est généralement raccourci en premier en utilisant shortenAddress"
+  },
+  "toWithColon": {
+    "message": "À:"
+  },
+  "token": {
+    "message": "Token"
+  },
+  "tokenAlreadyAdded": {
+    "message": "Le Token a déjà été ajouté."
+  },
+  "tokenContractAddress": {
+    "message": "Adresse de contrat du Token"
+  },
+  "tokenContractCode": {
+    "message": "Contrat du Token Code(address::module::struct)"
+  },
+  "tokenOptions": {
+    "message": "Options du Token"
+  },
+  "tokenSymbol": {
+    "message": "Symbole du Token"
+  },
+  "total": {
+    "message": "Total"
+  },
+  "transaction": {
+    "message": "transaction"
+  },
+  "transactionCancelAttempted": {
+    "message": "Tentative d'annulation de la transaction avec des frais d'essence de $1 à $2"
+  },
+  "transactionCancelSuccess": {
+    "message": "Transaction annulée avec succès à $2"
+  },
+  "transactionConfirmed": {
+    "message": "Transaction confirmée à $2."
+  },
+  "transactionCreated": {
+    "message": "Transaction créée avec une valeur de $1 à $2."
+  },
+  "transactionDropped": {
+    "message": "Transaction abandonnée à $2."
+  },
+  "transactionError": {
+    "message": "Erreur de transaction. Exception levée dans le code du contrat."
+  },
+  "transactionErrorNoContract": {
+    "message": "Essayer d'appeler une fonction sur une adresse non contractuelle."
+  },
+  "transactionErrored": {
+    "message": "La transaction a rencontré une erreur."
+  },
+  "transactionFee": {
+    "message": "Frais de transaction"
+  },
+  "transactionResubmitted": {
+    "message": "Transaction soumise à nouveau avec des frais d'essence augmentés de $1 à $2"
+  },
+  "transactionSubmitted": {
+    "message": "Transaction soumise avec des frais d'essence de $1 à $2."
+  },
+  "transactionUpdated": {
+    "message": "Transaction mise à jour à $2."
+  },
+  "transfer": {
+    "message": "Transfert"
+  },
+  "transferBetweenAccounts": {
+    "message": "Transfert entre mes comptes"
+  },
+  "transferFrom": {
+    "message": "Transfert de"
+  },
+  "transferNFT": {
+    "message": "Transfert"
+  },
+  "troubleConnectingToWallet": {
+    "message": "Nous avons eu des difficultés à nous connecter à votre $1, essayez de vérifier $2 et réessayez.",
+    "description": "$1 est le nom de l'appareil du wallet ; $2 est un lien vers le guide de connexion du wallet"
+  },
+  "troubleTokenBalances": {
+    "message": "Nous avons eu des difficultés à charger vos soldes de Tokens. Vous pouvez les visualiser ",
+    "description": "Suivi d'un lien (ici) pour voir les soldes de Tokens"
+  },
+  "trustSiteApprovePermission": {
+    "message": "Faites-vous confiance à ce site ? En accordant cette autorisation, vous autorisez $1 à retirer vos $2 et à automatiser les transactions pour vous.",
+    "description": "$1 est l'URL demandant l'autorisation et $2 est le symbole de la devise pour laquelle la demande est destinée"
+  },
+  "tryAgain": {
+    "message": "Réessayer"
+  },
+  "typePassword": {
+    "message": "Tapez votre mot de passe StarMask"
+  },
+  "unapproved": {
+    "message": "Désapprouvé"
+  },
+  "units": {
+    "message": "unités"
+  },
+  "unknown": {
+    "message": "Inconnu"
+  },
+  "unknownCameraError": {
+    "message": "Une erreur s'est produite lors de la tentative d'accès à votre caméra. Veuillez réessayer..."
+  },
+  "unknownCameraErrorTitle": {
+    "message": "Oups ! Quelque chose s'est mal passé...."
+  },
+  "unknownNetwork": {
+    "message": "Réseau privé inconnu"
+  },
+  "unknownQrCode": {
+    "message": "Erreur : nous n'avons pas pu identifier ce code QR"
+  },
+  "unlimited": {
+    "message": "Illimité"
+  },
+  "unlock": {
+    "message": "Dévérouiller"
+  },
+  "unlockMessage": {
+    "message": "Le Web décentralisé vous attend"
+  },
+  "unrecognizedChain": {
+    "message": "Ce réseau personnalisé n'est pas reconnu. Nous vous recommandons de payer $1 avant de continuer",
+    "description": "$1 est un lien cliquable avec du texte défini par la clé 'unrecognizedChanLinkText'. Le lien s'ouvrira aux instructions permettant aux utilisateurs de valider les détails du réseau personnalisé."
+  },
+  "unrecognizedChainLinkText": {
+    "message": "vérifier les détails du réseau",
+    "description": "Sert de texte de lien pour la clé 'unrecognizedChain'. Ce texte sera intégré dans la traduction de cette clé."
+  },
+  "updatedWithDate": {
+    "message": "Mis à jour $1"
+  },
+  "urlErrorMsg": {
+    "message": "Les URL nécessitent le préfixe HTTP/HTTPS approprié."
+  },
+  "urlExistsErrorMsg": {
+    "message": "L'URL est déjà présente dans la liste existante des réseaux"
+  },
+  "usePhishingDetection": {
+    "message": "Utiliser la détection d'hameçonnage"
+  },
+  "usePhishingDetectionDescription": {
+    "message": "Afficher un avertissement pour les domaines de phishing ciblant les utilisateurs de Starcoin"
+  },
+  "usedByClients": {
+    "message": "Utilisé par une variété de clients différents"
+  },
+  "userName": {
+    "message": "Nom d'utilisateur"
+  },
+  "verifyThisTokenOn": {
+    "message": "Vérifiez ce Token sur $1",
+    "description": "Dirige l'utilisateur vers etherscan où il peut vérifier les informations sur un Token. $1 est remplacé par la traduction de \"etherscan\""
+  },
+  "viewAccount": {
+    "message": "Voir le compte"
+  },
+  "viewAllDetails": {
+    "message": "Voir les détails"
+  },
+  "viewContact": {
+    "message": "Voir contacts"
+  },
+  "viewReceiptIdengifier": {
+    "message": "Voir ReceiptIdengifier"
+  },
+  "viewPublicKey": {
+    "message": "Voir Clé publique"
+  },
+  "viewOnCustomBlockExplorer": {
+    "message": "Voir à $1"
+  },
+  "viewOnStcscan": {
+    "message": "Voir sur l'explorateur Starcoin"
+  },
+  "viewinExplorer": {
+    "message": "Voir dans l'explorateur"
+  },
+  "visitWebSite": {
+    "message": "Visitez notre site Internet"
+  },
+  "walletConnectionGuide": {
+    "message": "notre guide de connexion de wallet matériel"
+  },
+  "walletSeed": {
+    "message": "Phrase de sauvegarde"
+  },
+  "walletSeedRestore": {
+    "message": "Phrase de sauvegarde"
+  },
+  "web3ShimUsageNotification": {
+    "message": "Nous avons remarqué que le site Web actuel a essayé d'utiliser l'API window.web3 supprimée. Si le site semble défectueux, veuillez cliquer sur $1 pour plus d'informations.",
+    "description": "$1 est un lien cliquable."
+  },
+  "welcome": {
+    "message": "Bienvenue sur StarMask"
+  },
+  "welcomeBack": {
+    "message": "Content de te revoir!"
+  },
+  "whatsThis": {
+    "message": "Qu'est-ce que c'est ?"
+  },
+  "writePhrase": {
+    "message": "Écrivez cette phrase sur une feuille de papier et conservez-la dans un endroit sûr. Si vous voulez encore plus de sécurité, écrivez-le sur plusieurs morceaux de papier et rangez-les dans 2 à 3 endroits différents."
+  },
+  "xOfY": {
+    "message": "$1 de $2",
+    "description": "$1 et $2 sont censés être deux nombres, où $2 est un total et $1 est un compte vers ce total"
+  },
+  "xOfYPending": {
+    "message": "$1 de $2 en attente",
+    "description": "$1 et $2 sont censés être deux nombres, où $2 est un nombre total de confirmations en attente, et $1 est un décompte de ce total"
+  },
+  "yesLetsTry": {
+    "message": "Oui, essayons"
+  },
+  "youNeedToAllowCameraAccess": {
+    "message": "Vous devez autoriser l'accès à la caméra pour utiliser cette fonctionnalité."
+  },
+  "youSign": {
+    "message": "Vous signez"
+  },
+  "yourPrivateSeedPhrase": {
+    "message": "Votre phrase de sauvegarde privée"
+  },
+  "zeroGasPriceOnSpeedUpError": {
+    "message": "Prix de l'essence nul en cas d'accélération"
+  }
+}

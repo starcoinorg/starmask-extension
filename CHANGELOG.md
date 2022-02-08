@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.5.0] - 2022-02-08
+
+- New features:
+  - i8n supports francais
+
 ## [3.4.0] - 2022-01-12
 
 - Bug fixes:
