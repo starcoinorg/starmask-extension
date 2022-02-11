@@ -26,6 +26,7 @@ class AddToken extends Component {
     pendingTokens: PropTypes.object,
     clearPendingTokens: PropTypes.func,
     tokens: PropTypes.array,
+    currentAssetsTokens: PropTypes.array,
     identities: PropTypes.object,
     showSearchTab: PropTypes.bool.isRequired,
     mostRecentOverviewPage: PropTypes.string.isRequired,
@@ -163,17 +164,19 @@ class AddToken extends Component {
 
   handleCustomCodeChange(value) {
     let customCode = value.trim();
-
-    const arr = customCode.split('::');
-
-    const isValidCode = arr.length === 3 && isValidAddress(arr[0]);
-
-    // fix #40
-    if (isValidCode) {
-      const _isValidChecksumAddress = isValidChecksumAddress(arr[0])
-      if (_isValidChecksumAddress) {
-        arr[0] = arr[0].toLowerCase()
-        customCode = arr.join('::')
+    let isValidCode = false
+    if (customCode.includes('<') && customCode.endsWith('>')) {
+      isValidCode = true
+    } else {
+      const arr = customCode.split('::');
+      isValidCode = arr.length === 3 && isValidAddress(arr[0]);
+      // fix #40
+      if (isValidCode) {
+        const _isValidChecksumAddress = isValidChecksumAddress(arr[0])
+        if (_isValidChecksumAddress) {
+          arr[0] = arr[0].toLowerCase()
+          customCode = arr.join('::')
+        }
       }
     }
 
@@ -195,7 +198,7 @@ class AddToken extends Component {
         });
 
         break;
-      case checkExistingCodes(customCode, this.props.tokens):
+      case checkExistingCodes(customCode, this.props.currentAssetsTokens):
         this.setState({
           customCodeError: this.context.t('tokenAlreadyAdded'),
         });

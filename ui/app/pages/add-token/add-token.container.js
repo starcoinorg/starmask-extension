@@ -5,12 +5,15 @@ import AddToken from './add-token.component';
 
 const mapStateToProps = (state) => {
   const {
-    starmask: { identities, tokens, pendingTokens },
+    starmask: { identities, tokens, pendingTokens, selectedAddress, assets },
   } = state;
+  const currentAssets = assets[selectedAddress];
+  const currentAssetsTokens = (currentAssets && Object.keys(currentAssets).length) ? Object.keys(currentAssets) : []
   return {
     identities,
     mostRecentOverviewPage: getMostRecentOverviewPage(state),
     tokens,
+    currentAssetsTokens,
     pendingTokens,
     showSearchTab: true,
   };

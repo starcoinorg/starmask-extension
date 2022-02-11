@@ -2577,6 +2577,36 @@
     read-bigint "^0.1.6"
     ws "7.2.3"
 
+"@starcoin/starcoin@^1.9.0":
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/@starcoin/starcoin/-/starcoin-1.9.0.tgz#3196b84ee0132522fc45f6ef627e81f90e899937"
+  integrity sha512-ePtrpgnLHiwSHAv0NWQgmYFhzx+wOwcaqEXoIMOWFlQS1YY0JATdU1Nw4j+fvZBAP4zZxmHq4Vm8u3Ju7gPDoA==
+  dependencies:
+    "@ethersproject/basex" "^5.0.4"
+    "@ethersproject/bignumber" "^5.0"
+    "@ethersproject/bytes" "^5.0.6"
+    "@ethersproject/hash" "^5.0.6"
+    "@ethersproject/keccak256" "^5.0.5"
+    "@ethersproject/logger" "^5.0.6"
+    "@ethersproject/properties" "^5.0.4"
+    "@ethersproject/sha2" "^5.0.4"
+    "@ethersproject/web" "^5.0.9"
+    "@starcoin/stc-ed25519" "^0.1.0"
+    bech32 "^2.0.0"
+    ethereumjs-util "5.1.0"
+    fs "^0.0.1-security"
+    is-alphabetical "^1.0.4"
+    is-alphanumerical "^1.0.4"
+    is-decimal "^1.0.4"
+    is-hexadecimal "^1.0.4"
+    is-whitespace-character "^1.0.4"
+    is-word-character "^1.0.4"
+    js-sha3 "^0.8.0"
+    jssha "^3.2.0"
+    lodash "^4.17.21"
+    read-bigint "^0.1.6"
+    ws "7.2.3"
+
 "@starcoin/stc-block-tracker@^0.1.0":
   version "0.1.0"
   resolved "https://registry.npmjs.org/@starcoin/stc-block-tracker/-/stc-block-tracker-0.1.0.tgz"

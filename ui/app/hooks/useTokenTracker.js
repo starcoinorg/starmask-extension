@@ -39,10 +39,9 @@ export function useTokenTracker(
     });
   }
   // added to wallet but not enabled accept_tokens ones
-  const unAcceptTokens = tokens.filter((token) => token.code.split('::').length === 3 && currentAssets && !currentAssets[token.code]);
-  unAcceptTokens.map(({ code, decimals }) => {
+  const unAcceptTokens = tokens.filter((token) => currentAssets && !currentAssets[token.code]);
+  unAcceptTokens.map(({ code, decimals, symbol }) => {
     const numberOfDecimals = decimals <= 9 ? 4 : 9;;
-    const symbol = code.split('::')[2];
     const token = {
       code,
       balance: currentAssets[code],

@@ -48,7 +48,7 @@
     "@sentry/browser": "^5.26.0",
     "@sentry/integrations": "^5.26.0",
     "@starcoin/contract-metadata": "^0.3.0",
-    "@starcoin/starcoin": "^1.6.2",
+    "@starcoin/starcoin": "^1.9.0",
     "@starcoin/stc-block-tracker": "^0.1.0",
     "@starcoin/stc-inpage-provider": "^0.3.4",
     "@starcoin/stc-json-rpc": "^0.1.0",
