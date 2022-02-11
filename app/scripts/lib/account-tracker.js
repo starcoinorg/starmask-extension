@@ -275,9 +275,7 @@ export default class AccountTracker {
               ACCOUNT_BALANCE.length + 1,
               key.length - ACCOUNT_BALANCE.length - 2,
             );
-            if (token.split('::').length === 3) {
-              balanceKeys.push(key);
-            }
+            balanceKeys.push(key);
           } else if (key.startsWith(NFT_GALLERY)) {
             nftKeys.push(key);
           }

@@ -57,8 +57,18 @@ function getContractMetadata(tokenAddress) {
 }
 
 function getSymbol(tokenCode) {
-  const arr = tokenCode.split('::');
-  const symbol = arr[2];
+  let symbol
+  if (tokenCode.includes('<') && tokenCode.endsWith('>')) {
+    const tokenPairs = tokenCode.substr(
+      tokenCode.indexOf('<') + 1,
+      tokenCode.length - tokenCode.indexOf('<') - 2,
+    );
+    const tokenArr = tokenPairs.split(',');
+    symbol = `${ tokenArr[0].split('::')[2] }/${ tokenArr[1].split('::')[2] }`;
+  } else {
+    const arr = tokenCode.split('::');
+    symbol = arr[2];
+  }
   return Promise.resolve(symbol);
   // let symbol = await getSymbolFromContract(tokenAddress);
 
