@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.6.0] - 2022-02-11
+
+- Bug fixes:
+  - [#48 Can not add starswap lp token pair](https://github.com/starcoinorg/starmask-extension/issues/48)
+
 ## [3.5.1] - 2022-02-08
 
 - New features:

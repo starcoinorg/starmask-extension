@@ -56,7 +56,10 @@ require('./<NEW_VERSION>').default,
 6. run `yarn start` or wait until it reloaded, then the old state will be migrated to the new state.
 
 Tips:
-if you want to debug and re-run <NEW_VERSION>.js multi times, you can add following in `app/scripts/background.js` -> loadStateFromPersistence
+
+1. check `054.js` and `054.test.js` for demo of handling tokens.
+
+2. if you want to debug and re-run <NEW_VERSION>.js multi times, you can add following in `app/scripts/background.js` -> loadStateFromPersistence
 
 ```
  versionedData.meta.version = <last_version_number>;
