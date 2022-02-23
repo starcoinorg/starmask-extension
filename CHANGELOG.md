@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.7.0] - 2022-02-23
+
+- New features:
+  - add chain.get_transaction_info for Dapp' getTransactionReceipt
+
 ## [3.6.1] - 2022-02-11
 
 - Bug fixes:
