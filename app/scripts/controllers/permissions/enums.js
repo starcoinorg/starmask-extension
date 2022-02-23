@@ -37,6 +37,7 @@ export const SAFE_METHODS = [
   'chain.id',
   'chain.info',
   'chain.get_block_by_number',
+  'chain.get_transaction_info',
   'contract.call',
   'contract.call_v2',
   'contract.dry_run',
