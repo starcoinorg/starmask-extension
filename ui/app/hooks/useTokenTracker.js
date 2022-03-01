@@ -39,19 +39,22 @@ export function useTokenTracker(
     });
   }
   // added to wallet but not enabled accept_tokens ones
-  const unAcceptTokens = tokens.filter((token) => currentAssets && !currentAssets[token.code]);
-  unAcceptTokens.map(({ code, decimals, symbol }) => {
-    const numberOfDecimals = decimals <= 9 ? 4 : 9;
-    const token = {
-      code,
-      balance: currentAssets[code],
-      symbol,
-      decimals,
-      string: stringifyBalance(currentAssets[code], decimals, symbol, numberOfDecimals),
-      accepted: false,
-    };
-    tokensWithBalances.push(token);
-  });
+  if (!hideZeroBalanceTokens) {
+    const unAcceptTokens = tokens.filter((token) => currentAssets && !currentAssets[token.code]);
+    unAcceptTokens.map(({ code, decimals, symbol }) => {
+      console.log('unAcceptTokens', code, currentAssets[code])
+      const numberOfDecimals = decimals <= 9 ? 4 : 9;
+      const token = {
+        code,
+        balance: currentAssets[code],
+        symbol,
+        decimals,
+        string: stringifyBalance(currentAssets[code], decimals, symbol, numberOfDecimals),
+        accepted: false,
+      };
+      tokensWithBalances.push(token);
+    });
+  }
   const loading = false;
   const error = null;
   return { loading, tokensWithBalances, error };

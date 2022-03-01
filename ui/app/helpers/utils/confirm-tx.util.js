@@ -111,7 +111,7 @@ export function formatCurrency(value, currencyCode) {
 
 export function stringifyBalance(balance, decimals, currency, numberOfDecimals) {
   const multiplier = Math.pow(10, Number(decimals || 0));
-  const value = conversionUtil(balance, {
+  let value = conversionUtil(balance, {
     // fromCurrency,
     toCurrency: currency,
     fromNumericBase: 'hex',
@@ -120,6 +120,18 @@ export function stringifyBalance(balance, decimals, currency, numberOfDecimals) 
     conversionRate: multiplier,
     invertConversionRate: true,
   });
+  // avoid disply 0 while hideZeroBalanceTokens = true
+  if (Number(value) === 0 && balance !== '0x0') {
+    value = conversionUtil(balance, {
+      // fromCurrency,
+      toCurrency: currency,
+      fromNumericBase: 'hex',
+      toNumericBase: 'dec',
+      decimals,
+      conversionRate: multiplier,
+      invertConversionRate: true,
+    });
+  }
   return formatCurrency(value, currency);
 }
 
