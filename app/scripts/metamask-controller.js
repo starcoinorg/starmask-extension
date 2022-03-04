@@ -2073,6 +2073,9 @@ export default class MetamaskController extends EventEmitter {
         log.error(err);
       }
     });
+
+    // update unknown transaction while inited or network re-online
+    this.txController.updateUnknownTxs();
   }
 
   /**

@@ -800,6 +800,26 @@ export default class TransactionController extends EventEmitter {
     await this.pendingTxTracker.handlePendingTxsOffline(address);
   }
 
+  /**
+    update unknown transactons
+  */
+  async updateUnknownTxs() {
+    // in order to keep the nonceTracker accurate we block it while updating pending transactions
+    const nonceGlobalLock = await this.nonceTracker.getGlobalLock();
+    try {
+      const unKnownTxs = this.txStateManager.getUnknownTransactions();
+      await Promise.all(
+        unKnownTxs.map((txMeta) => this.pendingTxTracker._checkUnknownTx(txMeta)),
+      );
+    } catch (err) {
+      log.error(
+        'TransactionController - Error updating unknown transactions',
+      );
+      log.error(err);
+    }
+    nonceGlobalLock.releaseLock();
+  }
+
   //
   //           PRIVATE METHODS
   //
