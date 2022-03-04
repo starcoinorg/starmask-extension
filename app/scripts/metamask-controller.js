@@ -753,6 +753,7 @@ export default class MetamaskController extends EventEmitter {
         txController.addUnapprovedTransaction,
         txController,
       ),
+      handlePendingTxsOffline: nodeify(txController.handlePendingTxsOffline, txController),
 
       // messageManager
       signMessage: nodeify(this.signMessage, this),

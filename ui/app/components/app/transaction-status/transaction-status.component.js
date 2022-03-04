@@ -35,6 +35,7 @@ const statusToClassNameHash = {
   [TRANSACTION_GROUP_STATUSES.CANCELLED]: 'transaction-status--cancelled',
   [QUEUED_PSEUDO_STATUS]: 'transaction-status--queued',
   [TRANSACTION_GROUP_STATUSES.PENDING]: 'transaction-status--pending',
+  [TRANSACTION_GROUP_STATUSES.UNKNOWN]: 'transaction-status--unknown',
 };
 
 export default function TransactionStatus({

@@ -50,6 +50,34 @@ export default class PendingTransactionTracker extends EventEmitter {
   }
 
   /**
+    check and handle pending txs in case of netwrok is offline 
+  */
+  async handlePendingTxsOffline(address) {
+    // in order to keep the nonceTracker accurate we block it while updating pending transactions
+    const nonceGlobalLock = await this.nonceTracker.getGlobalLock();
+    try {
+      const pendingTxs = this.getPendingTransactions(address);
+      log.debug({ pendingTxs })
+      await Promise.all(
+        pendingTxs.map((txMeta) => {
+          const currentTime = new Date().getTime()
+          // if one txn is pending more than 5 minutes
+          if ((currentTime - txMeta.submittedTime) / 1000 > 300) {
+            const txId = txMeta.id;
+            this.emit('tx:unknown', txId);
+          }
+        }),
+      );
+    } catch (err) {
+      log.error(
+        'PendingTransactionTracker - Error handling pending transactions while offline',
+      );
+      log.error(err);
+    }
+    nonceGlobalLock.releaseLock();
+  }
+
+  /**
     checks the network for signed txs and releases the nonce global lock if it is
   */
   async updatePendingTxs() {

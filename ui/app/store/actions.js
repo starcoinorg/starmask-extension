@@ -2267,8 +2267,6 @@ export function setMouseUserState(isMouseUser) {
 }
 
 export async function forceUpdateMetamaskState(dispatch) {
-  log.debug(`background.getState`);
-
   let newState;
   try {
     newState = await promisifiedBackground.getState();
@@ -3064,5 +3062,20 @@ export function addNFTs(nfts) {
         dispatch(addNFT(meta, body)),
       ),
     );
+  };
+}
+
+export function handlePendingTxsOffline(address) {
+  return (dispatch) => {
+    return new Promise((resolve, reject) => {
+      background.handlePendingTxsOffline(address, (err, result) => {
+        if (err) {
+          dispatch(displayWarning(err.message));
+          reject(err);
+          return;
+        }
+        resolve(result);
+      });
+    });
   };
 }

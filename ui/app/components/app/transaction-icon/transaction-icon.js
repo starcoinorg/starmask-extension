@@ -23,12 +23,14 @@ const ICON_MAP = {
 
 const FAIL_COLOR = '#D73A49';
 const PENDING_COLOR = '#6A737D';
+const UNKNOWN_COLOR = '#f66a0a';
 const OK_COLOR = '#2F80ED';
 
 const COLOR_MAP = {
   [TRANSACTION_GROUP_STATUSES.PENDING]: PENDING_COLOR,
   [TRANSACTION_STATUSES.UNAPPROVED]: PENDING_COLOR,
   [TRANSACTION_STATUSES.APPROVED]: PENDING_COLOR,
+  [TRANSACTION_STATUSES.UNKNOWN]: UNKNOWN_COLOR,
   [TRANSACTION_STATUSES.FAILED]: FAIL_COLOR,
   [TRANSACTION_STATUSES.REJECTED]: FAIL_COLOR,
   [TRANSACTION_GROUP_STATUSES.CANCELLED]: FAIL_COLOR,
@@ -36,8 +38,8 @@ const COLOR_MAP = {
 };
 
 export default function TransactionIcon({ status, category }) {
-  const color = COLOR_MAP[status] || OK_COLOR;
 
+  const color = COLOR_MAP[status] || OK_COLOR;
   const Icon = ICON_MAP[category];
 
   return <Icon color={color} size={28} />;

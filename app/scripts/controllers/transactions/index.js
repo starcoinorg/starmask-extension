@@ -105,9 +105,9 @@ export default class TransactionController extends EventEmitter {
       provider: this.provider,
       nonceTracker: this.nonceTracker,
       publishTransaction: (rawTx) => this.query.sendRawTransaction(rawTx),
-      getPendingTransactions: () => {
-        const pending = this.txStateManager.getPendingTransactions();
-        const approved = this.txStateManager.getApprovedTransactions();
+      getPendingTransactions: (address) => {
+        const pending = this.txStateManager.getPendingTransactions(address);
+        const approved = this.txStateManager.getApprovedTransactions(address);
         return [...pending, ...approved];
       },
       approveTransaction: this.approveTransaction.bind(this),
@@ -796,6 +796,10 @@ export default class TransactionController extends EventEmitter {
     this.txStateManager.updateTx(txMeta, 'transactions#setTxHash');
   }
 
+  async handlePendingTxsOffline(address) {
+    await this.pendingTxTracker.handlePendingTxsOffline(address);
+  }
+
   //
   //           PRIVATE METHODS
   //
@@ -905,6 +909,10 @@ export default class TransactionController extends EventEmitter {
     this.pendingTxTracker.on(
       'tx:dropped',
       this.txStateManager.setTxStatusDropped.bind(this.txStateManager),
+    );
+    this.pendingTxTracker.on(
+      'tx:unknown',
+      this.txStateManager.setTxStatusUnknown.bind(this.txStateManager),
     );
     this.pendingTxTracker.on('tx:block-update', (txMeta, latestBlockNumber) => {
       if (!txMeta.firstRetryBlockNumber) {
