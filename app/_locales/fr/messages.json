@@ -462,6 +462,9 @@
   "copyToClipboardOnClick": {
     "message": "Copier dans le presse-papiers en un clic"
   },
+  "copyTransactionDetail": {
+    "message": "Copier l'detail de transaction"
+  },
   "copyTransactionId": {
     "message": "Copier l'ID de transaction"
   },

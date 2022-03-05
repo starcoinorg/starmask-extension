@@ -430,6 +430,9 @@
   "copyToClipboardOnClick": {
     "message": "点击复制到剪贴板"
   },
+  "copyTransactionDetail": {
+    "message": "复制交易详情"
+  },
   "copyTransactionId": {
     "message": "复制交易 ID"
   },
