@@ -2514,10 +2514,10 @@
   resolved "https://registry.npmjs.org/@sinonjs/text-encoding/-/text-encoding-0.7.1.tgz"
   integrity sha512-+iTbntw2IZPb/anVDbypzfQa+ay64MW0Zo8aJ8gZPWMMK6/OubMVb6lUPMagqjOPnmtauXnFCACVl3O7ogjeqQ==
 
-"@starcoin/contract-metadata@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.npmjs.org/@starcoin/contract-metadata/-/contract-metadata-0.3.0.tgz#fa2507cd0b5f7dc9c08e089421f5bbb7304dbb2d"
-  integrity sha512-Cbtlvjsd+Ke94mSrJClAUOpm4XPcX9FKzEyzKz2J3CnCpSXf3P2UR+Y+dlcSrHZP9Gxd3e8nDRoQR2mTKOiFuA==
+"@starcoin/contract-metadata@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@starcoin/contract-metadata/-/contract-metadata-0.4.0.tgz#c43307150b9c19e77b0a258bd1e2be8323c2ff9b"
+  integrity sha512-/RfngnVySqXEs0ujAN2/RzLcDkRpmF7Spt3BvFwwZj6s4t8sV9Kw5RHK1W4QyP1vfCX0gBca7cml3crW5iwIbA==
 
 "@starcoin/starcoin@^1.2.1":
   version "1.4.2"
