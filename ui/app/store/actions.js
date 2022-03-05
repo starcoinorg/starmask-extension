@@ -1304,7 +1304,6 @@ export function lockMetamask() {
 }
 
 async function _setSelectedAddress(dispatch, address) {
-  log.debug(`background.setSelectedAddress`);
   const tokens = await promisifiedBackground.setSelectedAddress(address);
   dispatch(updateTokens(tokens));
 }
@@ -1312,7 +1311,6 @@ async function _setSelectedAddress(dispatch, address) {
 export function setSelectedAddress(address) {
   return async (dispatch) => {
     dispatch(showLoadingIndication());
-    log.debug(`background.setSelectedAddress`);
     try {
       await _setSelectedAddress(dispatch, address);
     } catch (error) {
@@ -1327,7 +1325,6 @@ export function setSelectedAddress(address) {
 export function showAccountDetail(address) {
   return async (dispatch, getState) => {
     dispatch(showLoadingIndication());
-    log.debug(`background.setSelectedAddress`);
 
     const state = getState();
     const unconnectedAccountAccountAlertIsEnabled = getUnconnectedAccountAlertEnabledness(

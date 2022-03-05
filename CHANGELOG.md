@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.8.0] - 2022-03-05
+
+- New features:
+
+  - copy failed transaction detial to clipboard in the transaction detial pop window
+  - add 2 token logos for STAR and FAI
+
+- Bug fixes:
+
+  - [#51 Optimize pending transactions handling](https://github.com/starcoinorg/starmask-extension/issues/51)
+  - [#52 Hide token with zero balance](https://github.com/starcoinorg/starmask-extension/issues/52)
+
 ## [3.7.0] - 2022-02-23
 
 - New features:
