@@ -198,10 +198,10 @@ class AddToken extends Component {
         });
 
         break;
-      case checkExistingCodes(customCode, this.props.currentAssetsTokens):
-        this.setState({
-          customCodeError: this.context.t('tokenAlreadyAdded'),
-        });
+        // case checkExistingCodes(customCode, this.props.currentAssetsTokens):
+        //   this.setState({
+        //     customCodeError: this.context.t('tokenAlreadyAdded'),
+        //   });
 
         break;
       default:

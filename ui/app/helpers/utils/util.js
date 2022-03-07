@@ -449,7 +449,6 @@ export function checkExistingAddresses(address, list = []) {
  * @returns {boolean} Whether or not the address is in the list
  */
 export function checkExistingCodes(code, list = []) {
-  console.log('checkExistingCodes', code, list)
   if (!code) {
     return false;
   }
