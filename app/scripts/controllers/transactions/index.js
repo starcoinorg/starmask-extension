@@ -809,7 +809,7 @@ export default class TransactionController extends EventEmitter {
     try {
       const unKnownTxs = this.txStateManager.getUnknownTransactions();
       await Promise.all(
-        unKnownTxs.map((txMeta) => this.pendingTxTracker._checkUnknownTx(txMeta)),
+        unKnownTxs.map((txMeta) => this.pendingTxTracker.checkUnknownTx(txMeta)),
       );
     } catch (err) {
       log.error(

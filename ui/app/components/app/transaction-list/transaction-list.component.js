@@ -15,7 +15,7 @@ import { TRANSACTION_TYPES } from '../../../../../shared/constants/transaction';
 import { handlePendingTxsOffline } from '../../../store/actions';
 
 const PAGE_INCREMENT = 10;
-const delay = 2;
+const DELAY = 10000;
 
 // When we are on a token page, we only want to show transactions that involve that token.
 // In the case of token transfers or approvals, these will be transactions sent to the
@@ -138,9 +138,9 @@ export default function TransactionList({
   useEffect(() => {
     // first, trigger at component inited
     handlePendingTxs(selectedAddress);
-    // then, repeat with interval of <delay> seconds
+    // then, repeat with interval of 10 seconds
     // useRef value stored in .current property
-    timer.current = setInterval(() => handlePendingTxs(selectedAddress), delay * 1000);
+    timer.current = setInterval(() => handlePendingTxs(selectedAddress), DELAY);
     // clear on component unmount
     return () => {
       clearInterval(timer.current);

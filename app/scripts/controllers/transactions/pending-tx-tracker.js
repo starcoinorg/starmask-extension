@@ -57,7 +57,6 @@ export default class PendingTransactionTracker extends EventEmitter {
     const nonceGlobalLock = await this.nonceTracker.getGlobalLock();
     try {
       const pendingTxs = this.getPendingTransactions(address);
-      log.debug({ pendingTxs })
       await Promise.all(
         pendingTxs.map((txMeta) => {
           const currentTime = new Date().getTime()
@@ -75,6 +74,69 @@ export default class PendingTransactionTracker extends EventEmitter {
       log.error(err);
     }
     nonceGlobalLock.releaseLock();
+  }
+
+  /**
+   * Query the network to see if the given {@code txMeta} has been included in a block
+   * @param {Object} txMeta - the transaction metadata
+   * @returns {Promise<void>}
+   * @emits tx:confirmed
+   * @emits tx:dropped
+   * @emits tx:failed
+   * @emits tx:warning
+   * @private
+   */
+  async checkUnknownTx(txMeta) {
+    const txHash = txMeta.hash;
+    const txId = txMeta.id;
+
+    // Only check submitted txs
+    if (txMeta.status !== TRANSACTION_STATUSES.UNKNOWN) {
+      return;
+    }
+
+    // extra check in case there was an uncaught error during the
+    // signature and submission process
+    if (!txHash) {
+      const noTxHashErr = new Error(
+        'We had an error while submitting this transaction, please try again.',
+      );
+      noTxHashErr.name = 'NoTxHashError';
+      this.emit('tx:failed', txId, noTxHashErr);
+
+      return;
+    }
+
+    if (await this._checkIfNonceIsTaken(txMeta)) {
+      this.emit('tx:dropped', txId);
+      return;
+    }
+
+    try {
+      const transactionReceipt = await new Promise((resolve, reject) => {
+        return this.query.getTransactionReceipt(txHash, (err, res) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(res);
+        });
+      });
+      if (transactionReceipt?.block_number) {
+        this.emit('tx:confirmed', txId, transactionReceipt);
+        return;
+      }
+    } catch (err) {
+      txMeta.warning = {
+        error: err.message,
+        message: 'There was a problem loading this transaction.',
+      };
+      this.emit('tx:warning', txMeta, err);
+      return;
+    }
+
+    if (await this._checkIfTxWasDropped(txMeta)) {
+      this.emit('tx:dropped', txId);
+    }
   }
 
   /**

@@ -11,7 +11,7 @@ import { formatDate } from '../../../helpers/utils/util';
 import { getBlockExplorerUrlForTx } from '../../../../../shared/modules/transaction.utils';
 import TransactionActivityLogIcon from './transaction-activity-log-icon';
 import { CONFIRMED_STATUS } from './transaction-activity-log.constants';
-import { TRANSACTION_ERRORED_EVENT } from './transaction-activity-log.constants';
+import { TRANSACTION_ERRORED_EVENT, TRANSACTION_DROPPED_EVENT } from './transaction-activity-log.constants';
 import Button from '../../ui/button';
 import Tooltip from '../../ui/tooltip';
 import Copy from '../../ui/icon/copy-icon.component';
@@ -90,7 +90,7 @@ export default class TransactionActivityLog extends PureComponent {
 
   renderInlineDetail(eventKey) {
     const { t } = this.context;
-    return eventKey === TRANSACTION_ERRORED_EVENT ? (
+    return [TRANSACTION_ERRORED_EVENT, TRANSACTION_DROPPED_EVENT].includes(eventKey) ? (
       <div className="transaction-activity-log__action-link" onClick={this.handleCopyTxDetail}>
         {t('copyTransactionDetail')}
       </div>
