@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.8.1] - 2022-03-08
+
+- Bug fixes:
+
+  - [#50 can not re-add a token if it is hidden](https://github.com/starcoinorg/starmask-extension/issues/50)
+  - upgrade check pending interval to 10 seconds
+  - copy transaction detail for both FAILED and DROPPED
+
 ## [3.8.0] - 2022-03-05
 
 - New features:
