@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { isValidAddress } from '@starcoin/stc-util';
+import { isValidAddress, isValidChecksumAddress } from '@starcoin/stc-util';
+import contractMap from '@starcoin/contract-metadata';
+
 import { checkExistingCodes } from '../../helpers/utils/util';
 import { tokenInfoGetter } from '../../helpers/utils/token-util';
 import { CONFIRM_ADD_TOKEN_ROUTE } from '../../helpers/constants/routes';
@@ -11,7 +13,7 @@ import TokenList from './token-list';
 import TokenSearch from './token-search';
 
 const MIN_DECIMAL_VALUE = 0;
-const MAX_DECIMAL_VALUE = 9;
+const MAX_DECIMAL_VALUE = 18;
 
 class AddToken extends Component {
   static contextTypes = {
@@ -24,6 +26,7 @@ class AddToken extends Component {
     pendingTokens: PropTypes.object,
     clearPendingTokens: PropTypes.func,
     tokens: PropTypes.array,
+    currentAssetsTokens: PropTypes.array,
     identities: PropTypes.object,
     showSearchTab: PropTypes.bool.isRequired,
     mostRecentOverviewPage: PropTypes.string.isRequired,
@@ -134,10 +137,16 @@ class AddToken extends Component {
       selectedTokens,
     } = this.state;
 
+    let logo;
+    if (contractMap[code]) {
+      logo = contractMap[code].logo;
+    }
+
     const customToken = {
       code,
       symbol,
       decimals,
+      logo,
     };
 
     setPendingTokens({ customToken, selectedTokens });
@@ -154,17 +163,29 @@ class AddToken extends Component {
   }
 
   handleCustomCodeChange(value) {
-    const customCode = value.trim();
+    let customCode = value.trim();
+    let isValidCode = false
+    if (customCode.includes('<') && customCode.endsWith('>')) {
+      isValidCode = true
+    } else {
+      const arr = customCode.split('::');
+      isValidCode = arr.length === 3 && isValidAddress(arr[0]);
+      // fix #40
+      if (isValidCode) {
+        const _isValidChecksumAddress = isValidChecksumAddress(arr[0])
+        if (_isValidChecksumAddress) {
+          arr[0] = arr[0].toLowerCase()
+          customCode = arr.join('::')
+        }
+      }
+    }
+
     this.setState({
       customCode,
       customCodeError: null,
       tokenSelectorError: null,
       autoFilled: false,
     });
-
-    const arr = customCode.split('::');
-
-    const isValidCode = arr.length === 3 && isValidAddress(arr[0]);
 
     switch (true) {
       case !isValidCode:
@@ -177,10 +198,10 @@ class AddToken extends Component {
         });
 
         break;
-      case checkExistingCodes(customCode, this.props.tokens):
-        this.setState({
-          customCodeError: this.context.t('tokenAlreadyAdded'),
-        });
+        // case checkExistingCodes(customCode, this.props.currentAssetsTokens):
+        //   this.setState({
+        //     customCodeError: this.context.t('tokenAlreadyAdded'),
+        //   });
 
         break;
       default:

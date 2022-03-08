@@ -474,6 +474,9 @@
   "copyToClipboardOnClick": {
     "message": "Copy to clipboard on click"
   },
+  "copyTransactionDetail": {
+    "message": "Copy Transaction Detail"
+  },
   "copyTransactionId": {
     "message": "Copy Transaction ID"
   },
@@ -532,7 +535,7 @@
     "message": "Decimals of Precision"
   },
   "decimalsMustZerotoTen": {
-    "message": "Decimals must be at least 0, and not over 36."
+    "message": "Decimals must be at least 0, and not over 18."
   },
   "decrypt": {
     "message": "Decrypt"
@@ -731,7 +734,7 @@
     "message": "View the addresses of your permitted accounts (required)",
     "description": "The description for the `stc_accounts` permission"
   },
-  "ethereumPublicAddress": {
+  "starcoinPublicAddress": {
     "message": "Starcoin Public Address"
   },
   "etherscan": {

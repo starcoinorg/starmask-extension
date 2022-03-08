@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 import { getSelectedAddress, getAssets } from '../selectors';
 import { stringifyBalance } from '../helpers/utils/confirm-tx.util';
+import { tokenInfoGetter } from '../helpers/utils/token-util';
 
 export function useTokenTracker(
   tokens,
@@ -23,9 +24,9 @@ export function useTokenTracker(
       if (hideZeroBalanceTokens && Number(currentAssets[key]) === 0) {
         return;
       }
-      const numberOfDecimals = 4;
-      const { decimals } = currentToken;
-      const symbol = key.split('::')[2];
+
+      const { decimals, symbol } = currentToken;
+      const numberOfDecimals = decimals <= 9 ? 4 : 9;
       const token = {
         code: key,
         balance: currentAssets[key],
@@ -38,21 +39,34 @@ export function useTokenTracker(
     });
   }
   // added to wallet but not enabled accept_tokens ones
-  const unAcceptTokens = tokens.filter((token) => token.code.split('::').length === 3 && !currentAssets[token.code]);
-  unAcceptTokens.map(({ code, decimals }) => {
-    const numberOfDecimals = 4;
-    const symbol = code.split('::')[2];
-    const token = {
-      code,
-      balance: currentAssets[code],
-      symbol,
-      decimals,
-      string: stringifyBalance(currentAssets[code], decimals, symbol, numberOfDecimals),
-      accepted: false,
-    };
-    tokensWithBalances.push(token);
-  });
+  if (!hideZeroBalanceTokens) {
+    const unAcceptTokens = tokens.filter((token) => currentAssets && !currentAssets[token.code]);
+    unAcceptTokens.map(({ code, decimals, symbol }) => {
+      console.log('unAcceptTokens', code, currentAssets[code])
+      const numberOfDecimals = decimals <= 9 ? 4 : 9;
+      const token = {
+        code,
+        balance: currentAssets[code],
+        symbol,
+        decimals,
+        string: stringifyBalance(currentAssets[code], decimals, symbol, numberOfDecimals),
+        accepted: false,
+      };
+      tokensWithBalances.push(token);
+    });
+  }
   const loading = false;
   const error = null;
   return { loading, tokensWithBalances, error };
+}
+
+export async function getTokenInfos(currentAssets) {
+  return Promise.all(
+    Object.keys(currentAssets).map(async (code) => {
+      const result = await tokenInfoGetter()(code)
+      return { code, ...result };
+    })
+  ).then((tokens) => {
+    return tokens;
+  });
 }

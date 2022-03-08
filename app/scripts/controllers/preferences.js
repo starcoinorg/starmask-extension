@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import { strict as assert } from 'assert';
 import { ObservableStore } from '@metamask/obs-store';
 import { ethErrors } from 'eth-rpc-errors';
@@ -5,7 +6,7 @@ import { normalize as normalizeAddress } from 'eth-sig-util';
 import { isValidAddress } from 'ethereumjs-util';
 import ethers from 'ethers';
 import log from 'loglevel';
-import { LISTED_CONTRACT_ADDRESSES } from '../../../shared/constants/tokens';
+import { LISTED_CONTRACT_CODES } from '../../../shared/constants/tokens';
 import { NETWORK_TYPE_TO_ID_MAP } from '../../../shared/constants/network';
 import { isPrefixedFormattedHexString } from '../../../shared/modules/network.utils';
 import { NETWORK_EVENTS } from './network';
@@ -163,7 +164,7 @@ export default class PreferencesController {
         return await this._handleWatchAssetERC20(options);
       default:
         throw ethErrors.rpc.invalidParams(
-          `Asset of type "${type}" not supported.`,
+          `Asset of type "${ type }" not supported.`,
         );
     }
   }
@@ -199,7 +200,7 @@ export default class PreferencesController {
 
     const identities = addresses.reduce((ids, address, index) => {
       const oldId = oldIdentities[address] || {};
-      ids[address] = { name: `Account ${index + 1}`, address, ...oldId };
+      ids[address] = { name: `Account ${ index + 1 }`, address, ...oldId };
       return ids;
     }, {});
     const accountTokens = addresses.reduce((tokens, address) => {
@@ -229,7 +230,7 @@ export default class PreferencesController {
     } = this.store.getState();
 
     if (!identities[address]) {
-      throw new Error(`${address} can't be deleted cause it was not found`);
+      throw new Error(`${ address } can't be deleted cause it was not found`);
     }
     delete identities[address];
     delete accountTokens[address];
@@ -267,7 +268,7 @@ export default class PreferencesController {
 
       accountTokens[address] = {};
       accountHiddenTokens[address] = {};
-      identities[address] = { name: `Account ${identityCount + 1}`, address };
+      identities[address] = { name: `Account ${ identityCount + 1 }`, address };
     });
     this.store.updateState({ identities, accountTokens, accountHiddenTokens });
   }
@@ -337,7 +338,7 @@ export default class PreferencesController {
     const { identities, tokens } = this.store.getState();
     const selectedIdentity = identities[address];
     if (!selectedIdentity) {
-      throw new Error(`Identity for '${address} not found`);
+      throw new Error(`Identity for '${ address } not found`);
     }
 
     selectedIdentity.lastSelected = Date.now();
@@ -376,9 +377,14 @@ export default class PreferencesController {
    * @returns {Promise<array>} Promises the new array of AddedToken objects.
    *
    */
-  async addToken(code, symbol, decimals, image) {
+  async addToken(code, symbol, decimals, image, checkHiddenTokenFirst) {
     const newEntry = { code, symbol, decimals: Number(decimals) };
     const { tokens, hiddenTokens } = this.store.getState();
+    if (checkHiddenTokenFirst && hiddenTokens.includes(code.toLowerCase())) {
+      // After confirm hide token, asset list will re-render and add this token back
+      // do not add it, return directly
+      return Promise.resolve(tokens);
+    }
     const assetImages = this.getAssetImages();
     const updatedHiddenTokens = hiddenTokens.filter(
       (tokenCode) => tokenCode !== code.toLowerCase(),
@@ -434,7 +440,7 @@ export default class PreferencesController {
   setAccountLabel(account, label) {
     if (!account) {
       throw new Error(
-        `setAccountLabel requires a valid address, got ${String(account)}`,
+        `setAccountLabel requires a valid address, got ${ String(account) }`,
       );
     }
     const address = normalizeAddress(account);
@@ -482,7 +488,7 @@ export default class PreferencesController {
           } catch (error) {
             log.debug(error);
             log.warn(
-              `Failed to get networkId from ${rpcDetail.rpcUrl}; skipping address book migration`,
+              `Failed to get networkId from ${ rpcDetail.rpcUrl }; skipping address book migration`,
             );
           }
         }
@@ -552,7 +558,7 @@ export default class PreferencesController {
     }
 
     if (!isPrefixedFormattedHexString(chainId)) {
-      throw new Error(`Invalid chainId: "${chainId}"`);
+      throw new Error(`Invalid chainId: "${ chainId }"`);
     }
 
     rpcList.push({ rpcUrl, chainId, ticker, nickname, rpcPrefs });
@@ -692,12 +698,16 @@ export default class PreferencesController {
       accountHiddenTokens,
     } = this._getTokenRelatedStates();
     accountTokens[selectedAddress][chainId] = tokens;
-    accountHiddenTokens[selectedAddress][chainId] = hiddenTokens;
+    // hide token and add token(in asset list re-render) will both execute this function
+    // it will be overwrited if we use the same referene of the array
+    // clone can avoid such a scenario
+    const accountHiddenTokensNew = cloneDeep(accountHiddenTokens);
+    accountHiddenTokensNew[selectedAddress][chainId] = hiddenTokens;
     this.store.updateState({
       accountTokens,
       tokens,
       assetImages,
-      accountHiddenTokens,
+      accountHiddenTokens: accountHiddenTokensNew,
       hiddenTokens,
     });
   }
@@ -792,35 +802,35 @@ export default class PreferencesController {
     }
     if (!(symbol.length > 0)) {
       throw ethErrors.rpc.invalidParams(
-        `Invalid symbol "${symbol}": shorter than a character.`,
+        `Invalid symbol "${ symbol }": shorter than a character.`,
       );
     }
     if (!(symbol.length < 12)) {
       throw ethErrors.rpc.invalidParams(
-        `Invalid symbol "${symbol}": longer than 11 characters.`,
+        `Invalid symbol "${ symbol }": longer than 11 characters.`,
       );
     }
     const numDecimals = parseInt(decimals, 10);
     if (isNaN(numDecimals) || numDecimals > 36 || numDecimals < 0) {
       throw ethErrors.rpc.invalidParams(
-        `Invalid decimals "${decimals}": must be 0 <= 36.`,
+        `Invalid decimals "${ decimals }": must be 0 <= 36.`,
       );
     }
     if (!isValidAddress(address)) {
-      throw ethErrors.rpc.invalidParams(`Invalid address "${address}".`);
+      throw ethErrors.rpc.invalidParams(`Invalid address "${ address }".`);
     }
   }
 
-  _addSuggestedERC20Asset(address, symbol, decimals, image) {
+  _addSuggestedERC20Asset(code, symbol, decimals, image) {
     const newEntry = {
-      address,
+      code,
       symbol,
       decimals,
       image,
-      unlisted: !LISTED_CONTRACT_ADDRESSES.includes(address),
+      unlisted: !LISTED_CONTRACT_CODES.includes(code),
     };
     const suggested = this.getSuggestedTokens();
-    suggested[address] = newEntry;
+    suggested[code] = newEntry;
     this.store.updateState({ suggestedTokens: suggested });
   }
 }

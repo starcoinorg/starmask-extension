@@ -1,20 +1,20 @@
 import namehash from 'eth-ens-namehash';
-import Eth from '@starcoin/stc-query';
+import StcQuery from '@starcoin/stc-query';
 import EthContract from 'ethjs-contract';
 import contentHash from 'content-hash';
 import registryAbi from './contracts/registry';
 import resolverAbi from './contracts/resolver';
 
 export default async function resolveEnsToIpfsContentId({ provider, name }) {
-  const eth = new Eth(provider);
+  const query = new StcQuery(provider);
   const hash = namehash.hash(name);
-  const contract = new EthContract(eth);
+  const contract = new EthContract(query);
   // lookup registry
-  const chainId = Number.parseInt(await eth.net_version(), 10);
+  const chainId = Number.parseInt(await query.net_version(), 10);
   const registryAddress = getRegistryForChainId(chainId);
   if (!registryAddress) {
     throw new Error(
-      `EnsIpfsResolver - no known ens-ipfs registry for chainId "${chainId}"`,
+      `EnsIpfsResolver - no known ens-ipfs registry for chainId "${ chainId }"`,
     );
   }
   const Registry = contract(registryAbi).at(registryAddress);
@@ -22,7 +22,7 @@ export default async function resolveEnsToIpfsContentId({ provider, name }) {
   const resolverLookupResult = await Registry.resolver(hash);
   const resolverAddress = resolverLookupResult[0];
   if (hexValueIsEmpty(resolverAddress)) {
-    throw new Error(`EnsIpfsResolver - no resolver found for name "${name}"`);
+    throw new Error(`EnsIpfsResolver - no resolver found for name "${ name }"`);
   }
   const Resolver = contract(resolverAbi).at(resolverAddress);
 
@@ -48,13 +48,13 @@ export default async function resolveEnsToIpfsContentId({ provider, name }) {
     const content = contentLookupResult[0];
     if (hexValueIsEmpty(content)) {
       throw new Error(
-        `EnsIpfsResolver - no content ID found for name "${name}"`,
+        `EnsIpfsResolver - no content ID found for name "${ name }"`,
       );
     }
     return { type: 'swarm-ns', hash: content.slice(2) };
   }
   throw new Error(
-    `EnsIpfsResolver - the resolver for name "${name}" is not standard, it should either supports contenthash() or content()`,
+    `EnsIpfsResolver - the resolver for name "${ name }" is not standard, it should either supports contenthash() or content()`,
   );
 }
 

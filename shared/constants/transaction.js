@@ -75,6 +75,7 @@ export const TRANSACTION_TYPES = {
  *  MetaMask UI
  * @property {'signed'} SIGNED - The transaction has been signed
  * @property {'submitted'} SUBMITTED - The transaction has been submitted to network
+ * @property {'unknown'} UNKNOWN - The transaction status is unknown(unable to be updated) because the network is offline
  * @property {'failed'} FAILED - The transaction has failed for some reason
  * @property {'dropped'} DROPPED - The transaction was dropped due to a tx with same
  *  nonce being accepted
@@ -98,6 +99,7 @@ export const TRANSACTION_STATUSES = {
   REJECTED: 'rejected',
   SIGNED: 'signed',
   SUBMITTED: 'submitted',
+  UNKNOWN: 'unknown',
   FAILED: 'failed',
   DROPPED: 'dropped',
   CONFIRMED: 'confirmed',
@@ -119,6 +121,7 @@ export const TRANSACTION_STATUSES = {
  * @type {TransactionGroupStatuses}
  */
 export const TRANSACTION_GROUP_STATUSES = {
+  UNKNOWN: 'unknown',
   CANCELLED: 'cancelled',
   PENDING: 'pending',
 };

@@ -8,6 +8,8 @@ import { conversionUtil, multiplyCurrencies } from './conversion-util';
 import { formatCurrency } from './confirm-tx.util';
 
 const { arrayify, hexlify } = ethers.utils;
+// tokens should be single instance at global level
+const tokens = {};
 
 const casedContractMap = Object.keys(contractMap).reduce((acc, base) => {
   return {
@@ -27,7 +29,7 @@ async function getSymbolFromContract(tokenAddress) {
     return result[0];
   } catch (error) {
     log.warn(
-      `symbol() call for token at address ${tokenAddress} resulted in error:`,
+      `symbol() call for token at address ${ tokenAddress } resulted in error:`,
       error,
     );
     return undefined;
@@ -43,7 +45,7 @@ async function getDecimalsFromContract(tokenAddress) {
     return decimalsBN?.toString();
   } catch (error) {
     log.warn(
-      `decimals() call for token at address ${tokenAddress} resulted in error:`,
+      `decimals() call for token at address ${ tokenAddress } resulted in error:`,
       error,
     );
     return undefined;
@@ -55,8 +57,18 @@ function getContractMetadata(tokenAddress) {
 }
 
 function getSymbol(tokenCode) {
-  const arr = tokenCode.split('::');
-  const symbol = arr[2];
+  let symbol
+  if (tokenCode.includes('<') && tokenCode.endsWith('>')) {
+    const tokenPairs = tokenCode.substr(
+      tokenCode.indexOf('<') + 1,
+      tokenCode.length - tokenCode.indexOf('<') - 2,
+    );
+    const tokenArr = tokenPairs.split(',');
+    symbol = `${ tokenArr[0].split('::')[2] }/${ tokenArr[1].split('::')[2] }`;
+  } else {
+    const arr = tokenCode.split('::');
+    symbol = arr[2];
+  }
   return Promise.resolve(symbol);
   // let symbol = await getSymbolFromContract(tokenAddress);
 
@@ -73,7 +85,7 @@ function getSymbol(tokenCode) {
 
 async function getDecimals(tokenCode) {
   const decimals = await new Promise((resolve, reject) => {
-    return global.ethQuery.sendAsync(
+    return global.stcQuery.sendAsync(
       {
         method: 'contract.call_v2',
         params: [
@@ -117,7 +129,7 @@ export async function fetchSymbolAndDecimals(tokenAddress) {
     decimals = await getDecimals(tokenAddress);
   } catch (error) {
     log.warn(
-      `symbol() and decimal() calls for token at address ${tokenAddress} resulted in error:`,
+      `symbol() and decimal() calls for token at address ${ tokenAddress } resulted in error:`,
       error,
     );
   }
@@ -145,7 +157,7 @@ export async function getSymbolAndDecimals(tokenCode, existingTokens = []) {
     decimals = await getDecimals(tokenCode);
   } catch (error) {
     log.warn(
-      `symbol() and decimal() calls for token ${tokenCode} resulted in error:`,
+      `symbol() and decimal() calls for token ${ tokenCode } resulted in error:`,
       error,
     );
   }
@@ -157,8 +169,6 @@ export async function getSymbolAndDecimals(tokenCode, existingTokens = []) {
 }
 
 export function tokenInfoGetter() {
-  const tokens = {};
-
   return async (code) => {
     if (tokens[code]) {
       return tokens[code];
@@ -271,10 +281,10 @@ export function getTokenFiatAmount(
   if (hideCurrencySymbol) {
     result = formatCurrency(currentTokenInFiat, currentCurrency);
   } else if (formatted) {
-    result = `${formatCurrency(
+    result = `${ formatCurrency(
       currentTokenInFiat,
       currentCurrency,
-    )} ${currentCurrency.toUpperCase()}`;
+    ) } ${ currentCurrency.toUpperCase() }`;
   } else {
     result = currentTokenInFiat;
   }

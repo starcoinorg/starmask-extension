@@ -433,3 +433,4 @@ export const getUnconnectedAccountAlertShown = (state) =>
   state.starmask.unconnectedAccountAlertShownOrigins;
 
 export const getTokens = (state) => state.starmask.tokens;
+export const getHiddenTokens = (state) => state.starmask.hiddenTokens;

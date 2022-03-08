@@ -65,6 +65,7 @@ export default function TransactionListItem({
     'transaction-list-item--unconfirmed':
       isPending ||
       [
+        TRANSACTION_STATUSES.UNKNOWN,
         TRANSACTION_STATUSES.FAILED,
         TRANSACTION_STATUSES.DROPPED,
         TRANSACTION_STATUSES.REJECTED,
@@ -73,7 +74,7 @@ export default function TransactionListItem({
 
   const toggleShowDetails = useCallback(() => {
     if (isUnapproved) {
-      history.push(`${CONFIRM_TRANSACTION_ROUTE}/${id}`);
+      history.push(`${ CONFIRM_TRANSACTION_ROUTE }/${ id }`);
       return;
     }
     setShowDetails((prev) => !prev);

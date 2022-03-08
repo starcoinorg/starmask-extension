@@ -144,6 +144,19 @@ export default class TransactionStateManager extends EventEmitter {
   }
 
   /**
+   * @param {string} [address] - hex prefixed address to sort the txMetas for [optional]
+   * @returns {Array} the tx list unknown status if no address is provide
+   *  returns all txMetas with unknown statuses for the current network
+   */
+  getUnknownTransactions(address) {
+    const opts = { status: TRANSACTION_STATUSES.UNKNOWN };
+    if (address) {
+      opts.from = address;
+    }
+    return this.getFilteredTxList(opts);
+  }
+
+  /**
     @param {string} [address] - hex prefixed address to sort the txMetas for [optional]
     @returns {Array} the tx list whose status is confirmed if no address is provide
     returns all txMetas who's status is confirmed for the current network
@@ -171,11 +184,11 @@ export default class TransactionStateManager extends EventEmitter {
       txMeta.txParams = this.normalizeAndValidateTxParams(txMeta.txParams);
     }
 
-    this.once(`${txMeta.id}:signed`, () => {
-      this.removeAllListeners(`${txMeta.id}:rejected`);
+    this.once(`${ txMeta.id }:signed`, () => {
+      this.removeAllListeners(`${ txMeta.id }:rejected`);
     });
-    this.once(`${txMeta.id}:rejected`, () => {
-      this.removeAllListeners(`${txMeta.id}:signed`);
+    this.once(`${ txMeta.id }:rejected`, () => {
+      this.removeAllListeners(`${ txMeta.id }:signed`);
     });
     // initialize history
     txMeta.history = [];
@@ -288,14 +301,14 @@ export default class TransactionStateManager extends EventEmitter {
         case 'chainId':
           if (typeof value !== 'number' && typeof value !== 'string') {
             throw new Error(
-              `${key} in txParams is not a Number or hex string. got: (${value})`,
+              `${ key } in txParams is not a Number or hex string. got: (${ value })`,
             );
           }
           break;
         default:
           if (typeof value !== 'string') {
             throw new Error(
-              `${key} in txParams is not a string. got: (${value})`,
+              `${ key } in txParams is not a string. got: (${ value })`,
             );
           }
           break;
@@ -443,6 +456,14 @@ export default class TransactionStateManager extends EventEmitter {
   }
 
   /**
+   *  Update the status of the tx to 'unknown'.
+   * @param { number } txId - the txMeta Id
+  */
+  setTxStatusUnknown(txId) {
+    this._setTxStatus(txId, TRANSACTION_STATUSES.UNKNOWN);
+  }
+
+  /**
    * Updates the status of the tx to 'failed' and put the error on the txMeta
    * @param {number} txId - the txMeta Id
    * @param {erroObject} err - error object
@@ -506,8 +527,8 @@ export default class TransactionStateManager extends EventEmitter {
 
     txMeta.status = status;
     try {
-      this.updateTx(txMeta, `txStateManager: setting status to ${status}`);
-      this.emit(`${txMeta.id}:${status}`, txId);
+      this.updateTx(txMeta, `txStateManager: setting status to ${ status }`);
+      this.emit(`${ txMeta.id }:${ status }`, txId);
       this.emit(`tx:status-update`, txId, status);
       if (
         [
@@ -516,7 +537,7 @@ export default class TransactionStateManager extends EventEmitter {
           TRANSACTION_STATUSES.FAILED,
         ].includes(status)
       ) {
-        this.emit(`${txMeta.id}:finished`, txMeta);
+        this.emit(`${ txMeta.id }:finished`, txMeta);
       }
       this.emit(METAMASK_CONTROLLER_EVENTS.UPDATE_BADGE);
     } catch (error) {

@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import contractMap from '@metamask/contract-metadata';
+import contractMap from '@starcoin/contract-metadata';
 import Fuse from 'fuse.js';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '../../../components/ui/text-field';
 
-const contractList = Object.entries(contractMap)
-  .map(([address, tokenData]) => ({ ...tokenData, address }))
-  .filter((tokenData) => Boolean(tokenData.erc20));
-
+const contractList = Object.entries(contractMap).map(([code, tokenData]) => ({
+  ...tokenData,
+  code,
+}));
 const fuse = new Fuse(contractList, {
   shouldSort: true,
   threshold: 0.45,
@@ -43,10 +43,10 @@ export default class TokenSearch extends Component {
   handleSearch(searchQuery) {
     this.setState({ searchQuery });
     const fuseSearchResult = fuse.search(searchQuery);
-    const addressSearchResult = contractList.filter((token) => {
-      return token.address.toLowerCase() === searchQuery.toLowerCase();
+    const codeSearchResult = contractList.filter((token) => {
+      return token.code.toLowerCase() === searchQuery.toLowerCase();
     });
-    const results = [...addressSearchResult, ...fuseSearchResult];
+    const results = [...codeSearchResult, ...fuseSearchResult];
     this.props.onSearch({ searchQuery, results });
   }
 

@@ -89,9 +89,9 @@ export function addressSummary(
     checked = stcUtil.stripHexPrefix(checked);
   }
   return checked
-    ? `${checked.slice(0, firstSegLength)}...${checked.slice(
+    ? `${ checked.slice(0, firstSegLength) }...${ checked.slice(
       checked.length - lastSegLength,
-    )}`
+    ) }`
     : '...';
 }
 
@@ -170,7 +170,7 @@ export function parseBalance(balance) {
 
   const beforeDecimal =
     weiString.length > 18 ? weiString.slice(0, weiString.length - 18) : '0';
-  afterDecimal = `000000000000000000${wei}`
+  afterDecimal = `000000000000000000${ wei }`
     .slice(-18)
     .replace(trailingZeros, '');
   if (afterDecimal === '') {
@@ -198,17 +198,17 @@ export function formatBalance(
         if (sigFigs) {
           afterDecimal = sigFigs[0];
         }
-        formatted = `0.${afterDecimal} ${ticker}`;
+        formatted = `0.${ afterDecimal } ${ ticker }`;
       }
     } else {
-      formatted = `${beforeDecimal}.${afterDecimal.slice(0, 3)} ${ticker}`;
+      formatted = `${ beforeDecimal }.${ afterDecimal.slice(0, 3) } ${ ticker }`;
     }
   } else {
     afterDecimal += Array(decimalsToKeep).join('0');
-    formatted = `${beforeDecimal}.${afterDecimal.slice(
+    formatted = `${ beforeDecimal }.${ afterDecimal.slice(
       0,
       decimalsToKeep,
-    )} ${ticker}`;
+    ) } ${ ticker }`;
   }
   return formatted;
 }
@@ -228,7 +228,7 @@ export function generateBalanceObject(formattedBalance, decimalsToKeep = 1) {
       balance = '<1.0e-5';
     }
   } else if (beforeDecimal !== '0') {
-    balance = `${beforeDecimal}.${afterDecimal.slice(0, decimalsToKeep)}`;
+    balance = `${ beforeDecimal }.${ afterDecimal.slice(0, decimalsToKeep) }`;
   }
 
   return { balance, label, shortBalance };
@@ -239,10 +239,10 @@ export function shortenBalance(balance, decimalsToKeep = 1) {
   const convertedBalance = parseFloat(balance);
   if (convertedBalance > 1000000) {
     truncatedValue = (balance / 1000000).toFixed(decimalsToKeep);
-    return `${truncatedValue}m`;
+    return `${ truncatedValue }m`;
   } else if (convertedBalance > 1000) {
     truncatedValue = (balance / 1000).toFixed(decimalsToKeep);
-    return `${truncatedValue}k`;
+    return `${ truncatedValue }k`;
   } else if (convertedBalance === 0) {
     return '0';
   } else if (convertedBalance < 0.001) {
@@ -359,7 +359,7 @@ export function shortenAddress(address = '') {
     return address;
   }
 
-  return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  return `${ address.slice(0, 6) }...${ address.slice(-4) }`;
 }
 
 export function isValidAddressHead(address) {
@@ -449,13 +449,12 @@ export function checkExistingAddresses(address, list = []) {
  * @returns {boolean} Whether or not the address is in the list
  */
 export function checkExistingCodes(code, list = []) {
-  console.log('checkExistingCodes', code, list)
   if (!code) {
     return false;
   }
 
   const matchesCode = (obj) => {
-    return obj.code?.toLowerCase() === code.toLowerCase();
+    return (typeof obj === 'string') ? obj.toLowerCase() === code.toLowerCase() : obj.code?.toLowerCase() === code.toLowerCase();
   };
 
   return list.some(matchesCode);

@@ -197,7 +197,7 @@
     "message": "自动接受代币"
   },
   "AutoAcceptTokenDescription": {
-    "message": "选中该项可以在收到新种类的代币转账的同时自动接受该代币，否则必须先手动添加并接受该代币."
+    "message": "选中该项可以自动接收代币转账，否则必须先手动添加代币并接受方可接收转账."
   },
   "autoLockTimeLimit": {
     "message": "自动锁定定时（分钟）"
@@ -442,6 +442,9 @@
   "copyToClipboardOnClick": {
     "message": "点击复制到剪贴板"
   },
+  "copyTransactionDetail": {
+    "message": "复制交易详情"
+  },
   "copyTransactionId": {
     "message": "复制交易 ID"
   },
@@ -494,7 +497,7 @@
     "message": "小数精度"
   },
   "decimalsMustZerotoTen": {
-    "message": "小数位最小为0并且不超过36位."
+    "message": "小数位最小为0并且不超过18位."
   },
   "decrypt": {
     "message": "解密"
@@ -634,7 +637,7 @@
     "description": "$1 is the return value of chain.id from an RPC endpoint"
   },
   "ensNotFoundOnCurrentNetwork": {
-    "message": "未在当前网络找到 ENS 名称。请尝试切换至主以太坊网络。"
+    "message": "未在当前网络找到 ENS 名称。请尝试切换至主网络。"
   },
   "ensRegistrationError": {
     "message": "ENS 名称登记错误"
@@ -693,8 +696,8 @@
     "message": "查看您允许的账户的地址（必填）",
     "description": "The description for the `stc_accounts` permission"
   },
-  "ethereumPublicAddress": {
-    "message": "以太坊 Starcoin 公开地址"
+  "starcoinPublicAddress": {
+    "message": "Starcoin 公开地址"
   },
   "etherscan": {
     "message": "Starcoin浏览器"
@@ -1737,7 +1740,7 @@
     "message": "3. 开始使用 web3 站点和更多功能！"
   },
   "step3HardwareWalletMsg": {
-    "message": "使用您的硬件钱包，操作与以太坊账户制作相同。登录 dApps，发送 STC ，购买和保存 ERC20 代币和诸如 CryptoKitties 等不可替代代币。"
+    "message": "使用您的硬件钱包，操作与Starcoin账户制作相同。登录 dApps，发送 STC ，购买和保存 ERC20 代币和诸如 CryptoKitties 等不可替代代币。"
   },
   "storePhrase": {
     "message": "通过如 1Password 等密码管理工具保存该账户助记词。"
@@ -1872,7 +1875,7 @@
     "description": "$1 is the number of quotes that the user can select from when opening the list of quotes on the 'view quote' screen"
   },
   "swapNetworkFeeSummary": {
-    "message": "网络手续费包括处理您的兑换和在以太坊（Starcoin）网络上存储的成本。StarMask 不从这笔费用中获利。"
+    "message": "网络手续费包括处理您的兑换和在Starcoin网络上存储的成本。StarMask 不从这笔费用中获利。"
   },
   "swapNewQuoteIn": {
     "message": "$1 后更新报价",
@@ -2000,7 +2003,7 @@
     "message": "使用最好的报价"
   },
   "swapVerifyTokenExplanation": {
-    "message": "多个代币可以使用相同的名称和符号。检查 $1（以太坊浏览器）以确认这是您正在寻找的代币。",
+    "message": "多个代币可以使用相同的名称和符号。检查 $1（Starcoin浏览器）以确认这是您正在寻找的代币。",
     "description": "This appears in a tooltip next to the verifyThisTokenOn message. It gives the user more information about why they should check the token on a block explorer. $1 will be the name or url of the block explorer, which will be the translation of 'etherscan' or a block explorer url specified for a custom network."
   },
   "swapViewToken": {

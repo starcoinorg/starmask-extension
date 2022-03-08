@@ -6,7 +6,7 @@ import PortStream from 'extension-port-stream';
 import extension from 'extensionizer';
 
 import Eth from 'ethjs';
-import EthQuery from '@starcoin/stc-query';
+import StcQuery from '@starcoin/stc-query';
 import StreamProvider from 'web3-stream-provider';
 import log from 'loglevel';
 import launchMetaMaskUi from '../../ui';
@@ -126,7 +126,7 @@ function setupWeb3Connection(connectionStream) {
   connectionStream.on('error', console.error.bind(console));
   providerStream.on('error', console.error.bind(console));
   global.ethereumProvider = providerStream;
-  global.ethQuery = new EthQuery(providerStream);
+  global.stcQuery = new StcQuery(providerStream);
   global.eth = new Eth(providerStream);
 }
 

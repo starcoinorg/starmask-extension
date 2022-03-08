@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
+import copyToClipboard from 'copy-to-clipboard';
 import {
   getEthConversionFromWeiHex,
   getValueFromWeiHex,
@@ -10,6 +11,10 @@ import { formatDate } from '../../../helpers/utils/util';
 import { getBlockExplorerUrlForTx } from '../../../../../shared/modules/transaction.utils';
 import TransactionActivityLogIcon from './transaction-activity-log-icon';
 import { CONFIRMED_STATUS } from './transaction-activity-log.constants';
+import { TRANSACTION_ERRORED_EVENT, TRANSACTION_DROPPED_EVENT } from './transaction-activity-log.constants';
+import Button from '../../ui/button';
+import Tooltip from '../../ui/tooltip';
+import Copy from '../../ui/icon/copy-icon.component';
 
 export default class TransactionActivityLog extends PureComponent {
   static contextTypes = {
@@ -77,18 +82,33 @@ export default class TransactionActivityLog extends PureComponent {
     ) : null;
   }
 
+  handleCopyTxDetail = () => {
+    const { primaryTransaction: transaction = {} } = this.props;
+    const result = JSON.stringify(transaction, null, 2);
+    copyToClipboard(result);
+  };
+
+  renderInlineDetail(eventKey) {
+    const { t } = this.context;
+    return [TRANSACTION_ERRORED_EVENT, TRANSACTION_DROPPED_EVENT].includes(eventKey) ? (
+      <div className="transaction-activity-log__action-link" onClick={this.handleCopyTxDetail}>
+        {t('copyTransactionDetail')}
+      </div>
+    ) : null
+  }
+
   renderActivity(activity, index) {
     const { conversionRate, nativeCurrency } = this.props;
     const { eventKey, value, timestamp } = activity;
     const ethValue =
       index === 0
-        ? `${getValueFromWeiHex({
+        ? `${ getValueFromWeiHex({
           value,
           fromCurrency: 'STC',
           toCurrency: 'STC',
           conversionRate,
           numberOfDecimals: 6,
-        })} ${nativeCurrency}`
+        }) } ${ nativeCurrency }`
         : getEthConversionFromWeiHex({
           value,
           fromCurrency: 'STC',
@@ -117,6 +137,7 @@ export default class TransactionActivityLog extends PureComponent {
           </div>
           {this.renderInlineRetry(index)}
           {this.renderInlineCancel(index)}
+          {this.renderInlineDetail(eventKey)}
         </div>
       </div>
     );

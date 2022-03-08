@@ -1,4 +1,4 @@
-import EthQuery from '@starcoin/stc-query';
+import StcQuery from '@starcoin/stc-query';
 import log from 'loglevel';
 import { addHexPrefix } from '@starcoin/stc-util';
 // import { cloneDeep } from 'lodash';
@@ -29,7 +29,7 @@ and used to get selected account publicKey.
 
 export default class TxGasUtil {
   constructor(provider, store, getPublicKeyFor) {
-    this.query = new EthQuery(provider);
+    this.query = new StcQuery(provider);
     this.store = store;
     this.getPublicKeyFor = getPublicKeyFor;
   }
@@ -83,7 +83,7 @@ export default class TxGasUtil {
     @returns {string} the estimated gas limit as a hex string
   */
   async estimateTxGas(txMeta) {
-    // log.debug('estimateTxGas', { txMeta })
+    log.debug('estimateTxGas', { txMeta })
     // const txParams = cloneDeep(txMeta.txParams);
 
     // // `eth_estimateGas` can fail if the user has insufficient balance for the
@@ -148,15 +148,15 @@ export default class TxGasUtil {
         },
       );
     });
-
+    log.debug({ dryRunRawResult })
     let estimatedGasHex;
     if (dryRunRawResult.status === 'Executed') {
       estimatedGasHex = new BigNumber(dryRunRawResult.gas_used, 10).toString(16);
     } else {
       if (typeof dryRunRawResult.status === 'string') {
-        throw new Error(`Starmask: contract.dry_run_raw failed. status: ${dryRunRawResult.status}, Error: ${dryRunRawResult.explained_status.Error}`)
+        throw new Error(`Starmask: contract.dry_run_raw failed. status: ${ dryRunRawResult.status }, Error: ${ dryRunRawResult.explained_status.Error }`)
       }
-      throw new Error(`Starmask: contract.dry_run_raw failed. Error: ${JSON.stringify(dryRunRawResult.explained_status)}`)
+      throw new Error(`Starmask: contract.dry_run_raw failed. Error: ${ JSON.stringify(dryRunRawResult.explained_status) }`)
     }
 
     return estimatedGasHex;
@@ -220,6 +220,7 @@ export default class TxGasUtil {
       blockGasLimit,
       multiplier,
     );
+    log.debug('getBufferedGasLimit', { gasLimit, simulationFails })
     return { gasLimit, simulationFails };
   }
 }

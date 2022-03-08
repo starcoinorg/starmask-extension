@@ -1,21 +1,21 @@
 import { connect } from 'react-redux';
-
 import { setPendingTokens, clearPendingTokens } from '../../store/actions';
 import { getMostRecentOverviewPage } from '../../ducks/history/history';
-// import { getIsMainnet } from '../../selectors/selectors';
 import AddToken from './add-token.component';
 
 const mapStateToProps = (state) => {
   const {
-    starmask: { identities, tokens, pendingTokens },
+    starmask: { identities, tokens, pendingTokens, selectedAddress, assets },
   } = state;
+  const currentAssets = assets[selectedAddress];
+  const currentAssetsTokens = (currentAssets && Object.keys(currentAssets).length) ? Object.keys(currentAssets) : []
   return {
     identities,
     mostRecentOverviewPage: getMostRecentOverviewPage(state),
     tokens,
+    currentAssetsTokens,
     pendingTokens,
-    showSearchTab: false,
-    // showSearchTab: getIsMainnet(state) || process.env.IN_TEST === 'true',
+    showSearchTab: true,
   };
 };
 

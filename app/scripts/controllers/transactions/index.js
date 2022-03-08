@@ -1,7 +1,7 @@
 import EventEmitter from 'safe-event-emitter';
 import { ObservableStore } from '@metamask/obs-store';
 import ethUtil from 'ethereumjs-util';
-import EthQuery from '@starcoin/stc-query';
+import StcQuery from '@starcoin/stc-query';
 import { ethErrors } from 'eth-rpc-errors';
 // import abi from 'human-standard-token-abi';
 // import { ethers } from 'ethers';
@@ -78,7 +78,7 @@ export default class TransactionController extends EventEmitter {
     this._getParticipateInMetrics = opts.getParticipateInMetrics;
 
     this.memStore = new ObservableStore({});
-    this.query = new EthQuery(this.provider);
+    this.query = new StcQuery(this.provider);
     this.txGasUtil = new TxGasUtil(this.provider, this.preferencesStore, opts.getPublicKeyFor);
     this._mapMethods();
     this.txStateManager = new TransactionStateManager({
@@ -105,9 +105,9 @@ export default class TransactionController extends EventEmitter {
       provider: this.provider,
       nonceTracker: this.nonceTracker,
       publishTransaction: (rawTx) => this.query.sendRawTransaction(rawTx),
-      getPendingTransactions: () => {
-        const pending = this.txStateManager.getPendingTransactions();
-        const approved = this.txStateManager.getApprovedTransactions();
+      getPendingTransactions: (address) => {
+        const pending = this.txStateManager.getPendingTransactions(address);
+        const approved = this.txStateManager.getApprovedTransactions(address);
         return [...pending, ...approved];
       },
       approveTransaction: this.approveTransaction.bind(this),
@@ -154,7 +154,7 @@ export default class TransactionController extends EventEmitter {
   */
   addTx(txMeta) {
     this.txStateManager.addTx(txMeta);
-    this.emit(`${txMeta.id}:unapproved`, txMeta);
+    this.emit(`${ txMeta.id }:unapproved`, txMeta);
   }
 
   /**
@@ -174,7 +174,7 @@ export default class TransactionController extends EventEmitter {
    */
   async newUnapprovedTransaction(txParams, opts = {}) {
     log.debug(
-      `StarMaskController newUnapprovedTransaction ${JSON.stringify(txParams)}`,
+      `StarMaskController newUnapprovedTransaction ${ JSON.stringify(txParams) }`,
     );
 
     const initialTxMeta = await this.addUnapprovedTransaction(
@@ -185,7 +185,7 @@ export default class TransactionController extends EventEmitter {
     // listen for tx completion (success, fail)
     return new Promise((resolve, reject) => {
       this.txStateManager.once(
-        `${initialTxMeta.id}:finished`,
+        `${ initialTxMeta.id }:finished`,
         (finishedTxMeta) => {
           switch (finishedTxMeta.status) {
             case TRANSACTION_STATUSES.SUBMITTED:
@@ -208,9 +208,9 @@ export default class TransactionController extends EventEmitter {
               return reject(
                 cleanErrorStack(
                   ethErrors.rpc.internal(
-                    `StarMask Tx Signature: Unknown problem: ${JSON.stringify(
+                    `StarMask Tx Signature: Unknown problem: ${ JSON.stringify(
                       finishedTxMeta.txParams,
-                    )}`,
+                    ) }`,
                   ),
                 ),
               );
@@ -228,7 +228,7 @@ export default class TransactionController extends EventEmitter {
    */
   async addUnapprovedTransaction(txParams, origin) {
     log.debug(
-      `StarMaskController addUnapprovedTransaction ${JSON.stringify(txParams)}`,
+      `StarMaskController addUnapprovedTransaction ${ JSON.stringify(txParams) }`,
     );
     // validate
     const normalizedTxParams = txUtils.normalizeTxParams(txParams);
@@ -386,6 +386,7 @@ export default class TransactionController extends EventEmitter {
     const gasLimit = this.txGasUtil.addGasBuffer(
       addHexPrefix(estimatedGasHex),
       blockGasLimit,
+      txMeta.txParams.addGasBufferMultiplier && parseFloat(txMeta.txParams.addGasBufferMultiplier) > 0 ? parseFloat(txMeta.txParams.addGasBufferMultiplier) : 1.5
     );
     return { gasLimit, simulationFails };
   }
@@ -824,6 +825,30 @@ export default class TransactionController extends EventEmitter {
     this.txStateManager.updateTx(txMeta, 'transactions#setTxHash');
   }
 
+  async handlePendingTxsOffline(address) {
+    await this.pendingTxTracker.handlePendingTxsOffline(address);
+  }
+
+  /**
+    update unknown transactons
+  */
+  async updateUnknownTxs() {
+    // in order to keep the nonceTracker accurate we block it while updating pending transactions
+    const nonceGlobalLock = await this.nonceTracker.getGlobalLock();
+    try {
+      const unKnownTxs = this.txStateManager.getUnknownTransactions();
+      await Promise.all(
+        unKnownTxs.map((txMeta) => this.pendingTxTracker.checkUnknownTx(txMeta)),
+      );
+    } catch (err) {
+      log.error(
+        'TransactionController - Error updating unknown transactions',
+      );
+      log.error(err);
+    }
+    nonceGlobalLock.releaseLock();
+  }
+
   //
   //           PRIVATE METHODS
   //
@@ -933,6 +958,10 @@ export default class TransactionController extends EventEmitter {
     this.pendingTxTracker.on(
       'tx:dropped',
       this.txStateManager.setTxStatusDropped.bind(this.txStateManager),
+    );
+    this.pendingTxTracker.on(
+      'tx:unknown',
+      this.txStateManager.setTxStatusUnknown.bind(this.txStateManager),
     );
     this.pendingTxTracker.on('tx:block-update', (txMeta, latestBlockNumber) => {
       if (!txMeta.firstRetryBlockNumber) {
@@ -1131,18 +1160,18 @@ export default class TransactionController extends EventEmitter {
           txMeta.chainId,
         );
 
-        const quoteVsExecutionRatio = `${new BigNumber(tokensReceived, 10)
+        const quoteVsExecutionRatio = `${ new BigNumber(tokensReceived, 10)
           .div(txMeta.swapMetaData.token_to_amount, 10)
           .times(100)
-          .round(2)}%`;
+          .round(2) }%`;
 
-        const estimatedVsUsedGasRatio = `${new BigNumber(
+        const estimatedVsUsedGasRatio = `${ new BigNumber(
           txMeta.txReceipt.gasUsed,
           16,
         )
           .div(txMeta.swapMetaData.estimated_gas, 10)
           .times(100)
-          .round(2)}%`;
+          .round(2) }%`;
 
         this._trackMetaMetricsEvent({
           event: 'Swap Completed',

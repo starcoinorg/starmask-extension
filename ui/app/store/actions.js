@@ -30,7 +30,7 @@ import {
 import { updateSendErrors } from '../ducks/send/send.duck';
 import { switchedToUnconnectedAccount } from '../ducks/alerts/unconnected-account';
 import { getUnconnectedAccountAlertEnabledness } from '../ducks/metamask/metamask';
-import { LISTED_CONTRACT_ADDRESSES } from '../../../shared/constants/tokens';
+import { LISTED_CONTRACT_CODES } from '../../../shared/constants/tokens';
 import * as actionConstants from './actionConstants';
 
 let background = null;
@@ -269,7 +269,7 @@ export function resetAccount() {
           return;
         }
 
-        log.info(`Transaction history reset for ${account}`);
+        log.info(`Transaction history reset for ${ account }`);
         dispatch(showAccountsPage());
         resolve(account);
       });
@@ -299,7 +299,7 @@ export function removeAccount(address) {
       dispatch(hideLoadingIndication());
     }
 
-    log.info(`Account removed: ${address}`);
+    log.info(`Account removed: ${ address }`);
     dispatch(showAccountsPage());
   };
 }
@@ -432,7 +432,7 @@ export function connectHardware(deviceName, page, hdPath) {
   log.debug(`background.connectHardware`, deviceName, page, hdPath);
   return async (dispatch) => {
     dispatch(
-      showLoadingIndication(`Looking for your ${capitalize(deviceName)}...`),
+      showLoadingIndication(`Looking for your ${ capitalize(deviceName) }...`),
     );
 
     let accounts;
@@ -1332,7 +1332,6 @@ export function lockMetamask() {
 }
 
 async function _setSelectedAddress(dispatch, address) {
-  log.debug(`background.setSelectedAddress`);
   const tokens = await promisifiedBackground.setSelectedAddress(address);
   dispatch(updateTokens(tokens));
 }
@@ -1340,7 +1339,6 @@ async function _setSelectedAddress(dispatch, address) {
 export function setSelectedAddress(address) {
   return async (dispatch) => {
     dispatch(showLoadingIndication());
-    log.debug(`background.setSelectedAddress`);
     try {
       await _setSelectedAddress(dispatch, address);
     } catch (error) {
@@ -1355,7 +1353,6 @@ export function setSelectedAddress(address) {
 export function showAccountDetail(address) {
   return async (dispatch, getState) => {
     dispatch(showLoadingIndication());
-    log.debug(`background.setSelectedAddress`);
 
     const state = getState();
     const unconnectedAccountAccountAlertIsEnabled = getUnconnectedAccountAlertEnabledness(
@@ -1448,6 +1445,7 @@ export function addToken(
   decimals,
   image,
   dontShowLoadingIndicator,
+  checkHiddenTokenFirst,
 ) {
   return (dispatch) => {
     if (!code) {
@@ -1457,7 +1455,7 @@ export function addToken(
       dispatch(showLoadingIndication());
     }
     return new Promise((resolve, reject) => {
-      background.addToken(code, symbol, decimals, image, (err, tokens) => {
+      background.addToken(code, symbol, decimals, image, checkHiddenTokenFirst, (err, tokens) => {
         dispatch(hideLoadingIndication());
         if (err) {
           dispatch(displayWarning(err.message));
@@ -1489,19 +1487,21 @@ export function removeToken(code) {
   };
 }
 
-export function addTokens(tokens) {
+export function addTokens(tokens, checkHiddenTokenFirst) {
   return (dispatch) => {
     if (Array.isArray(tokens)) {
       return Promise.all(
-        tokens.map(({ code, symbol, decimals }) =>
-          dispatch(addToken(code, symbol, decimals)),
-        ),
+        tokens.map(({ code, symbol, decimals, logo }) => {
+          const image = logo ? `images/contract/${ logo }` : undefined;
+          return dispatch(addToken(code, symbol, decimals, image, false, checkHiddenTokenFirst));
+        }),
       );
     }
     return Promise.all(
-      Object.entries(tokens).map(([_, { code, symbol, decimals }]) =>
-        dispatch(addToken(code, symbol, decimals)),
-      ),
+      Object.entries(tokens).map(([_, { code, symbol, decimals, logo }]) => {
+        const image = logo ? `images/contract/${ logo }` : undefined;
+        return dispatch(addToken(code, symbol, decimals, image, false, checkHiddenTokenFirst));
+      }),
     );
   };
 }
@@ -1669,7 +1669,7 @@ export function updateAndSetCustomRpc(
 ) {
   return async (dispatch) => {
     log.debug(
-      `background.updateAndSetCustomRpc: ${newRpc} ${chainId} ${ticker} ${nickname}`,
+      `background.updateAndSetCustomRpc: ${ newRpc } ${ chainId } ${ ticker } ${ nickname }`,
     );
 
     try {
@@ -1702,7 +1702,7 @@ export function editRpc(
   rpcPrefs,
 ) {
   return async (dispatch) => {
-    log.debug(`background.delRpcTarget: ${oldRpc}`);
+    log.debug(`background.delRpcTarget: ${ oldRpc }`);
     try {
       promisifiedBackground.delCustomRpc(oldRpc);
     } catch (error) {
@@ -1735,7 +1735,7 @@ export function editRpc(
 export function setRpcTarget(newRpc, chainId, ticker = 'STC', nickname) {
   return async (dispatch) => {
     log.debug(
-      `background.setRpcTarget: ${newRpc} ${chainId} ${ticker} ${nickname}`,
+      `background.setRpcTarget: ${ newRpc } ${ chainId } ${ ticker } ${ nickname }`,
     );
 
     try {
@@ -1765,7 +1765,7 @@ export function rollbackToPreviousProvider() {
 
 export function delRpcTarget(oldRpc) {
   return (dispatch) => {
-    log.debug(`background.delRpcTarget: ${oldRpc}`);
+    log.debug(`background.delRpcTarget: ${ oldRpc }`);
     return new Promise((resolve, reject) => {
       background.delCustomRpc(oldRpc, (err) => {
         if (err) {
@@ -2292,8 +2292,6 @@ export function setMouseUserState(isMouseUser) {
 }
 
 export async function forceUpdateMetamaskState(dispatch) {
-  log.debug(`background.getState`);
-
   let newState;
   try {
     newState = await promisifiedBackground.getState();
@@ -2464,7 +2462,7 @@ export function setPendingTokens(pendingTokens) {
       : selectedTokens;
 
   Object.keys(tokens).forEach((tokenCode) => {
-    tokens[tokenCode].unlisted = !LISTED_CONTRACT_ADDRESSES.includes(
+    tokens[tokenCode].unlisted = !LISTED_CONTRACT_CODES.includes(
       tokenCode.toLowerCase(),
     );
   });
@@ -3005,7 +3003,7 @@ export function setPendingNFTs(pendingNFTs) {
       : selectedNFTs;
 
   Object.keys(nfts).forEach((key) => {
-    nfts[key].unlisted = !LISTED_CONTRACT_ADDRESSES.includes(key.toLowerCase());
+    nfts[key].unlisted = !LISTED_CONTRACT_CODES.includes(key.toLowerCase());
   });
 
   return {
@@ -3089,5 +3087,20 @@ export function addNFTs(nfts) {
         dispatch(addNFT(meta, body)),
       ),
     );
+  };
+}
+
+export function handlePendingTxsOffline(address) {
+  return (dispatch) => {
+    return new Promise((resolve, reject) => {
+      background.handlePendingTxsOffline(address, (err, result) => {
+        if (err) {
+          dispatch(displayWarning(err.message));
+          reject(err);
+          return;
+        }
+        resolve(result);
+      });
+    });
   };
 }

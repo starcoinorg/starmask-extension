@@ -58,7 +58,7 @@ export function decodeTokenData(data) {
 
 async function getMethodFrom4Byte(fourBytePrefix) {
   const fourByteResponse = await fetchWithCache(
-    `https://www.4byte.directory/api/v1/signatures/?hex_signature=${fourBytePrefix}`,
+    `https://www.4byte.directory/api/v1/signatures/?hex_signature=${ fourBytePrefix }`,
     {
       referrerPolicy: 'no-referrer-when-downgrade',
       body: null,
@@ -161,7 +161,7 @@ export function getLatestSubmittedTxWithNonce(
 
 export async function isSmartContractAddress(address) {
   const code = await new Promise((resolve, reject) => {
-    return global.ethQuery.getCode('0x1::Account', (error, result) => {
+    return global.stcQuery.getCode('0x1::Account', (error, result) => {
       if (error) {
         return reject(error);
       }
@@ -249,7 +249,7 @@ export function getTransactionTypeTitle(t, type) {
       return t('swapApproval');
     }
     default: {
-      throw new Error(`Unrecognized transaction type: ${type}`);
+      throw new Error(`Unrecognized transaction type: ${ type }`);
     }
   }
 }

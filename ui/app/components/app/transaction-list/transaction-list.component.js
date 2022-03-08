@@ -1,19 +1,21 @@
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useMemo, useState, useCallback, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   nonceSortedCompletedTransactionsSelector,
   nonceSortedPendingTransactionsSelector,
 } from '../../../selectors/transactions';
-import { getCurrentChainId } from '../../../selectors';
+import { getCurrentChainId, getSelectedAddress } from '../../../selectors';
 import { useI18nContext } from '../../../hooks/useI18nContext';
 import TransactionListItem from '../transaction-list-item';
 import Button from '../../ui/button';
 import { TOKEN_CATEGORY_HASH } from '../../../helpers/constants/transactions';
 import { SWAPS_CHAINID_CONTRACT_ADDRESS_MAP } from '../../../../../shared/constants/swaps';
 import { TRANSACTION_TYPES } from '../../../../../shared/constants/transaction';
+import { handlePendingTxsOffline } from '../../../store/actions';
 
 const PAGE_INCREMENT = 10;
+const DELAY = 10000;
 
 // When we are on a token page, we only want to show transactions that involve that token.
 // In the case of token transfers or approvals, these will be transactions sent to the
@@ -81,7 +83,7 @@ export default function TransactionList({
     nonceSortedCompletedTransactionsSelector,
   );
   const chainId = useSelector(getCurrentChainId);
-
+  const selectedAddress = useSelector(getSelectedAddress);
   const pendingTransactions = useMemo(
     () =>
       getFilteredTransactionGroups(
@@ -124,19 +126,40 @@ export default function TransactionList({
 
   const pendingLength = pendingTransactions.length;
 
+  const timer = useRef(null); // we can save timer in useRef and pass it to child
+
+  const dispatch = useDispatch();
+
+  const handlePendingTxs = (selectedAddress) => {
+    dispatch(handlePendingTxsOffline(selectedAddress));
+  }
+
+
+  useEffect(() => {
+    // first, trigger at component inited
+    handlePendingTxs(selectedAddress);
+    // then, repeat with interval of 10 seconds
+    // useRef value stored in .current property
+    timer.current = setInterval(() => handlePendingTxs(selectedAddress), DELAY);
+    // clear on component unmount
+    return () => {
+      clearInterval(timer.current);
+    };
+  }, []);
+
   return (
     <div className="transaction-list">
       <div className="transaction-list__transactions">
         {pendingLength > 0 && (
           <div className="transaction-list__pending-transactions">
             <div className="transaction-list__header">
-              {`${t('queue')} (${pendingTransactions.length})`}
+              {`${ t('queue') } (${ pendingTransactions.length })`}
             </div>
             {pendingTransactions.map((transactionGroup, index) => (
               <TransactionListItem
                 isEarliestNonce={index === 0}
                 transactionGroup={transactionGroup}
-                key={`${transactionGroup.nonce}:${index}`}
+                key={`${ transactionGroup.nonce }:${ index }`}
               />
             ))}
           </div>
@@ -151,7 +174,7 @@ export default function TransactionList({
               .map((transactionGroup, index) => (
                 <TransactionListItem
                   transactionGroup={transactionGroup}
-                  key={`${transactionGroup.nonce}:${limit + index - 10}`}
+                  key={`${ transactionGroup.nonce }:${ limit + index - 10 }`}
                 />
               ))
           ) : (

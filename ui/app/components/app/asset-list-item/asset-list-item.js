@@ -43,7 +43,7 @@ const AssetListItem = ({
       wrapperClassName="asset-list-item__warning-tooltip"
       interactive
       position="bottom"
-      html={warning}
+      html={warning.replace('<', '\n<').replace(',', '\n,')}
     >
       <InfoIcon severity={SEVERITIES.SUCCESS} />
     </Tooltip>
@@ -52,7 +52,7 @@ const AssetListItem = ({
   const midContent = warning ? (
     <>
       <InfoIcon severity={SEVERITIES.SUCCESS} />
-      <div className="asset-list-item__warning">{warning}</div>
+      <div className="asset-list-item__warning">{warning.replace('<', '\n<').replace(',', '\n,')}</div>
     </>
   ) : null;
 
@@ -98,7 +98,7 @@ const AssetListItem = ({
         <button
           className="asset-list-item__token-button"
           onClick={onClick}
-          title={`${primary} ${tokenSymbol}`}
+          title={`${ primary } ${ tokenSymbol }`}
         >
           <h2>
             <span className="asset-list-item__token-value">{primary}</span>
@@ -115,7 +115,7 @@ const AssetListItem = ({
           diameter={32}
           address={tokenCode}
           image={tokenImage}
-          alt={`${primary} ${tokenSymbol}`}
+          alt={`${ primary } ${ tokenSymbol }`}
         />
       }
       midContent={midContent}

@@ -11,20 +11,20 @@ export function decodeNFTMeta(hex) {
 
 export async function getNFTGalleryInfo(meta, body) {
   const metaInfo = await new Promise((resolve, reject) => {
-    return global.ethQuery.sendAsync(
+    return global.stcQuery.sendAsync(
       {
         method: 'state.get_resource',
-        params: ['0x1', `0x1::NFT::NFTTypeInfoV2<${meta}>`, { decode: true }],
+        params: ['0x1', `0x1::NFT::NFTTypeInfoV2<${ meta }>`, { decode: true }],
       },
       (error, result) => {
         if (error) {
           return reject(error);
         }
         if (result === null && body) {
-          return global.ethQuery.sendAsync(
+          return global.stcQuery.sendAsync(
             {
               method: 'state.get_resource',
-              params: ['0x1', `0x1::NFT::NFTTypeInfo<${meta}, ${body}>`, { decode: true }],
+              params: ['0x1', `0x1::NFT::NFTTypeInfo<${ meta }, ${ body }>`, { decode: true }],
             },
             (error2, result2) => {
               if (error2) {
@@ -116,7 +116,7 @@ export function imageSourceUrls(imageUrl) {
   const urls = [];
   if (imageUrl && imageUrl.length && imageUrl.indexOf('ipfs') === 0) {
     const hash = imageUrl.split('//')[1];
-    ipfsGatewayAPIs.forEach((api) => urls.push(`${api}${hash}`));
+    ipfsGatewayAPIs.forEach((api) => urls.push(`${ api }${ hash }`));
   } else {
     urls.push(imageUrl);
   }

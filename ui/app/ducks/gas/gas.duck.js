@@ -154,15 +154,15 @@ async function fetchExternalBasicGasEstimates() {
 async function fetchEthGasPriceEstimates(state) {
   const chainId = getCurrentChainId(state);
   const [cachedTimeLastRetrieved, cachedBasicEstimates] = await Promise.all([
-    getStorageItem(`${chainId}_BASIC_PRICE_ESTIMATES_LAST_RETRIEVED`),
-    getStorageItem(`${chainId}_BASIC_PRICE_ESTIMATES`),
+    getStorageItem(`${ chainId }_BASIC_PRICE_ESTIMATES_LAST_RETRIEVED`),
+    getStorageItem(`${ chainId }_BASIC_PRICE_ESTIMATES`),
   ]);
   const timeLastRetrieved = cachedTimeLastRetrieved || 0;
   if (cachedBasicEstimates && Date.now() - timeLastRetrieved < 75000) {
     return cachedBasicEstimates;
   }
   const gasPrice = await new Promise((resolve, reject) => {
-    return global.ethQuery.sendAsync(
+    return global.stcQuery.sendAsync(
       { method: 'txpool.gas_price' },
       (error, result) => {
         if (error) {
@@ -196,9 +196,9 @@ async function fetchEthGasPriceEstimates(state) {
   const timeRetrieved = Date.now();
 
   await Promise.all([
-    setStorageItem(`${chainId}_BASIC_PRICE_ESTIMATES`, basicEstimates),
+    setStorageItem(`${ chainId }_BASIC_PRICE_ESTIMATES`, basicEstimates),
     setStorageItem(
-      `${chainId}_BASIC_PRICE_ESTIMATES_LAST_RETRIEVED`,
+      `${ chainId }_BASIC_PRICE_ESTIMATES_LAST_RETRIEVED`,
       timeRetrieved,
     ),
   ]);
