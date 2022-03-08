@@ -9,9 +9,6 @@ import { getMetaMaskAccounts } from '../../../selectors';
 import Button from '../../../components/ui/button';
 import { getMostRecentOverviewPage } from '../../../ducks/history/history';
 
-const HELP_LINK =
-  'https://metamask.zendesk.com/hc/en-us/articles/360015489331-Importing-an-Account';
-
 class JsonImportSubview extends Component {
   state = {
     fileContents: '',
@@ -27,14 +24,6 @@ class JsonImportSubview extends Component {
     return (
       <div className="new-account-import-form__json">
         <p>{this.context.t('usedByClients')}</p>
-        <a
-          className="warning"
-          href={HELP_LINK}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {this.context.t('fileImportFail')}
-        </a>
         <FileInput
           readAs="text"
           onLoad={this.onLoad.bind(this)}
