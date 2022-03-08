@@ -2547,7 +2547,7 @@
     read-bigint "^0.1.6"
     ws "7.2.3"
 
-"@starcoin/starcoin@^1.6.2", "@starcoin/starcoin@^1.7.0":
+"@starcoin/starcoin@^1.6.2":
   version "1.6.2"
   resolved "https://registry.npmjs.org/@starcoin/starcoin/-/starcoin-1.6.2.tgz#457e5f0ed7d7af44532aba64aab69ceee5ae200c"
   integrity sha512-zr5oYgBwi+xzfKD6+kCeqWqccbzMdBwz+kMr9hGIX915L4T2POgK8Y9w98r/0WqgEuMsx4iB9JHUBg3K1DNdOg==
@@ -2577,7 +2577,7 @@
     read-bigint "^0.1.6"
     ws "7.2.3"
 
-"@starcoin/starcoin@^1.9.0":
+"@starcoin/starcoin@^1.7.0", "@starcoin/starcoin@^1.9.0":
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/@starcoin/starcoin/-/starcoin-1.9.0.tgz#3196b84ee0132522fc45f6ef627e81f90e899937"
   integrity sha512-ePtrpgnLHiwSHAv0NWQgmYFhzx+wOwcaqEXoIMOWFlQS1YY0JATdU1Nw4j+fvZBAP4zZxmHq4Vm8u3Ju7gPDoA==
