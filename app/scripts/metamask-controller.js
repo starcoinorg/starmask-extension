@@ -1465,7 +1465,7 @@ export default class MetamaskController extends EventEmitter {
 
   async createMultiSignAccount(args) {
     const keyring = await this.keyringController.addNewKeyring('Multi Sign', [
-      args,
+      { ...args },
     ]);
     const accounts = await keyring.getAccounts();
     // update accounts in preferences controller

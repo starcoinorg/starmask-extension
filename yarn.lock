@@ -2577,7 +2577,7 @@
     read-bigint "^0.1.6"
     ws "7.2.3"
 
-"@starcoin/starcoin@^1.7.0", "@starcoin/starcoin@^1.9.0":
+"@starcoin/starcoin@^1.9.0":
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/@starcoin/starcoin/-/starcoin-1.9.0.tgz#3196b84ee0132522fc45f6ef627e81f90e899937"
   integrity sha512-ePtrpgnLHiwSHAv0NWQgmYFhzx+wOwcaqEXoIMOWFlQS1YY0JATdU1Nw4j+fvZBAP4zZxmHq4Vm8u3Ju7gPDoA==
@@ -2702,7 +2702,7 @@
 
 "@starcoin/stc-keyring-controller@^1.5.3":
   version "1.5.3"
-  resolved "https://registry.npmjs.org/@starcoin/stc-keyring-controller/-/stc-keyring-controller-1.5.3.tgz#c2d4034177ae3ea4bae585c8ce3187fb253863ba"
+  resolved "https://registry.yarnpkg.com/@starcoin/stc-keyring-controller/-/stc-keyring-controller-1.5.3.tgz#c2d4034177ae3ea4bae585c8ce3187fb253863ba"
   integrity sha512-mvImYCWPmXq/y1O6W3x5T7PczdTlgBWHeEzIyUp4FrZyNg6egeD2MMJ0Xq0w/9n1y+3m4ak3sUVx4C8fJVJEfw==
   dependencies:
     "@starcoin/stc-hd-keyring" "^1.5.3"
@@ -2715,13 +2715,13 @@
     loglevel "^1.5.0"
     obs-store "^4.0.3"
 
-"@starcoin/stc-multisign-keyring@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.npmjs.org/@starcoin/stc-multisign-keyring/-/stc-multisign-keyring-0.3.0.tgz#1e7452eb3ac8ed8952717b88638550c2d6c8c2ab"
-  integrity sha512-eYrMmCucWBguCVu/0puik0gULCU5cVka4sW50R5kCRwixukLjBytQSWn+hXBaFFBbuZHCpnonlhYKNAQS+h0NA==
+"@starcoin/stc-multisign-keyring@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@starcoin/stc-multisign-keyring/-/stc-multisign-keyring-0.4.0.tgz#7a6c45bc83dc917eb6b19bdbe1b5ef8daa71bfad"
+  integrity sha512-xZfVGstiRk5m5uOMvrcdbwsgayjsgFaLrqAr5coP871LLDfT8WNu0X9iE1E1Wjs7xpKXn9gZ1sLG8Iajsm0FgQ==
   dependencies:
     "@ethersproject/bytes" "^5.0.6"
-    "@starcoin/starcoin" "^1.7.0"
+    "@starcoin/starcoin" "^1.9.0"
     "@starcoin/stc-util" "^0.3.0"
     "@starcoin/stc-wallet" "^1.2.2"
     eth-sig-util "^2.5.0"

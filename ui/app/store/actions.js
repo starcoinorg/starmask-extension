@@ -357,7 +357,7 @@ export function createMultiSignAccount(args) {
         value: newState.selectedAddress,
       });
     }
-    return newState;
+    return newState.selectedAddress;
   };
 }
 
