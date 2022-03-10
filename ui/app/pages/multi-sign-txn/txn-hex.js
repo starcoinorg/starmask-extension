@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import log from 'loglevel';
-import { encoding, starcoin_types } from '@starcoin/starcoin';
+import { getCurrentKeyring } from '../../selectors';
 import * as actions from '../../store/actions';
 import { getMetaMaskAccounts } from '../../selectors';
 import Button from '../../components/ui/button';
@@ -24,6 +24,7 @@ class TxnHexImportView extends Component {
     hideModal: PropTypes.func.isRequired,
     setSelectedAddress: PropTypes.func.isRequired,
     firstAddress: PropTypes.string.isRequired,
+    isMultiSign: PropTypes.bool.isRequired,
     error: PropTypes.node,
   };
 
@@ -34,17 +35,16 @@ class TxnHexImportView extends Component {
     const {
       //   importNewAccount,
       history,
+      isMultiSign,
+      signMultiSignTransaction,
       //   displayWarning,
       //   setSelectedAddress,
       //   firstAddress,
     } = this.props;
 
-    log.debug({ txnHex });
-    const txn = encoding.bcsDecode(
-      starcoin_types.SignedUserTransaction,
-      txnHex,
-    );
-    console.log({ txn });
+    log.debug({ txnHex, isMultiSign });
+
+    signMultiSignTransaction(txnHex)
     history.push(MULTI_SIGN_TXN_HISTORY_ROUTE);
     // importNewAccount('Private Key', [privateKey])
     //   .then(({ selectedAddress }) => {
@@ -138,9 +138,12 @@ export default compose(
 )(TxnHexImportView);
 
 function mapStateToProps(state) {
+  const keyring = getCurrentKeyring(state);
+  const isMultiSign = keyring.type === 'Multi Sign';
   return {
     error: state.appState.warning,
     firstAddress: Object.keys(getMetaMaskAccounts(state))[0],
+    isMultiSign
   };
 }
 
@@ -156,5 +159,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(actions.displayWarning(message || null)),
     setSelectedAddress: (address) =>
       dispatch(actions.setSelectedAddress(address)),
+    signMultiSignTransaction: (txnHex) =>
+      dispatch(actions.signMultiSignTransaction(txnHex)),
   };
 }

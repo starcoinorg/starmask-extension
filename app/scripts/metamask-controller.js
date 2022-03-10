@@ -756,6 +756,7 @@ export default class MetamaskController extends EventEmitter {
         txController,
       ),
       handlePendingTxsOffline: nodeify(txController.handlePendingTxsOffline, txController),
+      signMultiSignTransaction: nodeify(this.signMultiSignTransaction, this),
 
       // messageManager
       signMessage: nodeify(this.signMessage, this),
@@ -1902,6 +1903,13 @@ export default class MetamaskController extends EventEmitter {
       customGasPrice,
       customGasLimit,
     );
+    const state = await this.getState();
+    return state;
+  }
+
+  async signMultiSignTransaction(txnHex) {
+    const metamaskState = await this.getState();
+    await this.txController.signMultiSignTransaction(txnHex, metamaskState.selectedAddress);
     const state = await this.getState();
     return state;
   }

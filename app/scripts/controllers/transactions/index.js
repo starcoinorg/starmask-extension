@@ -594,6 +594,19 @@ export default class TransactionController extends EventEmitter {
     @param {number} txId - the tx's Id
     @returns {string} rawTx
   */
+  async signMultiSignTransaction(txnHex, address) {
+    log.debug('signMultiSignTransaction', { txnHex, address })
+    const txn = encoding.bcsDecode(
+      starcoin_types.SignedUserTransaction,
+      txnHex,
+    );
+    console.log({ txn });
+  }
+  /**
+    adds the chain id and signs the transaction and set the status to signed
+    @param {number} txId - the tx's Id
+    @returns {string} rawTx
+  */
   async signTransaction(txId) {
     // log.debug('signTransaction', txId);
     const txMeta = this.txStateManager.getTx(txId);

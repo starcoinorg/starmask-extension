@@ -28,7 +28,6 @@ class MultiSignTxnHistory extends Component {
     const { limit } = this.state;
 
     log.debug({ multiSignTransactions })
-    log.debug({ multiSignTransactions })
     return (
       <div className="transaction-list">
         <div className="transaction-list__transactions">
@@ -39,7 +38,7 @@ class MultiSignTxnHistory extends Component {
                 .map((transactionGroup, index) => (
                   <MultiSignTxnListItem
                     transactionGroup={transactionGroup}
-                    key={`${transactionGroup.nonce}:${limit + index - 10}`}
+                    key={`${ transactionGroup.nonce }:${ limit + index - 10 }`}
                   />
                 ))
             ) : (

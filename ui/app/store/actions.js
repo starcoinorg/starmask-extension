@@ -1634,6 +1634,32 @@ export function createRetryTransaction(txId, customGasPrice, customGasLimit) {
   };
 }
 
+export function signMultiSignTransaction(txnHex) {
+  log.debug('action.signMultiSignTransaction', { txnHex });
+  // let newTx;
+
+  return (dispatch) => {
+    return new Promise((resolve, reject) => {
+      background.signMultiSignTransaction(
+        txnHex,
+        (err, newState) => {
+          if (err) {
+            dispatch(displayWarning(err.message));
+            reject(err);
+            return;
+          }
+
+          // const { currentNetworkTxList } = newState;
+          // newTx = currentNetworkTxList[currentNetworkTxList.length - 1];
+          resolve(newState);
+        },
+      );
+    })
+      .then((newState) => dispatch(updateMetamaskState(newState)))
+    // .then(() => newTx);
+  };
+}
+
 //
 // config
 //
