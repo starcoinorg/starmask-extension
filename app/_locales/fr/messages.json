@@ -1668,6 +1668,9 @@
   "sign": {
     "message": "Signer"
   },
+  "signMultiSignTxn": {
+    "message": "Sign MultiSign Txn"
+  },
   "signNotice": {
     "message": "Signer ce message peut avoir des effets secondaires \n dangereux. Signez uniquement les messages provenant de \n sites auxquels vous faites entièrement confiance avec l'ensemble de votre compte.\n Cette méthode dangereuse sera supprimée dans une future version. "
   },

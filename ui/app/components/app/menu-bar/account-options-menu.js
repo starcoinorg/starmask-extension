@@ -57,7 +57,7 @@ export default function AccountOptionsMenu({ anchorElement, onClose }) {
 
   const { address } = selectedIdentity;
   const isRemovable = keyring.type !== 'HD Key Tree';
-
+  const isMultiSign = keyring.type === 'Multi Sign';
   return (
     <Menu
       anchorElement={anchorElement}
@@ -97,17 +97,18 @@ export default function AccountOptionsMenu({ anchorElement, onClose }) {
       >
         {t('account')}{t('settings')}
       </MenuItem>
-      <MenuItem
-        data-testid="account-options-menu__account-details"
-        onClick={() => {
-          history.push(MULTI_SIGN_TXN_ROUTE);
-          onClose();
-        }}
-        iconClassName="fas fa-pencil-alt"
-      >
-        {t('multiSign')}
-        {t('transaction')}
-      </MenuItem>
+      {isMultiSign ? (
+        <MenuItem
+          data-testid="account-options-menu__account-details"
+          onClick={() => {
+            history.push(MULTI_SIGN_TXN_ROUTE);
+            onClose();
+          }}
+          iconClassName="fas fa-pencil-alt"
+        >
+          {t('signMultiSignTxn')}
+        </MenuItem>
+      ) : null}
       <MenuItem
         onClick={() => {
           viewOnEtherscanEvent();

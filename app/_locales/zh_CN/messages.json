@@ -1660,6 +1660,9 @@
   "sign": {
     "message": "签名"
   },
+  "signMultiSignTxn": {
+    "message": "多签交易签名"
+  },
   "signNotice": {
     "message": "签署此消息可能会产生危险的副作用。 \n只从您完全信任的网站上签名。 未来的版本将移除这种危险的方法。"
   },
