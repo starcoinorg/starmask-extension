@@ -6,6 +6,7 @@ import { connect, useSelector } from 'react-redux';
 import log from 'loglevel';
 import { getCurrentKeyring } from '../../selectors';
 import * as actions from '../../store/actions';
+import { getMostRecentOverviewPage } from '../../ducks/history/history';
 import { getMetaMaskAccounts } from '../../selectors';
 import Button from '../../components/ui/button';
 import TextField from '../../components/ui/text-field';
@@ -25,6 +26,7 @@ class TxnHexImportView extends Component {
     setSelectedAddress: PropTypes.func.isRequired,
     firstAddress: PropTypes.string.isRequired,
     isMultiSign: PropTypes.bool.isRequired,
+    mostRecentOverviewPage: PropTypes.string.isRequired,
     error: PropTypes.node,
   };
 
@@ -37,6 +39,7 @@ class TxnHexImportView extends Component {
       history,
       isMultiSign,
       signMultiSignTransaction,
+      mostRecentOverviewPage,
       //   displayWarning,
       //   setSelectedAddress,
       //   firstAddress,
@@ -45,33 +48,40 @@ class TxnHexImportView extends Component {
     log.debug({ txnHex, isMultiSign });
 
     signMultiSignTransaction(txnHex)
-    history.push(MULTI_SIGN_TXN_HISTORY_ROUTE);
-    // importNewAccount('Private Key', [privateKey])
-    //   .then(({ selectedAddress }) => {
-    //     console.log('selectedAddress', selectedAddress);
-    //     if (selectedAddress) {
-    //       this.context.metricsEvent({
-    //         eventOpts: {
-    //           category: 'Accounts',
-    //           action: 'Import Account',
-    //           name: 'Imported Account with Private Key',
-    //         },
-    //       });
-    //       history.push(mostRecentOverviewPage);
-    //       displayWarning(null);
-    //     } else {
-    //       displayWarning('Error importing account.');
-    //       this.context.metricsEvent({
-    //         eventOpts: {
-    //           category: 'Accounts',
-    //           action: 'Import Account',
-    //           name: 'Error importing with Private Key',
-    //         },
-    //       });
-    //       setSelectedAddress(firstAddress);
-    //     }
-    //   })
-    //   .catch((err) => err && displayWarning(err.message || err));
+      .then((newState) => {
+        console.log('newState', newState);
+        history.push(mostRecentOverviewPage);
+        // displayWarning(null);
+        // history.push(mostRecentOverviewPage);
+        // history.push(MULTI_SIGN_TXN_HISTORY_ROUTE);
+
+        // importNewAccount('Private Key', [privateKey])
+        //   .then(({ selectedAddress }) => {
+        //     console.log('selectedAddress', selectedAddress);
+        //     if (selectedAddress) {
+        //       this.context.metricsEvent({
+        //         eventOpts: {
+        //           category: 'Accounts',
+        //           action: 'Import Account',
+        //           name: 'Imported Account with Private Key',
+        //         },
+        //       });
+        //       history.push(mostRecentOverviewPage);
+        //       displayWarning(null);
+        //     } else {
+        //       displayWarning('Error importing account.');
+        //       this.context.metricsEvent({
+        //         eventOpts: {
+        //           category: 'Accounts',
+        //           action: 'Import Account',
+        //           name: 'Error importing with Private Key',
+        //         },
+        //       });
+        //       setSelectedAddress(firstAddress);
+        //     }
+        //   })
+        //   .catch((err) => err && displayWarning(err.message || err));
+      });
   }
 
   signTxnOnEnter = (event) => {
@@ -143,6 +153,7 @@ function mapStateToProps(state) {
   return {
     error: state.appState.warning,
     firstAddress: Object.keys(getMetaMaskAccounts(state))[0],
+    mostRecentOverviewPage: getMostRecentOverviewPage(state),
     isMultiSign
   };
 }

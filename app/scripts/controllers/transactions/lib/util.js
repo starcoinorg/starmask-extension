@@ -11,6 +11,7 @@ const normalizers = {
   nonce: (nonce) => addHexPrefix(nonce),
   value: (value) => addHexPrefix(value),
   data: (data) => addHexPrefix(data),
+  multiSignData: (multiSignData) => multiSignData,
   gas: (gas) => addHexPrefix(gas),
   gasPrice: (gasPrice) => addHexPrefix(gasPrice),
   expiredSecs: (expiredSecs) => addHexPrefix(expiredSecs),
@@ -58,13 +59,13 @@ export function validateTxParams(txParams) {
     const value = txParams.value.toString();
     if (value.includes('-')) {
       throw ethErrors.rpc.invalidParams(
-        `Invalid transaction value "${txParams.value}": not a positive number.`,
+        `Invalid transaction value "${ txParams.value }": not a positive number.`,
       );
     }
 
     if (value.includes('.')) {
       throw ethErrors.rpc.invalidParams(
-        `Invalid transaction value of "${txParams.value}": number must be in wei.`,
+        `Invalid transaction value of "${ txParams.value }": number must be in wei.`,
       );
     }
   }
@@ -78,7 +79,7 @@ export function validateTxParams(txParams) {
 export function validateFrom(txParams) {
   if (!(typeof txParams.from === 'string')) {
     throw ethErrors.rpc.invalidParams(
-      `Invalid "from" address "${txParams.from}": not a string.`,
+      `Invalid "from" address "${ txParams.from }": not a string.`,
     );
   }
   if (!isValidAddress(txParams.from)) {

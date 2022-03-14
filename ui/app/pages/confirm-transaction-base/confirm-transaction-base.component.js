@@ -381,7 +381,7 @@ export default class ConfirmTransactionBase extends Component {
       dataComponent || (
         <div className="confirm-page-container-content__data">
           <div className="confirm-page-container-content__data-box-label">
-            {`${t('functionType')}:`}
+            {`${ t('functionType') }:`}
             <span className="confirm-page-container-content__function-type">
               {functionType}
             </span>
@@ -389,7 +389,7 @@ export default class ConfirmTransactionBase extends Component {
           {params && (
             <div className="confirm-page-container-content__data-box">
               <div className="confirm-page-container-content__data-field-label">
-                {`${t('parameters')}:`}
+                {`${ t('parameters') }:`}
               </div>
               <div>
                 <pre>{JSON.stringify(params, null, 2)}</pre>
@@ -397,7 +397,7 @@ export default class ConfirmTransactionBase extends Component {
             </div>
           )}
           <div className="confirm-page-container-content__data-box-label">
-            {`${t('hexData')}: ${ethUtil.toBuffer(data).length} bytes`}
+            {`${ t('hexData') }: ${ ethUtil.toBuffer(data).length } bytes`}
           </div>
           <div className="confirm-page-container-content__data-box">{data}</div>
         </div>
@@ -564,7 +564,17 @@ export default class ConfirmTransactionBase extends Component {
   }
 
   renderTitleComponent() {
-    const { title, hexTransactionAmount } = this.props;
+    const { title, hexTransactionAmount, txData, t } = this.props;
+
+    const isMultiSign = txData && txData.txParams && txData.txParams.multiSignData
+    if (isMultiSign) {
+      const exists = 1
+      const threshold = 2
+      const total = 3
+      return (
+        <div className="confirm-detail-row__secondary">{this.context.t('multiSign')} {exists}/{threshold}</div>
+      )
+    }
 
     // Title string passed in by props takes priority
     if (title) {
@@ -602,7 +612,7 @@ export default class ConfirmTransactionBase extends Component {
 
     if (txId) {
       clearConfirmTransaction();
-      history.push(`${CONFIRM_TRANSACTION_ROUTE}/${txId}`);
+      history.push(`${ CONFIRM_TRANSACTION_ROUTE }/${ txId }`);
     }
   }
 
@@ -704,6 +714,12 @@ export default class ConfirmTransactionBase extends Component {
       showAccountInHeader,
       txData,
     } = this.props;
+    console.log('aaa', { txData })
+    let titleMultiSign
+    const isMultiSign = txData && txData.txParams && txData.txParams.multiSignData
+    if (isMultiSign) {
+      titleMultiSign = '多签'
+    }
     const { submitting, submitError, submitWarning } = this.state;
 
     const { name } = methodData;
@@ -740,7 +756,7 @@ export default class ConfirmTransactionBase extends Component {
         toNickname={toNickname}
         showEdit={onEdit && !isTxReprice}
         action={functionType}
-        title={title}
+        title={title || isMultiSign}
         titleComponent={this.renderTitleComponent()}
         subtitleComponent={this.renderSubtitleComponent()}
         hideSubtitle={hideSubtitle}

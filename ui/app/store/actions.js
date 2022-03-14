@@ -1636,7 +1636,7 @@ export function createRetryTransaction(txId, customGasPrice, customGasLimit) {
 
 export function signMultiSignTransaction(txnHex) {
   log.debug('action.signMultiSignTransaction', { txnHex });
-  // let newTx;
+  let newTx;
 
   return (dispatch) => {
     return new Promise((resolve, reject) => {
@@ -1648,15 +1648,15 @@ export function signMultiSignTransaction(txnHex) {
             reject(err);
             return;
           }
-
-          // const { currentNetworkTxList } = newState;
-          // newTx = currentNetworkTxList[currentNetworkTxList.length - 1];
+          log.debug('action.signMultiSignTransaction', { newState });
+          const { currentNetworkTxList } = newState;
+          newTx = currentNetworkTxList[currentNetworkTxList.length - 1];
           resolve(newState);
         },
       );
     })
       .then((newState) => dispatch(updateMetamaskState(newState)))
-    // .then(() => newTx);
+      .then(() => newTx);
   };
 }
 

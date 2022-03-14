@@ -506,6 +506,7 @@ export default class TransactionController extends EventEmitter {
     @param {number} txId - the tx's Id
   */
   async approveTransaction(txId) {
+    log.debug('approveTransaction', { txId })
     // TODO: Move this safety out of this function.
     // Since this transaction is async,
     // we need to keep track of what is currently being signed,
@@ -521,25 +522,30 @@ export default class TransactionController extends EventEmitter {
       this.txStateManager.setTxStatusApproved(txId);
       // get next nonce
       const txMeta = this.txStateManager.getTx(txId);
-      const fromAddress = txMeta.txParams.from;
-      // wait for a nonce
-      let { customNonceValue } = txMeta;
-      customNonceValue = Number(customNonceValue);
-      nonceLock = await this.nonceTracker.getNonceLock(fromAddress);
-      // add nonce to txParams
-      // if txMeta has lastGasPrice then it is a retry at same nonce with higher
-      // gas price transaction and therefor the nonce should not be calculated
-      const nonce = txMeta.lastGasPrice
-        ? txMeta.txParams.nonce
-        : nonceLock.nextNonce;
-      const customOrNonce =
-        customNonceValue === 0 ? customNonceValue : customNonceValue || nonce;
+      log.debug({ txMeta })
+      const isAppendMultiSign = txMeta.txParams.multiSignData
+      log.debug({ isAppendMultiSign })
+      if (!isAppendMultiSign) {
+        const fromAddress = txMeta.txParams.from;
+        // wait for a nonce
+        let { customNonceValue } = txMeta;
+        customNonceValue = Number(customNonceValue);
+        nonceLock = await this.nonceTracker.getNonceLock(fromAddress);
+        // add nonce to txParams
+        // if txMeta has lastGasPrice then it is a retry at same nonce with higher
+        // gas price transaction and therefor the nonce should not be calculated
+        const nonce = txMeta.lastGasPrice
+          ? txMeta.txParams.nonce
+          : nonceLock.nextNonce;
+        const customOrNonce =
+          customNonceValue === 0 ? customNonceValue : customNonceValue || nonce;
 
-      txMeta.txParams.nonce = addHexPrefix(customOrNonce.toString(16));
-      // add nonce debugging information to txMeta
-      txMeta.nonceDetails = nonceLock.nonceDetails;
-      if (customNonceValue) {
-        txMeta.nonceDetails.customNonceValue = customNonceValue;
+        txMeta.txParams.nonce = addHexPrefix(customOrNonce.toString(16));
+        // add nonce debugging information to txMeta
+        txMeta.nonceDetails = nonceLock.nonceDetails;
+        if (customNonceValue) {
+          txMeta.nonceDetails.customNonceValue = customNonceValue;
+        }
       }
       this.txStateManager.updateTx(txMeta, 'transactions#approveTransaction');
       // sign transaction
@@ -570,7 +576,9 @@ export default class TransactionController extends EventEmitter {
         await this.publishTransaction(txId, signedTransactionHex);
       }
       // must set transaction to submitted/failed before releasing lock
-      nonceLock.releaseLock();
+      if (nonceLock) {
+        nonceLock.releaseLock();
+      }
     } catch (err) {
       // this is try-catch wrapped so that we can guarantee that the nonceLock is released
       try {
@@ -600,7 +608,26 @@ export default class TransactionController extends EventEmitter {
       starcoin_types.SignedUserTransaction,
       txnHex,
     );
-    console.log({ txn });
+    log.debug({ txn });
+    const payload = txn.raw_txn.payload
+    log.debug({ payload })
+    const payloadInHex = (function () {
+      const se = new bcs.BcsSerializer()
+      payload.serialize(se)
+      return hexlify(se.getBytes())
+    })()
+    log.debug({ payloadInHex })
+    const txParams = { data: payloadInHex, multiSignData: txnHex, from: address }
+    const opts = { origin: 'starmask' }
+    log.debug({ txParams, opts });
+    try {
+      const hash = await this.newUnapprovedTransaction(txParams, opts)
+      log.debug({ hash });
+      return hash;
+    } catch (error) {
+      log.debug({ hash });
+      throw error
+    }
   }
   /**
     adds the chain id and signs the transaction and set the status to signed
@@ -608,97 +635,112 @@ export default class TransactionController extends EventEmitter {
     @returns {string} rawTx
   */
   async signTransaction(txId) {
-    // log.debug('signTransaction', txId);
+    log.debug('signTransaction', txId);
     const txMeta = this.txStateManager.getTx(txId);
-    // log.debug({ txMeta });
-    // add network/chain id
-    const chainId = this.getChainId();
-    const txParams = { ...txMeta.txParams, chainId };
-    // sign tx
-    const sendAmount = conversionUtil(ethUtil.stripHexPrefix(txParams.value), {
-      fromNumericBase: 'hex',
-      toNumericBase: 'dec',
-    });
-    // log.debug({ sendAmount });
-    // const senderSequenceNumber = await new Promise((resolve, reject) => {
-    //   return this.query.getResource(
-    //     txParams.from,
-    //     '0x00000000000000000000000000000001::Account::Account',
-    //     (err, res) => {
-    //       if (err) {
-    //         return reject(err);
-    //       }
-
-    //       const sequence_number = res && res.value[6][1].U64 || 0;
-    //       return resolve(new BigNumber(sequence_number, 10).toNumber());
-    //     },
-    //   );
-    // });
-    // log.debug({ nonce: txParams.nonce, senderSequenceNumber });
-    const { nonce } = txParams;
-    const maxGasAmount = txParams.gas;
-    const gasUnitPrice = txParams.gasPrice;
-    log.debug({ gasUnitPrice, maxGasAmount });
-
-    const expirationTimestampSecs = await this.txGasUtil.getExpirationTimestampSecs(txParams);
-    const fromAddress = txParams.from;
-
-    let payload;
-    if (
-      txMeta.type === TRANSACTION_TYPES.SENT_ETHER ||
-      (txMeta.type === TRANSACTION_TYPES.RETRY && !txParams.data)
-    ) {
-      const functionId = '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2';
-
-      const tyArgs = [{ Struct: { address: '0x1', module: 'STC', name: 'STC', type_params: [] } }];
-
-      const receiver = txParams.toReceiptIdentifier ? txParams.toReceiptIdentifier : txParams.to;
-      let receiverAddressHex;
-
-      if (receiver.slice(0, 3) === 'stc') {
-        const receiptIdentifierView = encoding.decodeReceiptIdentifier(receiver);
-        receiverAddressHex = ethUtil.addHexPrefix(receiptIdentifierView.accountAddress);
-      } else {
-        receiverAddressHex = receiver;
-      }
-
-      // Multiple BcsSerializers should be used in different closures, otherwise, the latter will be contaminated by the former.
-      const amountSCSHex = (function () {
-        const se = new bcs.BcsSerializer();
-        // eslint-disable-next-line no-undef
-        se.serializeU128(BigInt(sendAmount));
-        return hexlify(se.getBytes());
-      })();
-
-      const args = [arrayify(receiverAddressHex), arrayify(amountSCSHex)];
-
-      const scriptFunction = utils.tx.encodeScriptFunction(
-        functionId,
-        tyArgs,
-        args,
+    log.debug({ txMeta });
+    log.debug({ multiSignData: txMeta.txParams.multiSignData })
+    const fromAddress = txMeta.txParams.from;
+    let rawUserTransaction
+    let opts = {}
+    if (txMeta.txParams.multiSignData) {
+      const txn = encoding.bcsDecode(
+        starcoin_types.SignedUserTransaction,
+        txMeta.txParams.multiSignData,
       );
-      payload = scriptFunction;
-    } else if (txParams.data) {
-      const bytes = arrayify(txParams.data);
-      const de = new bcs.BcsDeserializer(bytes);
-      payload = starcoin_types.TransactionPayload.deserialize(de);
+      log.debug({ txn });
+      rawUserTransaction = txn.raw_txn
+      opts.authenticator = txn.authenticator
+    } else {
+      // add network/chain id
+      const chainId = this.getChainId();
+      const txParams = { ...txMeta.txParams, chainId };
+      // sign tx
+      const sendAmount = conversionUtil(ethUtil.stripHexPrefix(txParams.value), {
+        fromNumericBase: 'hex',
+        toNumericBase: 'dec',
+      });
+      // log.debug({ sendAmount });
+      // const senderSequenceNumber = await new Promise((resolve, reject) => {
+      //   return this.query.getResource(
+      //     txParams.from,
+      //     '0x00000000000000000000000000000001::Account::Account',
+      //     (err, res) => {
+      //       if (err) {
+      //         return reject(err);
+      //       }
+
+      //       const sequence_number = res && res.value[6][1].U64 || 0;
+      //       return resolve(new BigNumber(sequence_number, 10).toNumber());
+      //     },
+      //   );
+      // });
+      // log.debug({ nonce: txParams.nonce, senderSequenceNumber });
+      const { nonce } = txParams;
+      const maxGasAmount = txParams.gas;
+      const gasUnitPrice = txParams.gasPrice;
+      log.debug({ gasUnitPrice, maxGasAmount });
+
+      const expirationTimestampSecs = await this.txGasUtil.getExpirationTimestampSecs(txParams);
+
+
+      let payload;
+      if (
+        txMeta.type === TRANSACTION_TYPES.SENT_ETHER ||
+        (txMeta.type === TRANSACTION_TYPES.RETRY && !txParams.data)
+      ) {
+        const functionId = '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2';
+
+        const tyArgs = [{ Struct: { address: '0x1', module: 'STC', name: 'STC', type_params: [] } }];
+
+        const receiver = txParams.toReceiptIdentifier ? txParams.toReceiptIdentifier : txParams.to;
+        let receiverAddressHex;
+
+        if (receiver.slice(0, 3) === 'stc') {
+          const receiptIdentifierView = encoding.decodeReceiptIdentifier(receiver);
+          receiverAddressHex = ethUtil.addHexPrefix(receiptIdentifierView.accountAddress);
+        } else {
+          receiverAddressHex = receiver;
+        }
+
+        // Multiple BcsSerializers should be used in different closures, otherwise, the latter will be contaminated by the former.
+        const amountSCSHex = (function () {
+          const se = new bcs.BcsSerializer();
+          // eslint-disable-next-line no-undef
+          se.serializeU128(BigInt(sendAmount));
+          return hexlify(se.getBytes());
+        })();
+
+        const args = [arrayify(receiverAddressHex), arrayify(amountSCSHex)];
+
+        const scriptFunction = utils.tx.encodeScriptFunction(
+          functionId,
+          tyArgs,
+          args,
+        );
+        payload = scriptFunction;
+      } else if (txParams.data) {
+        const bytes = arrayify(txParams.data);
+        const de = new bcs.BcsDeserializer(bytes);
+        payload = starcoin_types.TransactionPayload.deserialize(de);
+      }
+      if (!payload) {
+        log.error('payload is undefined');
+        throw new Error('StarMask - signTransaction: payload is undefined');
+      }
+      rawUserTransaction = utils.tx.generateRawUserTransaction(
+        fromAddress,
+        payload,
+        maxGasAmount,
+        gasUnitPrice,
+        nonce,
+        expirationTimestampSecs,
+        chainId,
+      );
     }
-    if (!payload) {
-      log.error('payload is undefined');
-      throw new Error('StarMask - signTransaction: payload is undefined');
-    }
-    const rawUserTransaction = utils.tx.generateRawUserTransaction(
-      fromAddress,
-      payload,
-      maxGasAmount,
-      gasUnitPrice,
-      nonce,
-      expirationTimestampSecs,
-      chainId,
-    );
     const signedTransactionHex = await this.signEthTx(
       rawUserTransaction,
       fromAddress,
+      opts
     );
     return signedTransactionHex;
   }
