@@ -4,10 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Switch, Route, matchPath, withRouter } from 'react-router-dom';
 import classnames from 'classnames';
-import {
-  MULTI_SIGN_TXN_ROUTE,
-  MULTI_SIGN_TXN_HISTORY_ROUTE,
-} from '../../helpers/constants/routes';
+import { MULTI_SIGN_TXN_ROUTE } from '../../helpers/constants/routes';
 import { getMostRecentOverviewPage } from '../../ducks/history/history';
 import MultiSignTxnSign from './sign.container';
 import MultiSignTxnHistory from './history';
@@ -32,12 +29,6 @@ class MultiSignTxnPage extends Component {
           onClick={() => history.push(MULTI_SIGN_TXN_ROUTE)}
         >
           {this.context.t('addSign')}
-        </div>
-        <div
-          className={getClassNames(MULTI_SIGN_TXN_HISTORY_ROUTE)}
-          onClick={() => history.push(MULTI_SIGN_TXN_HISTORY_ROUTE)}
-        >
-          {this.context.t('history')}
         </div>
       </div>
     );
@@ -75,11 +66,6 @@ class MultiSignTxnPage extends Component {
               exact
               path={MULTI_SIGN_TXN_ROUTE}
               component={MultiSignTxnSign}
-            />
-            <Route
-              exact
-              path={MULTI_SIGN_TXN_HISTORY_ROUTE}
-              component={MultiSignTxnHistory}
             />
           </Switch>
         </div>

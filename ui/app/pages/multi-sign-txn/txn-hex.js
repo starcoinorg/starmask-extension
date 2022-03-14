@@ -10,7 +10,6 @@ import { getMostRecentOverviewPage } from '../../ducks/history/history';
 import { getMetaMaskAccounts } from '../../selectors';
 import Button from '../../components/ui/button';
 import TextField from '../../components/ui/text-field';
-import { MULTI_SIGN_TXN_HISTORY_ROUTE } from '../../helpers/constants/routes';
 
 class TxnHexImportView extends Component {
   static contextTypes = {
@@ -53,7 +52,6 @@ class TxnHexImportView extends Component {
         history.push(mostRecentOverviewPage);
         // displayWarning(null);
         // history.push(mostRecentOverviewPage);
-        // history.push(MULTI_SIGN_TXN_HISTORY_ROUTE);
 
         // importNewAccount('Private Key', [privateKey])
         //   .then(({ selectedAddress }) => {

@@ -70,7 +70,6 @@ const ENCRYPTION_PUBLIC_KEY_REQUEST_PATH = '/encryption-public-key-request';
 const CONFIRMATION_V_NEXT_ROUTE = '/confirmation';
 
 const MULTI_SIGN_TXN_ROUTE = '/multi-sign-txn';
-const MULTI_SIGN_TXN_HISTORY_ROUTE = '/multi-sign-txn/history';
 
 // Used to pull a convenient name for analytics tracking events. The key must
 // be react-router ready path, and can include params such as :id for popup windows
@@ -78,8 +77,8 @@ const PATH_NAME_MAP = {
   [DEFAULT_ROUTE]: 'Home',
   [UNLOCK_ROUTE]: 'Unlock Page',
   [LOCK_ROUTE]: 'Lock Page',
-  [`${ASSET_ROUTE}/:asset`]: `Asset Page`,
-  [`${NFT_ROUTE}/:nft`]: `NFT Page`,
+  [`${ ASSET_ROUTE }/:asset`]: `Asset Page`,
+  [`${ NFT_ROUTE }/:nft`]: `NFT Page`,
   [SETTINGS_ROUTE]: 'Settings Page',
   [GENERAL_ROUTE]: 'General Settings Page',
   [ADVANCED_ROUTE]: 'Advanced Settings Page',
@@ -89,12 +88,12 @@ const PATH_NAME_MAP = {
   [NETWORKS_ROUTE]: 'Network Settings Page',
   [NETWORKS_FORM_ROUTE]: 'Network Settings Page Form',
   [CONTACT_LIST_ROUTE]: 'Contact List Settings Page',
-  [`${CONTACT_EDIT_ROUTE}/:address`]: 'Edit Contact Settings Page',
+  [`${ CONTACT_EDIT_ROUTE }/:address`]: 'Edit Contact Settings Page',
   [CONTACT_ADD_ROUTE]: 'Add Contact Settings Page',
-  [`${CONTACT_VIEW_ROUTE}/:address`]: 'View Contact Settings Page',
+  [`${ CONTACT_VIEW_ROUTE }/:address`]: 'View Contact Settings Page',
   [CONTACT_MY_ACCOUNTS_ROUTE]: 'My Accounts List Settings Page',
-  [`${CONTACT_MY_ACCOUNTS_VIEW_ROUTE}/:account`]: 'View Account Settings Page',
-  [`${CONTACT_MY_ACCOUNTS_EDIT_ROUTE}/:account`]: 'Edit Account Settings Page',
+  [`${ CONTACT_MY_ACCOUNTS_VIEW_ROUTE }/:account`]: 'View Account Settings Page',
+  [`${ CONTACT_MY_ACCOUNTS_EDIT_ROUTE }/:account`]: 'Edit Account Settings Page',
   [REVEAL_SEED_ROUTE]: 'Reveal Seed Page',
   [MOBILE_SYNC_ROUTE]: 'Sync With Mobile Page',
   [RESTORE_VAULT_ROUTE]: 'Restore Vault Page',
@@ -105,23 +104,23 @@ const PATH_NAME_MAP = {
   [IMPORT_ACCOUNT_ROUTE]: 'Import Account Page',
   [CONNECT_HARDWARE_ROUTE]: 'Connect Hardware Wallet Page',
   [SEND_ROUTE]: 'Send Page',
-  [`${CONNECT_ROUTE}/:id`]: 'Connect To Site Confirmation Page',
-  [`${CONNECT_ROUTE}/:id${CONNECT_CONFIRM_PERMISSIONS_ROUTE}`]: 'Grant Connected Site Permissions Confirmation Page',
+  [`${ CONNECT_ROUTE }/:id`]: 'Connect To Site Confirmation Page',
+  [`${ CONNECT_ROUTE }/:id${ CONNECT_CONFIRM_PERMISSIONS_ROUTE }`]: 'Grant Connected Site Permissions Confirmation Page',
   [CONNECTED_ROUTE]: 'Sites Connected To This Account Page',
   [CONNECTED_ACCOUNTS_ROUTE]: 'Accounts Connected To This Site Page',
-  [`${CONFIRM_TRANSACTION_ROUTE}/:id`]: 'Confirmation Root Page',
+  [`${ CONFIRM_TRANSACTION_ROUTE }/:id`]: 'Confirmation Root Page',
   [CONFIRM_TRANSACTION_ROUTE]: 'Confirmation Root Page',
   // TODO: rename when this is the only confirmation page
   [CONFIRMATION_V_NEXT_ROUTE]: 'New Confirmation Page',
-  [`${CONFIRM_TRANSACTION_ROUTE}/:id${CONFIRM_TOKEN_METHOD_PATH}`]: 'Confirm Token Method Transaction Page',
-  [`${CONFIRM_TRANSACTION_ROUTE}/:id${CONFIRM_SEND_ETHER_PATH}`]: 'Confirm Send Ether Transaction Page',
-  [`${CONFIRM_TRANSACTION_ROUTE}/:id${CONFIRM_SEND_TOKEN_PATH}`]: 'Confirm Send Token Transaction Page',
-  [`${CONFIRM_TRANSACTION_ROUTE}/:id${CONFIRM_DEPLOY_CONTRACT_PATH}`]: 'Confirm Deploy Contract Transaction Page',
-  [`${CONFIRM_TRANSACTION_ROUTE}/:id${CONFIRM_APPROVE_PATH}`]: 'Confirm Approve Transaction Page',
-  [`${CONFIRM_TRANSACTION_ROUTE}/:id${CONFIRM_TRANSFER_FROM_PATH}`]: 'Confirm Transfer From Transaction Page',
-  [`${CONFIRM_TRANSACTION_ROUTE}/:id${SIGNATURE_REQUEST_PATH}`]: 'Signature Request Page',
-  [`${CONFIRM_TRANSACTION_ROUTE}/:id${DECRYPT_MESSAGE_REQUEST_PATH}`]: 'Decrypt Message Request Page',
-  [`${CONFIRM_TRANSACTION_ROUTE}/:id${ENCRYPTION_PUBLIC_KEY_REQUEST_PATH}`]: 'Encryption Public Key Request Page',
+  [`${ CONFIRM_TRANSACTION_ROUTE }/:id${ CONFIRM_TOKEN_METHOD_PATH }`]: 'Confirm Token Method Transaction Page',
+  [`${ CONFIRM_TRANSACTION_ROUTE }/:id${ CONFIRM_SEND_ETHER_PATH }`]: 'Confirm Send Ether Transaction Page',
+  [`${ CONFIRM_TRANSACTION_ROUTE }/:id${ CONFIRM_SEND_TOKEN_PATH }`]: 'Confirm Send Token Transaction Page',
+  [`${ CONFIRM_TRANSACTION_ROUTE }/:id${ CONFIRM_DEPLOY_CONTRACT_PATH }`]: 'Confirm Deploy Contract Transaction Page',
+  [`${ CONFIRM_TRANSACTION_ROUTE }/:id${ CONFIRM_APPROVE_PATH }`]: 'Confirm Approve Transaction Page',
+  [`${ CONFIRM_TRANSACTION_ROUTE }/:id${ CONFIRM_TRANSFER_FROM_PATH }`]: 'Confirm Transfer From Transaction Page',
+  [`${ CONFIRM_TRANSACTION_ROUTE }/:id${ SIGNATURE_REQUEST_PATH }`]: 'Signature Request Page',
+  [`${ CONFIRM_TRANSACTION_ROUTE }/:id${ DECRYPT_MESSAGE_REQUEST_PATH }`]: 'Decrypt Message Request Page',
+  [`${ CONFIRM_TRANSACTION_ROUTE }/:id${ ENCRYPTION_PUBLIC_KEY_REQUEST_PATH }`]: 'Encryption Public Key Request Page',
   [INITIALIZE_ROUTE]: 'Initialization Page',
   [INITIALIZE_WELCOME_ROUTE]: 'Install Welcome Page',
   [INITIALIZE_UNLOCK_ROUTE]: 'Initialization Unlock page',
@@ -145,7 +144,6 @@ const PATH_NAME_MAP = {
   [ADD_NFT_ROUTE]: 'Add NFT Page',
   [CONFIRM_ADD_NFT_ROUTE]: 'Confirm Add NFT Page',
   [MULTI_SIGN_TXN_ROUTE]: 'Sign Multi Sign Txn Page',
-  [MULTI_SIGN_TXN_HISTORY_ROUTE]: 'Multi Sign Txn Hisotry Page',
 };
 
 export {
@@ -216,5 +214,4 @@ export {
   ADD_NFT_ROUTE,
   CONFIRM_ADD_NFT_ROUTE,
   MULTI_SIGN_TXN_ROUTE,
-  MULTI_SIGN_TXN_HISTORY_ROUTE,
 };
