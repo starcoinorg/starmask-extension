@@ -224,7 +224,6 @@ export const nonceSortedTransactionsSelector = createSelector(
     const nonceToTransactionsMap = {};
 
     transactions
-      .filter((t) => t.status !== TRANSACTION_STATUSES.MULTISIGN)
       .forEach((transaction) => {
         const {
           txParams: { nonce } = {},
