@@ -2715,10 +2715,10 @@
     loglevel "^1.5.0"
     obs-store "^4.0.3"
 
-"@starcoin/stc-multisign-keyring@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@starcoin/stc-multisign-keyring/-/stc-multisign-keyring-0.4.0.tgz#7a6c45bc83dc917eb6b19bdbe1b5ef8daa71bfad"
-  integrity sha512-xZfVGstiRk5m5uOMvrcdbwsgayjsgFaLrqAr5coP871LLDfT8WNu0X9iE1E1Wjs7xpKXn9gZ1sLG8Iajsm0FgQ==
+"@starcoin/stc-multisign-keyring@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@starcoin/stc-multisign-keyring/-/stc-multisign-keyring-0.4.1.tgz#d5072f488bce85439902835c6d84d5ffb1a02065"
+  integrity sha512-l8Rsx+OhmijDnv6ovSLntE9nlXyXZesBO/TKEOs4HYOSkftDd6845Nx5Z2I8GPmgCxCkypmMfI5nqdhtvtmD3Q==
   dependencies:
     "@ethersproject/bytes" "^5.0.6"
     "@starcoin/starcoin" "^1.9.0"
