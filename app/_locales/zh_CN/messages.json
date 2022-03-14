@@ -582,6 +582,9 @@
   "downloadStateLogs": {
     "message": "下载状态日志"
   },
+  "downloadMulitSignTransactionBinaryFile": {
+    "message": "下载多签交易二进制文件"
+  },
   "dropped": {
     "message": "丢弃"
   },

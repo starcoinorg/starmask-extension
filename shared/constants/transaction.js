@@ -28,14 +28,8 @@
  *  resubmitting the same transaction with a higher gas fee. This type is also used
  *  to speed up pending transactions. This is accomplished by creating a new tx with
  *  the same nonce and higher gas fees.
- * @property {'multiSignCreate'} MULTI_SIGN_CREATE - When a transaction is failed it can be retried by
- *  resubmitting the same transaction with a higher gas fee. This type is also used
- *  to speed up pending transactions. This is accomplished by creating a new tx with
- *  the same nonce and higher gas fees.
- * @property {'multiSignAddSign'} MULTI_SIGN_ADD_SIGN - When a transaction is failed it can be retried by
- *  resubmitting the same transaction with a higher gas fee. This type is also used
- *  to speed up pending transactions. This is accomplished by creating a new tx with
- *  the same nonce and higher gas fees.
+ * @property {'multiSignCreate'} MULTI_SIGN_CREATE - When a transaction is created by a multiSign account.
+ * @property {'multiSignAddSign'} MULTI_SIGN_ADD_SIGN - When a multiSign transaction is imported by hex or binary file.
  */
 
 /**
@@ -81,7 +75,7 @@ export const TRANSACTION_TYPES = {
  *  nonce being accepted
  * @property {'confirmed'} CONFIRMED - The transaction was confirmed by the network
  * nonce being accepted
- * @property {'confirmed'} MULTISIGN - the multi sign transaction need more sinatures for publishing
+ * @property {'multiSign'} MULTISIGN - the multi sign transaction need more sinatures for publishing
  */
 
 /**

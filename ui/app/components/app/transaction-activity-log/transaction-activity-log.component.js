@@ -12,6 +12,10 @@ import { getBlockExplorerUrlForTx } from '../../../../../shared/modules/transact
 import TransactionActivityLogIcon from './transaction-activity-log-icon';
 import { CONFIRMED_STATUS } from './transaction-activity-log.constants';
 import { TRANSACTION_ERRORED_EVENT, TRANSACTION_DROPPED_EVENT } from './transaction-activity-log.constants';
+import {
+  TRANSACTION_STATUSES,
+  TRANSACTION_TYPES,
+} from '../../../../../shared/constants/transaction';
 import Button from '../../ui/button';
 import Tooltip from '../../ui/tooltip';
 import Copy from '../../ui/icon/copy-icon.component';
@@ -88,12 +92,36 @@ export default class TransactionActivityLog extends PureComponent {
     copyToClipboard(result);
   };
 
+  handleCopyTxId = () => {
+    const { primaryTransaction: transaction = {} } = this.props;
+    const {
+      multiSign: { signedTransactionHex: hash },
+    } = transaction;
+    copyToClipboard(hash);
+  };
+
   renderInlineDetail(eventKey) {
     const { t } = this.context;
     return [TRANSACTION_ERRORED_EVENT, TRANSACTION_DROPPED_EVENT].includes(eventKey) ? (
       <div className="transaction-activity-log__action-link" onClick={this.handleCopyTxDetail}>
         {t('copyTransactionDetail')}
       </div>
+    ) : null
+  }
+
+  renderMore() {
+    const { t } = this.context;
+    const { primaryTransaction = {} } = this.props;
+    const { status } = primaryTransaction;
+    return status === TRANSACTION_STATUSES.MULTISIGN ? (
+      <>
+        <div className="transaction-activity-log__action-link" onClick={this.handleCopyTxId}>
+          {t('multiSignTxnCopyHex')}
+        </div>
+        <div className="transaction-activity-log__action-link" onClick={this.handleCopyTxId}>
+          {t('downloadMulitSignTransactionBinaryFile')}
+        </div>
+      </>
     ) : null
   }
 
@@ -160,7 +188,10 @@ export default class TransactionActivityLog extends PureComponent {
           {activities.map((activity, index) =>
             this.renderActivity(activity, index),
           )}
+          <br />
+          {this.renderMore()}
         </div>
+
       </div>
     );
   }

@@ -620,6 +620,9 @@
   "downloadStateLogs": {
     "message": "Download State Logs"
   },
+  "downloadMulitSignTransactionBinaryFile": {
+    "message": "Download MulitSign Transaction Binary File"
+  },
   "dropped": {
     "message": "Dropped"
   },

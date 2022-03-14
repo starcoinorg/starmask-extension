@@ -608,6 +608,9 @@
   "downloadStateLogs": {
     "message": "Télécharger les journaux d'état"
   },
+  "downloadMulitSignTransactionBinaryFile": {
+    "message": "Download MulitSign Transaction Binary File"
+  },
   "dropped": {
     "message": "Chuté"
   },
@@ -1136,6 +1139,36 @@
   },
   "mobileSyncText": {
     "message": "Veuillez saisir votre mot de passe pour confirmer qu'il s'agit bien de vous !"
+  },
+  "multiSign": {
+    "message": "MultiSign"
+  },
+  "multiSignAccount": {
+    "message": "MultiSign Account"
+  },
+  "multiSignTxn": {
+    "message": "MultiSign Transaction"
+  },
+  "multiSignTxnHex": {
+    "message": "Transaction Hex"
+  },
+  "multiSignTxnCreate": {
+    "message": "Create"
+  },
+  "multiSignTxnAddSign": {
+    "message": "Add Signature"
+  },
+  "multiSignTxnCopyHex": {
+    "message": "Copy Multi Sign Transaction Hex"
+  },
+  "multiSignTxnCopiedHex": {
+    "message": "Copied Multi Sign Transaction Hex"
+  },
+  "multiSignTxnAmount": {
+    "message": "Signatures Amount"
+  },
+  "multiSignTxnTime": {
+    "message": "Time"
   },
   "mustSelectOne": {
     "message": "Vous devez sélectionner au moins 1 Token."
