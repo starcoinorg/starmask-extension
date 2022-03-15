@@ -34,52 +34,23 @@ class TxnHexImportView extends Component {
   signMultiSignTxn() {
     const { txnHex } = this.state;
     const {
-      //   importNewAccount,
       history,
+      mostRecentOverviewPage,
+      // hideModal,
       isMultiSign,
       signMultiSignTransaction,
-      mostRecentOverviewPage,
-      //   displayWarning,
-      //   setSelectedAddress,
-      //   firstAddress,
+      displayWarning,
     } = this.props;
 
-    log.debug({ txnHex, isMultiSign });
+    // hide multiSign page
+    setTimeout(() => history.push(mostRecentOverviewPage), 500);
 
     signMultiSignTransaction(txnHex)
-      .then((newState) => {
-        console.log('newState', newState);
-        history.push(mostRecentOverviewPage);
-        // displayWarning(null);
-        // history.push(mostRecentOverviewPage);
+      .then(() => {
+        displayWarning(null);
+      }).catch((err) => err && displayWarning(err.message || err));
 
-        // importNewAccount('Private Key', [privateKey])
-        //   .then(({ selectedAddress }) => {
-        //     console.log('selectedAddress', selectedAddress);
-        //     if (selectedAddress) {
-        //       this.context.metricsEvent({
-        //         eventOpts: {
-        //           category: 'Accounts',
-        //           action: 'Import Account',
-        //           name: 'Imported Account with Private Key',
-        //         },
-        //       });
-        //       history.push(mostRecentOverviewPage);
-        //       displayWarning(null);
-        //     } else {
-        //       displayWarning('Error importing account.');
-        //       this.context.metricsEvent({
-        //         eventOpts: {
-        //           category: 'Accounts',
-        //           action: 'Import Account',
-        //           name: 'Error importing with Private Key',
-        //         },
-        //       });
-        //       setSelectedAddress(firstAddress);
-        //     }
-        //   })
-        //   .catch((err) => err && displayWarning(err.message || err));
-      });
+
   }
 
   signTxnOnEnter = (event) => {
@@ -168,7 +139,8 @@ function mapDispatchToProps(dispatch) {
       dispatch(actions.displayWarning(message || null)),
     setSelectedAddress: (address) =>
       dispatch(actions.setSelectedAddress(address)),
-    signMultiSignTransaction: (txnHex) =>
-      dispatch(actions.signMultiSignTransaction(txnHex)),
+    signMultiSignTransaction: (txnHex) => {
+      return dispatch(actions.signMultiSignTransaction(txnHex));
+    }
   };
 }
