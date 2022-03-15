@@ -115,6 +115,9 @@ export default class TransactionActivityLog extends PureComponent {
     const { status } = primaryTransaction;
     return status === TRANSACTION_STATUSES.MULTISIGN ? (
       <>
+        <div className="transaction-activity-log">
+          {t('multiSign')}({primaryTransaction.multiSign.signatures}/{primaryTransaction.multiSign.threshold})
+        </div>
         <div className="transaction-activity-log__action-link" onClick={this.handleCopyTxId}>
           {t('multiSignTxnCopyHex')}
         </div>

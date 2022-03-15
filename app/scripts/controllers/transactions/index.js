@@ -524,7 +524,6 @@ export default class TransactionController extends EventEmitter {
       const txMeta = this.txStateManager.getTx(txId);
       log.debug({ txMeta })
       const isAppendMultiSign = txMeta.txParams.multiSignData
-      log.debug({ isAppendMultiSign })
       if (!isAppendMultiSign) {
         const fromAddress = txMeta.txParams.from;
         // wait for a nonce
@@ -557,22 +556,24 @@ export default class TransactionController extends EventEmitter {
       const isMultiSign =
         signedTransaction.authenticator instanceof
         starcoin_types.TransactionAuthenticatorVariantMultiEd25519;
-      log.debug({ signedTransaction })
-      log.debug({ isMultiSign })
       let isEnoughMultiSignatures = false;
       if (isMultiSign) {
+        txMeta.multiSign = {
+          threshold: signedTransaction.authenticator.public_key.threshold,
+          signatures: signedTransaction.authenticator.signature.signatures.length,
+        };
+
         const existingSignatureShards = new starcoin_types.MultiEd25519SignatureShard(
           signedTransaction.authenticator.signature,
           signedTransaction.authenticator.public_key.threshold,
         );
         isEnoughMultiSignatures = existingSignatureShards.is_enough();
-      }
-      log.debug({ isEnoughMultiSignatures })
-      if (isMultiSign && !isEnoughMultiSignatures) {
-        log.debug('do not publish')
-        txMeta.multiSign = { signedTransactionHex };
+        if (!isEnoughMultiSignatures) {
+          txMeta.multiSign.signedTransactionHex = signedTransactionHex;
+        }
         this.txStateManager.setTxStatusMultiSign(txId);
-      } else {
+      }
+      if (!isMultiSign || isEnoughMultiSignatures) {
         await this.publishTransaction(txId, signedTransactionHex);
       }
       // must set transaction to submitted/failed before releasing lock

@@ -235,7 +235,7 @@ export function useTransactionDisplayData(transactionGroup) {
   });
 
   if (isMultiSign) {
-    title = `${ title } - MultiSign(1/3)`
+    subtitle = `${ subtitle } - ${ t('multiSign') }(${ primaryTransaction.multiSign.signatures }/${ primaryTransaction.multiSign.threshold })`
   }
 
   return {
