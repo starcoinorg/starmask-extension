@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import { MULTI_SIGN_TXN_ROUTE } from '../../helpers/constants/routes';
 import { getMostRecentOverviewPage } from '../../ducks/history/history';
 import MultiSignTxnSign from './sign.container';
-import MultiSignTxnHistory from './history';
+
 class MultiSignTxnPage extends Component {
   renderTabs() {
     const {
@@ -46,7 +46,7 @@ class MultiSignTxnPage extends Component {
             'new-account__title',
           )}
         >
-          {this.context.t('multiSign')}{this.context.t('transaction')}
+          {this.context.t('multiSign')}
           <div
             className={classnames(
               'page-container__header-close',

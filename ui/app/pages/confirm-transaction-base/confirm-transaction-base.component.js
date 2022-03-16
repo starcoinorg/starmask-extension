@@ -1,6 +1,7 @@
 import ethUtil from 'ethereumjs-util';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { bcs, encoding, starcoin_types } from '@starcoin/starcoin';
 import { ENVIRONMENT_TYPE_NOTIFICATION } from '../../../../shared/constants/app';
 import { getEnvironmentType } from '../../../../app/scripts/lib/util';
 import ConfirmPageContainer, {
@@ -565,12 +566,14 @@ export default class ConfirmTransactionBase extends Component {
 
   renderTitleComponent() {
     const { title, hexTransactionAmount, txData, t } = this.props;
-
-    const isMultiSign = txData && txData.txParams && txData.txParams.multiSignData
+    const isMultiSign = txData && txData.txParams && txData.txParams.multiSignData;
     if (isMultiSign) {
-      const exists = 1
-      const threshold = 2
-      const total = 3
+      const txn = encoding.bcsDecode(
+        starcoin_types.SignedUserTransaction,
+        txData.txParams.multiSignData,
+      );
+      const exists = txn.authenticator.signature.signatures.length;
+      const threshold = txn.authenticator.public_key.threshold;
       return (
         <div className="confirm-detail-row__secondary">{this.context.t('multiSign')} {exists}/{threshold}</div>
       )

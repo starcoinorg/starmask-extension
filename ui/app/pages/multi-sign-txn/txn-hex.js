@@ -18,7 +18,7 @@ class TxnHexImportView extends Component {
   };
 
   static propTypes = {
-    importNewAccount: PropTypes.func.isRequired,
+    signMultiSignTransaction: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
     displayWarning: PropTypes.func.isRequired,
     hideModal: PropTypes.func.isRequired,
@@ -70,7 +70,8 @@ class TxnHexImportView extends Component {
   }
 
   render() {
-    const { error } = this.props;
+    const { error, history, mostRecentOverviewPage } = this.props;
+    console.log({ error })
     const { txnHex } = this.state;
     return (
       <div className="new-account-import-form__private-key">
@@ -96,8 +97,14 @@ class TxnHexImportView extends Component {
         </div>
         <div className="new-account-import-form__buttons">
           <Button
+            type="default"
+            className="new-account-create-form__button"
+            onClick={() => history.push(mostRecentOverviewPage)}
+          >
+            {this.context.t('cancel')}
+          </Button>
+          <Button
             type="secondary"
-            large
             className="new-account-create-form__button"
             onClick={() => this.signMultiSignTxn()}
             disabled={this.state.isEmpty}

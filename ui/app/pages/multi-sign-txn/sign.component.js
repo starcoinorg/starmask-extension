@@ -5,7 +5,7 @@ import copyToClipboard from 'copy-to-clipboard';
 import ReadOnlyInput from '../../components/ui/readonly-input';
 import Dropdown from '../../components/ui/dropdown';
 // Subviews
-import JsonImportView from '../create-account/import-account/json';
+import TxnFileImportSubview from './txn-file';
 import TxnHexImportView from './txn-hex';
 
 export default class MultiSignTxnSign extends Component {
@@ -50,9 +50,9 @@ export default class MultiSignTxnSign extends Component {
       case this.context.t('multiSignTxnHex'):
         return <TxnHexImportView />;
       case this.context.t('binaryFile'):
-        return <JsonImportView />;
+        return <TxnFileImportSubview />;
       default:
-        return <JsonImportView />;
+        return <TxnFileImportSubview />;
     }
   }
 
