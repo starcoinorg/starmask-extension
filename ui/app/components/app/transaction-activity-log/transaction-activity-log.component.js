@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 import copyToClipboard from 'copy-to-clipboard';
+import { exportAsFile } from '../../../helpers/utils/util';
+import { hexToDecimal } from '../../../helpers/utils/conversions.util';
 import {
   getEthConversionFromWeiHex,
   getValueFromWeiHex,
@@ -19,6 +21,7 @@ import {
 import Button from '../../ui/button';
 import Tooltip from '../../ui/tooltip';
 import Copy from '../../ui/icon/copy-icon.component';
+import { arrayify } from 'ethers/lib/utils';
 
 export default class TransactionActivityLog extends PureComponent {
   static contextTypes = {
@@ -92,6 +95,17 @@ export default class TransactionActivityLog extends PureComponent {
     copyToClipboard(result);
   };
 
+  handleDownload = () => {
+    const { primaryTransaction: transaction = {} } = this.props;
+    const {
+      multiSign: { signedTransactionHex: hash, signatures },
+      txParams: { from, nonce }
+    } = transaction;
+
+    const filename = `${ from }-${ hexToDecimal(nonce) }-${ signatures }.multisig-txn`
+    exportAsFile(filename, arrayify(hash), 'application/octet-stream');
+  };
+
   handleCopyTxId = () => {
     const { primaryTransaction: transaction = {} } = this.props;
     const {
@@ -121,7 +135,7 @@ export default class TransactionActivityLog extends PureComponent {
         <div className="transaction-activity-log__action-link" onClick={this.handleCopyTxId}>
           {t('multiSignTxnCopyHex')}
         </div>
-        <div className="transaction-activity-log__action-link" onClick={this.handleCopyTxId}>
+        <div className="transaction-activity-log__action-link" onClick={this.handleDownload}>
           {t('downloadMulitSignTransactionBinaryFile')}
         </div>
       </>
