@@ -31,6 +31,11 @@ class TxnHexImportView extends Component {
 
   state = { txnHex: '', isEmpty: true };
 
+  componentDidMount() {
+    const { hideWarning } = this.props;
+    hideWarning();
+  }
+
   signMultiSignTxn() {
     const { txnHex } = this.state;
     const {
@@ -43,7 +48,12 @@ class TxnHexImportView extends Component {
     } = this.props;
 
     // hide multiSign page
-    setTimeout(() => history.push(mostRecentOverviewPage), 500);
+    setTimeout(() => {
+      const { error } = this.props;
+      if (!error) {
+        history.push(mostRecentOverviewPage)
+      }
+    }, 500);
 
     signMultiSignTransaction(txnHex)
       .then(() => {
@@ -61,6 +71,8 @@ class TxnHexImportView extends Component {
   };
 
   checkInputEmpty(value) {
+    const { hideWarning } = this.props;
+    hideWarning();
     const txnHex = value.trim();
     let isEmpty = true;
     if (txnHex !== '') {
@@ -144,6 +156,8 @@ function mapDispatchToProps(dispatch) {
     },
     displayWarning: (message) =>
       dispatch(actions.displayWarning(message || null)),
+    hideWarning: () =>
+      dispatch(actions.hideWarning()),
     setSelectedAddress: (address) =>
       dispatch(actions.setSelectedAddress(address)),
     signMultiSignTransaction: (txnHex) => {
