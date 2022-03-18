@@ -599,8 +599,9 @@ export default class TransactionController extends EventEmitter {
   }
 
   /**
-    adds the chain id and signs the transaction and set the status to signed
-    @param {number} txId - the tx's Id
+    adds signature to a multiSign transaction
+    @param {string} txnHex - the tx's hex
+    @param {string} address - current account
     @returns {string} rawTx
   */
   async signMultiSignTransaction(txnHex, address) {
@@ -610,14 +611,19 @@ export default class TransactionController extends EventEmitter {
       txnHex,
     );
     log.debug({ txn });
-    const payload = txn.raw_txn.payload
-    log.debug({ payload })
+    const { chain_id, payload, expiration_timestamp_secs, gas_unit_price, max_gas_amount, sequence_number, gas_token_code, sender } = txn.raw_txn
+    if (encoding.addressFromSCS(sender).toLowerCase() !== address.toLowerCase()) {
+      throw new Error('Can not sign a multi sign transaction among different multi sign accounts. Please check and switch to the correct multi sign account and try again.')
+    }
+    const chainId = this.getChainId();
+    if (chain_id.id !== chainId) {
+      throw new Error('Can not sign a multi sign transaction on different networks. Please check and switch to the correct network and try again.')
+    }
     const payloadInHex = (function () {
       const se = new bcs.BcsSerializer()
       payload.serialize(se)
       return hexlify(se.getBytes())
     })()
-    log.debug({ payloadInHex })
     const txParams = { data: payloadInHex, multiSignData: txnHex, from: address }
     const opts = { origin: 'starmask' }
     log.debug({ txParams, opts });

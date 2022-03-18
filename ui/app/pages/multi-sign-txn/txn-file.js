@@ -18,6 +18,11 @@ class TxnFileImportSubview extends Component {
 
     inputRef = React.createRef();
 
+    componentDidMount() {
+        const { hideWarning } = this.props;
+        hideWarning();
+    }
+
     render() {
         const { error, history, mostRecentOverviewPage } = this.props;
         const enabled = this.state.fileContents !== '';
@@ -59,6 +64,8 @@ class TxnFileImportSubview extends Component {
     }
 
     onLoad(event) {
+        const { hideWarning } = this.props;
+        hideWarning();
         this.setState({
             fileContents: event.target.result,
         });
@@ -86,7 +93,12 @@ class TxnFileImportSubview extends Component {
         console.log('signTxnFile', { fileContents, txnHex })
 
         // hide multiSign page
-        setTimeout(() => history.push(mostRecentOverviewPage), 500);
+        setTimeout(() => {
+            const { error } = this.props;
+            if (!error) {
+                history.push(mostRecentOverviewPage)
+            }
+        }, 500);
 
         signMultiSignTransaction(txnHex)
             .then(() => {
@@ -116,6 +128,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         displayWarning: (warning) => dispatch(actions.displayWarning(warning)),
+        hideWarning: () => dispatch(actions.hideWarning()),
         importNewJsonAccount: (options) =>
             dispatch(actions.importNewAccount('JSON File', options)),
         setSelectedAddress: (address) =>
