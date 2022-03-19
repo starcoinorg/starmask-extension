@@ -231,7 +231,6 @@ export const nonceSortedTransactionsSelector = createSelector(
           type,
           time: txTime,
         } = transaction;
-        log.debug({ nonce, status, type })
         if (typeof nonce === 'undefined' || type === TRANSACTION_TYPES.INCOMING) {
           const transactionGroup = {
             transactions: [transaction],

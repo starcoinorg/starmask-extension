@@ -1,6 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { arrayify } from 'ethers/lib/utils';
 import copyToClipboard from 'copy-to-clipboard';
+import { exportAsFile } from '../../../helpers/utils/util';
+import { hexToDecimal } from '../../../helpers/utils/conversions.util';
 import SenderToRecipient from '../../ui/sender-to-recipient';
 import { FLAT_VARIANT } from '../../ui/sender-to-recipient/sender-to-recipient.constants';
 import TransactionActivityLog from '../transaction-activity-log';
@@ -97,6 +100,29 @@ export default class TransactionListItemDetails extends PureComponent {
     });
   };
 
+  handleDownload = () => {
+    const { transactionGroup } = this.props;
+    const { primaryTransaction: transaction } = transactionGroup;
+    const {
+      multiSign: { signedTransactionHex: hash, signatures },
+      txParams: { from, nonce }
+    } = transaction;
+
+    const filename = `${ from }-${ hexToDecimal(nonce) }-${ signatures }.multisig-txn`
+    exportAsFile(filename, arrayify(hash), 'application/octet-stream');
+  };
+
+  handleCopyTxHex = () => {
+    console.log('handleCopyTxHex')
+    const { transactionGroup } = this.props;
+    const { primaryTransaction: transaction } = transactionGroup;
+    const {
+      multiSign: { signedTransactionHex: hash },
+    } = transaction;
+    console.log(hash)
+    copyToClipboard(hash);
+  };
+
   componentDidMount() {
     const { recipientAddress, tryReverseResolveAddress } = this.props;
 
@@ -149,7 +175,7 @@ export default class TransactionListItemDetails extends PureComponent {
         {
           multiSign.signatures < multiSign.threshold ? (
             <>
-              <div className="transaction-activity-log__action-link" onClick={this.handleCopyTxId}>
+              <div className="transaction-activity-log__action-link" onClick={this.handleCopyTxHex}>
                 {t('multiSignTxnCopyHex')}
               </div>
               <div className="transaction-activity-log__action-link" onClick={this.handleDownload}>
