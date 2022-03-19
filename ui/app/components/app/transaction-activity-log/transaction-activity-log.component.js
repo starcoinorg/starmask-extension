@@ -14,13 +14,6 @@ import { getBlockExplorerUrlForTx } from '../../../../../shared/modules/transact
 import TransactionActivityLogIcon from './transaction-activity-log-icon';
 import { CONFIRMED_STATUS } from './transaction-activity-log.constants';
 import { TRANSACTION_ERRORED_EVENT, TRANSACTION_DROPPED_EVENT } from './transaction-activity-log.constants';
-import {
-  TRANSACTION_STATUSES,
-  TRANSACTION_TYPES,
-} from '../../../../../shared/constants/transaction';
-import Button from '../../ui/button';
-import Tooltip from '../../ui/tooltip';
-import Copy from '../../ui/icon/copy-icon.component';
 import { arrayify } from 'ethers/lib/utils';
 
 export default class TransactionActivityLog extends PureComponent {
@@ -123,24 +116,6 @@ export default class TransactionActivityLog extends PureComponent {
     ) : null
   }
 
-  renderMore() {
-    const { t } = this.context;
-    const { primaryTransaction = {} } = this.props;
-    const { status } = primaryTransaction;
-    return status === TRANSACTION_STATUSES.MULTISIGN ? (
-      <>
-        <div className="transaction-activity-log">
-          {t('multiSign')}({primaryTransaction.multiSign.signatures}/{primaryTransaction.multiSign.threshold})
-        </div>
-        <div className="transaction-activity-log__action-link" onClick={this.handleCopyTxId}>
-          {t('multiSignTxnCopyHex')}
-        </div>
-        <div className="transaction-activity-log__action-link" onClick={this.handleDownload}>
-          {t('downloadMulitSignTransactionBinaryFile')}
-        </div>
-      </>
-    ) : null
-  }
 
   renderActivity(activity, index) {
     const { conversionRate, nativeCurrency } = this.props;
@@ -205,8 +180,6 @@ export default class TransactionActivityLog extends PureComponent {
           {activities.map((activity, index) =>
             this.renderActivity(activity, index),
           )}
-          <br />
-          {this.renderMore()}
         </div>
 
       </div>

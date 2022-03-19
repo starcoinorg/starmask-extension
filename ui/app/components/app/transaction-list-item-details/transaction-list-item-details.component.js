@@ -137,6 +137,31 @@ export default class TransactionListItemDetails extends PureComponent {
     );
   }
 
+  renderMore() {
+    const { t } = this.context;
+    const { transactionGroup: { primaryTransaction } } = this.props;
+    const { multiSign } = primaryTransaction;
+    return multiSign ? (
+      <>
+        <div className="transaction-activity-log">
+          {t('multiSign')}({multiSign.signatures}/{multiSign.threshold})
+        </div>
+        {
+          multiSign.signatures < multiSign.threshold ? (
+            <>
+              <div className="transaction-activity-log__action-link" onClick={this.handleCopyTxId}>
+                {t('multiSignTxnCopyHex')}
+              </div>
+              <div className="transaction-activity-log__action-link" onClick={this.handleDownload}>
+                {t('downloadMulitSignTransactionBinaryFile')}
+              </div>
+            </>
+          ) : null
+        }
+      </>
+    ) : null
+  }
+
   render() {
     const { t } = this.context;
     const { justCopied } = this.state;
@@ -268,6 +293,8 @@ export default class TransactionListItemDetails extends PureComponent {
                 onRetry={this.handleRetry}
                 isEarliestNonce={isEarliestNonce}
               />
+              <br />
+              {this.renderMore()}
             </div>
           </div>
         </div>

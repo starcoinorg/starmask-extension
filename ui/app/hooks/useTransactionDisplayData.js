@@ -75,7 +75,7 @@ export function useTransactionDisplayData(transactionGroup) {
   const displayedStatusKey = getStatusKey(primaryTransaction);
   const isPending = displayedStatusKey in PENDING_STATUS_HASH;
   const isSubmitted = displayedStatusKey === TRANSACTION_STATUSES.SUBMITTED;
-  const isMultiSign = displayedStatusKey === TRANSACTION_STATUSES.MULTISIGN;
+  const isMultiSign = primaryTransaction.multiSign ? true : false;
 
   const primaryValue = primaryTransaction.txParams?.value;
   let prefix = '-';
