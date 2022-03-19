@@ -53,7 +53,7 @@ class TxnHexImportView extends Component {
       if (!error) {
         history.push(mostRecentOverviewPage)
       }
-    }, 500);
+    }, 1000);
 
     signMultiSignTransaction(txnHex)
       .then(() => {
