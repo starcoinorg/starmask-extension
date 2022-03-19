@@ -174,7 +174,7 @@ export default class TransactionController extends EventEmitter {
    */
   async newUnapprovedTransaction(txParams, opts = {}) {
     log.debug(
-      `StarMaskController newUnapprovedTransaction ${ JSON.stringify(txParams) }`,
+      'StarMaskController newUnapprovedTransaction', { txParams, origin }
     );
 
     const initialTxMeta = await this.addUnapprovedTransaction(
@@ -228,7 +228,7 @@ export default class TransactionController extends EventEmitter {
    */
   async addUnapprovedTransaction(txParams, origin) {
     log.debug(
-      `StarMaskController addUnapprovedTransaction ${ JSON.stringify(txParams) }`,
+      'StarMaskController addUnapprovedTransaction', { txParams, origin }
     );
     // validate
     const normalizedTxParams = txUtils.normalizeTxParams(txParams);
@@ -309,9 +309,7 @@ export default class TransactionController extends EventEmitter {
    * @returns {Promise<object>} resolves with txMeta
    */
   async addTxGasDefaults(txMeta, getCodeResponse) {
-    log.debug('addTxGasDefaults', { txMeta, getCodeResponse })
     const defaultGasPrice = await this._getDefaultGasPrice(txMeta);
-    log.debug({ defaultGasPrice })
     const {
       gasLimit: defaultGasLimit,
       simulationFails,
@@ -328,7 +326,6 @@ export default class TransactionController extends EventEmitter {
     if (defaultGasLimit && !txMeta.txParams.gas) {
       txMeta.txParams.gas = defaultGasLimit;
     }
-    log.debug({ txMeta })
     return txMeta;
   }
 
@@ -522,7 +519,6 @@ export default class TransactionController extends EventEmitter {
       this.txStateManager.setTxStatusApproved(txId);
       // get next nonce
       const txMeta = this.txStateManager.getTx(txId);
-      log.debug({ txMeta })
       const isAppendMultiSign = txMeta.txParams.multiSignData
       if (!isAppendMultiSign) {
         const fromAddress = txMeta.txParams.from;
@@ -605,14 +601,29 @@ export default class TransactionController extends EventEmitter {
     @returns {string} rawTx
   */
   async signMultiSignTransaction(txnHex, address) {
-    log.debug('signMultiSignTransaction', { txnHex, address })
     const txn = encoding.bcsDecode(
       starcoin_types.SignedUserTransaction,
       txnHex,
     );
-    log.debug({ txn });
     const { chain_id, payload, expiration_timestamp_secs, gas_unit_price, max_gas_amount, sequence_number, gas_token_code, sender } = txn.raw_txn
-
+    const nowSeconds = await new Promise((resolve, reject) => {
+      return this.query.getNodeInfo((err, res) => {
+        if (err) {
+          return reject(err);
+        }
+        return resolve(res.now_seconds);
+      });
+    });
+    if (expiration_timestamp_secs <= nowSeconds) {
+      throw new Error('The mulit sign transaction has been expired.')
+    }
+    if (encoding.addressFromSCS(sender).toLowerCase() !== address.toLowerCase()) {
+      throw new Error('Can not sign a multi sign transaction among different multi sign accounts. Please check and switch to the correct multi sign account and try again.')
+    }
+    const chainId = this.getChainId();
+    if (chain_id.id !== chainId) {
+      throw new Error('Can not sign a multi sign transaction on different networks. Please check and switch to the correct network and try again.')
+    }
     const payloadInHex = (function () {
       const se = new bcs.BcsSerializer()
       payload.serialize(se)
@@ -630,19 +641,11 @@ export default class TransactionController extends EventEmitter {
     const opts = {
       origin: 'starmask',
     }
-    if (encoding.addressFromSCS(sender).toLowerCase() !== address.toLowerCase()) {
-      throw new Error('Can not sign a multi sign transaction among different multi sign accounts. Please check and switch to the correct multi sign account and try again.')
-    }
-    const chainId = this.getChainId();
-    if (chain_id.id !== chainId) {
-      throw new Error('Can not sign a multi sign transaction on different networks. Please check and switch to the correct network and try again.')
-    }
+
     try {
       const hash = await this.newUnapprovedTransaction(txParams, opts)
-      log.debug({ hash });
       return hash;
     } catch (error) {
-      log.debug({ hash });
       throw error
     }
   }
@@ -652,10 +655,8 @@ export default class TransactionController extends EventEmitter {
     @returns {string} rawTx
   */
   async signTransaction(txId) {
-    log.debug('signTransaction', txId);
+    // log.debug('signTransaction', txId);
     const txMeta = this.txStateManager.getTx(txId);
-    log.debug({ txMeta });
-    log.debug({ multiSignData: txMeta.txParams.multiSignData })
     const fromAddress = txMeta.txParams.from;
     let rawUserTransaction
     let opts = {}
@@ -664,7 +665,6 @@ export default class TransactionController extends EventEmitter {
         starcoin_types.SignedUserTransaction,
         txMeta.txParams.multiSignData,
       );
-      log.debug({ txn });
       rawUserTransaction = txn.raw_txn
       opts.authenticator = txn.authenticator
     } else {
@@ -695,8 +695,6 @@ export default class TransactionController extends EventEmitter {
       const { nonce } = txParams;
       const maxGasAmount = txParams.gas;
       const gasUnitPrice = txParams.gasPrice;
-      log.debug({ gasUnitPrice, maxGasAmount });
-
       const expirationTimestampSecs = await this.txGasUtil.getExpirationTimestampSecs(txParams);
 
 
