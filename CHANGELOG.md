@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.0.0] - 2022-03-20
+
+- New features:
+
+  - Support [multi sign account and transaction](https://starcoin.org/zh/developer/cli/multisig_account/)
+
 ## [3.8.1] - 2022-03-08
 
 - Bug fixes:
