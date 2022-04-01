@@ -88,7 +88,7 @@
     "message": "Add Recipient"
   },
   "addSign": {
-    "message": "Add Sign"
+    "message": "Add Signature"
   },
   "addSuggestedTokens": {
     "message": "Add Suggested Tokens"
@@ -621,7 +621,7 @@
     "message": "Download State Logs"
   },
   "downloadMulitSignTransactionBinaryFile": {
-    "message": "Download MulitSign Transaction Binary File"
+    "message": "Download MulitSig Transaction Binary File"
   },
   "dropped": {
     "message": "Dropped"
@@ -1162,13 +1162,13 @@
     "message": "Please enter your password to confirm it's you!"
   },
   "multiSign": {
-    "message": "MultiSign"
+    "message": "MultiSig"
   },
   "multiSignAccount": {
-    "message": "MultiSign Account"
+    "message": "MultiSig Account"
   },
   "multiSignTxn": {
-    "message": "MultiSign Transaction"
+    "message": "MultiSig Transaction"
   },
   "multiSignTxnHex": {
     "message": "Transaction Hex"
@@ -1180,10 +1180,10 @@
     "message": "Add Signature"
   },
   "multiSignTxnCopyHex": {
-    "message": "Copy Multi Sign Transaction Hex"
+    "message": "Copy MultiSig Transaction Hex"
   },
   "multiSignTxnCopiedHex": {
-    "message": "Copied Multi Sign Transaction Hex"
+    "message": "Copied MultiSig Transaction Hex"
   },
   "multiSignTxnAmount": {
     "message": "Signatures Amount"
@@ -1729,7 +1729,7 @@
     "message": "Sign"
   },
   "signMultiSignTxn": {
-    "message": "Sign MultiSign Txn"
+    "message": "Sign MultiSig Txn"
   },
   "signNotice": {
     "message": "Signing this message can have \ndangerous side effects. Only sign messages from \nsites you fully trust with your entire account.\n This dangerous method will be removed in a future version. "

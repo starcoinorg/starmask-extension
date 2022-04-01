@@ -143,7 +143,7 @@ const PATH_NAME_MAP = {
   [SWAPS_ERROR_ROUTE]: 'Swaps Error Page',
   [ADD_NFT_ROUTE]: 'Add NFT Page',
   [CONFIRM_ADD_NFT_ROUTE]: 'Confirm Add NFT Page',
-  [MULTI_SIGN_TXN_ROUTE]: 'Sign Multi Sign Txn Page',
+  [MULTI_SIGN_TXN_ROUTE]: 'Sign MultiSig Txn Page',
 };
 
 export {

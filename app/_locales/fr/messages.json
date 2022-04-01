@@ -609,7 +609,7 @@
     "message": "Télécharger les journaux d'état"
   },
   "downloadMulitSignTransactionBinaryFile": {
-    "message": "Download MulitSign Transaction Binary File"
+    "message": "Download MulitSig Transaction Binary File"
   },
   "dropped": {
     "message": "Chuté"
@@ -1141,13 +1141,13 @@
     "message": "Veuillez saisir votre mot de passe pour confirmer qu'il s'agit bien de vous !"
   },
   "multiSign": {
-    "message": "MultiSign"
+    "message": "MultiSig"
   },
   "multiSignAccount": {
-    "message": "MultiSign Account"
+    "message": "MultiSig Account"
   },
   "multiSignTxn": {
-    "message": "MultiSign Transaction"
+    "message": "MultiSig Transaction"
   },
   "multiSignTxnHex": {
     "message": "Transaction Hex"
@@ -1159,10 +1159,10 @@
     "message": "Add Signature"
   },
   "multiSignTxnCopyHex": {
-    "message": "Copy Multi Sign Transaction Hex"
+    "message": "Copy MultiSig Transaction Hex"
   },
   "multiSignTxnCopiedHex": {
-    "message": "Copied Multi Sign Transaction Hex"
+    "message": "Copied MultiSig Transaction Hex"
   },
   "multiSignTxnAmount": {
     "message": "Signatures Amount"
@@ -1702,7 +1702,7 @@
     "message": "Signer"
   },
   "signMultiSignTxn": {
-    "message": "Sign MultiSign Txn"
+    "message": "Sign MultiSig Txn"
   },
   "signNotice": {
     "message": "Signer ce message peut avoir des effets secondaires \n dangereux. Signez uniquement les messages provenant de \n sites auxquels vous faites entièrement confiance avec l'ensemble de votre compte.\n Cette méthode dangereuse sera supprimée dans une future version. "

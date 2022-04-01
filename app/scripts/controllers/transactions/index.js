@@ -618,11 +618,11 @@ export default class TransactionController extends EventEmitter {
       throw new Error('The mulit sign transaction has been expired.')
     }
     if (encoding.addressFromSCS(sender).toLowerCase() !== address.toLowerCase()) {
-      throw new Error('Can not sign a multi sign transaction among different multi sign accounts. Please check and switch to the correct multi sign account and try again.')
+      throw new Error('Can not sign a multiSig transaction among different multiSig accounts. Please check and switch to the correct multiSig account and try again.')
     }
     const chainId = this.getChainId();
     if (chain_id.id !== chainId) {
-      throw new Error('Can not sign a multi sign transaction on different networks. Please check and switch to the correct network and try again.')
+      throw new Error('Can not sign a multiSig transaction on different networks. Please check and switch to the correct network and try again.')
     }
     const payloadInHex = (function () {
       const se = new bcs.BcsSerializer()

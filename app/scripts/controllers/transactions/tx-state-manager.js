@@ -450,7 +450,7 @@ export default class TransactionStateManager extends EventEmitter {
     const txMeta = this.getTx(txId);
     this.updateTx(
       txMeta,
-      'transactions:tx-state-manager#multi sign - add signature',
+      'transactions:tx-state-manager#multiSig - add signature',
     );
     this._setTxStatus(txId, TRANSACTION_STATUSES.MULTISIGN);
   }
