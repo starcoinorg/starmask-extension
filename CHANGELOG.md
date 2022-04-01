@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.0.1] - 2022-03-31
+
+- Bug fixes:
+
+  - Replace `MultiSign` with `MultiSig` while diplay on the page
+
 ## [4.0.0] - 2022-03-20
 
 - New features:
