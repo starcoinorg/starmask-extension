@@ -2810,7 +2810,7 @@ export default class MetamaskController extends EventEmitter {
   }
 
   /**
-   * Get AutoAcceptToken for selected account.
+   * Get AutoAcceptToken for selected account. 
    * @param {string} address - The account address
    */
   getAutoAcceptToken(adress) {
@@ -2828,7 +2828,8 @@ export default class MetamaskController extends EventEmitter {
           } else {
             const autoAcceptToken = result
               ? result.raw && parseInt(result.raw, 16) > 0
-              : false;
+              // If an account is just created in the wallet, result is null, should return true.
+              : true;
             resolve(autoAcceptToken);
           }
         },
