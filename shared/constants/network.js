@@ -2,6 +2,7 @@ export const MAINNET = 'main';
 export const BARNARD = 'barnard';
 export const PROXIMA = 'proxima';
 export const HALLEY = 'halley';
+
 export const NETWORK_TYPE_RPC = 'rpc';
 
 export const MAINNET_NETWORK_ID = '1';
@@ -16,6 +17,15 @@ export const PROXIMA_CHAIN_ID = '0xfc';
 export const HALLEY_CHAIN_ID = '0xfd';
 export const LOCALHOST_CHAIN_ID = '0xfe';
 
+export const getRpcUrl = ({ network }) =>
+  `https://${ network }-seed.starcoin.org`;
+
+export const MAINNET_RPC_URL = getRpcUrl({ network: MAINNET });
+export const BARNARD_RPC_URL = getRpcUrl({ network: BARNARD });
+export const PROXIMA_RPC_URL = getRpcUrl({ network: PROXIMA });
+export const HALLEY_RPC_URL = getRpcUrl({ network: HALLEY });
+export const LOCALHOST_RPC_URL = 'http://localhost:9850';
+
 /**
  * The largest possible chain ID we can handle.
  * Explanation: https://gist.github.com/rekmarks/a47bd5f2525936c4b8eee31a16345553
@@ -26,6 +36,8 @@ export const MAINNET_DISPLAY_NAME = 'Starcoin Mainnet';
 export const BARNARD_DISPLAY_NAME = 'Barnard';
 export const PROXIMA_DISPLAY_NAME = 'Proxima';
 export const HALLEY_DISPLAY_NAME = 'Halley';
+
+export const STC_SYMBOL = 'STC';
 
 export const INFURA_PROVIDER_TYPES = [MAINNET, BARNARD, PROXIMA, HALLEY];
 
@@ -72,3 +84,11 @@ export const CHAIN_ID_TO_NETWORK_ID_MAP = Object.values(
   chainIdToNetworkIdMap[chainId] = networkId;
   return chainIdToNetworkIdMap;
 }, {});
+
+export const CHAIN_ID_TO_RPC_URL_MAP = {
+  [MAINNET_CHAIN_ID]: MAINNET_RPC_URL,
+  [BARNARD_CHAIN_ID]: BARNARD_RPC_URL,
+  [PROXIMA_CHAIN_ID]: PROXIMA_RPC_URL,
+  [HALLEY_CHAIN_ID]: HALLEY_RPC_URL,
+  [LOCALHOST_CHAIN_ID]: LOCALHOST_RPC_URL,
+};

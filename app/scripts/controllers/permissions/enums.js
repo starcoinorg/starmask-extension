@@ -107,6 +107,7 @@ export const SAFE_METHODS = [
   'stc_decrypt',
   'stc_getEncryptionPublicKey',
   'stc_sendTransaction',
+  'wallet_switchStarcoinChain',
   'wallet_watchAsset',
   'web3_clientVersion',
   'web3_sha3',

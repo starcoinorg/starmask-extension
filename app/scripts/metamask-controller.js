@@ -2197,6 +2197,9 @@ export default class MetamaskController extends EventEmitter {
         getCurrentChainId: this.networkController.getCurrentChainId.bind(
           this.networkController,
         ),
+        setProviderType: this.networkController.setProviderType.bind(
+          this.networkController,
+        ),
         requestUserApproval: this.approvalController.addAndShowApprovalRequest.bind(
           this.approvalController,
         ),

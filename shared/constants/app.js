@@ -26,7 +26,7 @@ export const MESSAGE_TYPE = {
   PERSONAL_SIGN: 'personal_sign',
   STC_DECRYPT: 'stc_decrypt',
   STC_GET_ENCRYPTION_PUBLIC_KEY: 'stc_getEncryptionPublicKey',
-  SWITCH_ETHEREUM_CHAIN: 'metamask_switchEthereumChain',
+  SWITCH_STARCOIN_CHAIN: 'wallet_switchStarcoinChain',
   WATCH_ASSET: 'wallet_watchAsset',
   WATCH_ASSET_LEGACY: 'metamask_watchAsset',
 };

@@ -32,9 +32,9 @@ async function addEthereumChainHandler(
   if (!req.params?.[0] || typeof req.params[0] !== 'object') {
     return end(
       ethErrors.rpc.invalidParams({
-        message: `Expected single, object parameter. Received:\n${JSON.stringify(
+        message: `Expected single, object parameter. Received:\n${ JSON.stringify(
           req.params,
-        )}`,
+        ) }`,
       }),
     );
   }
@@ -63,7 +63,7 @@ async function addEthereumChainHandler(
   if (otherKeys.length > 0) {
     return end(
       ethErrors.rpc.invalidParams({
-        message: `Received unexpected keys on object parameter. Unsupported keys:\n${otherKeys}`,
+        message: `Received unexpected keys on object parameter. Unsupported keys:\n${ otherKeys }`,
       }),
     );
   }
@@ -82,7 +82,7 @@ async function addEthereumChainHandler(
   if (!firstValidRPCUrl) {
     return end(
       ethErrors.rpc.invalidParams({
-        message: `Expected an array with at least one valid string HTTPS url 'rpcUrls', Received:\n${rpcUrls}`,
+        message: `Expected an array with at least one valid string HTTPS url 'rpcUrls', Received:\n${ rpcUrls }`,
       }),
     );
   }
@@ -90,7 +90,7 @@ async function addEthereumChainHandler(
   if (blockExplorerUrls !== null && !firstValidBlockExplorerUrl) {
     return end(
       ethErrors.rpc.invalidParams({
-        message: `Expected null or array with at least one valid string HTTPS URL 'blockExplorerUrl'. Received: ${blockExplorerUrls}`,
+        message: `Expected null or array with at least one valid string HTTPS URL 'blockExplorerUrl'. Received: ${ blockExplorerUrls }`,
       }),
     );
   }
@@ -100,7 +100,7 @@ async function addEthereumChainHandler(
   if (!isPrefixedFormattedHexString(_chainId)) {
     return end(
       ethErrors.rpc.invalidParams({
-        message: `Expected 0x-prefixed, unpadded, non-zero hexadecimal string 'chainId'. Received:\n${chainId}`,
+        message: `Expected 0x-prefixed, unpadded, non-zero hexadecimal string 'chainId'. Received:\n${ chainId }`,
       }),
     );
   }
@@ -108,7 +108,7 @@ async function addEthereumChainHandler(
   if (!isSafeChainId(parseInt(_chainId, 16))) {
     return end(
       ethErrors.rpc.invalidParams({
-        message: `Invalid chain ID "${_chainId}": numerical value greater than max safe value. Received:\n${chainId}`,
+        message: `Invalid chain ID "${ _chainId }": numerical value greater than max safe value. Received:\n${ chainId }`,
       }),
     );
   }
@@ -133,7 +133,7 @@ async function addEthereumChainHandler(
       await updateRpcTarget(
         await requestUserApproval({
           origin,
-          type: MESSAGE_TYPE.SWITCH_ETHEREUM_CHAIN,
+          type: MESSAGE_TYPE.SWITCH_STARCOIN_CHAIN,
           requestData: {
             rpcUrl: existingNetwork.rpcUrl,
             chainId: existingNetwork.chainId,
@@ -156,7 +156,7 @@ async function addEthereumChainHandler(
   } catch (err) {
     return end(
       ethErrors.rpc.internal({
-        message: `Request for method 'chain.id' on ${firstValidRPCUrl} failed`,
+        message: `Request for method 'chain.id' on ${ firstValidRPCUrl } failed`,
         data: { networkErr: err },
       }),
     );
@@ -165,7 +165,7 @@ async function addEthereumChainHandler(
   if (_chainId !== endpointChainId) {
     return end(
       ethErrors.rpc.invalidParams({
-        message: `Chain ID returned by RPC URL ${firstValidRPCUrl} does not match ${_chainId}`,
+        message: `Chain ID returned by RPC URL ${ firstValidRPCUrl } does not match ${ _chainId }`,
         data: { chainId: endpointChainId },
       }),
     );
@@ -174,7 +174,7 @@ async function addEthereumChainHandler(
   if (typeof chainName !== 'string' || !chainName) {
     return end(
       ethErrors.rpc.invalidParams({
-        message: `Expected non-empty string 'chainName'. Received:\n${chainName}`,
+        message: `Expected non-empty string 'chainName'. Received:\n${ chainName }`,
       }),
     );
   }
@@ -185,14 +185,14 @@ async function addEthereumChainHandler(
     if (typeof nativeCurrency !== 'object' || Array.isArray(nativeCurrency)) {
       return end(
         ethErrors.rpc.invalidParams({
-          message: `Expected null or object 'nativeCurrency'. Received:\n${nativeCurrency}`,
+          message: `Expected null or object 'nativeCurrency'. Received:\n${ nativeCurrency }`,
         }),
       );
     }
     if (nativeCurrency.decimals !== 18) {
       return end(
         ethErrors.rpc.invalidParams({
-          message: `Expected the number 18 for 'nativeCurrency.decimals' when 'nativeCurrency' is provided. Received: ${nativeCurrency.decimals}`,
+          message: `Expected the number 18 for 'nativeCurrency.decimals' when 'nativeCurrency' is provided. Received: ${ nativeCurrency.decimals }`,
         }),
       );
     }
@@ -200,7 +200,7 @@ async function addEthereumChainHandler(
     if (!nativeCurrency.symbol || typeof nativeCurrency.symbol !== 'string') {
       return end(
         ethErrors.rpc.invalidParams({
-          message: `Expected a string 'nativeCurrency.symbol'. Received: ${nativeCurrency.symbol}`,
+          message: `Expected a string 'nativeCurrency.symbol'. Received: ${ nativeCurrency.symbol }`,
         }),
       );
     }
@@ -210,7 +210,7 @@ async function addEthereumChainHandler(
   if (typeof ticker !== 'string' || ticker.length < 2 || ticker.length > 6) {
     return end(
       ethErrors.rpc.invalidParams({
-        message: `Expected 2-6 character string 'nativeCurrency.symbol'. Received:\n${ticker}`,
+        message: `Expected 2-6 character string 'nativeCurrency.symbol'. Received:\n${ ticker }`,
       }),
     );
   }
@@ -254,7 +254,7 @@ async function addEthereumChainHandler(
     await updateRpcTarget(
       await requestUserApproval({
         origin,
-        type: MESSAGE_TYPE.SWITCH_ETHEREUM_CHAIN,
+        type: MESSAGE_TYPE.SWITCH_STARCOIN_CHAIN,
         requestData: {
           rpcUrl: firstValidRPCUrl,
           chainId: _chainId,

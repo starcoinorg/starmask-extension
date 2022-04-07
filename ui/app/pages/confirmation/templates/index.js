@@ -5,11 +5,11 @@ import {
   resolvePendingApproval,
 } from '../../../store/actions';
 import addEthereumChain from './add-ethereum-chain';
-import switchEthereumChain from './switch-ethereum-chain';
+import switchStarcoinChain from './switch-starcoin-chain';
 
 const APPROVAL_TEMPLATES = {
   [MESSAGE_TYPE.ADD_ETHEREUM_CHAIN]: addEthereumChain,
-  [MESSAGE_TYPE.SWITCH_ETHEREUM_CHAIN]: switchEthereumChain,
+  [MESSAGE_TYPE.SWITCH_STARCOIN_CHAIN]: switchStarcoinChain,
 };
 
 export const TEMPLATED_CONFIRMATION_MESSAGE_TYPES = Object.keys(
@@ -45,11 +45,11 @@ export async function getTemplateAlerts(pendingApproval) {
   const fn = APPROVAL_TEMPLATES[pendingApproval.type]?.getAlerts;
   const results = fn ? await fn(pendingApproval) : undefined;
   if (!Array.isArray(results)) {
-    throw new Error(`Template alerts must be an array, received: ${results}`);
+    throw new Error(`Template alerts must be an array, received: ${ results }`);
   }
   if (results.some((result) => result?.id === undefined)) {
     throw new Error(
-      `Template alert entries must be objects with an id key. Received: ${results}`,
+      `Template alert entries must be objects with an id key. Received: ${ results }`,
     );
   }
   return results;
@@ -76,7 +76,7 @@ export async function getTemplateState(pendingApproval) {
   const fn = APPROVAL_TEMPLATES[pendingApproval.type]?.getState ?? emptyState;
   const result = await fn(pendingApproval);
   if (typeof result !== 'object' || Array.isArray(result)) {
-    throw new Error(`Template state must be an object, received: ${result}`);
+    throw new Error(`Template state must be an object, received: ${ result }`);
   } else if (result === null || result === undefined) {
     return {};
   }
@@ -110,7 +110,7 @@ export function getTemplateValues(pendingApproval, t, dispatch) {
   const fn = APPROVAL_TEMPLATES[pendingApproval.type]?.getValues;
   if (!fn) {
     throw new Error(
-      `MESSAGE_TYPE: '${pendingApproval.type}' is not specified in approval templates`,
+      `MESSAGE_TYPE: '${ pendingApproval.type }' is not specified in approval templates`,
     );
   }
 
@@ -120,11 +120,10 @@ export function getTemplateValues(pendingApproval, t, dispatch) {
   const safeValues = pick(values, ALLOWED_TEMPLATE_KEYS);
   if (extraneousKeys.length > 0) {
     throw new Error(
-      `Received extraneous keys from ${
-        pendingApproval.type
-      }.getValues. These keys are not passed to the confirmation page: ${Object.keys(
+      `Received extraneous keys from ${ pendingApproval.type
+      }.getValues. These keys are not passed to the confirmation page: ${ Object.keys(
         extraneousKeys,
-      )}`,
+      ) }`,
     );
   }
   return safeValues;

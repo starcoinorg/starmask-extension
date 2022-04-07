@@ -88,9 +88,9 @@ function getValues(pendingApproval, t, actions) {
   };
 }
 
-const switchEthereumChain = {
+const switchStarcoinChain = {
   getAlerts,
   getValues,
 };
 
-export default switchEthereumChain;
+export default switchStarcoinChain;
