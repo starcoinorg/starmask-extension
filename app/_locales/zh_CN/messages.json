@@ -2038,8 +2038,20 @@
   "swapsViewInActivity": {
     "message": "在活动中查看"
   },
+  "switchEthereumChainConfirmationDescription": {
+    "message": "在StarMak里面将切换当前选中的网络到:"
+  },
+  "switchEthereumChainConfirmationTitle": {
+    "message": "允许这个网站切换网络?"
+  },
+  "switchNetwork": {
+    "message": "切换网络"
+  },
   "switchNetworks": {
     "message": "切换网络"
+  },
+  "switchingNetworksCancelsPendingConfirmations": {
+    "message": "切换网络将取消所有待处理的交易"
   },
   "switchToThisAccount": {
     "message": "切换到该账户"
