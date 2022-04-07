@@ -1,5 +1,15 @@
 # Changelog
 
+## [4.1.0] - 2022-04-07
+
+- Bug fixes:
+
+  - [#56 If an account is just created in the wallet, it is not exists on the chain, should receive token](https://github.com/starcoinorg/starmask-extension/issues/56)
+
+- New features:
+
+  - add switch-starcoin-chain confirmation page to support method `wallet_switchStarcoinChain` from Dapps
+
 ## [4.0.1] - 2022-03-31
 
 - Bug fixes:
