@@ -2039,7 +2039,7 @@
     "message": "在活动中查看"
   },
   "switchEthereumChainConfirmationDescription": {
-    "message": "在StarMak里面将切换当前选中的网络到:"
+    "message": "在StarMak里面将当前选中的网络切换到:"
   },
   "switchEthereumChainConfirmationTitle": {
     "message": "允许这个网站切换网络?"
