@@ -1,6 +1,6 @@
 # How To Use StarMask
 
-> Imageine you have [installed StarMask extension in Google Chrome](./how-to-install.md).
+> Assuming you have [installed StarMask extension in Google Chrome](./how-to-install.md).
 
 ## 1. Check Account1's Address,PublickKey,and PrivateKey
 - a. Click `Account Options` on the right side of account name，choose `Account details` in the pop window
