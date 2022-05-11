@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.2.0] - 2022-05-11
+
+- Bug fixes:
+
+  - [#59 Trim the input text while paste address in the send page](https://github.com/starcoinorg/starmask-extension/issues/59)
+
+  - [#61 Cache address->publicKey while using Onekey](https://github.com/starcoinorg/starmask-extension/issues/61)
+
 ## [4.1.0] - 2022-04-07
 
 - Bug fixes:
