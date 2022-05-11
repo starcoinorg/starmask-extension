@@ -115,7 +115,7 @@ export default class EnsInput extends Component {
     const { network } = this.props;
     const recipient = ensName.trim();
 
-    log.info(`ENS attempting to resolve name: ${recipient}`);
+    log.info(`ENS attempting to resolve name: ${ recipient }`);
     this.ens
       .lookup(recipient)
       .then((address) => {
@@ -146,8 +146,9 @@ export default class EnsInput extends Component {
 
   onPaste = (event) => {
     event.clipboardData.items[0].getAsString((text) => {
-      if (isValidReceipt(text)) {
-        this.props.onPaste(text);
+      const _text = text.trim()
+      if (isValidReceipt(_text)) {
+        this.props.onPaste(_text);
       }
     });
   };
@@ -161,7 +162,7 @@ export default class EnsInput extends Component {
       onValidAddressTyped,
       internalSearch,
     } = this.props;
-    const input = e.target.value;
+    const input = e.target.value.trim();
     // const networkHasEnsSupport = getNetworkEnsSupport(network);
 
     this.setState({ input }, () => onChange(input));
