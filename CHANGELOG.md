@@ -1,5 +1,10 @@
 # Changelog
 
+## [4.3.0] - 2022-06-14
+
+- New features:
+  - Update STC logos
+
 ## [4.2.0] - 2022-05-11
 
 - Bug fixes:
