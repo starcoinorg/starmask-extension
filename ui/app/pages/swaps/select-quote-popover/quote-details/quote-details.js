@@ -40,7 +40,7 @@ const QuoteDetails = ({
             contentText={t('swapQuoteDetailsSlippageInfo')}
           />
         </div>
-        <div className="quote-details__detail-content">{`${slippage}%`}</div>
+        <div className="quote-details__detail-content">{`${ slippage }%`}</div>
       </div>
       <div className="quote-details__row">
         <div className="quote-details__detail-header">
@@ -52,7 +52,7 @@ const QuoteDetails = ({
         </div>
         <div className="quote-details__detail-content">
           <span>{minimumAmountReceived}</span>
-          <span className="quote-details__bold">{` ${destinationTokenSymbol}`}</span>
+          <span className="quote-details__bold">{` ${ destinationTokenSymbol }`}</span>
         </div>
       </div>
       <div className="quote-details__row">
@@ -65,7 +65,7 @@ const QuoteDetails = ({
         </div>
         <div className="quote-details__detail-content">
           <span>{feeInEth}</span>
-          <span className="quote-details__light-grey">{` (${networkFees})`}</span>
+          <span className="quote-details__light-grey">{` (${ networkFees })`}</span>
         </div>
       </div>
       <div className="quote-details__row">
@@ -80,7 +80,7 @@ const QuoteDetails = ({
       <div className="quote-details__row quote-details__row--high">
         <div className="quote-details__detail-header">
           <img
-            src="/images/logo/starmask.svg"
+            src="/images/logo/stc-blue.svg"
             className="quote-details__metafox-logo"
             alt=""
           />

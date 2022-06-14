@@ -25,7 +25,7 @@ export default class MetaFoxLogo extends PureComponent {
       >
         <img
           height="30"
-          src="/images/logo/starmask-logo-horizontal.svg"
+          src="/images/logo/starcoin-lgoo-text-blue.svg"
           className={classnames(
             'app-header__metafox-logo',
             'app-header__metafox-logo--horizontal',
@@ -34,7 +34,8 @@ export default class MetaFoxLogo extends PureComponent {
         />
         <img
           {...iconProps}
-          src="/images/logo/starmask.svg"
+          src="/images/logo/stc.svg"
+          height="32"
           className={classnames(
             'app-header__metafox-logo',
             'app-header__metafox-logo--icon',
