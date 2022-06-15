@@ -1,5 +1,10 @@
 # Changelog
 
+## [4.4.0] - 2022-06-15
+
+- Bug fixes:
+  - [#67 Couldn't find package "@onekeyhq/connect@8.6.1" required by "@starcoin/stc-onekey-keyring@^1.1.1"](https://github.com/starcoinorg/starmask-extension/issues/67)
+
 ## [4.3.0] - 2022-06-14
 
 - New features:

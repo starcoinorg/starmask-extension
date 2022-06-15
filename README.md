@@ -2,25 +2,6 @@
 
 A blockchain wallet browser extension for Starcoin blockchain.
 
-# How to install @onekeyhq/eth-onekey-keyring
-
-1. github->Settings->Developer Settings-> Personal access tokens
-
-2. add a token with only 2 permissions: repo and read::packages
-
-3. `npm login` with this token as password
-
-4. `npm config set @onekeyhq:registry https://npm.pkg.github.com`
-
-5. `more ~/.npmrc`
-
-```
-registry=https://registry.npmjs.org/
-@onekeyhq:registry=https://npm.pkg.github.com
-```
-
-6. `yarn add @onekeyhq/eth-onekey-keyring`
-
 # Initialize
 
 ```
