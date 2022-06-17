@@ -73,6 +73,19 @@ before this line:
 - change version in `app/manifest/_base.json`
 - `yarn dist`
 
+# How to display custom tokens logo in Main network
+
+1. Maintain custom tokens in [@starcoin/starmask-contract-metadata](https://github.com/starcoinorg/starmask-contract-metadata)
+
+- add token info in `contract-map.json`
+- add logo svg/png in folder `images`
+- update version in package.json
+
+2. in `starmask-extension`
+
+- update `@starcoin/starmask-contract-metadata` version to the latest one
+- copy and paste logo into folder `app/images/contract`
+
 # Docs
 
 - [How to install](./docs/en/how-to-install.md)
