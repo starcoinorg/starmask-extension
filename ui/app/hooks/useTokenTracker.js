@@ -42,7 +42,6 @@ export function useTokenTracker(
   if (!hideZeroBalanceTokens) {
     const unAcceptTokens = tokens.filter((token) => currentAssets && !currentAssets[token.code]);
     unAcceptTokens.map(({ code, decimals, symbol }) => {
-      console.log('unAcceptTokens', code, currentAssets[code])
       const numberOfDecimals = decimals <= 9 ? 4 : 9;
       const token = {
         code,

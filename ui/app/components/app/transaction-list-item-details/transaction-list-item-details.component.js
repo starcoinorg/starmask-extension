@@ -113,13 +113,11 @@ export default class TransactionListItemDetails extends PureComponent {
   };
 
   handleCopyTxHex = () => {
-    console.log('handleCopyTxHex')
     const { transactionGroup } = this.props;
     const { primaryTransaction: transaction } = transactionGroup;
     const {
       multiSign: { signedTransactionHex: hash },
     } = transaction;
-    console.log(hash)
     copyToClipboard(hash);
   };
 

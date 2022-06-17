@@ -115,7 +115,6 @@ const TokenOverview = ({ className, token }) => {
             <IconButton
               className="token-overview__button"
               onClick={() => {
-                console.log('click 2')
                 sendTokenEvent();
                 dispatch(updateSendToken(token));
                 // quick fix: OneKey postmessage will get lost if the popup window lost focus

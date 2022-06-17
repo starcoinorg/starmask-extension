@@ -142,7 +142,6 @@ class AddNFT extends Component {
       this.handleCustomNameChange(metaInfo.name || '');
       this.handleCustomDescriptionChange(metaInfo.description || '');
     } catch (error) {
-      console.log('dsdf', typeof error, JSON.stringify(error), error.Error);
       console.log(error);
       // this.setState({
       //   customMetaError: error,

@@ -10,7 +10,6 @@ class TokenTracker extends SafeEventEmitter {
 
   constructor(opts = {}) {
     super()
-    console.log('TokenTracker constructor', opts)
     this.includeFailedTokens = opts.includeFailedTokens || false
     this.userAddress = opts.userAddress || '0x0'
     this.provider = opts.provider
@@ -54,13 +53,11 @@ class TokenTracker extends SafeEventEmitter {
 
   async updateBalances() {
     try {
-      console.log('stc-token-tracker updateBalances', this.tokens)
       // await Promise.all(this.tokens.map((token) => {
       //   return token.updateBalance()
       // }))
 
       const newBalances = this.serialize()
-      console.log('newBalances', newBalances)
       this._update(newBalances)
     } catch (reason) {
       this.emit('error', reason)

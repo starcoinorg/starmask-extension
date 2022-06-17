@@ -469,7 +469,6 @@ export function checkExistingCodes(code, list = []) {
  * @returns {boolean} Whether or not the NFTMeta is in the list
  */
 export function checkExistingNFT(nftMeta, list = []) {
-  console.log('checkExistingNFT', nftMeta, list)
   if (!nftMeta) {
     return false;
   }

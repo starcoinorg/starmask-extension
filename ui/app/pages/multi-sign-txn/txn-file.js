@@ -90,7 +90,6 @@ class TxnFileImportSubview extends Component {
 
         const txnUint8Array = new Uint8Array(fileContents)
         const txnHex = hexlify(txnUint8Array)
-        console.log('signTxnFile', { fileContents, txnHex })
 
         // hide multiSign page
         setTimeout(() => {
