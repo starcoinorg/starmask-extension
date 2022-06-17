@@ -17,7 +17,6 @@ const getTestMiddlewares = () => {
 export default function createJsonRpcClient({ rpcUrl, chainId }) {
   const fetchMiddleware = createFetchMiddleware({ rpcUrl });
   const blockProvider = providerFromMiddleware(fetchMiddleware);
-  console.log('createJsonRpcClient PollingBlockTracker');
   const blockTracker = new PollingBlockTracker({
     ...blockTrackerOpts,
     provider: blockProvider,

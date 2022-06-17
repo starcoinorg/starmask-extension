@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>eth</title>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="画板" transform="translate(-51.000000, -161.000000)" fill-rule="nonzero">
+            <g id="eth" transform="translate(51.000000, 161.000000)">
+                <path d="M9.99804688,0 C4.4765625,0 0,4.4765625 0,9.99804688 C0,15.5195312 4.4765625,19.9960938 9.99804688,19.9960938 C15.5195312,19.9960938 19.9960938,15.5195312 19.9960938,9.99804688 C19.9960938,4.4765625 15.5214844,0 9.99804688,0 Z" id="路径" fill="#FFFFFF"></path>
+                <path d="M9.97070313,12.8300781 L6.25,10.6328125 L9.97070313,15.8789062 L13.6953125,10.6328125 L9.97070313,12.8300781 Z M10.0273438,3.75 L6.3046875,9.92578125 L10.0253906,12.125 L13.7460938,9.92773437 L10.0273438,3.75 Z" id="形状" fill="#6C7AB7"></path>
+            </g>
+        </g>
+    </g>
+</svg>

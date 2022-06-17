@@ -1,5 +1,10 @@
 # Changelog
 
+## [4.5.1] - 2022-06-17
+
+- New features:
+  - Support display logos for WEN/XUSDT/XETH/STAR/FAI in MAIN network.
+
 ## [4.4.0] - 2022-06-15
 
 - Bug fixes:
