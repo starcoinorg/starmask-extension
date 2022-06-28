@@ -6,6 +6,7 @@ import { ENVIRONMENT_TYPE_NOTIFICATION } from '../../../../shared/constants/app'
 import { getEnvironmentType } from '../../../../app/scripts/lib/util';
 import ConfirmPageContainer, {
   ConfirmDetailRow,
+  ConfirmDetailTokenChanges,
 } from '../../components/app/confirm-page-container';
 import { isBalanceSufficient } from '../send/send.utils';
 import { CONFIRM_TRANSACTION_ROUTE } from '../../helpers/constants/routes';
@@ -278,9 +279,13 @@ export default class ConfirmTransactionBase extends Component {
 
     const notMainnetOrTest = !(isMainnet || process.env.IN_TEST);
 
+
     return (
       <div className="confirm-page-container-content__details">
         <div className="confirm-page-container-content__gas-fee">
+          <ConfirmDetailTokenChanges
+            code='0x1::STC::STC'
+          />
           <ConfirmDetailRow
             label="Gas Fee"
             value={hexTransactionFee}
@@ -361,6 +366,12 @@ export default class ConfirmTransactionBase extends Component {
             </div>
           </div>
         ) : null}
+        <div
+          className={
+            useNonceField ? 'confirm-page-container-content__gas-fee' : null
+          }
+        >
+        </div>
       </div>
     );
   }

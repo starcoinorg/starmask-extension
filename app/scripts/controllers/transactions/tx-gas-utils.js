@@ -60,11 +60,15 @@ export default class TxGasUtil {
     const blockGasLimitBN = hexToBn(block.gasLimit);
     const saferGasLimitBN = BnMultiplyByFraction(blockGasLimitBN, 19, 20);
     let estimatedGasHex = bnToHex(saferGasLimitBN);
+    let tokenChanges;
     log.debug('estimatedGasHex1', { estimatedGasHex })
     let simulationFails;
     try {
-      estimatedGasHex = await this.estimateTxGas(txMeta);
-      log.debug('estimatedGasHex2', { estimatedGasHex })
+      const result = await this.estimateTxGas(txMeta);
+      estimatedGasHex = result.estimatedGasHex;
+      tokenChanges = result.tokenChanges;
+
+      log.debug('estimatedGasHex2', { estimatedGasHex, tokenChanges })
     } catch (error) {
       log.warn({ error });
       simulationFails = {
@@ -149,17 +153,35 @@ export default class TxGasUtil {
       );
     });
     log.debug({ dryRunRawResult })
+    const queryTokenChanges = (dryRunRawResult) => {
+      const matches = dryRunRawResult.write_set.reduce((acc, item) => {
+        const reg = /^(0x[a-zA-Z0-9]{32})\/[01]\/0x00000000000000000000000000000001\:\:Account\:\:Balance<(.*)>$/i
+        const result = item.access_path.match(reg)
+        console.log({ item, result })
+        if (result && result.length === 3 && selectedAddressHex === result[1]) {
+          if (!acc[result[1]]) {
+            acc[result[1]] = []
+          }
+          acc[result[1]].push([result[2], item.value.Resource.json.token.value])
+        }
+        return acc
+      }, {})
+      return matches
+    }
     let estimatedGasHex;
+    let tokenChanges;
     if (dryRunRawResult.status === 'Executed') {
       estimatedGasHex = new BigNumber(dryRunRawResult.gas_used, 10).toString(16);
+      tokenChanges = queryTokenChanges(dryRunRawResult)
+
     } else {
       if (typeof dryRunRawResult.status === 'string') {
         throw new Error(`Starmask: contract.dry_run_raw failed. status: ${ dryRunRawResult.status }, Error: ${ dryRunRawResult.explained_status.Error }`)
       }
       throw new Error(`Starmask: contract.dry_run_raw failed. Error: ${ JSON.stringify(dryRunRawResult.explained_status) }`)
     }
-
-    return estimatedGasHex;
+    const result = { estimatedGasHex, tokenChanges };
+    return result;
   }
 
   async getExpirationTimestampSecs(txParams) {
