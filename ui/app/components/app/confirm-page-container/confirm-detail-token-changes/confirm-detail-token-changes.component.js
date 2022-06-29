@@ -14,20 +14,15 @@ import { useTokenTracker, getTokenInfos } from '../../../../hooks/useTokenTracke
 import { getSelectedAddress, getAssets, getCurrentEthBalance } from '../../../../selectors';
 import { stringifyBalance } from '../../../../helpers/utils/confirm-tx.util';
 import { ConfirmDetailTokenChangeRow } from '../../confirm-page-container';
+import { useI18nContext } from '../../../../hooks/useI18nContext';
 
 const ConfirmDetailTokenChanges = (props) => {
   const {
-    code,
+    tokenChanges,
   } = props;
-  const tokenChanges = {
-    '0x00000000000000000000000000000001::STC::STC': "0x151cd24262",
-    '0x8c109349c6bd91411d6bc962e080c4a3::STAR::STAR': "0x171cd24252"
-  }
-  const accountBalance = useSelector(getCurrentEthBalance)
-  log.debug({ accountBalance })
 
-  const assets = useSelector(getAssets)
-  log.debug({ assets })
+  const accountBalance = useSelector(getCurrentEthBalance)
+
   const tokens = useSelector(getTokens, isEqual)
 
 
@@ -36,8 +31,6 @@ const ConfirmDetailTokenChanges = (props) => {
     true,
     true
   );
-  log.debug({ tokens })
-  log.debug('asdfsa')
   const currencySTC = {
     code: "0x00000000000000000000000000000001::STC::STC",
     decimals: 9,
@@ -46,23 +39,23 @@ const ConfirmDetailTokenChanges = (props) => {
     balance: accountBalance,
   }
 
-  log.debug({ loading, tokensWithBalances })
   tokensWithBalances.push({
     ...currencySTC,
     string: stringifyBalance(currencySTC.balance, currencySTC.decimals, currencySTC.symbol, currencySTC.decimals),
   })
-  log.debug({ tokensWithBalances })
-  log.debug({ tokenChanges })
+  const t = useI18nContext()
   return (
-    <>
+    <div className="confirm-detail-row__token-changes">
+      <div className="confirm-detail-row">
+        <div className="confirm-detail-row__secondary">{t('estimatedTokenChanges')}</div>
+      </div>
       {
         Object.keys(tokenChanges).map((code, i) => {
           const balanceChanged = tokenChanges[code]
           const token = tokensWithBalances.filter((item) => item.code === code)
-          log.debug({ i, token })
           return token && token[0] && (
             <ConfirmDetailTokenChangeRow
-              index={i}
+              key={i}
               code={code}
               symbol={token[0].symbol}
               decimals={token[0].decimals}
@@ -76,12 +69,12 @@ const ConfirmDetailTokenChanges = (props) => {
           )
         })
       }
-    </>
+    </div>
   );
 };
 
 ConfirmDetailTokenChanges.propTypes = {
-  code: PropTypes.string,
+  tokenChanges: PropTypes.object,
 };
 
 export default ConfirmDetailTokenChanges;

@@ -16,6 +16,7 @@ const normalizers = {
   gasPrice: (gasPrice) => addHexPrefix(gasPrice),
   expiredSecs: (expiredSecs) => addHexPrefix(expiredSecs),
   addGasBufferMultiplier: (addGasBufferMultiplier) => addGasBufferMultiplier,
+  tokenChanges: (tokenChanges) => tokenChanges,
 };
 
 /**

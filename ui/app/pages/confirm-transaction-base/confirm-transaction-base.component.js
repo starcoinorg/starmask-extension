@@ -102,6 +102,7 @@ export default class ConfirmTransactionBase extends Component {
     isMainnet: PropTypes.bool,
     gasPriceIsExtendMax: PropTypes.bool,
     gasLimitIsExtendMax: PropTypes.bool,
+    tokenChanges: PropTypes.object,
   };
 
   state = {
@@ -275,6 +276,7 @@ export default class ConfirmTransactionBase extends Component {
       isMainnet,
       gasPriceIsExtendMax,
       gasLimitIsExtendMax,
+      tokenChanges,
     } = this.props;
 
     const notMainnetOrTest = !(isMainnet || process.env.IN_TEST);
@@ -283,9 +285,13 @@ export default class ConfirmTransactionBase extends Component {
     return (
       <div className="confirm-page-container-content__details">
         <div className="confirm-page-container-content__gas-fee">
-          <ConfirmDetailTokenChanges
-            code='0x1::STC::STC'
-          />
+          {
+            tokenChanges ? (
+              <ConfirmDetailTokenChanges
+                tokenChanges={tokenChanges}
+              />
+            ) : null
+          }
           <ConfirmDetailRow
             label="Gas Fee"
             value={hexTransactionFee}

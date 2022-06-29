@@ -78,7 +78,7 @@ export default class TxGasUtil {
       };
     }
 
-    return { blockGasLimit: block.gasLimit, estimatedGasHex, simulationFails };
+    return { blockGasLimit: block.gasLimit, estimatedGasHex, tokenChanges, simulationFails };
   }
 
   /**
@@ -152,17 +152,13 @@ export default class TxGasUtil {
         },
       );
     });
-    log.debug({ dryRunRawResult })
     const queryTokenChanges = (dryRunRawResult) => {
       const matches = dryRunRawResult.write_set.reduce((acc, item) => {
         const reg = /^(0x[a-zA-Z0-9]{32})\/[01]\/0x00000000000000000000000000000001\:\:Account\:\:Balance<(.*)>$/i
         const result = item.access_path.match(reg)
-        console.log({ item, result })
         if (result && result.length === 3 && selectedAddressHex === result[1]) {
-          if (!acc[result[1]]) {
-            acc[result[1]] = []
-          }
-          acc[result[1]].push([result[2], item.value.Resource.json.token.value])
+          const maxGasAmount = new BigNumber(40000000, 10).toString(16);
+          acc[result[2]] = addHexPrefix(new BigNumber(item.value.Resource.json.token.value, 10).toString(16))
         }
         return acc
       }, {})
@@ -173,7 +169,6 @@ export default class TxGasUtil {
     if (dryRunRawResult.status === 'Executed') {
       estimatedGasHex = new BigNumber(dryRunRawResult.gas_used, 10).toString(16);
       tokenChanges = queryTokenChanges(dryRunRawResult)
-
     } else {
       if (typeof dryRunRawResult.status === 'string') {
         throw new Error(`Starmask: contract.dry_run_raw failed. status: ${ dryRunRawResult.status }, Error: ${ dryRunRawResult.explained_status.Error }`)
@@ -206,7 +201,7 @@ export default class TxGasUtil {
 
   /**
     Adds a gas buffer with out exceeding the block gas limit
-  
+   
     @param {string} initialGasLimitHex - the initial gas limit to add the buffer too
     @param {string} blockGasLimitHex - the block gas limit
     @returns {string} the buffered gas limit as a hex string
@@ -233,6 +228,7 @@ export default class TxGasUtil {
     const {
       blockGasLimit,
       estimatedGasHex,
+      tokenChanges,
       simulationFails,
     } = await this.analyzeGasUsage(txMeta);
 
@@ -243,6 +239,6 @@ export default class TxGasUtil {
       multiplier,
     );
     log.debug('getBufferedGasLimit', { gasLimit, simulationFails })
-    return { gasLimit, simulationFails };
+    return { gasLimit, tokenChanges, simulationFails };
   }
 }

@@ -718,6 +718,9 @@
   "estimatedProcessingTimes": {
     "message": "Estimation du délais de traitement"
   },
+  "estimatedTokenChanges": {
+    "message": "Estimated Token Changes:"
+  },
   "stc_accounts": {
     "message": "Afficher les adresses de vos comptes autorisés (obligatoire)",
     "description": "La description de l'autorisation `stc_accounts`"

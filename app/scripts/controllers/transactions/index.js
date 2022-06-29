@@ -312,6 +312,7 @@ export default class TransactionController extends EventEmitter {
     const defaultGasPrice = await this._getDefaultGasPrice(txMeta);
     const {
       gasLimit: defaultGasLimit,
+      tokenChanges,
       simulationFails,
     } = await this._getDefaultGasLimit(txMeta, getCodeResponse);
 
@@ -325,6 +326,9 @@ export default class TransactionController extends EventEmitter {
     }
     if (defaultGasLimit && !txMeta.txParams.gas) {
       txMeta.txParams.gas = defaultGasLimit;
+    }
+    if (tokenChanges && !txMeta.txParams.tokenChanges) {
+      txMeta.txParams.tokenChanges = tokenChanges;
     }
     return txMeta;
   }
@@ -376,6 +380,7 @@ export default class TransactionController extends EventEmitter {
     const {
       blockGasLimit,
       estimatedGasHex,
+      tokenChanges,
       simulationFails,
     } = await this.txGasUtil.analyzeGasUsage(txMeta);
 
@@ -385,7 +390,7 @@ export default class TransactionController extends EventEmitter {
       blockGasLimit,
       txMeta.txParams.addGasBufferMultiplier && parseFloat(txMeta.txParams.addGasBufferMultiplier) > 0 ? parseFloat(txMeta.txParams.addGasBufferMultiplier) : 1.5
     );
-    return { gasLimit, simulationFails };
+    return { gasLimit, tokenChanges, simulationFails };
   }
 
   /**

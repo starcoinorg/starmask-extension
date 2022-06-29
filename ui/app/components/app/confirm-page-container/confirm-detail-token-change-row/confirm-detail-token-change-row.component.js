@@ -84,7 +84,7 @@ ConfirmDetailTokenChangeRow.propTypes = {
   headerText: PropTypes.string,
   headerTextClassName: PropTypes.string,
   code: PropTypes.string,
-  symbol: PropTypes.number,
+  symbol: PropTypes.string,
   decimals: PropTypes.number,
   onHeaderClick: PropTypes.func,
   primaryValueTextColor: PropTypes.string,

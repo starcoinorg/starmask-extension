@@ -730,6 +730,9 @@
   "estimatedProcessingTimes": {
     "message": "Estimated Processing Times"
   },
+  "estimatedTokenChanges": {
+    "message": "Estimated Token Changes:"
+  },
   "externalTemp": {
     "message": "External Temp"
   },

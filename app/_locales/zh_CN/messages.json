@@ -692,6 +692,9 @@
   "estimatedProcessingTimes": {
     "message": "预计处理时间"
   },
+  "estimatedTokenChanges": {
+    "message": "预估代币的变化量:"
+  },
   "externalTemp": {
     "message": "外部临时"
   },
