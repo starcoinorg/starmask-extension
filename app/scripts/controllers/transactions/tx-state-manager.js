@@ -305,6 +305,13 @@ export default class TransactionStateManager extends EventEmitter {
             );
           }
           break;
+        case 'tokenChanges':
+          if (typeof value !== 'object') {
+            throw new Error(
+              `${ key } in txParams is not a object. got: (${ value })`,
+            );
+          }
+          break;
         default:
           if (typeof value !== 'string') {
             throw new Error(
