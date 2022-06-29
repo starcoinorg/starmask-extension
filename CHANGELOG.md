@@ -1,5 +1,10 @@
 # Changelog
 
+## [4.6.0] - 2022-06-29
+
+- New features:
+  - - [#55 Display the token changes that caused by a transaction in a DApp ](https://github.com/starcoinorg/starmask-extension/issues/55)
+
 ## [4.5.1] - 2022-06-17
 
 - New features:
