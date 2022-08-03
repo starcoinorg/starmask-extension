@@ -1,12 +1,16 @@
 import StcQuery from '@starcoin/stc-query';
 import log from 'loglevel';
-import { addHexPrefix } from '@starcoin/stc-util';
+import { addHexPrefix, stripHexPrefix } from '@starcoin/stc-util';
 // import { cloneDeep } from 'lodash';
 import BigNumber from 'bignumber.js';
 // eslint-disable-next-line camelcase
-import { encoding, utils, starcoin_types } from '@starcoin/starcoin';
+import { bcs, encoding, utils, starcoin_types } from '@starcoin/starcoin';
 import { hexToBn, BnMultiplyByFraction, bnToHex } from '../../lib/util';
 import { conversionUtil } from '../../../../ui/app/helpers/utils/conversion-util';
+import { TRANSACTION_TYPES } from '../../../../shared/constants/transaction';
+import { ethers } from 'ethers';
+
+const { arrayify, hexlify } = ethers.utils;
 
 /**
  * Result of gas analysis, including either a gas estimate for a successful analysis, or
@@ -123,11 +127,32 @@ export default class TxGasUtil {
     });
     const chainId = txMeta.metamaskNetworkId.id;
 
-    const transactionPayload = encoding.bcsDecode(
-      starcoin_types.TransactionPayload,
-      txMeta.txParams.data,
-    );
-
+    let transactionPayload;
+    if (txMeta.txParams.data) {
+      transactionPayload = encoding.bcsDecode(
+        starcoin_types.TransactionPayload,
+        txMeta.txParams.data,
+      );
+    } else {
+      if (txMeta.txParams.to
+        && txMeta.type === TRANSACTION_TYPES.SENT_ETHER) {
+        const functionId = '0x1::TransferScripts::peer_to_peer_v2'
+        const strTypeArgs = ['0x1::STC::STC']
+        const tyArgs = utils.tx.encodeStructTypeTags(strTypeArgs)
+        const sendAmountNanoSTC = hexToBn(txMeta.txParams.value)
+        const amountSCSHex = (function () {
+          const se = new bcs.BcsSerializer()
+          se.serializeU128(BigInt(sendAmountNanoSTC.toString(10)))
+          return hexlify(se.getBytes())
+        })()
+        const args = [
+          arrayify(txMeta.txParams.to),
+          arrayify(amountSCSHex),
+        ]
+        const scriptFunction = utils.tx.encodeScriptFunction(functionId, tyArgs, args)
+        transactionPayload = scriptFunction;
+      }
+    }
     const rawUserTransaction = utils.tx.generateRawUserTransaction(
       selectedAddressHex,
       transactionPayload,

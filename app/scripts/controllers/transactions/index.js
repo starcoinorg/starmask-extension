@@ -354,9 +354,10 @@ export default class TransactionController extends EventEmitter {
    * @returns {Promise<Object>} Object containing the default gas limit, or the simulation failure object
    */
   async _getDefaultGasLimit(txMeta, getCodeResponse) {
-    if (txMeta.txParams.gas) {
-      return {};
-    } else if (
+    // if (txMeta.txParams.gas) {
+    //   return {};
+    // } else if (
+    if (
       txMeta.txParams.to &&
       txMeta.type === TRANSACTION_TYPES.SENT_ETHER
     ) {
@@ -374,7 +375,7 @@ export default class TransactionController extends EventEmitter {
       }
 
       // This is a standard ether simple send, gas requirement is exactly 21k
-      return { gasLimit: SIMPLE_GAS_COST };
+      // return { gasLimit: SIMPLE_GAS_COST };
     }
 
     const {
