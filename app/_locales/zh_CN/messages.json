@@ -397,8 +397,8 @@
   "connectingToMainnet": {
     "message": "正在连接到 Starcoin 主网"
   },
-  "connectingToPrxima": {
-    "message": "正在连接 Prxima 测试网络"
+  "connectingToProxima": {
+    "message": "正在连接 Proxima 测试网络"
   },
   "connectingToRinkeby": {
     "message": "正在连接到 Rinkeby 测试网络"

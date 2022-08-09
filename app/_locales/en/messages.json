@@ -423,8 +423,8 @@
   "connectingToMainnet": {
     "message": "Connecting to Starcoin Main"
   },
-  "connectingToPrxima": {
-    "message": "Connecting to Prxima Test Network"
+  "connectingToProxima": {
+    "message": "Connecting to Proxima Test Network"
   },
   "connectingToRinkeby": {
     "message": "Connecting to Rinkeby Test Network"

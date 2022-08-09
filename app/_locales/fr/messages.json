@@ -411,7 +411,7 @@
   "connectingToMainnet": {
     "message": "Connexion à Starcoin Mainnet"
   },
-  "connectingToPrxima": {
+  "connectingToProxima": {
     "message": "Connexion au réseau de test Proxima"
   },
   "connectingToRinkeby": {
