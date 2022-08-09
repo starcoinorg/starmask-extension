@@ -32,7 +32,7 @@ export default class NFTItems extends Component {
     const imageSources = (imageUrl) => {
       const urls = imageSourceUrls(imageUrl);
       return urls.map((url, index) => (
-        <source key={`${imageUrl}-${index}`} srcSet={url} />
+        <source key={`${ imageUrl }-${ index }`} srcSet={url} />
       ));
     };
 
@@ -118,7 +118,7 @@ export default class NFTItems extends Component {
           ) : (
             <div className="nft-list__empty">
               <div className="nft-list__empty-text">
-                {this.context.t('noNFTs')}
+                {this.context.t('noNFTGallery')}
               </div>
             </div>
           )}

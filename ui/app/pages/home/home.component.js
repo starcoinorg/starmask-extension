@@ -4,6 +4,7 @@ import { Redirect, Route } from 'react-router-dom';
 import { formatDate } from '../../helpers/utils/util';
 import AssetList from '../../components/app/asset-list';
 import NFTGallery from '../../components/app/nft-gallery';
+import NFTIdentifier from '../../components/app/nft-identifier';
 import HomeNotification from '../../components/app/home-notification';
 import MultipleNotifications from '../../components/app/multiple-notifications';
 import TransactionList from '../../components/app/transaction-list';
@@ -101,7 +102,7 @@ export default class Home extends PureComponent {
     } else if (!isNotification && swapsFetchParams) {
       history.push(BUILD_QUOTE_ROUTE);
     } else if (firstPermissionsRequestId) {
-      history.push(`${CONNECT_ROUTE}/${firstPermissionsRequestId}`);
+      history.push(`${ CONNECT_ROUTE }/${ firstPermissionsRequestId }`);
     } else if (unconfirmedTransactionsCount > 0) {
       history.push(CONFIRM_TRANSACTION_ROUTE);
     } else if (Object.keys(suggestedTokens).length > 0) {
@@ -307,19 +308,27 @@ export default class Home extends PureComponent {
               >
                 <AssetList
                   onClickAsset={(asset) =>
-                    history.push(`${ASSET_ROUTE}/${asset}`)
+                    history.push(`${ ASSET_ROUTE }/${ asset }`)
                   }
                 />
               </Tab>
               <Tab
                 activeClassName="home__tab--active"
                 className="home__tab"
-                data-testid="home__nfts-tab"
-                name={t('nfts')}
+                data-testid="home__nftGallery-tab"
+                name={t('nftGallery')}
               >
                 <NFTGallery
-                  onClickNFT={(nft) => history.push(`${NFT_ROUTE}/${nft}`)}
+                  onClickNFT={(nft) => history.push(`${ NFT_ROUTE }/${ nft }`)}
                 />
+              </Tab>
+              <Tab
+                activeClassName="home__tab--active"
+                className="home__tab"
+                data-testid="home__nftIdentifier-tab"
+                name={t('nftIdentifier')}
+              >
+                <NFTIdentifier />
               </Tab>
               <Tab
                 activeClassName="home__tab--active"

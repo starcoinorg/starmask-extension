@@ -1269,6 +1269,12 @@
   "nftMeta": {
     "message": "Meta NFT"
   },
+  "nftGallery": {
+    "message": "NFT Gallery"
+  },
+  "nftIdentifier": {
+    "message": "NFT Identifier"
+  },
   "nftName": {
     "message": "Nom NFT"
   },
@@ -1290,8 +1296,11 @@
   "noConversionRateAvailable": {
     "message": "Aucun taux de conversion disponible"
   },
-  "noNFTs": {
-    "message": "Vous n'avez pas de NFT"
+  "noNFTIdentifier": {
+    "message": "Vous n'avez pas de NFT Identifier"
+  },
+  "noNFTGallery": {
+    "message": "Vous n'avez pas de NFT Gallery"
   },
   "noThanks": {
     "message": "Non merci"

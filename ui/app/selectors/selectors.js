@@ -266,7 +266,7 @@ export function getAccountsWithLabels(state) {
   return getMetaMaskAccountsOrdered(state).map(
     ({ address, name, balance }) => ({
       address,
-      addressLabel: `${name} (...${address.slice(address.length - 4)})`,
+      addressLabel: `${ name } (...${ address.slice(address.length - 4) })`,
       label: name,
       balance,
     }),
@@ -494,6 +494,10 @@ export function getAssets(state) {
 
 export function getCurrentNFTs(state) {
   return state.starmask.nfts[state.starmask.selectedAddress] || [];
+}
+
+export function getCurrentNFTIdentifier(state) {
+  return state.starmask.nftIdentifier[state.starmask.selectedAddress] || [];
 }
 
 export function getNFTMetas(state) {

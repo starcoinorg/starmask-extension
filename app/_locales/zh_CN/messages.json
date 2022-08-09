@@ -1231,6 +1231,12 @@
   "nftMeta": {
     "message": "NFT Meta"
   },
+  "nftGallery": {
+    "message": "NFT陈列室"
+  },
+  "nftIdentifier": {
+    "message": "绑定的NFT"
+  },
   "nftName": {
     "message": "NFT 名称"
   },
@@ -1249,8 +1255,11 @@
   "noConversionRateAvailable": {
     "message": "无可用转换率"
   },
-  "noNFTs": {
-    "message": "没有NFT"
+  "noNFTIdentifier": {
+    "message": "没有绑定的NFT"
+  },
+  "noNFTGallery": {
+    "message": "没有NFT陈列室"
   },
   "noThanks": {
     "message": "不，谢谢"
