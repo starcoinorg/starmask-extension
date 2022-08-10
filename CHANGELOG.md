@@ -1,9 +1,18 @@
 # Changelog
 
+## [4.7.0] - 2022-07-10
+
+- Bug fixes:
+
+  - [#72 Display token changes while the Dapp submit a transaction using peer_2_peer scriptFunction ](https://github.com/starcoinorg/starmask-extension/issues/72)
+
+- New features:
+  - [#78 Add a tab to display IdentifierNFT in the home page ](https://github.com/starcoinorg/starmask-extension/issues/78)
+
 ## [4.6.0] - 2022-06-29
 
 - New features:
-  - - [#55 Display the token changes that caused by a transaction in a DApp ](https://github.com/starcoinorg/starmask-extension/issues/55)
+  - [#55 Display the token changes that caused by a transaction in a DApp ](https://github.com/starcoinorg/starmask-extension/issues/55)
 
 ## [4.5.1] - 2022-06-17
 
