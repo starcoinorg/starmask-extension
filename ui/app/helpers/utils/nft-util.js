@@ -108,7 +108,9 @@ async function generateScriptFunctionPayloadHex(
 
 export function imageSourceUrls(imageUrl) {
   const ipfsGatewayAPIs = [
-    'https://ipfs.infura.io:5001/api/v0/cat?arg=',
+    'https://ipfs.io/ipfs/',
+    // 'https://ipfs.infura.io:5001/api/v0/cat?arg=',
+    // 'https://ipfs.infura.io:5001/api/v0/cat?arg=',
     // 'https://dweb.link',
     // 'https://cloudflare-ipfs.com',
     // 'https://gateway.pinata.cloud',
@@ -116,7 +118,8 @@ export function imageSourceUrls(imageUrl) {
   const urls = [];
   if (imageUrl && imageUrl.length && imageUrl.indexOf('ipfs') === 0) {
     const hash = imageUrl.split('//')[1];
-    ipfsGatewayAPIs.forEach((api) => urls.push(`${ api }${ hash }`));
+    const ext = imageUrl.split('.').length > 1 ? '' : '.png'
+    ipfsGatewayAPIs.forEach((api) => urls.push(`${ api }${ hash }${ ext }`));
   } else {
     urls.push(imageUrl);
   }
