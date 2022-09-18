@@ -17,6 +17,7 @@ import { getEnvironmentType } from '../../../../../app/scripts/lib/util';
 import ColorIndicator from '../../ui/color-indicator';
 import { COLORS, SIZES } from '../../../helpers/constants/design-system';
 import { Dropdown, DropdownMenuItem } from './dropdown';
+import { defaultNetworksData } from '../../../pages/settings/networks-tab/networks-tab.constants';
 
 // classes from nodes of the toggle element.
 const notToggleElementClassnames = [
@@ -128,7 +129,7 @@ class NetworkDropdown extends Component {
 
       return (
         <DropdownMenuItem
-          key={`common${rpcUrl}`}
+          key={`common${ rpcUrl }`}
           closeMenu={() => this.props.hideNetworkDropdown()}
           onClick={() => {
             if (isPrefixedFormattedHexString(chainId)) {
@@ -160,7 +161,7 @@ class NetworkDropdown extends Component {
               color: isCurrentRpcTarget ? '#ffffff' : '#9b9b9b',
             }}
           >
-            {nickname || rpcUrl}
+            {nickname || rpcUrl} {ticker}
           </span>
           {isCurrentRpcTarget ? null : (
             <i
@@ -204,6 +205,8 @@ class NetworkDropdown extends Component {
     const {
       provider: { type: providerType },
     } = this.props;
+    console.log(network, this.props)
+    const data = defaultNetworksData.filter(item => item.labelKey === network)[0]
     return (
       <DropdownMenuItem
         key={network}
@@ -228,7 +231,7 @@ class NetworkDropdown extends Component {
             color: providerType === network ? '#ffffff' : '#9b9b9b',
           }}
         >
-          {this.context.t(network)}
+          {this.context.t(network)} {data.ticker}
         </span>
       </DropdownMenuItem>
     );
@@ -241,6 +244,7 @@ class NetworkDropdown extends Component {
       setSelectedSettingsRpcUrl,
     } = this.props;
     const rpcListDetail = this.props.frequentRpcListDetail;
+    console.log({ rpcListDetail })
     const isOpen = this.props.networkDropdownOpen;
 
     return (
@@ -283,6 +287,7 @@ class NetworkDropdown extends Component {
         {this.renderNetworkEntry('barnard')}
         {this.renderNetworkEntry('proxima')}
         {this.renderNetworkEntry('halley')}
+        {this.renderNetworkEntry('devnet')}
 
         {this.renderCustomRpcList(rpcListDetail, this.props.provider)}
         <DropdownMenuItem

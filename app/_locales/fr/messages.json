@@ -566,6 +566,9 @@
   "details": {
     "message": "Détails"
   },
+  "devnet": {
+    "message": "Aptos Dev Net"
+  },
   "directDepositEther": {
     "message": "Dépôt direct STC"
   },

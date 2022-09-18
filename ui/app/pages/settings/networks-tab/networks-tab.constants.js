@@ -7,6 +7,8 @@ import {
   PROXIMA_CHAIN_ID,
   BARNARD,
   BARNARD_CHAIN_ID,
+  DEVNET,
+  DEVNET_CHAIN_ID,
 } from '../../../../../shared/constants/network';
 
 const defaultNetworksData = [
@@ -45,6 +47,15 @@ const defaultNetworksData = [
     chainId: PROXIMA_CHAIN_ID,
     ticker: 'STC',
     blockExplorerUrl: 'https://stcscan.io/proxima',
+  },
+  {
+    labelKey: DEVNET,
+    iconColor: '#F6C343',
+    providerType: DEVNET,
+    rpcUrl: 'https://fullnode.devnet.aptoslab.com',
+    chainId: DEVNET_CHAIN_ID,
+    ticker: 'APT',
+    blockExplorerUrl: 'https://explorer.devnet.aptos.dev',
   },
 ];
 

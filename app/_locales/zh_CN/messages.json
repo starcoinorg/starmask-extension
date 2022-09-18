@@ -540,6 +540,9 @@
   "details": {
     "message": "详情"
   },
+  "devnet": {
+    "message": "Aptos测试网络"
+  },
   "directDepositEther": {
     "message": "直接存入 STC"
   },
