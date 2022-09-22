@@ -962,6 +962,7 @@ export default class MetamaskController extends EventEmitter {
    * @param {string} seed
    */
   async createNewVaultAndRestore(password, seed) {
+    log.debug('starmask createNewVaultAndRestore', { password, seed })
     const releaseLock = await this.createVaultMutex.acquire();
     try {
       let accounts, lastBalance;
@@ -983,6 +984,7 @@ export default class MetamaskController extends EventEmitter {
       // clear unapproved transactions
       this.txController.txStateManager.clearUnapprovedTxs();
 
+      log.debug('keyringController.createNewVaultAndRestore', password, seed)
       // create new vault
       const vault = await keyringController.createNewVaultAndRestore(
         password,
@@ -991,11 +993,12 @@ export default class MetamaskController extends EventEmitter {
 
       const stcQuery = new StcQuery(this.provider);
       accounts = await keyringController.getAccounts();
+      log.debug({ accounts })
       lastBalance = await this.getBalance(
         accounts[accounts.length - 1],
         stcQuery,
       );
-
+      log.debug({ lastBalance })
       const primaryKeyring = keyringController.getKeyringsByType(
         'HD Key Tree',
       )[0];
@@ -1029,6 +1032,9 @@ export default class MetamaskController extends EventEmitter {
    * @param {StcQuery} stcQuery - The StcQuery instance to use when asking the network
    */
   getBalance(address, stcQuery) {
+    const network = this.networkController.getCurrentNetwork()
+    const isAptos = ['devnet'].includes(network)
+    log.debug('starmask getBalance', { address, network, isAptos })
     return new Promise((resolve, reject) => {
       const cached = this.accountTracker.store.getState().accounts[address];
 
@@ -1037,8 +1043,9 @@ export default class MetamaskController extends EventEmitter {
       } else {
         stcQuery.getResource(
           address,
-          '0x00000000000000000000000000000001::Account::Balance<0x00000000000000000000000000000001::STC::STC>',
+          isAptos ? '0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>' : '0x00000000000000000000000000000001::Account::Balance<0x00000000000000000000000000000001::STC::STC>',
           (error, res) => {
+            log.debug({ error, res })
             if (error) {
               log.error(error);
               if (error.message && error.message === 'Invalid params: unable to parse AccoutAddress.') {
@@ -1047,7 +1054,12 @@ export default class MetamaskController extends EventEmitter {
                 reject(error);
               }
             } else {
-              const balanceDecimal = res && res.value[0][1].Struct.value[0][1].U128 || 0;
+              let balanceDecimal
+              if (isAptos) {
+                balanceDecimal = res?.data?.coin?.value || 0;
+              } else {
+                balanceDecimal = res && res.value[0][1].Struct.value[0][1].U128 || 0;
+              }
               const balanceHex = new BigNumber(balanceDecimal, 10).toString(16);
               const balance = addHexPrefix(balanceHex);
               resolve(balance || '0x0');
