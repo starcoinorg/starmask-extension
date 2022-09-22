@@ -411,6 +411,9 @@
   "connectingToBarnard": {
     "message": "Connecting to Barnard Test Network"
   },
+  "connectingToDevnet": {
+    "message": "Connecting to Aptos Dev Network"
+  },
   "connectingToGoerli": {
     "message": "Connecting to Goerli Test Network"
   },

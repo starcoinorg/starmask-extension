@@ -385,6 +385,9 @@
   "connectingToBarnard": {
     "message": "正在连接 Barnard 测试网络"
   },
+  "connectingToDevnet": {
+    "message": "正在连接 Aptos 测试网络"
+  },
   "connectingToGoerli": {
     "message": "正在连接 Goerli 测试网络"
   },

@@ -39,7 +39,6 @@ export default class LoadingNetworkScreen extends PureComponent {
     const providerName = provider.type;
 
     let name;
-
     if (providerName === 'main') {
       name = this.context.t('connectingToMainnet');
     } else if (providerName === 'barnard') {
@@ -48,10 +47,11 @@ export default class LoadingNetworkScreen extends PureComponent {
       name = this.context.t('connectingToHalley');
     } else if (providerName === 'proxima') {
       name = this.context.t('connectingToProxima');
+    } else if (providerName === 'devnet') {
+      name = this.context.t('connectingToDevnet');
     } else {
       name = this.context.t('connectingTo', [providerId]);
     }
-
     return name;
   };
 

@@ -17,6 +17,8 @@ import {
   NETWORK_TYPE_TO_ID_MAP,
   MAINNET_CHAIN_ID,
   BARNARD_CHAIN_ID,
+  DEVNET,
+  DEVNET_CHAIN_ID,
 } from '../../../../shared/constants/network';
 import {
   isPrefixedFormattedHexString,
@@ -25,6 +27,9 @@ import {
 import createMetamaskMiddleware from './createMetamaskMiddleware';
 import createInfuraClient from './createInfuraClient';
 import createJsonRpcClient from './createJsonRpcClient';
+import { chain } from 'lodash';
+import { defaultNetworksData } from '../../../../ui/app/pages/settings/networks-tab/networks-tab.constants';
+
 
 const env = process.env.METAMASK_ENV;
 
@@ -43,7 +48,9 @@ if (process.env.IN_TEST === 'true') {
   //   chainId: '0xfe',
   //   nickname: 'Localhost 9850',
   // };
-  defaultProviderConfigOpts = { type: BARNARD, chainId: BARNARD_CHAIN_ID };
+
+  // defaultProviderConfigOpts = { type: BARNARD, chainId: BARNARD_CHAIN_ID };
+  defaultProviderConfigOpts = { type: DEVNET, chainId: DEVNET_CHAIN_ID };
 } else {
   defaultProviderConfigOpts = { type: MAINNET, chainId: MAINNET_CHAIN_ID };
 }
@@ -154,13 +161,16 @@ export default class NetworkController extends EventEmitter {
       this.setNetworkState('loading');
       return;
     }
-
+    log.debug('lookupNetwork', chainId, this._provider)
     // Ping the RPC endpoint so we can confirm that it works
     const stcQuery = new StcQuery(this._provider);
     const initialNetwork = this.getNetworkState();
-    stcQuery.sendAsync({ method: 'chain.id' }, (err, networkVersion) => {
+    log.debug({ initialNetwork })
 
+    stcQuery.sendAsync({ method: 'chain.id' }, (err, networkVersion) => {
+      log.debug('chain.id response', { err, networkVersion })
       const currentNetwork = this.getNetworkState();
+      log.debug({ currentNetwork })
       if (initialNetwork === currentNetwork) {
         if (err) {
           this.setNetworkState('loading');
@@ -175,6 +185,11 @@ export default class NetworkController extends EventEmitter {
   getCurrentChainId() {
     const { type, chainId: configChainId } = this.getProviderConfig();
     return NETWORK_TYPE_TO_ID_MAP[type]?.chainId || configChainId;
+  }
+
+  getCurrentNetwork() {
+    const { type } = this.getProviderConfig();
+    return type;
   }
 
   setRpcTarget(rpcUrl, chainId, ticker = 'STC', nickname = '', rpcPrefs) {
@@ -197,6 +212,12 @@ export default class NetworkController extends EventEmitter {
   }
 
   async setProviderType(type, rpcUrl = '', ticker = 'STC', nickname = '') {
+    const network = defaultNetworksData.filter(item => item.providerType === type)[0]
+    if (network) {
+      rpcUrl = network.rpcUrl
+      ticker = network.ticker
+    }
+    log.debug('setProviderType', type, rpcUrl, ticker, nickname)
     assert.notStrictEqual(
       type,
       NETWORK_TYPE_RPC,

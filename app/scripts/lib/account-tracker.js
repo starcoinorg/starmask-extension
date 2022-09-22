@@ -31,6 +31,7 @@ import SINGLE_CALL_BALANCES_ABI from 'single-call-balance-checker-abi';
 // } from '../constants/contracts';
 import { decodeNFTMeta } from '../../../ui/app/helpers/utils/nft-util';
 import { bnToHex } from './util';
+import { stripHexPrefix } from 'ethereumjs-util';
 
 /**
  * This module is responsible for tracking any number of accounts and caching their current balances & transaction
@@ -256,6 +257,18 @@ export default class AccountTracker {
    *
    */
   async _updateAccount(address) {
+    log.debug('_updateAccount', address, address.length)
+    const accountLength = stripHexPrefix(address).length
+    log.debug('_updateAccount', address, address.length, accountLength)
+    if (accountLength === 64) {
+      await this._updateAccountAptos(address)
+    } else if (accountLength === 32) {
+      await this._updateAccountStarcoin(address)
+    }
+  }
+
+  async _updateAccountStarcoin(address) {
+    log.debug('_updateAccountStarcoin', address, address.length)
     const { accounts, assets, nfts, nftIdentifier } = this.store.getState();
     const currentTokens = {};
     const currentNFTGallery = [];
@@ -275,10 +288,6 @@ export default class AccountTracker {
         const identifierNFTKeys = [];
         Object.keys(resources).forEach((key) => {
           if (key.startsWith(ACCOUNT_BALANCE)) {
-            const token = key.substr(
-              ACCOUNT_BALANCE.length + 1,
-              key.length - ACCOUNT_BALANCE.length - 2,
-            );
             balanceKeys.push(key);
           } else if (key.startsWith(NFT_GALLERY)) {
             nftKeys.push(key);
@@ -370,6 +379,115 @@ export default class AccountTracker {
     // if (!accounts[address]) {
     //   return;
     // }
+    this.store.updateState({ accounts, assets, nfts, nftIdentifier });
+  }
+
+  async _updateAccountAptos(address) {
+    log.debug('_updateAccountAptos', address, address.length)
+    const { accounts, assets, nfts, nftIdentifier } = this.store.getState();
+    const currentTokens = {};
+    const currentNFTGallery = [];
+    const currentNFTIdentifier = [];
+    let balanceDecimal = 0;
+
+    try {
+      // query balance
+      const res = await this._query.listResource(address);
+      log.debug({ res })
+      const ACCOUNT_BALANCE = '0x1::coin::CoinStore';
+      const balanceKeys = [];
+      const NFT_GALLERY = '0x00000000000000000000000000000001::NFTGallery::NFTGallery';
+      const nftKeys = [];
+      const NFT_IDENTIFIER = '0x00000000000000000000000000000001::IdentifierNFT::IdentifierNFT';
+      const identifierNFTKeys = [];
+      res.forEach((item) => {
+        const key = item.type
+        if (key.startsWith(ACCOUNT_BALANCE)) {
+          balanceKeys.push(key);
+        } else if (key.startsWith(NFT_GALLERY)) {
+          nftKeys.push(key);
+        } else if (key.startsWith(NFT_IDENTIFIER)) {
+          identifierNFTKeys.push(key);
+        }
+      });
+      if (balanceKeys.length === 0) {
+        accounts[address] = { address, balance: '0x0' };
+      } else {
+        balanceKeys.forEach((key) => {
+          balanceDecimal = res.filter((item) => item.type === key)[0].data.coin.value;
+          const token = key.substr(
+            ACCOUNT_BALANCE.length + 1,
+            key.length - ACCOUNT_BALANCE.length - 2,
+          );
+          const balanceHex = new BigNumber(balanceDecimal, 10).toString(16);
+          const balance = addHexPrefix(balanceHex);
+          if (token === '0x1::aptos_coin::AptosCoin') {
+            const result = { address, balance };
+            accounts[address] = result;
+          } else {
+            currentTokens[token] = balance;
+          }
+        });
+      }
+      assets[address] = currentTokens;
+      nftKeys.forEach((key) => {
+        const T2 = key.substr(
+          NFT_GALLERY.length + 1,
+          key.length - NFT_GALLERY.length - 2,
+        );
+        const T2Arr = T2.split(',');
+        const meta = T2Arr[0].trim();
+        const body = T2Arr[1].trim();
+        const items = resources[key].json.items.map((item) => {
+          return {
+            id: item.id,
+            name: decodeNFTMeta(item.base_meta.name),
+            description: decodeNFTMeta(item.base_meta.description),
+            image: decodeNFTMeta(item.base_meta.image),
+            imageData: decodeNFTMeta(item.base_meta.image_data),
+          };
+        });
+        currentNFTGallery.push({
+          meta,
+          body,
+          items,
+        });
+      });
+      nfts[address] = currentNFTGallery;
+
+      identifierNFTKeys.forEach((key) => {
+        const T2 = key.substr(
+          NFT_IDENTIFIER.length + 1,
+          key.length - NFT_IDENTIFIER.length - 2,
+        );
+        const T2Arr = T2.split(',');
+        const meta = T2Arr[0].trim();
+        const body = T2Arr[1].trim();
+        const items = resources[key].json.nft.vec.map((item) => {
+          return {
+            id: item.id,
+            name: decodeNFTMeta(item.base_meta.name),
+            description: decodeNFTMeta(item.base_meta.description),
+            image: decodeNFTMeta(item.base_meta.image),
+            imageData: decodeNFTMeta(item.base_meta.image_data),
+          };
+        });
+        currentNFTIdentifier.push({
+          meta,
+          body,
+          items,
+        });
+      });
+      nftIdentifier[address] = currentNFTIdentifier;
+    } catch (error) {
+      log.info('_updateAccount error', error);
+      // HD account will get error: Invalid params: unable to parse AccoutAddress
+      accounts[address] = { address, balance: '0x0' };
+      assets[address] = currentTokens;
+      nfts[address] = [];
+      nftIdentifier[address] = [];
+    }
+    // update accounts state
     this.store.updateState({ accounts, assets, nfts, nftIdentifier });
   }
 

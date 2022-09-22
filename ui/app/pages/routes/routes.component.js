@@ -148,7 +148,7 @@ export default class Routes extends Component {
         />
         <Authenticated path={SETTINGS_ROUTE} component={Settings} />
         <Authenticated
-          path={`${CONFIRM_TRANSACTION_ROUTE}/:id?`}
+          path={`${ CONFIRM_TRANSACTION_ROUTE }/:id?`}
           component={ConfirmTransaction}
         />
         <Authenticated
@@ -174,11 +174,11 @@ export default class Routes extends Component {
         />
         <Authenticated path={NEW_ACCOUNT_ROUTE} component={CreateAccountPage} />
         <Authenticated
-          path={`${CONNECT_ROUTE}/:id`}
+          path={`${ CONNECT_ROUTE }/:id`}
           component={PermissionsConnect}
         />
-        <Authenticated path={`${ASSET_ROUTE}/:asset`} component={Asset} />
-        <Authenticated path={`${NFT_ROUTE}/:nft`} component={NFTItems} />
+        <Authenticated path={`${ ASSET_ROUTE }/:asset`} component={Asset} />
+        <Authenticated path={`${ NFT_ROUTE }/:nft`} component={NFTItems} />
         <Authenticated path={ADD_NFT_ROUTE} component={AddNFTPage} exact />
         <Authenticated
           path={CONFIRM_ADD_NFT_ROUTE}
@@ -385,7 +385,6 @@ export default class Routes extends Component {
       return loadingMessage;
     }
     const { provider, providerId } = this.props;
-
     switch (provider.type) {
       case 'main':
         return this.context.t('connectingToMainnet');
@@ -395,6 +394,8 @@ export default class Routes extends Component {
         return this.context.t('connectingToHalley');
       case 'proxima':
         return this.context.t('connectingToProxima');
+      case 'devnet':
+        return this.context.t('connectingToDevnet');
       default:
         return this.context.t('connectingTo', [providerId]);
     }
@@ -410,6 +411,8 @@ export default class Routes extends Component {
         return this.context.t('halley');
       case 'proxima':
         return this.context.t('proxima');
+      case 'devnet':
+        return this.context.t('devnet');
       default:
         return this.context.t('unknownNetwork');
     }

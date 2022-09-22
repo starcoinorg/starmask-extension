@@ -194,6 +194,8 @@ class NetworkDropdown extends Component {
       name = this.context.t('proxima');
     } else if (providerName === 'halley') {
       name = this.context.t('halley');
+    } else if (providerName === 'devnet') {
+      name = this.context.t('devnet');
     } else {
       name = provider.nickname || this.context.t('unknownNetwork');
     }
@@ -205,7 +207,6 @@ class NetworkDropdown extends Component {
     const {
       provider: { type: providerType },
     } = this.props;
-    console.log(network, this.props)
     const data = defaultNetworksData.filter(item => item.labelKey === network)[0]
     return (
       <DropdownMenuItem
@@ -244,7 +245,6 @@ class NetworkDropdown extends Component {
       setSelectedSettingsRpcUrl,
     } = this.props;
     const rpcListDetail = this.props.frequentRpcListDetail;
-    console.log({ rpcListDetail })
     const isOpen = this.props.networkDropdownOpen;
 
     return (

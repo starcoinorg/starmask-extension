@@ -1689,7 +1689,7 @@ export function updateProviderType(type) {
 export function updateAndSetCustomRpc(
   newRpc,
   chainId,
-  ticker = 'ETH',
+  ticker = 'STC',
   nickname,
   rpcPrefs,
 ) {
@@ -1723,7 +1723,7 @@ export function editRpc(
   oldRpc,
   newRpc,
   chainId,
-  ticker = 'ETH',
+  ticker = 'STC',
   nickname,
   rpcPrefs,
 ) {

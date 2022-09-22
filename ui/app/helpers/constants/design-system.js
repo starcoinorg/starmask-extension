@@ -30,6 +30,7 @@ export const COLORS = {
   BARNARD: 'barnard',
   PROXIMA: 'proxima',
   HALLEY: 'halley',
+  DEVNET: 'devnet',
   TRANSPARENT: 'transparent',
 };
 
