@@ -1032,9 +1032,8 @@ export default class MetamaskController extends EventEmitter {
    * @param {StcQuery} stcQuery - The StcQuery instance to use when asking the network
    */
   getBalance(address, stcQuery) {
-    const network = this.networkController.getCurrentNetwork()
-    const isAptos = ['devnet'].includes(network)
-    log.debug('starmask getBalance', { address, network, isAptos })
+    const networkTicker = this.networkController.getCurrentNetworkTicker()
+    log.debug('starmask getBalance', { address, networkTicker })
     return new Promise((resolve, reject) => {
       const cached = this.accountTracker.store.getState().accounts[address];
 
@@ -1043,7 +1042,7 @@ export default class MetamaskController extends EventEmitter {
       } else {
         stcQuery.getResource(
           address,
-          isAptos ? '0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>' : '0x00000000000000000000000000000001::Account::Balance<0x00000000000000000000000000000001::STC::STC>',
+          networkTicker === 'APT' ? '0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>' : '0x00000000000000000000000000000001::Account::Balance<0x00000000000000000000000000000001::STC::STC>',
           (error, res) => {
             log.debug({ error, res })
             if (error) {
@@ -1055,7 +1054,7 @@ export default class MetamaskController extends EventEmitter {
               }
             } else {
               let balanceDecimal
-              if (isAptos) {
+              if (networkTicker === 'APT') {
                 balanceDecimal = res?.data?.coin?.value || 0;
               } else {
                 balanceDecimal = res && res.value[0][1].Struct.value[0][1].U128 || 0;

@@ -36,6 +36,7 @@ const env = process.env.METAMASK_ENV;
 let defaultProviderConfigOpts;
 if (process.env.IN_TEST === 'true') {
   defaultProviderConfigOpts = {
+    ticker: 'STC',
     type: NETWORK_TYPE_RPC,
     rpcUrl: 'http://localhost:9850',
     chainId: '0xfe',
@@ -49,14 +50,13 @@ if (process.env.IN_TEST === 'true') {
   //   nickname: 'Localhost 9850',
   // };
 
-  // defaultProviderConfigOpts = { type: BARNARD, chainId: BARNARD_CHAIN_ID };
-  defaultProviderConfigOpts = { type: DEVNET, chainId: DEVNET_CHAIN_ID };
+  // defaultProviderConfigOpts = { ticker: 'STC', type: BARNARD, chainId: BARNARD_CHAIN_ID };
+  defaultProviderConfigOpts = { ticker: 'APT', type: DEVNET, chainId: DEVNET_CHAIN_ID };
 } else {
-  defaultProviderConfigOpts = { type: MAINNET, chainId: MAINNET_CHAIN_ID };
+  defaultProviderConfigOpts = { ticker: 'STC', type: MAINNET, chainId: MAINNET_CHAIN_ID };
 }
 
 const defaultProviderConfig = {
-  ticker: 'STC',
   ...defaultProviderConfigOpts,
 };
 
@@ -187,9 +187,10 @@ export default class NetworkController extends EventEmitter {
     return NETWORK_TYPE_TO_ID_MAP[type]?.chainId || configChainId;
   }
 
-  getCurrentNetwork() {
-    const { type } = this.getProviderConfig();
-    return type;
+  getCurrentNetworkTicker() {
+    log.debug('getCurrentNetworkTicker', this.getProviderConfig())
+    const { ticker } = this.getProviderConfig();
+    return ticker;
   }
 
   setRpcTarget(rpcUrl, chainId, ticker = 'STC', nickname = '', rpcPrefs) {
