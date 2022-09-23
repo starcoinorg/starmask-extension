@@ -1384,7 +1384,8 @@ export default class MetamaskController extends EventEmitter {
     }
 
     try {
-      await seedPhraseVerifier.verifyAccounts(accounts, seedWords);
+      const networkTicker = this.networkController.getCurrentNetworkTicker()
+      await seedPhraseVerifier.verifyAccounts(accounts, seedWords, networkTicker);
       return seedWords;
     } catch (err) {
       log.error(err.message);

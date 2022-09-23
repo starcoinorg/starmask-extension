@@ -15,7 +15,7 @@ const seedPhraseVerifier = {
    * @returns {Promise<void>} Promises undefined
    *
    */
-  async verifyAccounts(createdAccounts, seedWords) {
+  async verifyAccounts(createdAccounts, seedWords, ticker) {
     if (!createdAccounts || createdAccounts.length < 1) {
       throw new Error('No created accounts defined.');
     }
@@ -27,10 +27,14 @@ const seedPhraseVerifier = {
       numberOfAccounts: createdAccounts.length,
     };
 
+    if (ticker === 'APT') {
+      opts.hdPath = `m/44'/637'/0'/0'`
+    }
+
     const keyring = new Keyring(opts);
     const restoredAccounts = await keyring.getAccounts();
-    log.debug(`Created accounts: ${JSON.stringify(createdAccounts)}`);
-    log.debug(`Restored accounts: ${JSON.stringify(restoredAccounts)}`);
+    log.debug(`Created accounts: ${ JSON.stringify(createdAccounts) }`);
+    log.debug(`Restored accounts: ${ JSON.stringify(restoredAccounts) }`);
 
     if (restoredAccounts.length !== createdAccounts.length) {
       // this should not happen...
@@ -42,7 +46,7 @@ const seedPhraseVerifier = {
         restoredAccounts[i].toLowerCase() !== createdAccounts[i].toLowerCase()
       ) {
         throw new Error(
-          `Not identical accounts! Original: ${createdAccounts[i]}, Restored: ${restoredAccounts[i]}`,
+          `Not identical accounts! Original: ${ createdAccounts[i] }, Restored: ${ restoredAccounts[i] }`,
         );
       }
     }

@@ -188,7 +188,6 @@ export default class NetworkController extends EventEmitter {
   }
 
   getCurrentNetworkTicker() {
-    log.debug('getCurrentNetworkTicker', this.getProviderConfig())
     const { ticker } = this.getProviderConfig();
     return ticker;
   }
