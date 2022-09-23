@@ -1308,6 +1308,9 @@
   "noNFTGallery": {
     "message": "Vous n'avez pas de NFT Gallery"
   },
+  "noNFTs": {
+    "message": "Non NFTs"
+  },
   "noThanks": {
     "message": "Non merci"
   },

@@ -1267,6 +1267,9 @@
   "noNFTGallery": {
     "message": "没有NFT陈列室"
   },
+  "noNFTs": {
+    "message": "没有NFT"
+  },
   "noThanks": {
     "message": "不，谢谢"
   },
