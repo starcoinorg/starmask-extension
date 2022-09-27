@@ -55,7 +55,7 @@ const defaultNetworksData = [
     rpcUrl: 'https://fullnode.devnet.aptoslab.com',
     chainId: DEVNET_CHAIN_ID,
     ticker: 'APT',
-    blockExplorerUrl: 'https://explorer.devnet.aptos.dev',
+    blockExplorerUrl: 'https://explorer.aptoslabs.com/',
   },
 ];
 

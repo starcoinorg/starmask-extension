@@ -54,12 +54,15 @@ export default class AccountDetailsModal extends Component {
           defaultValue={name}
           onSubmit={(label) => setAccountLabel(address, label)}
         />
-
-        <QrView
-          Qr={{
-            data: address,
-          }}
-        />
+        {
+          rpcPrefs.ticker === 'STC' ? (
+            <QrView
+              Qr={{
+                data: address,
+              }}
+            />
+          ) : null
+        }
         <Button
           type="secondary"
           className="account-details-modal__button"
