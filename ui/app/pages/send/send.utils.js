@@ -2,6 +2,7 @@ import { utils, bcs } from '@starcoin/starcoin';
 import { ethers } from 'ethers';
 import abi from 'ethereumjs-abi';
 import { BigNumber } from 'bignumber.js';
+
 import {
   addCurrencies,
   conversionUtil,
@@ -10,7 +11,6 @@ import {
   conversionGreaterThan,
   conversionLessThan,
 } from '../../helpers/utils/conversion-util';
-
 import { calcTokenAmount } from '../../helpers/utils/token-util';
 import { addHexPrefix } from '../../../../app/scripts/lib/util';
 
@@ -206,23 +206,25 @@ async function estimateGasForSend({
   data,
   gasPrice,
   estimateGasMethod,
+  ticker,
 }) {
   const paramsForGasEstimate = { from: selectedAddress, to, toReceiptIdentifier, value, gasPrice };
-
   // if recipient has no code, gas is 21k max:
   if (!sendToken && !data) {
-    const code = await new Promise((resolve, reject) => {
-      return global.stcQuery.getCode('0x00000000000000000000000000000001::Account', (error, result) => {
-        if (error) {
-          return reject(error);
-        }
-        return resolve(result);
+    if (ticker === 'STC') {
+      const code = await new Promise((resolve, reject) => {
+        return global.stcQuery.getCode('0x00000000000000000000000000000001::Account', (error, result) => {
+          if (error) {
+            return reject(error);
+          }
+          return resolve(result);
+        });
       });
-    });
 
-    const codeIsEmpty = !code;
-    if (codeIsEmpty) {
-      return SIMPLE_GAS_COST;
+      const codeIsEmpty = !code;
+      if (codeIsEmpty) {
+        return SIMPLE_GAS_COST;
+      }
     }
   } else if (sendToken && !to) {
     return BASE_TOKEN_GAS_COST;
@@ -264,20 +266,7 @@ async function estimateGasForSend({
   // run tx
   try {
     // get sequence_number from contract.get_resource
-    const sequenceNumber = await new Promise((resolve, reject) => {
-      return global.stcQuery.getResource(
-        paramsForGasEstimate.from,
-        '0x00000000000000000000000000000001::Account::Account',
-        (err, res) => {
-          if (err) {
-            return reject(err);
-          }
-
-          const sequence_number = res && res.value[6][1].U64 || 0;
-          return resolve(new BigNumber(sequence_number, 10).toNumber());
-        },
-      );
-    });
+    const sequenceNumber = await getSequenceNumber(paramsForGasEstimate.from, ticker)
     paramsForGasEstimate.sequenceNumber = sequenceNumber;
     // get gas_used from contract.dry_run_raw
     const estimatedGas = await estimateGasMethod(paramsForGasEstimate);
@@ -347,6 +336,38 @@ function addGasBuffer(
   }
   // otherwise use blockGasLimit
   return upperGasLimit;
+}
+
+async function getSequenceNumber(from, ticker) {
+  if (ticker === 'STC') {
+    const sequenceNumber = await new Promise((resolve, reject) => {
+      return global.stcQuery.getResource(
+        from,
+        '0x00000000000000000000000000000001::Account::Account',
+        (err, res) => {
+          if (err) {
+            return reject(err);
+          }
+
+          const sequence_number = res && res.value[6][1].U64 || 0;
+          return resolve(new BigNumber(sequence_number, 10).toNumber());
+        },
+      );
+    });
+  } else if (ticker === 'APT') {
+    const sequenceNumber = await new Promise((resolve, reject) => {
+      return global.stcQuery.getAccount(
+        from,
+        (err, res) => {
+          if (err) {
+            return reject(err);
+          }
+          const sequence_number = res && res.sequence_number || 0;
+          return resolve(new BigNumber(sequence_number, 10).toNumber());
+        },
+      );
+    });
+  }
 }
 
 function generateTokenPalyloadData({

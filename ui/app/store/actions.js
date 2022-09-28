@@ -710,9 +710,13 @@ export function updateGasData({
   value,
   data,
 }) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
     dispatch(gasLoadingStarted());
     if (to) {
+      const state = getState();
+      const rpcPrefs = getRpcPrefsForCurrentProvider(
+        state,
+      );
       return estimateGasForSend({
         estimateGasMethod: promisifiedBackground.estimateGas,
         blockGasLimit,
@@ -723,6 +727,7 @@ export function updateGasData({
         value,
         estimateGasPrice: gasPrice,
         data,
+        ticker: rpcPrefs.ticker,
       })
         .then((gas) => {
           dispatch(setGasLimit(gas));

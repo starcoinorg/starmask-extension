@@ -52,7 +52,7 @@ const defaultNetworksData = [
     labelKey: DEVNET,
     iconColor: '#F6C343',
     providerType: DEVNET,
-    rpcUrl: 'https://fullnode.devnet.aptoslab.com',
+    rpcUrl: 'https://fullnode.devnet.aptoslabs.com',
     chainId: DEVNET_CHAIN_ID,
     ticker: 'APT',
     blockExplorerUrl: 'https://explorer.aptoslabs.com/',
