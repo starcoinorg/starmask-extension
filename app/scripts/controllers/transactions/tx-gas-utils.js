@@ -1,5 +1,6 @@
 import StcQuery from '@starcoin/stc-query';
 import log from 'loglevel';
+import { AptosClient } from 'aptos';
 import { addHexPrefix, stripHexPrefix } from '@starcoin/stc-util';
 // import { cloneDeep } from 'lodash';
 import BigNumber from 'bignumber.js';
@@ -36,6 +37,7 @@ export default class TxGasUtil {
     this.query = new StcQuery(provider);
     this.store = store;
     this.getPublicKeyFor = getPublicKeyFor;
+    this.client = new AptosClient('https://fullnode.devnet.aptoslabs.com/v1');
   }
 
   /**

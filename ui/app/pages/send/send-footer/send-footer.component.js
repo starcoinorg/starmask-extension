@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { stripHexPrefix } from 'ethereumjs-util';
 import PageContainerFooter from '../../../components/ui/page-container/page-container-footer';
 import { CONFIRM_TRANSACTION_ROUTE } from '../../../helpers/constants/routes';
+import { MIN_GAS_LIMIT_DEC } from '../send.constants';
 
 export default class SendFooter extends Component {
   static propTypes = {
@@ -126,7 +128,7 @@ export default class SendFooter extends Component {
       gasLimitIsExtendMax,
     } = this.props;
     const missingTokenBalance = sendToken && !tokenBalance;
-    const gasLimitTooLow = gasLimit < 10000;
+    const gasLimitTooLow = stripHexPrefix(gasLimit) < MIN_GAS_LIMIT_DEC;
     const shouldBeDisabled =
       gasPriceIsExtendMax ||
       gasLimitIsExtendMax ||

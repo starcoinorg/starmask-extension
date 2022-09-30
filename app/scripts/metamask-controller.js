@@ -1,6 +1,7 @@
 import EventEmitter from 'events';
 import pump from 'pump';
 import { ethers } from 'ethers';
+import { AptosAccount } from 'aptos';
 const { arrayify, hexlify } = ethers.utils;
 import { ObservableStore } from '@metamask/obs-store';
 import { storeAsStream } from '@metamask/obs-store/dist/asStream';
@@ -1927,41 +1928,70 @@ export default class MetamaskController extends EventEmitter {
   }
 
   estimateGas(estimateGasParams) {
+    log.debug('estimateGas', { estimateGasParams })
     return new Promise((resolve, reject) => {
       const { network } = this.networkController.store.getState();
-      // network = 0xfe for `Localhost 9850`
-      // network = { name: XXX, id: XXX_NETWORK_ID } for others
-      const chainId = network.id ? network.id : Number(hexToDecimal(network));
-      const tokenCode = estimateGasParams.code ? estimateGasParams.code : '0x00000000000000000000000000000001::STC::STC'
-      return this.keyringController.getPublicKeyFor(estimateGasParams.from)
-        .then((publicKey) => {
-          const params = {
-            chain_id: chainId,
-            gas_unit_price: 1,
-            sender: estimateGasParams.from,
-            sender_public_key: publicKey,
-            sequence_number: estimateGasParams.sequenceNumber,
-            max_gas_amount: 40000000,
-            script: {
-              code: '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2',
-              type_args: [tokenCode],
-              args: [estimateGasParams.to, `${ hexToDecimal(estimateGasParams.gas) }u128`]
-            },
-          };
-          if (!estimateGasParams.to) {
-            return resolve(0);
-          }
-          return this.txController.txGasUtil.query.estimateGas(
-            params,
-            (err, res) => {
-              if (err) {
-                return reject(err);
-              }
-              const gas_used = parseInt(res.gas_used, 10);
-              return resolve(gas_used);
-            },
-          );
-        });
+      log.debug({ network })
+      if (['devnet'].includes(network.name)) {
+        const payload = {
+          function: "0x1::coin::transfer",
+          type_arguments: ["0x1::aptos_coin::AptosCoin"],
+          arguments: [estimateGasParams.to, 10],
+        };
+        return this.txController.txGasUtil.client.generateTransaction(estimateGasParams.from, payload, { gas_unit_price: "100" })
+          .then((rawTxn) => {
+            log.debug({ rawTxn })
+            return this.keyringController.exportAccount(estimateGasParams.from)
+              .then((privateKey) => {
+                const fromAccount = AptosAccount.fromAptosAccountObject({ privateKeyHex: addHexPrefix(privateKey) });
+                return this.txController.txGasUtil.client.simulateTransaction(fromAccount, rawTxn)
+                  .then((result) => {
+                    const transactionRespSimulation = result[0]
+                    log.debug({ transactionRespSimulation })
+                    const gas_used = transactionRespSimulation.gas_used
+                    log.debug('simulated', { gas_used })
+                    return resolve(gas_used);
+                  })
+              })
+          })
+      } else {
+        // network = 0xfe for `Localhost 9850`
+        // network = { name: XXX, id: XXX_NETWORK_ID } for others
+        const chainId = network.id ? network.id : Number(hexToDecimal(network));
+        const tokenCode = estimateGasParams.code ? estimateGasParams.code : '0x00000000000000000000000000000001::STC::STC'
+        return this.keyringController.getPublicKeyFor(estimateGasParams.from)
+          .then((publicKey) => {
+            log.debug({ publicKey })
+            const params = {
+              chain_id: chainId,
+              gas_unit_price: 1,
+              sender: estimateGasParams.from,
+              sender_public_key: publicKey,
+              sequence_number: estimateGasParams.sequenceNumber,
+              max_gas_amount: 40000000,
+              script: {
+                code: '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2',
+                type_args: [tokenCode],
+                args: [estimateGasParams.to, `${ hexToDecimal(estimateGasParams.gas) }u128`]
+              },
+            };
+            log.debug({ params })
+            if (!estimateGasParams.to) {
+              return resolve(0);
+            }
+            return this.txController.txGasUtil.query.estimateGas(
+              params,
+              (err, res) => {
+                if (err) {
+                  return reject(err);
+                }
+                const gas_used = parseInt(res.gas_used, 10);
+                return resolve(gas_used);
+              },
+            );
+          });
+      }
+
     });
   }
 
