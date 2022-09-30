@@ -1948,7 +1948,7 @@ export default class MetamaskController extends EventEmitter {
                   .then((result) => {
                     const transactionRespSimulation = result[0]
                     log.debug({ transactionRespSimulation })
-                    const gas_used = transactionRespSimulation.gas_used
+                    const gas_used = parseInt(transactionRespSimulation.gas_used, 10)
                     log.debug('simulated', { gas_used })
                     return resolve(gas_used);
                   })

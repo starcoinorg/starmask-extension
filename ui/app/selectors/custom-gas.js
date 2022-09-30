@@ -4,7 +4,7 @@ import {
   conversionGreaterThan,
 } from '../helpers/utils/conversion-util';
 import { formatCurrency } from '../helpers/utils/confirm-tx.util';
-import { decEthToConvertedCurrency as ethTotalToConvertedCurrency } from '../helpers/utils/conversions.util';
+import { decEthToConvertedCurrency as ethTotalToConvertedCurrency, decimalToHex } from '../helpers/utils/conversions.util';
 import { formatETHFee } from '../helpers/utils/formatters';
 import { calcGasTotal } from '../pages/send/send.utils';
 
@@ -32,8 +32,17 @@ export function getBasicGasEstimateLoadingStatus(state) {
 }
 
 export function getAveragePriceEstimateInHexWEI(state) {
-  const averagePriceEstimate = state.gas.basicEstimates.average;
-  return getGasPriceInHexWei(averagePriceEstimate || '0x0');
+  const {
+    starmask: {
+      network: { name },
+    },
+  } = state;
+  if (['devnet'].includes(name)) {
+    return addHexPrefix(decimalToHex(100))
+  } else {
+    const averagePriceEstimate = state.gas.basicEstimates.average;
+    return getGasPriceInHexWei(averagePriceEstimate || '0x0');
+  }
 }
 
 export function getFastPriceEstimateInHexWEI(state) {
