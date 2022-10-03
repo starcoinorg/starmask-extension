@@ -315,6 +315,9 @@ export default class MetamaskController extends EventEmitter {
       getPublicKeyFor: this.keyringController.getPublicKeyFor.bind(
         this.keyringController,
       ),
+      exportAccount: this.keyringController.exportAccount.bind(
+        this.keyringController,
+      ),
       provider: this.provider,
       blockTracker: this.blockTracker,
       trackMetaMetricsEvent: this.metaMetricsController.trackEvent.bind(

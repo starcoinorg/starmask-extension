@@ -257,9 +257,7 @@ export default class AccountTracker {
    *
    */
   async _updateAccount(address) {
-    log.debug('_updateAccount', address, address.length)
     const accountLength = stripHexPrefix(address).length
-    log.debug('_updateAccount', address, address.length, accountLength)
     if (accountLength === 64) {
       await this._updateAccountAptos(address)
     } else if (accountLength === 32) {
@@ -393,7 +391,6 @@ export default class AccountTracker {
     try {
       // query balance
       const res = await this._query.listResource(address);
-      log.debug({ res })
       const ACCOUNT_BALANCE = '0x1::coin::CoinStore';
       const balanceKeys = [];
       const NFT_GALLERY = '0x00000000000000000000000000000001::NFTGallery::NFTGallery';

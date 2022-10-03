@@ -80,7 +80,7 @@ export default class TransactionController extends EventEmitter {
 
     this.memStore = new ObservableStore({});
     this.query = new StcQuery(this.provider);
-    this.txGasUtil = new TxGasUtil(this.provider, this.preferencesStore, opts.getPublicKeyFor);
+    this.txGasUtil = new TxGasUtil(this.provider, this.preferencesStore, opts.getPublicKeyFor, opts.exportAccount);
     this._mapMethods();
     this.txStateManager = new TransactionStateManager({
       initState: opts.initState,
