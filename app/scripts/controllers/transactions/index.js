@@ -68,6 +68,7 @@ export default class TransactionController extends EventEmitter {
     super();
     this.networkStore = opts.networkStore || new ObservableStore({});
     this._getCurrentChainId = opts.getCurrentChainId;
+    this._getCurrentNetworkTicker = opts.getCurrentNetworkTicker;
     this.preferencesStore = opts.preferencesStore || new ObservableStore({});
     this.provider = opts.provider;
     this.getPermittedAccounts = opts.getPermittedAccounts;
@@ -531,7 +532,8 @@ export default class TransactionController extends EventEmitter {
         // wait for a nonce
         let { customNonceValue } = txMeta;
         customNonceValue = Number(customNonceValue);
-        nonceLock = await this.nonceTracker.getNonceLock(fromAddress);
+        const networkTicker = this._getCurrentNetworkTicker()
+        nonceLock = await this.nonceTracker.getNonceLock(fromAddress, networkTicker);
         // add nonce to txParams
         // if txMeta has lastGasPrice then it is a retry at same nonce with higher
         // gas price transaction and therefor the nonce should not be calculated
