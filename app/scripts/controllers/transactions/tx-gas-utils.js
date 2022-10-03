@@ -113,20 +113,7 @@ export default class TxGasUtil {
     if (!selectedPublicKeyHex) {
       throw new Error(`Starmask: selected account's public key is null`);
     }
-    const selectedSequenceNumber = await new Promise((resolve, reject) => {
-      return this.query.getResource(
-        txMeta.txParams.from,
-        '0x00000000000000000000000000000001::Account::Account',
-        (err, res) => {
-          if (err) {
-            return reject(err);
-          }
-
-          const sequence_number = res && res.value[6][1].U64 || 0;
-          return resolve(new BigNumber(sequence_number, 10).toNumber());
-        },
-      );
-    });
+    const selectedSequenceNumber = await this.getSequenceNumber(txMeta.txParams.from, 'APT');
     const chainId = txMeta.metamaskNetworkId.id;
 
     let transactionPayload;
@@ -204,6 +191,40 @@ export default class TxGasUtil {
     }
     const result = { estimatedGasHex, tokenChanges };
     return result;
+  }
+
+  async getSequenceNumber(from, ticker) {
+    if (ticker === 'STC') {
+      const sequenceNumber = await new Promise((resolve, reject) => {
+        return this.query.getResource(
+          from,
+          '0x00000000000000000000000000000001::Account::Account',
+          (err, res) => {
+            if (err) {
+              return reject(err);
+            }
+
+            const sequence_number = res && res.value[6][1].U64 || 0;
+            return resolve(new BigNumber(sequence_number, 10).toNumber());
+          },
+        );
+      });
+    } else if (ticker === 'APT') {
+      const sequenceNumber = await new Promise((resolve, reject) => {
+        return this.query.getAccount(
+          from,
+          (err, res) => {
+            if (err) {
+              return reject(err);
+            }
+            log.debug({ res })
+            return resolve(new BigNumber(res.sequence_number).toNumber());
+          },
+        );
+      });
+      log.debug({ sequenceNumber })
+      return sequenceNumber
+    }
   }
 
   async getExpirationTimestampSecs(txParams) {

@@ -354,6 +354,7 @@ async function getSequenceNumber(from, ticker) {
         },
       );
     });
+    return sequenceNumber
   } else if (ticker === 'APT') {
     return global.client.getAccount(from).then((resp) => {
       return new BigNumber(resp.sequence_number, 10).toNumber()
