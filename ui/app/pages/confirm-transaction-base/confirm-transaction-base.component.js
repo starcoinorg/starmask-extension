@@ -9,6 +9,7 @@ import ConfirmPageContainer, {
   ConfirmDetailTokenChanges,
 } from '../../components/app/confirm-page-container';
 import { isBalanceSufficient } from '../send/send.utils';
+import { MIN_GAS_LIMIT_DEC } from '../send/send.constants';
 import { CONFIRM_TRANSACTION_ROUTE } from '../../helpers/constants/routes';
 import {
   INSUFFICIENT_FUNDS_ERROR_KEY,
@@ -204,7 +205,7 @@ export default class ConfirmTransactionBase extends Component {
       };
     }
 
-    if (hexToDecimal(customGas.gasLimit) < 10000) {
+    if (hexToDecimal(customGas.gasLimit) < parseInt(MIN_GAS_LIMIT_DEC)) {
       return {
         valid: false,
         errorKey: GAS_LIMIT_TOO_LOW_ERROR_KEY,
