@@ -319,21 +319,10 @@ export default class PendingTransactionTracker extends EventEmitter {
     const {
       hash: txHash,
       txParams: { nonce, from },
+      metamaskNetworkId: { name: network }
     } = txMeta;
-    const networkNextNonce = await new Promise((resolve, reject) => {
-      return this.query.getResource(
-        from,
-        '0x00000000000000000000000000000001::Account::Account',
-        (err, res) => {
-          if (err) {
-            return reject(err);
-          }
 
-          const sequence_number = res && res.value[6][1].U64 || 0;
-          return resolve(new BigNumber(sequence_number, 10).toNumber());
-        },
-      );
-    });
+    const networkNextNonce = await this.getSequenceNumber(from, network)
 
     if (parseInt(nonce, 16) >= networkNextNonce) {
       return false;
@@ -352,6 +341,40 @@ export default class PendingTransactionTracker extends EventEmitter {
 
     this.droppedBlocksBufferByHash.delete(txHash);
     return true;
+  }
+
+  async getSequenceNumber(from, network) {
+    let sequenceNumber
+    if (['devnet'].includes(network)) {
+      sequenceNumber = await new Promise((resolve, reject) => {
+        return this.query.getAccount(
+          from,
+          (err, res) => {
+            if (err) {
+              return reject(err);
+            }
+            return resolve(new BigNumber(res.sequence_number).toNumber());
+          },
+        );
+      });
+      log.debug({ sequenceNumber })
+    } else {
+      sequenceNumber = await new Promise((resolve, reject) => {
+        return this.query.getResource(
+          from,
+          '0x00000000000000000000000000000001::Account::Account',
+          (err, res) => {
+            if (err) {
+              return reject(err);
+            }
+
+            const sequence_number = res && res.value[6][1].U64 || 0;
+            return resolve(new BigNumber(sequence_number, 10).toNumber());
+          },
+        );
+      });
+    }
+    return sequenceNumber
   }
 
   /**
