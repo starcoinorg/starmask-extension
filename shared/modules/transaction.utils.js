@@ -23,13 +23,26 @@ export function transactionMatchesNetwork(transaction, chainId, networkId) {
  */
 export function getBlockExplorerUrlForTx(transaction, rpcPrefs = {}) {
   let blockExplorerUrl;
+  let ticker;
+  let providerType;
   if (rpcPrefs.blockExplorerUrl) {
     blockExplorerUrl = rpcPrefs.blockExplorerUrl;
+    ticker = rpcPrefs.ticker
+    providerType = rpcPrefs.providerType
   } else if (transaction.chainId) {
     const rpcPref = defaultNetworksData.find(
       (rpcInfo) => rpcInfo.chainId === transaction.chainId,
     ) || {};
+    ticker = rpcPref.ticker
+    providerType = rpcPref.providerType
     blockExplorerUrl = rpcPref.blockExplorerUrl || '';
   }
-  return `${blockExplorerUrl.replace(/\/+$/u, '')}/transactions/detail/${transaction.hash}`;
+
+  if (ticker === 'STC') {
+    blockExplorerUrl = `${ blockExplorerUrl.replace(/\/+$/u, '') }/transactions/detail/${ transaction.hash }`;
+  } else {
+    blockExplorerUrl = `${ blockExplorerUrl.replace(/\/+$/u, '') }/txn/${ transaction.hash }?network=${ providerType === 'devnet' ? 'Devnet' : providerType }`;
+  }
+
+  return blockExplorerUrl
 }
