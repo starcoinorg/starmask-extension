@@ -248,8 +248,9 @@ export default class TxGasUtil {
   }
 
   async getSequenceNumber(from, ticker) {
+    let sequenceNumber
     if (ticker === 'STC') {
-      const sequenceNumber = await new Promise((resolve, reject) => {
+      sequenceNumber = await new Promise((resolve, reject) => {
         return this.query.getResource(
           from,
           '0x00000000000000000000000000000001::Account::Account',
@@ -264,7 +265,7 @@ export default class TxGasUtil {
         );
       });
     } else if (ticker === 'APT') {
-      const sequenceNumber = await new Promise((resolve, reject) => {
+      sequenceNumber = await new Promise((resolve, reject) => {
         return this.query.getAccount(
           from,
           (err, res) => {
@@ -275,9 +276,8 @@ export default class TxGasUtil {
           },
         );
       });
-      log.debug({ sequenceNumber })
-      return sequenceNumber
     }
+    return sequenceNumber
   }
 
   async getExpirationTimestampSecs(txParams) {

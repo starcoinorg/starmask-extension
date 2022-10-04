@@ -89,6 +89,9 @@ export default class PendingTransactionTracker extends EventEmitter {
   async checkUnknownTx(txMeta) {
     const txHash = txMeta.hash;
     const txId = txMeta.id;
+    const {
+      metamaskNetworkId: { name: network }
+    } = txMeta;
 
     // Only check submitted txs
     if (txMeta.status !== TRANSACTION_STATUSES.UNKNOWN) {
@@ -121,7 +124,7 @@ export default class PendingTransactionTracker extends EventEmitter {
           return resolve(res);
         });
       });
-      if (transactionReceipt?.block_number) {
+      if (transactionReceipt?.block_number || (['devnet'].includes(network) && transactionReceipt?.success)) {
         this.emit('tx:confirmed', txId, transactionReceipt);
         return;
       }
@@ -258,7 +261,9 @@ export default class PendingTransactionTracker extends EventEmitter {
   async _checkPendingTx(txMeta) {
     const txHash = txMeta.hash;
     const txId = txMeta.id;
-
+    const {
+      metamaskNetworkId: { name: network }
+    } = txMeta;
     // Only check submitted txs
     if (txMeta.status !== TRANSACTION_STATUSES.SUBMITTED) {
       return;
@@ -290,7 +295,7 @@ export default class PendingTransactionTracker extends EventEmitter {
           return resolve(res);
         });
       });
-      if (transactionReceipt?.block_number) {
+      if (transactionReceipt?.block_number || (['devnet'].includes(network) && transactionReceipt?.success)) {
         this.emit('tx:confirmed', txId, transactionReceipt);
         return;
       }
@@ -357,7 +362,6 @@ export default class PendingTransactionTracker extends EventEmitter {
           },
         );
       });
-      log.debug({ sequenceNumber })
     } else {
       sequenceNumber = await new Promise((resolve, reject) => {
         return this.query.getResource(
