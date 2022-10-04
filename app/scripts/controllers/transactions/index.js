@@ -10,6 +10,7 @@ import { ethers } from 'ethers';
 import { bcs, encoding, utils, starcoin_types } from '@starcoin/starcoin';
 import log from 'loglevel';
 import BigNumber from 'bignumber.js';
+import { AptosAccount } from 'aptos';
 import cleanErrorStack from '../../lib/cleanErrorStack';
 import {
   hexToBn,
@@ -29,6 +30,7 @@ import TransactionStateManager from './tx-state-manager';
 import TxGasUtil from './tx-gas-utils';
 import PendingTransactionTracker from './pending-tx-tracker';
 import * as txUtils from './lib/util';
+import { hexToDecimal } from '../../../../ui/app/helpers/utils/conversions.util';
 
 const { arrayify, hexlify } = ethers.utils;
 // const hstInterface = new ethers.utils.Interface(abi);
@@ -520,6 +522,7 @@ export default class TransactionController extends EventEmitter {
       return;
     }
     this.inProcessOfSigning.add(txId);
+    const networkTicker = this._getCurrentNetworkTicker()
     let nonceLock;
     try {
       // approve
@@ -532,7 +535,6 @@ export default class TransactionController extends EventEmitter {
         // wait for a nonce
         let { customNonceValue } = txMeta;
         customNonceValue = Number(customNonceValue);
-        const networkTicker = this._getCurrentNetworkTicker()
         nonceLock = await this.nonceTracker.getNonceLock(fromAddress, networkTicker);
         // add nonce to txParams
         // if txMeta has lastGasPrice then it is a retry at same nonce with higher
@@ -552,33 +554,38 @@ export default class TransactionController extends EventEmitter {
       }
       this.txStateManager.updateTx(txMeta, 'transactions#approveTransaction');
       // sign transaction
-      const signedTransactionHex = await this.signTransaction(txId);
-      const signedTransaction = encoding.bcsDecode(
-        starcoin_types.SignedUserTransaction,
-        signedTransactionHex,
-      );
-      const isMultiSign =
-        signedTransaction.authenticator instanceof
-        starcoin_types.TransactionAuthenticatorVariantMultiEd25519;
-      let isEnoughMultiSignatures = false;
-      if (isMultiSign) {
-        txMeta.multiSign = {
-          threshold: signedTransaction.authenticator.public_key.threshold,
-          signatures: signedTransaction.authenticator.signature.signatures.length,
-        };
-
-        const existingSignatureShards = new starcoin_types.MultiEd25519SignatureShard(
-          signedTransaction.authenticator.signature,
-          signedTransaction.authenticator.public_key.threshold,
+      if (networkTicker === 'STC') {
+        const signedTransactionHex = await this.signTransaction(txId);
+        const signedTransaction = encoding.bcsDecode(
+          starcoin_types.SignedUserTransaction,
+          signedTransactionHex,
         );
-        isEnoughMultiSignatures = existingSignatureShards.is_enough();
-        if (!isEnoughMultiSignatures) {
-          txMeta.multiSign.signedTransactionHex = signedTransactionHex;
+        const isMultiSign =
+          signedTransaction.authenticator instanceof
+          starcoin_types.TransactionAuthenticatorVariantMultiEd25519;
+        let isEnoughMultiSignatures = false;
+        if (isMultiSign) {
+          txMeta.multiSign = {
+            threshold: signedTransaction.authenticator.public_key.threshold,
+            signatures: signedTransaction.authenticator.signature.signatures.length,
+          };
+
+          const existingSignatureShards = new starcoin_types.MultiEd25519SignatureShard(
+            signedTransaction.authenticator.signature,
+            signedTransaction.authenticator.public_key.threshold,
+          );
+          isEnoughMultiSignatures = existingSignatureShards.is_enough();
+          if (!isEnoughMultiSignatures) {
+            txMeta.multiSign.signedTransactionHex = signedTransactionHex;
+          }
+          this.txStateManager.setTxStatusMultiSign(txId);
         }
-        this.txStateManager.setTxStatusMultiSign(txId);
-      }
-      if (!isMultiSign || isEnoughMultiSignatures) {
-        await this.publishTransaction(txId, signedTransactionHex);
+        if (!isMultiSign || isEnoughMultiSignatures) {
+          await this.publishTransaction(txId, signedTransactionHex);
+        }
+      } else if (networkTicker === 'APT') {
+        const signedTransaction = await this.signTransactionAptos(txId);
+        await this.publishTransactionAptos(txId, signedTransaction);
       }
       // must set transaction to submitted/failed before releasing lock
       if (nonceLock) {
@@ -663,7 +670,6 @@ export default class TransactionController extends EventEmitter {
     @returns {string} rawTx
   */
   async signTransaction(txId) {
-    // log.debug('signTransaction', txId);
     const txMeta = this.txStateManager.getTx(txId);
     const fromAddress = txMeta.txParams.from;
     let rawUserTransaction
@@ -684,22 +690,6 @@ export default class TransactionController extends EventEmitter {
         fromNumericBase: 'hex',
         toNumericBase: 'dec',
       });
-      // log.debug({ sendAmount });
-      // const senderSequenceNumber = await new Promise((resolve, reject) => {
-      //   return this.query.getResource(
-      //     txParams.from,
-      //     '0x00000000000000000000000000000001::Account::Account',
-      //     (err, res) => {
-      //       if (err) {
-      //         return reject(err);
-      //       }
-
-      //       const sequence_number = res && res.value[6][1].U64 || 0;
-      //       return resolve(new BigNumber(sequence_number, 10).toNumber());
-      //     },
-      //   );
-      // });
-      // log.debug({ nonce: txParams.nonce, senderSequenceNumber });
       const { nonce } = txParams;
       const maxGasAmount = txParams.gas;
       const gasUnitPrice = txParams.gasPrice;
@@ -768,6 +758,31 @@ export default class TransactionController extends EventEmitter {
     return signedTransactionHex;
   }
 
+  async signTransactionAptos(txId) {
+    log.debug('signTransactionAptos', txId);
+    const txMeta = this.txStateManager.getTx(txId);
+    log.debug({ txMeta })
+    const fromAddress = txMeta.txParams.from;
+    let signedTxn
+    if (txMeta.txParams.to
+      && txMeta.type === TRANSACTION_TYPES.SENT_ETHER) {
+      const payload = {
+        function: "0x1::coin::transfer",
+        type_arguments: ["0x1::aptos_coin::AptosCoin"],
+        arguments: [txMeta.txParams.to, hexToDecimal(txMeta.txParams.value)],
+      };
+      log.debug({ payload })
+      const rawTxn = await this.txGasUtil.client.generateTransaction(txMeta.txParams.from, payload, { gas_unit_price: "100" })
+      log.debug({ rawTxn })
+      const privateKey = await this.txGasUtil.exportAccount(txMeta.txParams.from)
+      const fromAccount = AptosAccount.fromAptosAccountObject({ privateKeyHex: addHexPrefix(privateKey) });
+
+      signedTxn = await this.txGasUtil.client.signTransaction(fromAccount, rawTxn);
+      console.log({ signedTxn })
+    }
+    return signedTxn
+  }
+
   /**
     publishes the raw tx and sets the txMeta to submitted
     @param {number} txId - the tx's Id
@@ -804,6 +819,25 @@ export default class TransactionController extends EventEmitter {
       } else {
         throw error;
       }
+    }
+    this.setTxHash(txId, txHash);
+
+    this.txStateManager.setTxStatusSubmitted(txId);
+  }
+
+  async publishTransactionAptos(txId, signedTransaction) {
+    log.debug('publishTransactionAptos', { txId, signedTransaction }, hexlify(signedTransaction))
+    const txMeta = this.txStateManager.getTx(txId);
+    txMeta.rawTx = signedTransaction;
+    log.debug({ txMeta })
+    this.txStateManager.updateTx(txMeta, 'transactions#publishTransaction');
+    let txHash;
+    try {
+      const transactionResp = await this.txGasUtil.client.submitTransaction(signedTransaction);
+      console.log({ transactionResp })
+      txHash = transactionResp.hash
+    } catch (error) {
+      throw error;
     }
     this.setTxHash(txId, txHash);
 
