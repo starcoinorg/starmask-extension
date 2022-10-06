@@ -10,7 +10,7 @@ import { ethers } from 'ethers';
 import { bcs, encoding, utils, starcoin_types } from '@starcoin/starcoin';
 import log from 'loglevel';
 import BigNumber from 'bignumber.js';
-import { AptosAccount } from 'aptos';
+import { AptosAccount, TxnBuilderTypes, BCS } from 'aptos';
 import cleanErrorStack from '../../lib/cleanErrorStack';
 import {
   hexToBn,
@@ -763,23 +763,28 @@ export default class TransactionController extends EventEmitter {
     const txMeta = this.txStateManager.getTx(txId);
     log.debug({ txMeta })
     const fromAddress = txMeta.txParams.from;
-    let signedTxn
-    if (txMeta.txParams.to
-      && txMeta.type === TRANSACTION_TYPES.SENT_ETHER) {
-      const payload = {
-        function: "0x1::coin::transfer",
-        type_arguments: ["0x1::aptos_coin::AptosCoin"],
-        arguments: [txMeta.txParams.to, hexToDecimal(txMeta.txParams.value)],
-      };
-      log.debug({ payload })
-      const rawTxn = await this.txGasUtil.client.generateTransaction(txMeta.txParams.from, payload, { gas_unit_price: "100" })
-      log.debug({ rawTxn })
-      const privateKey = await this.txGasUtil.exportAccount(txMeta.txParams.from)
-      const fromAccount = AptosAccount.fromAptosAccountObject({ privateKeyHex: addHexPrefix(privateKey) });
-
-      signedTxn = await this.txGasUtil.client.signTransaction(fromAccount, rawTxn);
-      console.log({ signedTxn })
+    let rawTxn
+    if (txMeta.txParams.data) {
+      const deserializer = new BCS.Deserializer(arrayify(txMeta.txParams.data));
+      const entryFunctionPayload = TxnBuilderTypes.TransactionPayloadEntryFunction.deserialize(deserializer);
+      rawTxn = await this.txGasUtil.client.generateRawTransaction(txMeta.txParams.from, entryFunctionPayload);
+    } else {
+      if (txMeta.txParams.to
+        && txMeta.type === TRANSACTION_TYPES.SENT_ETHER) {
+        const payload = {
+          function: "0x1::coin::transfer",
+          type_arguments: ["0x1::aptos_coin::AptosCoin"],
+          arguments: [txMeta.txParams.to, hexToDecimal(txMeta.txParams.value)],
+        };
+        rawTxn = await this.txGasUtil.client.generateTransaction(fromAddress, payload, { gas_unit_price: "100" })
+      }
     }
+    const privateKey = await this.txGasUtil.exportAccount(fromAddress)
+    log.debug({ privateKey })
+    const fromAccount = AptosAccount.fromAptosAccountObject({ privateKeyHex: addHexPrefix(privateKey) });
+    log.debug({ fromAccount })
+    const signedTxn = await this.txGasUtil.client.signTransaction(fromAccount, rawTxn);
+    log.debug({ signedTxn })
     return signedTxn
   }
 
@@ -828,13 +833,13 @@ export default class TransactionController extends EventEmitter {
   async publishTransactionAptos(txId, signedTransaction) {
     log.debug('publishTransactionAptos', { txId, signedTransaction }, hexlify(signedTransaction))
     const txMeta = this.txStateManager.getTx(txId);
-    txMeta.rawTx = signedTransaction;
+    txMeta.rawTx = hexlify(signedTransaction);
     log.debug({ txMeta })
     this.txStateManager.updateTx(txMeta, 'transactions#publishTransaction');
     let txHash;
     try {
       const transactionResp = await this.txGasUtil.client.submitTransaction(signedTransaction);
-      console.log({ transactionResp })
+      log.debug({ transactionResp })
       txHash = transactionResp.hash
     } catch (error) {
       throw error;
@@ -1119,6 +1124,7 @@ export default class TransactionController extends EventEmitter {
    */
   async _determineTransactionType(txParams) {
     const { data, to, type } = txParams;
+    const networkTicker = this._getCurrentNetworkTicker()
     let name;
     try {
       // name = data && hstInterface.parseTransaction({ data }).name;
@@ -1126,13 +1132,24 @@ export default class TransactionController extends EventEmitter {
         if (type && type === TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER) {
           name = type;
         } else {
-          const txnPayload = encoding.decodeTransactionPayload(data);
-          const keys = Object.keys(txnPayload);
-          if (keys[0] === 'ScriptFunction') {
-            name = TRANSACTION_TYPES.CONTRACT_INTERACTION;
-          } else if (keys[0] === 'Package') {
-            name = TRANSACTION_TYPES.DEPLOY_CONTRACT;
+          if (networkTicker === 'APT') {
+            const deserializer = new BCS.Deserializer(arrayify(data));
+            const entryFunctionPayload = TxnBuilderTypes.TransactionPayloadEntryFunction.deserialize(deserializer);
+            if (entryFunctionPayload instanceof TxnBuilderTypes.TransactionPayloadEntryFunction) {
+              name = TRANSACTION_TYPES.CONTRACT_INTERACTION;
+            }
+          } else {
+            // const txnPayload = encoding.decodeTransactionPayload(data);
+            // const keys = Object.keys(txnPayload);
+            // if (keys[0] === 'ScriptFunction') {
+            //   name = TRANSACTION_TYPES.CONTRACT_INTERACTION;
+            // } else if (keys[0] === 'Package') {
+            //   name = TRANSACTION_TYPES.DEPLOY_CONTRACT;
+            // }
           }
+
+
+
         }
       }
     } catch (error) {

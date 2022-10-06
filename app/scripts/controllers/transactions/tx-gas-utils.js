@@ -1,6 +1,6 @@
 import StcQuery from '@starcoin/stc-query';
 import log from 'loglevel';
-import { AptosClient, AptosAccount } from 'aptos';
+import { AptosClient, AptosAccount, TxnBuilderTypes, BCS } from 'aptos';
 import { hexStripZeros } from '@ethersproject/bytes';
 import { addHexPrefix, stripHexPrefix } from '@starcoin/stc-util';
 // import { cloneDeep } from 'lodash';
@@ -208,43 +208,45 @@ export default class TxGasUtil {
   }
 
   async estimateTxGasAptos(txMeta) {
-    log.debug('estimateTxGasAptos', { txMeta })
-    let estimatedGasHex
-    let tokenChanges
-    if (txMeta.txParams.to
-      && txMeta.type === TRANSACTION_TYPES.SENT_ETHER) {
-      const payload = {
-        function: "0x1::coin::transfer",
-        type_arguments: ["0x1::aptos_coin::AptosCoin"],
-        arguments: [txMeta.txParams.to, hexToDecimal(txMeta.txParams.value)],
-      };
-      // log.debug({ payload })
-      const rawTxn = await this.client.generateTransaction(txMeta.txParams.from, payload, { gas_unit_price: "100" })
-      // log.debug({ rawTxn })
-      const privateKey = await this.exportAccount(txMeta.txParams.from)
-      const fromAccount = AptosAccount.fromAptosAccountObject({ privateKeyHex: addHexPrefix(privateKey) });
-      const result = await this.client.simulateTransaction(fromAccount, rawTxn)
-      // log.debug({ result })
-      const transactionRespSimulation = result[0]
-      // log.debug('simulated', transactionRespSimulation.gas_used)
-      estimatedGasHex = addHexPrefix(new BigNumber(transactionRespSimulation.gas_used).toString(16))
-      // const queryTokenChanges = (transactionRespSimulation) => {
-      //   const matches = transactionRespSimulation.changes.reduce((acc, item) => {
-      //     const reg = /^0x1\:\:coin\:\:CoinStore<(.*)>$/i
-      //     const result = item.data?.type.match(reg)
-      //     // log.debug({ item, result }, txMeta.txParams.from, hexStripZeros(txMeta.txParams.from), item.address, hexStripZeros(txMeta.txParams.from) === item.address)
-      //     if (result && result.length === 2 && hexStripZeros(txMeta.txParams.from) === item.address) {
-      //       acc[result[1]] = addHexPrefix(new BigNumber(item.data.data.coin.value).toString(16))
-      //     }
-      //     return acc
-      //   }, {})
-      //   return matches
-      // }
-      // const tokenChanges2 = queryTokenChanges(transactionRespSimulation)
-      // log.debug({ tokenChanges2 })
+    let rawTxn
+    if (txMeta.txParams.data) {
+      const deserializer = new BCS.Deserializer(arrayify(txMeta.txParams.data));
+      const entryFunctionPayload = TxnBuilderTypes.TransactionPayloadEntryFunction.deserialize(deserializer);
+      rawTxn = await this.client.generateRawTransaction(txMeta.txParams.from, entryFunctionPayload);
+    } else {
+      if (txMeta.txParams.to
+        && txMeta.type === TRANSACTION_TYPES.SENT_ETHER) {
+        const payload = {
+          function: "0x1::coin::transfer",
+          type_arguments: ["0x1::aptos_coin::AptosCoin"],
+          arguments: [txMeta.txParams.to, hexToDecimal(txMeta.txParams.value)],
+        };
+        rawTxn = await this.client.generateTransaction(txMeta.txParams.from, payload, { gas_unit_price: "100" })
+      }
     }
-    const result = { estimatedGasHex, tokenChanges };
-    return result;
+    const privateKey = await this.exportAccount(txMeta.txParams.from)
+    const fromAccount = AptosAccount.fromAptosAccountObject({ privateKeyHex: addHexPrefix(privateKey) });
+    const result = await this.client.simulateTransaction(fromAccount, rawTxn)
+    // log.debug({ result })
+    const transactionRespSimulation = result[0]
+    // log.debug('simulated', transactionRespSimulation.gas_used)
+    const estimatedGasHex = addHexPrefix(new BigNumber(transactionRespSimulation.gas_used).toString(16))
+    let tokenChanges
+    // const queryTokenChanges = (transactionRespSimulation) => {
+    //   const matches = transactionRespSimulation.changes.reduce((acc, item) => {
+    //     const reg = /^0x1\:\:coin\:\:CoinStore<(.*)>$/i
+    //     const result = item.data?.type.match(reg)
+    //     // log.debug({ item, result }, txMeta.txParams.from, hexStripZeros(txMeta.txParams.from), item.address, hexStripZeros(txMeta.txParams.from) === item.address)
+    //     if (result && result.length === 2 && hexStripZeros(txMeta.txParams.from) === item.address) {
+    //       acc[result[1]] = addHexPrefix(new BigNumber(item.data.data.coin.value).toString(16))
+    //     }
+    //     return acc
+    //   }, {})
+    //   return matches
+    // }
+    // const tokenChanges2 = queryTokenChanges(transactionRespSimulation)
+    // log.debug({ tokenChanges2 })
+    return { estimatedGasHex, tokenChanges };
   }
 
   async getSequenceNumber(from, ticker) {
