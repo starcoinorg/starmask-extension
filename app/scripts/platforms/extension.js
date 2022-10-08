@@ -91,11 +91,11 @@ export default class ExtensionPlatform {
     let extensionURL = extension.runtime.getURL('home.html');
 
     if (queryString) {
-      extensionURL += `?${queryString}`;
+      extensionURL += `?${ queryString }`;
     }
 
     if (route) {
-      extensionURL += `#${route}`;
+      extensionURL += `#${ route }`;
     }
     this.openTab({ url: extensionURL });
     if (getEnvironmentType() !== ENVIRONMENT_TYPE_BACKGROUND) {
@@ -116,10 +116,10 @@ export default class ExtensionPlatform {
   }
 
   showTransactionNotification(txMeta, rpcPrefs) {
-    const { status, txReceipt: { status: receiptStatus } = {} } = txMeta;
+    const { status, txReceipt: { status: receiptStatus, success } = {}, metamaskNetworkId: { name: network } } = txMeta;
     if (status === TRANSACTION_STATUSES.CONFIRMED) {
       // There was an on-chain failure
-      receiptStatus !== 'Executed'
+      (['devnet'].includes(network) ? !success : receiptStatus !== 'Executed')
         ? this._showFailedTransaction(
           txMeta,
           'Transaction encountered an error.',
@@ -199,14 +199,16 @@ export default class ExtensionPlatform {
     const url = getBlockExplorerUrlForTx(txMeta, rpcPrefs);
     const nonce = parseInt(txMeta.txParams.nonce, 16);
     const title = 'Confirmed transaction';
-    const message = `Transaction ${nonce} confirmed! ${url.length ? 'View on StcScan' : ''}`;
+    const { metamaskNetworkId: { name: network } } = txMeta;
+
+    const message = `Transaction ${ nonce } confirmed! ${ url.length ? `View on ${ ['devnet'].includes(network) ? 'Aptos Explorer' : 'StcScan' }` : '' }`;
     this._showNotification(title, message, url);
   }
 
   _showFailedTransaction(txMeta, errorMessage) {
     const nonce = parseInt(txMeta.txParams.nonce, 16);
     const title = 'Failed transaction';
-    const message = `Transaction ${nonce} failed! ${errorMessage || txMeta.err.message}`;
+    const message = `Transaction ${ nonce } failed! ${ errorMessage || txMeta.err.message }`;
     this._showNotification(title, message);
   }
 
