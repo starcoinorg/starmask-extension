@@ -1,6 +1,6 @@
 import StcQuery from '@starcoin/stc-query';
 import log from 'loglevel';
-import { AptosClient, AptosAccount, TxnBuilderTypes, BCS } from 'aptos';
+import { AptosClient, AptosAccount, TxnBuilderTypes, BCS } from '@starcoin/aptos';
 import { hexStripZeros } from '@ethersproject/bytes';
 import { addHexPrefix, stripHexPrefix } from '@starcoin/stc-util';
 // import { cloneDeep } from 'lodash';

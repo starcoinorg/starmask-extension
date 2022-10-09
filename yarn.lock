@@ -2586,6 +2586,32 @@
   resolved "https://registry.npmjs.org/@sinonjs/text-encoding/-/text-encoding-0.7.1.tgz"
   integrity sha512-+iTbntw2IZPb/anVDbypzfQa+ay64MW0Zo8aJ8gZPWMMK6/OubMVb6lUPMagqjOPnmtauXnFCACVl3O7ogjeqQ==
 
+"@starcoin/aptos-hd-keyring@^1.6.3":
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/@starcoin/aptos-hd-keyring/-/aptos-hd-keyring-1.6.3.tgz#20540bec602a58cc60d0d7c6a5e44aded2bfaa41"
+  integrity sha512-kI3b1OqSjtcbDQA8Xr+LNbqbfxM5UlQzMOvZzGG7Hk5/UX0P6hp5Ph8DojBrf/KXQuLUVaFUqi7gGmUiE2ijng==
+  dependencies:
+    "@ethersproject/bytes" "^5.0.6"
+    "@starcoin/starcoin" "^1.6.2"
+    "@starcoin/stc-simple-keyring" "^1.6.1"
+    "@starcoin/stc-util" "^0.6.0"
+    "@starcoin/stc-wallet" "^1.3.0"
+    bip39 "^2.2.0"
+    eth-sig-util "^3.0.1"
+    ethereumjs-util "^7.0.9"
+    loglevel "^1.7.1"
+
+"@starcoin/aptos@^1.3.14":
+  version "1.3.14"
+  resolved "https://registry.yarnpkg.com/@starcoin/aptos/-/aptos-1.3.14.tgz#cb753cf571e1463fb5116e737f33c985f8613be0"
+  integrity sha512-V54aUJ3iaErzXRpecqbKKlbGcAr5NxDELm6dZzsGEtqaMuWMdDbpZJFpn/A/BWuoqkvzDrBmZ8uNiuBlWUzhAA==
+  dependencies:
+    "@noble/hashes" "1.1.2"
+    "@scure/bip39" "1.1.0"
+    axios "0.27.2"
+    form-data "4.0.0"
+    tweetnacl "1.0.3"
+
 "@starcoin/contract-metadata@^0.6.0":
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/@starcoin/contract-metadata/-/contract-metadata-0.6.0.tgz#b991c5172ca2e39e0b8d09426dfc7034d6bb7de7"
@@ -2693,16 +2719,16 @@
   resolved "https://registry.npmjs.org/@starcoin/stc-ed25519/-/stc-ed25519-0.1.0.tgz#56e65b388889a5953e01806cc3deaa20ddaf8174"
   integrity sha512-H3oz8fNQD604Ak0cSNTDcbfzLxsB9XAKw1aJO7iBPuZWcHF8bgn7xxOzsinx5V5LGaPeleWc/Qw4vCKnK6cxHQ==
 
-"@starcoin/stc-hd-keyring@^1.5.3":
-  version "1.5.3"
-  resolved "https://registry.npmjs.org/@starcoin/stc-hd-keyring/-/stc-hd-keyring-1.5.3.tgz#861e3375758076bf5c683063dda4e46705afc6b4"
-  integrity sha512-aLYt978b1jenuwPEoEvREMJXeXt/Pp+NWSHGyHXVNXdtZ2BwvKIKQxOSZ4kwvYo5qtDcoFhlXhrBJlUMEJz45Q==
+"@starcoin/stc-hd-keyring@^1.6.1":
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/@starcoin/stc-hd-keyring/-/stc-hd-keyring-1.6.1.tgz#418e429f9c1d552fd9e3fe2e9624ccef69c48fcf"
+  integrity sha512-Mao9HuIdAdip/hU5CSlzQjYNE+/GPOBE3pykrLhJ6T0gglt0dwSzraQgtiFvyDsRhF7KV9hKc++ZLATa9t4sLg==
   dependencies:
     "@ethersproject/bytes" "^5.0.6"
     "@starcoin/starcoin" "^1.6.2"
     "@starcoin/stc-simple-keyring" "^1.5.3"
     "@starcoin/stc-util" "^0.3.0"
-    "@starcoin/stc-wallet" "^1.2.2"
+    "@starcoin/stc-wallet" "1.3.0"
     bip39 "^2.2.0"
     eth-sig-util "^3.0.1"
     ethereumjs-util "^7.0.9"
@@ -2762,23 +2788,24 @@
     pify "^3.0.0"
     safe-event-emitter "^1.0.1"
 
-"@starcoin/stc-json-rpc@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.npmjs.org/@starcoin/stc-json-rpc/-/stc-json-rpc-0.1.0.tgz"
-  integrity sha512-QBGBl0g5pvMKO9y/3MVFw68Zma+2Y8CJTP8ao3R6N4ENLOvC2DU1hYdjAqfVhA0qK5rbwWgo50CR/824PyyA6w==
+"@starcoin/stc-json-rpc@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@starcoin/stc-json-rpc/-/stc-json-rpc-0.2.0.tgz#fc129f8f907e62ce5c1c6d762994f2951facca67"
+  integrity sha512-GaYWmFhL1VHSyb44pGthnpi9dGYzo+nf1BiUgvAMXruQ/dLUnsoP9oSEE4oB8peEs98lAFDtQ4LidQz90O5j8Q==
   dependencies:
     eth-json-rpc-middleware "^6.0.0"
     eth-rpc-errors "^3.0.0"
     json-rpc-engine "^5.3.0"
     node-fetch "^2.6.1"
 
-"@starcoin/stc-keyring-controller@^1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@starcoin/stc-keyring-controller/-/stc-keyring-controller-1.6.0.tgz#47c22c6db87f0c66c259f8d2c8bdc4e216b44add"
-  integrity sha512-21JcBLcbGlXe5zvJ2MWqqdxTHK+O+DRpz8rRXZJAMwdOYHQjxnDNLqKm3UTsWJB4ukZnHcR3BunWESLzMexpaA==
+"@starcoin/stc-keyring-controller@^1.7.1":
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/@starcoin/stc-keyring-controller/-/stc-keyring-controller-1.7.1.tgz#3099ffb7139c39eff998832d7877a857eb1c72fc"
+  integrity sha512-VVz2QBj+EL6o6q0WbqyoRKir904uQNdviZFisO+JrCpUZknL5wnSnT24tBuvzrdC0g+dnFvjdZmUrkmXfkwSMA==
   dependencies:
-    "@starcoin/stc-hd-keyring" "^1.5.3"
-    "@starcoin/stc-simple-keyring" "^1.5.3"
+    "@starcoin/aptos-hd-keyring" "^1.6.3"
+    "@starcoin/stc-hd-keyring" "^1.6.1"
+    "@starcoin/stc-simple-keyring" "^1.6.1"
     "@starcoin/stc-util" "^0.3.0"
     bip39 "^2.4.0"
     bluebird "^3.5.0"
@@ -2802,14 +2829,14 @@
     loglevel "^1.8.0"
     xtend "^4.0.1"
 
-"@starcoin/stc-nonce-tracker@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.npmjs.org/@starcoin/stc-nonce-tracker/-/stc-nonce-tracker-0.2.0.tgz#1ed713c2c5be67542a3618c31965e50b506912e2"
-  integrity sha512-2g/hskuM7F8t26mLj2PmR8dmrbDHIfxs/aPRXahXeDpiFrk99GX+Mitl1OONLfGJLAxH2pLBHE6pqqRn6ejOnQ==
+"@starcoin/stc-nonce-tracker@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@starcoin/stc-nonce-tracker/-/stc-nonce-tracker-0.3.0.tgz#805cbe7d27bc7e36941289e8dbf1bb466cb64d5b"
+  integrity sha512-yu/MblSY5b2iCJqXIR6OUp1aXxojlAqGsjdTB8R7bsG7Rj2Ywret0DpIe1sjFr8xhm8FJongDEHirpbwkXX0rg==
   dependencies:
     "@ethersproject/bignumber" "^5.1.1"
     "@starcoin/stc-block-tracker" "^0.1.0"
-    "@starcoin/stc-query" "^0.3.1"
+    "@starcoin/stc-query" "^0.4.0"
     "@starcoin/stc-util" "^0.4.1"
     assert "^1.4.1"
     await-semaphore "^0.1.3"
@@ -2827,10 +2854,10 @@
     ethereumjs-tx "^1.3.4"
     loglevel "^1.7.1"
 
-"@starcoin/stc-query@^0.3.1":
-  version "0.3.1"
-  resolved "https://registry.npmjs.org/@starcoin/stc-query/-/stc-query-0.3.1.tgz#57f9d81bd9437337ecea9b63c418b87e0b6bdb14"
-  integrity sha512-oMPUJv+krDazeSMOXwNY+/4OrLET3wq4oQp0gTPmV9NxsglaprXgdHJsOLGR7svy6CooYB+9IowkFMPXfdsXfg==
+"@starcoin/stc-query@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@starcoin/stc-query/-/stc-query-0.4.0.tgz#63397084ac59b85c2792b8e34852925ba3ca09cb"
+  integrity sha512-ZutABYVeoRc1t8v5GVSBx3kqWZsn/mfB9hV1sX8fUwfx6H3TW61qZAFm6YrXsZ05i5voRK5+AMS3/aKd2Pk2Hw==
   dependencies:
     json-rpc-random-id "^1.0.0"
     xtend "^4.0.1"
@@ -2848,6 +2875,35 @@
     ethereumjs-abi "^0.6.5"
     events "^1.1.1"
     xtend "^4.0.1"
+
+"@starcoin/stc-simple-keyring@^1.6.1":
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/@starcoin/stc-simple-keyring/-/stc-simple-keyring-1.6.1.tgz#a568f182c6c33acfb2666d4dff36bd0ce3ea7055"
+  integrity sha512-VxLfQIJXp02AfK+goEwzbnAA8s/ByGIdOnWtu0DKR2xGuhV3q5KCYDHu5SKen1P/7oaweMHwFxVrvXRG0DWM8A==
+  dependencies:
+    "@ethersproject/bytes" "^5.0.6"
+    "@starcoin/starcoin" "^1.6.2"
+    "@starcoin/stc-util" "^0.3.0"
+    "@starcoin/stc-wallet" "^1.3.0"
+    eth-sig-util "^2.5.0"
+    ethereumjs-abi "^0.6.5"
+    events "^1.1.1"
+    xtend "^4.0.1"
+
+"@starcoin/stc-util@0.6.0", "@starcoin/stc-util@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@starcoin/stc-util/-/stc-util-0.6.0.tgz#96d721fab2156ceccb9e7427fa2f37cce73076f7"
+  integrity sha512-G7nrEPijZHF5MEgaC5x5A+28u5Xm3oOAHZfJyzplC6A9vrlGWmqi14z0IEio4k4K50XgyQ+i7s1ClSorgtgrrg==
+  dependencies:
+    "@starcoin/stc-ed25519" "^0.1.0"
+    bn.js "^4.11.0"
+    create-hash "^1.1.2"
+    ethjs-util "0.1.6"
+    js-sha3 "^0.8.0"
+    keccak "^1.0.2"
+    rlp "^2.0.0"
+    safe-buffer "^5.1.1"
+    secp256k1 "^3.0.1"
 
 "@starcoin/stc-util@^0.3.0":
   version "0.3.0"
@@ -2878,6 +2934,24 @@
     rlp "^2.0.0"
     safe-buffer "^5.1.1"
     secp256k1 "^3.0.1"
+
+"@starcoin/stc-wallet@1.3.0", "@starcoin/stc-wallet@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@starcoin/stc-wallet/-/stc-wallet-1.3.0.tgz#969862825b38feddc33cd8d8f500e2dfa63341ea"
+  integrity sha512-/6bPuO9R8pYONWDY0juo5/NqnH38ZM4XHlqsu9BaDnDKZTx8jzUeUlygo1hZR4wjs61H2nX/PLnDbdRg3tAW+w==
+  dependencies:
+    "@starcoin/starcoin" "^1.2.1"
+    "@starcoin/stc-hdkey" "^0.3.0"
+    "@starcoin/stc-util" "0.6.0"
+    aes-js "^3.1.1"
+    bs58check "^2.1.2"
+    ethereumjs-util "^6.0.0"
+    hdkey "^1.1.0"
+    randombytes "^2.0.6"
+    safe-buffer "^5.1.2"
+    scrypt.js "^0.3.0"
+    utf8 "^3.0.0"
+    uuid "^3.3.2"
 
 "@starcoin/stc-wallet@^1.2.2":
   version "1.2.2"
@@ -4519,17 +4593,6 @@ aproba@^1.0.3, aproba@^1.1.1:
   version "1.2.0"
   resolved "https://registry.npmjs.org/aproba/-/aproba-1.2.0.tgz"
   integrity sha512-Y9J6ZjXtoYh8RnXVCMOU/ttDmk1aBjunq9vO0ta5x85WDQiQfUF9sIPBITdbiiIVcBo03Hi3jMxigBtsddlXRw==
-
-aptos@^1.3.14:
-  version "1.3.14"
-  resolved "https://registry.yarnpkg.com/aptos/-/aptos-1.3.14.tgz#7487b4fd783dd5dfb49419f6e907a95c8ca7ce22"
-  integrity sha512-9AZ7fKgOwLoOITnw3nz2Nzon/HjKrHDU6n893S4MhsmHXK85R4NG4UyTyIczhWGWVdytJiPCkEZufhzsH4eZCw==
-  dependencies:
-    "@noble/hashes" "1.1.2"
-    "@scure/bip39" "1.1.0"
-    axios "0.27.2"
-    form-data "4.0.0"
-    tweetnacl "1.0.3"
 
 archy@^1.0.0:
   version "1.0.0"

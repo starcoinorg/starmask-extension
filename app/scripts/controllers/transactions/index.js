@@ -10,7 +10,7 @@ import { ethers } from 'ethers';
 import { bcs, encoding, utils, starcoin_types } from '@starcoin/starcoin';
 import log from 'loglevel';
 import BigNumber from 'bignumber.js';
-import { AptosAccount, TxnBuilderTypes, BCS } from 'aptos';
+import { AptosAccount, TxnBuilderTypes, BCS } from '@starcoin/aptos';
 import cleanErrorStack from '../../lib/cleanErrorStack';
 import {
   hexToBn,

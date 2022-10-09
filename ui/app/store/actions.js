@@ -2346,8 +2346,8 @@ export function setParticipateInMetaMetrics(val) {
     log.debug(`background.setParticipateInMetaMetrics`);
     return new Promise((resolve, reject) => {
       background.setParticipateInMetaMetrics(val, (err, metaMetricsId) => {
-        log.debug(err);
         if (err) {
+          log.debug(err);
           dispatch(displayWarning(err.message));
           reject(err);
           return;

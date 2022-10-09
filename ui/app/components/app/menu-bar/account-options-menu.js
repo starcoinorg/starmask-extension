@@ -56,7 +56,7 @@ export default function AccountOptionsMenu({ anchorElement, onClose }) {
   const selectedIdentity = useSelector(getSelectedIdentity);
 
   const { address } = selectedIdentity;
-  const isRemovable = keyring.type !== 'HD Key Tree';
+  const isRemovable = keyring.type !== 'HD Key Tree' && keyring.type !== 'Aptos HD Key Tree';
   const isMultiSign = keyring.type === 'Multi Sign';
   return (
     <Menu

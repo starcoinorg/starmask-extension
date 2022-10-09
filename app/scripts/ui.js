@@ -5,7 +5,7 @@ import '@formatjs/intl-relativetimeformat/polyfill';
 import PortStream from 'extension-port-stream';
 import extension from 'extensionizer';
 
-import { AptosClient } from 'aptos';
+import { AptosClient } from '@starcoin/aptos';
 import Eth from 'ethjs';
 import StcQuery from '@starcoin/stc-query';
 import StreamProvider from 'web3-stream-provider';

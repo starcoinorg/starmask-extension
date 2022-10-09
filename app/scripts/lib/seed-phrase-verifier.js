@@ -21,15 +21,12 @@ const seedPhraseVerifier = {
     }
 
     const keyringController = new KeyringController({});
-    const Keyring = keyringController.getKeyringClassForType('HD Key Tree');
+    const type = (ticker === 'APT') ? 'Aptos HD Key Tree' : 'HD Key Tree'
+    const Keyring = keyringController.getKeyringClassForType(type);
     const opts = {
       mnemonic: seedWords,
       numberOfAccounts: createdAccounts.length,
     };
-
-    if (ticker === 'APT') {
-      opts.hdPath = `m/44'/637'/0'/0'`
-    }
 
     const keyring = new Keyring(opts);
     const restoredAccounts = await keyring.getAccounts();
