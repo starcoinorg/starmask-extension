@@ -266,7 +266,6 @@ export default class AccountTracker {
   }
 
   async _updateAccountStarcoin(address) {
-    log.debug('_updateAccountStarcoin', address, address.length)
     const { accounts, assets, nfts, nftIdentifier } = this.store.getState();
     const currentTokens = {};
     const currentNFTGallery = [];
@@ -381,7 +380,6 @@ export default class AccountTracker {
   }
 
   async _updateAccountAptos(address) {
-    log.debug('_updateAccountAptos', address, address.length)
     const { accounts, assets, nfts, nftIdentifier } = this.store.getState();
     const currentTokens = {};
     const currentNFTGallery = [];

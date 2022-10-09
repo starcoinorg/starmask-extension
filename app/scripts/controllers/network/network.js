@@ -161,16 +161,12 @@ export default class NetworkController extends EventEmitter {
       this.setNetworkState('loading');
       return;
     }
-    log.debug('lookupNetwork', chainId, this._provider)
     // Ping the RPC endpoint so we can confirm that it works
     const stcQuery = new StcQuery(this._provider);
     const initialNetwork = this.getNetworkState();
-    log.debug({ initialNetwork })
 
     stcQuery.sendAsync({ method: 'chain.id' }, (err, networkVersion) => {
-      log.debug('chain.id response', { err, networkVersion })
       const currentNetwork = this.getNetworkState();
-      log.debug({ currentNetwork })
       if (initialNetwork === currentNetwork) {
         if (err) {
           this.setNetworkState('loading');
@@ -217,7 +213,6 @@ export default class NetworkController extends EventEmitter {
       rpcUrl = network.rpcUrl
       ticker = network.ticker
     }
-    log.debug('setProviderType', type, rpcUrl, ticker, nickname)
     assert.notStrictEqual(
       type,
       NETWORK_TYPE_RPC,

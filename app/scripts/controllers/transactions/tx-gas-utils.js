@@ -48,7 +48,6 @@ export default class TxGasUtil {
     @returns {GasAnalysisResult} The result of the gas analysis
   */
   async analyzeGasUsage(txMeta) {
-    log.debug('analyzeGasUsage', txMeta)
     const chainInfo = await new Promise((resolve, reject) => {
       return this.query.getChainInfo((err, res) => {
         if (err) {
@@ -57,27 +56,23 @@ export default class TxGasUtil {
         return resolve(res);
       });
     });
-    log.debug({ chainInfo })
     const blockNumber = chainInfo && chainInfo.head ? chainInfo.head.number : 0;
 
     // maxGasAmount is dynamical adjusted, today it is about 40000000
     const maxGasAmount = new BigNumber(40000000, 10).toString(16);
     const gasLimit = addHexPrefix(maxGasAmount);
     const block = { number: blockNumber, gasLimit };
-    log.debug({ block })
     // fallback to block gasLimit
     const blockGasLimitBN = hexToBn(block.gasLimit);
     const saferGasLimitBN = BnMultiplyByFraction(blockGasLimitBN, 19, 20);
     let estimatedGasHex = bnToHex(saferGasLimitBN);
     let tokenChanges;
-    log.debug('estimatedGasHex1', { estimatedGasHex })
     let simulationFails;
     try {
       const result = await this.estimateTxGas(txMeta);
       estimatedGasHex = result.estimatedGasHex;
       tokenChanges = result.tokenChanges;
 
-      log.debug('estimatedGasHex2', { estimatedGasHex, tokenChanges })
     } catch (error) {
       log.warn({ error });
       simulationFails = {
@@ -96,9 +91,7 @@ export default class TxGasUtil {
     @returns {string} the estimated gas limit as a hex string
   */
   async estimateTxGas(txMeta) {
-    log.debug('estimateTxGas', { txMeta })
     const network = txMeta.metamaskNetworkId.name
-    log.debug({ network })
     let result = {}
     if (['devnet'].includes(network)) {
       result = await this.estimateTxGasAptos(txMeta)
@@ -109,7 +102,6 @@ export default class TxGasUtil {
   }
 
   async estimateTxGasStarcoin(txMeta) {
-    log.debug('estimateTxGasStarcoin', { txMeta })
     // // `eth_estimateGas` can fail if the user has insufficient balance for the
     // // value being sent, or for the gas cost. We don't want to check their
     // // balance here, we just want the gas estimate. The gas price is removed
@@ -129,7 +121,6 @@ export default class TxGasUtil {
     }
     const selectedSequenceNumber = await this.getSequenceNumber(txMeta.txParams.from, 'STC');
     const chainId = txMeta.metamaskNetworkId.id;
-    log.debug({ selectedSequenceNumber, chainId })
     let transactionPayload;
     if (txMeta.txParams.data) {
       transactionPayload = encoding.bcsDecode(

@@ -1040,7 +1040,6 @@ export default class MetamaskController extends EventEmitter {
    */
   getBalance(address, stcQuery) {
     const networkTicker = this.networkController.getCurrentNetworkTicker()
-    log.debug('starmask getBalance', { address, networkTicker })
     return new Promise((resolve, reject) => {
       const cached = this.accountTracker.store.getState().accounts[address];
 
@@ -1051,7 +1050,6 @@ export default class MetamaskController extends EventEmitter {
           address,
           networkTicker === 'APT' ? '0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>' : '0x00000000000000000000000000000001::Account::Balance<0x00000000000000000000000000000001::STC::STC>',
           (error, res) => {
-            log.debug({ error, res })
             if (error) {
               log.error(error);
               if (error.message && error.message === 'Invalid params: unable to parse AccoutAddress.') {
@@ -1934,10 +1932,8 @@ export default class MetamaskController extends EventEmitter {
   }
 
   estimateGas(estimateGasParams) {
-    log.debug('estimateGas', { estimateGasParams })
     return new Promise((resolve, reject) => {
       const { network } = this.networkController.store.getState();
-      log.debug({ network })
       if (['devnet'].includes(network.name)) {
         const payload = {
           function: "0x1::coin::transfer",
@@ -1946,16 +1942,13 @@ export default class MetamaskController extends EventEmitter {
         };
         return this.txController.txGasUtil.client.generateTransaction(estimateGasParams.from, payload, { gas_unit_price: "100" })
           .then((rawTxn) => {
-            log.debug({ rawTxn })
             return this.keyringController.exportAccount(estimateGasParams.from)
               .then((privateKey) => {
                 const fromAccount = AptosAccount.fromAptosAccountObject({ privateKeyHex: addHexPrefix(privateKey) });
                 return this.txController.txGasUtil.client.simulateTransaction(fromAccount, rawTxn)
                   .then((result) => {
                     const transactionRespSimulation = result[0]
-                    log.debug({ transactionRespSimulation })
                     const gas_used = parseInt(transactionRespSimulation.gas_used, 10)
-                    log.debug('simulated', { gas_used })
                     return resolve(gas_used);
                   })
               })
@@ -1967,7 +1960,6 @@ export default class MetamaskController extends EventEmitter {
         const tokenCode = estimateGasParams.code ? estimateGasParams.code : '0x00000000000000000000000000000001::STC::STC'
         return this.keyringController.getPublicKeyFor(estimateGasParams.from)
           .then((publicKey) => {
-            log.debug({ publicKey })
             const params = {
               chain_id: chainId,
               gas_unit_price: 1,
@@ -1981,7 +1973,6 @@ export default class MetamaskController extends EventEmitter {
                 args: [estimateGasParams.to, `${ hexToDecimal(estimateGasParams.gas) }u128`]
               },
             };
-            log.debug({ params })
             if (!estimateGasParams.to) {
               return resolve(0);
             }
@@ -2042,12 +2033,10 @@ export default class MetamaskController extends EventEmitter {
    * @param {MessageSender} sender - The sender of the messages on this stream
    */
   setupUntrustedCommunication(connectionStream, sender) {
-    log.debug('setupUntrustedCommunication', connectionStream, sender);
     const { usePhishDetect } = this.preferencesController.store.getState();
     const { hostname } = new URL(sender.url);
     // Check if new connection is blocked if phishing detection is on
     if (usePhishDetect && this.phishingController.test(hostname)) {
-      log.debug('StarMask - sending phishing warning for', hostname);
       this.sendPhishingWarning(connectionStream, hostname);
       return;
     }
@@ -2131,7 +2120,6 @@ export default class MetamaskController extends EventEmitter {
    * @param {boolean} isInternal - True if this is a connection with an internal process
    */
   setupProviderConnection(outStream, sender, isInternal) {
-    log.debug('setupProviderConnection', outStream, sender, isInternal);
     const origin = isInternal ? 'starmask' : new URL(sender.url).origin;
     let extensionId;
     if (sender.id !== this.extension.runtime.id) {
@@ -2188,13 +2176,6 @@ export default class MetamaskController extends EventEmitter {
     tabId,
     isInternal = false,
   }) {
-    log.debug('setupProviderEngine', {
-      origin,
-      location,
-      extensionId,
-      tabId,
-      isInternal,
-    });
     // setup json rpc engine stack
     const engine = new JsonRpcEngine();
     const { provider, blockTracker } = this;

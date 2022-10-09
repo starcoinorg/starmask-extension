@@ -759,9 +759,7 @@ export default class TransactionController extends EventEmitter {
   }
 
   async signTransactionAptos(txId) {
-    log.debug('signTransactionAptos', txId);
     const txMeta = this.txStateManager.getTx(txId);
-    log.debug({ txMeta })
     const fromAddress = txMeta.txParams.from;
     let rawTxn
     if (txMeta.txParams.data) {
@@ -780,11 +778,8 @@ export default class TransactionController extends EventEmitter {
       }
     }
     const privateKey = await this.txGasUtil.exportAccount(fromAddress)
-    log.debug({ privateKey })
     const fromAccount = AptosAccount.fromAptosAccountObject({ privateKeyHex: addHexPrefix(privateKey) });
-    log.debug({ fromAccount })
     const signedTxn = await this.txGasUtil.client.signTransaction(fromAccount, rawTxn);
-    log.debug({ signedTxn })
     return signedTxn
   }
 
@@ -831,15 +826,12 @@ export default class TransactionController extends EventEmitter {
   }
 
   async publishTransactionAptos(txId, signedTransaction) {
-    log.debug('publishTransactionAptos', { txId, signedTransaction }, hexlify(signedTransaction))
     const txMeta = this.txStateManager.getTx(txId);
     txMeta.rawTx = hexlify(signedTransaction);
-    log.debug({ txMeta })
     this.txStateManager.updateTx(txMeta, 'transactions#publishTransaction');
     let txHash;
     try {
       const transactionResp = await this.txGasUtil.client.submitTransaction(signedTransaction);
-      log.debug({ transactionResp })
       txHash = transactionResp.hash
     } catch (error) {
       throw error;

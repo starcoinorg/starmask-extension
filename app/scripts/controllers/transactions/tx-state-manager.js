@@ -525,7 +525,6 @@ export default class TransactionStateManager extends EventEmitter {
    * @emits 'updateBadge'
    */
   _setTxStatus(txId, status) {
-    log.debug('_setTxStatus', { txId, status });
     const txMeta = this.getTx(txId);
 
     if (!txMeta) {
