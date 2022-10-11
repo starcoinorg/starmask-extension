@@ -69,6 +69,7 @@ export default class AccountMenu extends Component {
     toggleAccountMenu: PropTypes.func,
     addressConnectedDomainMap: PropTypes.object,
     originOfCurrentTab: PropTypes.string,
+    rpcPrefs: PropTypes.object,
   };
 
   accountsRef;
@@ -308,6 +309,7 @@ export default class AccountMenu extends Component {
       toggleAccountMenu,
       lockMetamask,
       history,
+      rpcPrefs,
     } = this.props;
 
     if (!isAccountMenuOpen) {
@@ -386,31 +388,35 @@ export default class AccountMenu extends Component {
           }
           text={t('importAccount')}
         />
-        <AccountMenuItem
-          onClick={() => {
-            toggleAccountMenu();
-            metricsEvent({
-              eventOpts: {
-                category: 'Navigation',
-                action: 'Main Menu',
-                name: 'Clicked Connect Hardware',
-              },
-            });
-            if (getEnvironmentType() === ENVIRONMENT_TYPE_POPUP) {
-              global.platform.openExtensionInBrowser(CONNECT_HARDWARE_ROUTE);
-            } else {
-              history.push(CONNECT_HARDWARE_ROUTE);
-            }
-          }}
-          icon={
-            <img
-              className="account-menu__item-icon"
-              src="images/connect-icon.svg"
-              alt={t('connectHardwareWallet')}
+        {
+          rpcPrefs.ticker === 'STC' ? (
+            <AccountMenuItem
+              onClick={() => {
+                toggleAccountMenu();
+                metricsEvent({
+                  eventOpts: {
+                    category: 'Navigation',
+                    action: 'Main Menu',
+                    name: 'Clicked Connect Hardware',
+                  },
+                });
+                if (getEnvironmentType() === ENVIRONMENT_TYPE_POPUP) {
+                  global.platform.openExtensionInBrowser(CONNECT_HARDWARE_ROUTE);
+                } else {
+                  history.push(CONNECT_HARDWARE_ROUTE);
+                }
+              }}
+              icon={
+                <img
+                  className="account-menu__item-icon"
+                  src="images/connect-icon.svg"
+                  alt={t('connectHardwareWallet')}
+                />
+              }
+              text={t('connectHardwareWallet')}
             />
-          }
-          text={t('connectHardwareWallet')}
-        />
+          ) : null
+        }
         <div className="account-menu__divider" />
         <AccountMenuItem
           onClick={() => {

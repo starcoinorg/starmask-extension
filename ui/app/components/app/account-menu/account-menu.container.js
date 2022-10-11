@@ -14,6 +14,7 @@ import {
   getMetaMaskKeyrings,
   getOriginOfCurrentTab,
   getSelectedAddress,
+  getRpcPrefsForCurrentProvider,
 } from '../../../selectors';
 import AccountMenu from './account-menu.component';
 
@@ -38,6 +39,7 @@ function mapStateToProps(state) {
     keyrings: getMetaMaskKeyrings(state),
     accounts,
     shouldShowAccountsSearch: accounts.length >= SHOW_SEARCH_ACCOUNTS_MIN_COUNT,
+    rpcPrefs: getRpcPrefsForCurrentProvider(state),
   };
 }
 
