@@ -79,7 +79,7 @@ export default class MobileSyncPage extends Component {
   async exportAccounts() {
     const addresses = [];
     this.props.keyrings.forEach((keyring) => {
-      if (keyring.type === 'Simple Key Pair') {
+      if (['Simple Key Pair', 'Aptos Simple Key Pair'].includes(keyring.type)) {
         addresses.push(keyring.accounts[0]);
       }
     });
@@ -111,10 +111,10 @@ export default class MobileSyncPage extends Component {
   }
 
   generateCipherKeyAndChannelName() {
-    this.cipherKey = `${this.props.selectedAddress.substr(
+    this.cipherKey = `${ this.props.selectedAddress.substr(
       -4,
-    )}-${PubNub.generateUUID()}`;
-    this.channelName = `mm-${PubNub.generateUUID()}`;
+    ) }-${ PubNub.generateUUID() }`;
+    this.channelName = `mm-${ PubNub.generateUUID() }`;
     this.setState({ cipherKey: this.cipherKey, channelName: this.channelName });
   }
 
@@ -363,7 +363,7 @@ export default class MobileSyncPage extends Component {
   renderRevealSeedContent() {
     const qrImage = qrCode(0, 'M');
     qrImage.addData(
-      `starmask-sync:${this.state.channelName}|@|${this.state.cipherKey}`,
+      `starmask-sync:${ this.state.channelName }|@|${ this.state.cipherKey }`,
     );
     qrImage.make();
 

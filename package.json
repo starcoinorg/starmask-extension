@@ -54,7 +54,7 @@
     "@starcoin/stc-inpage-provider": "^0.3.4",
     "@starcoin/stc-json-rpc": "^0.2.0",
     "@starcoin/stc-json-rpc-middleware": "^0.2.0",
-    "@starcoin/stc-keyring-controller": "^1.7.1",
+    "@starcoin/stc-keyring-controller": "^1.7.2",
     "@starcoin/stc-multisign-keyring": "^0.4.1",
     "@starcoin/stc-nonce-tracker": "^0.3.0",
     "@starcoin/stc-onekey-keyring": "^1.2.0",

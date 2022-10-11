@@ -1454,7 +1454,9 @@ export default class MetamaskController extends EventEmitter {
       log.debug('single')
       const publicKeyBuff = await privateToPublicED(privateKey);
       const publicKey = publicKeyBuff.toString('hex');
-      keyring = await this.keyringController.addNewKeyring('Simple Key Pair', [
+      const { ticker } = this.networkController.getProviderConfig();
+      const type = (ticker === 'APT') ? 'Aptos Simple Key Pair' : 'Simple Key Pair';
+      keyring = await this.keyringController.addNewKeyring(type, [
         { privateKey, publicKey },
       ]);
     } else {

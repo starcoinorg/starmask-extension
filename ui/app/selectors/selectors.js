@@ -82,6 +82,7 @@ export function getAccountType(state) {
     case 'Ledger Hardware':
       return 'hardware';
     case 'Simple Key Pair':
+    case 'Aptos Simple Key Pair':
       return 'imported';
     case 'Multi Sign':
       return 'multisign';

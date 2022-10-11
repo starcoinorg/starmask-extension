@@ -238,6 +238,7 @@ export default class AccountMenu extends Component {
         label = t('hardware');
         break;
       case 'Simple Key Pair':
+      case 'Aptos Simple Key Pair':
         label = t('imported');
         break;
       case 'Multi Sign':
