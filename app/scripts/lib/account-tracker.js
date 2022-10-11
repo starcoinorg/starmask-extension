@@ -16,6 +16,7 @@ import pify from 'pify';
 import Web3 from 'web3';
 import BigNumber from 'bignumber.js';
 import SINGLE_CALL_BALANCES_ABI from 'single-call-balance-checker-abi';
+import { FaucetClient } from '@starcoin/aptos'
 // import {
 //   MAINNET_CHAIN_ID,
 //   RINKEBY_CHAIN_ID,
@@ -362,7 +363,7 @@ export default class AccountTracker {
         });
         nftIdentifier[address] = currentNFTIdentifier;
       } catch (error) {
-        log.info('_updateAccount error', error);
+        log.info('_updateAccountStarcoin error', error);
         // HD account will get error: Invalid params: unable to parse AccoutAddress
         accounts[address] = { address, balance: '0x0' };
         assets[address] = currentTokens;
@@ -380,6 +381,7 @@ export default class AccountTracker {
   }
 
   async _updateAccountAptos(address) {
+    log.debug('_updateAccountAptos', { address })
     const { accounts, assets, nfts, nftIdentifier } = this.store.getState();
     const currentTokens = {};
     const currentNFTGallery = [];
@@ -475,7 +477,15 @@ export default class AccountTracker {
       });
       nftIdentifier[address] = currentNFTIdentifier;
     } catch (error) {
-      log.info('_updateAccount error', error);
+      log.info('_updateAccountAptos error', error);
+      const data = JSON.parse(error.message)
+      if (data.error_code && data.error_code === 'account_not_found') {
+        // create account
+        const NODE_URL = "https://fullnode.devnet.aptoslabs.com";
+        const FAUCET_URL = "https://faucet.devnet.aptoslabs.com";
+        const faucetClient = new FaucetClient(NODE_URL, FAUCET_URL);
+        await faucetClient.fundAccount(address, 0);
+      }
       // HD account will get error: Invalid params: unable to parse AccoutAddress
       accounts[address] = { address, balance: '0x0' };
       assets[address] = currentTokens;
