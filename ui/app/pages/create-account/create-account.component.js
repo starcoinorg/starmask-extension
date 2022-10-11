@@ -16,6 +16,7 @@ export default class CreateAccountPage extends Component {
     const {
       history,
       location: { pathname },
+      rpcPrefs,
     } = this.props;
     const getClassNames = (path) =>
       classnames('new-account__tabs__tab', {
@@ -24,7 +25,6 @@ export default class CreateAccountPage extends Component {
           exact: true,
         }),
       });
-
     return (
       <div className="new-account__tabs">
         <div
@@ -39,12 +39,16 @@ export default class CreateAccountPage extends Component {
         >
           {this.context.t('import')}
         </div>
-        <div
-          className={getClassNames(CONNECT_HARDWARE_ROUTE)}
-          onClick={() => history.push(CONNECT_HARDWARE_ROUTE)}
-        >
-          {this.context.t('hardware')}
-        </div>
+        {
+          rpcPrefs.ticker === 'STC' ? (
+            <div
+              className={getClassNames(CONNECT_HARDWARE_ROUTE)}
+              onClick={() => history.push(CONNECT_HARDWARE_ROUTE)}
+            >
+              {this.context.t('hardware')}
+            </div>
+          ) : null
+        }
       </div>
     );
   }
@@ -54,7 +58,7 @@ export default class CreateAccountPage extends Component {
       <div className="new-account">
         <div className="new-account__header">
           <div
-            className={`new-account__header ${this.context.t('newAccount')}`}
+            className={`new-account__header ${ this.context.t('newAccount') }`}
           >
             {this.renderTabs()}
           </div>
@@ -86,6 +90,7 @@ export default class CreateAccountPage extends Component {
 CreateAccountPage.propTypes = {
   location: PropTypes.object,
   history: PropTypes.object,
+  rpcPrefs: PropTypes.object,
 };
 
 CreateAccountPage.contextTypes = {
