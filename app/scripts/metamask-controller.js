@@ -218,6 +218,9 @@ export default class MetamaskController extends EventEmitter {
       getCurrentChainId: this.networkController.getCurrentChainId.bind(
         this.networkController,
       ),
+      getCurrentNetworkTicker: this.networkController.getCurrentNetworkTicker.bind(
+        this.networkController,
+      ),
     });
 
     // start and stop polling for balances based on activeControllerConnections

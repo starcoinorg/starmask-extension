@@ -57,6 +57,7 @@ export default class AccountTracker {
    * @param {Object} opts.provider - An EIP-1193 provider instance that uses the current global network
    * @param {Object} opts.blockTracker - A block tracker, which emits events for each new block
    * @param {Function} opts.getCurrentChainId - A function that returns the `chainId` for the current global network
+   * @param {Function} opts.getCurrentNetworkTicker - A function that returns the `ticker` for the current global network
    */
   constructor(opts = {}) {
     const initState = {
@@ -79,6 +80,7 @@ export default class AccountTracker {
     // bind function for easier listener syntax
     this._updateForBlock = this._updateForBlock.bind(this);
     this.getCurrentChainId = opts.getCurrentChainId;
+    this.getCurrentNetworkTicker = opts.getCurrentNetworkTicker;
 
     this.web3 = new Web3(this._provider);
   }
@@ -258,10 +260,13 @@ export default class AccountTracker {
    *
    */
   async _updateAccount(address) {
+    const ticker = this.getCurrentNetworkTicker()
     const accountLength = stripHexPrefix(address).length
-    if (accountLength === 64) {
+    log.debug('_updateAccount', { address, ticker, accountLength })
+
+    if (ticker === 'APT') {
       await this._updateAccountAptos(address)
-    } else if (accountLength === 32) {
+    } else if (ticker === 'STC') {
       await this._updateAccountStarcoin(address)
     }
   }
