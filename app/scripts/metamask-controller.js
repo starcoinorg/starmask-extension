@@ -79,6 +79,11 @@ export const METAMASK_CONTROLLER_EVENTS = {
   UPDATE_BADGE: 'updateBadge',
 };
 
+const TICKER_HE_KEYRING_TYPE = {
+  'STC': 'HD Key Tree',
+  'APT': 'Aptos HD Key Tree'
+}
+
 export default class MetamaskController extends EventEmitter {
   /**
    * @constructor
@@ -408,7 +413,21 @@ export default class MetamaskController extends EventEmitter {
     });
 
     // ensure accountTracker updates balances after network change
-    this.networkController.on(NETWORK_EVENTS.NETWORK_DID_CHANGE, () => {
+    this.networkController.on(NETWORK_EVENTS.NETWORK_DID_CHANGE, async () => {
+      log.debug('this.networkController.on(NETWORK_EVENTS.NETWORK_DID_CHANGE', 'this.accountTracker._updateAccounts()')
+      const ticker = this.networkController.getCurrentNetworkTicker()
+      const previousTicker = this.networkController.getPreviousNetworkTicker()
+      log.debug({ ticker, previousTicker })
+      if (ticker !== previousTicker) {
+        const exists = this.accountTracker._checkAccountExistsInCurrentTicker();
+        log.debug({ exists })
+        //TODO: switch selectedAddress if ticker is changed
+        if (!exists) {
+          const address = await this.addDefaultAccountInCurrentTicker()
+          log.debug({ address })
+          this.preferencesController.setSelectedAddress(address);
+        }
+      }
       this.accountTracker._updateAccounts();
     });
 
@@ -972,7 +991,6 @@ export default class MetamaskController extends EventEmitter {
    * @param {string} seed
    */
   async createNewVaultAndRestore(password, seed) {
-    log.debug('starmask createNewVaultAndRestore', { password, seed })
     const releaseLock = await this.createVaultMutex.acquire();
     try {
       let accounts, lastBalance;
@@ -994,7 +1012,6 @@ export default class MetamaskController extends EventEmitter {
       // clear unapproved transactions
       this.txController.txStateManager.clearUnapprovedTxs();
 
-      log.debug('keyringController.createNewVaultAndRestore', password, seed)
       // create new vault
       const vault = await keyringController.createNewVaultAndRestore(
         password,
@@ -1003,12 +1020,10 @@ export default class MetamaskController extends EventEmitter {
 
       const stcQuery = new StcQuery(this.provider);
       accounts = await keyringController.getAccounts();
-      log.debug({ accounts })
       lastBalance = await this.getBalance(
         accounts[accounts.length - 1],
         stcQuery,
       );
-      log.debug({ lastBalance })
       const primaryKeyring = keyringController.getKeyringsByType(
         'Aptos HD Key Tree',
       )[0];
@@ -1340,10 +1355,16 @@ export default class MetamaskController extends EventEmitter {
    *
    * @returns {} keyState
    */
-  async addNewAccount() {
-    const primaryKeyring = this.keyringController.getKeyringsByType(
-      'Aptos HD Key Tree',
-    )[0];
+  async addNewAccount(ticker) {
+    log.debug('metamaskController addNewAccount', { ticker })
+    if (!ticker) {
+      log.debug('tiker is undefined')
+      ticker = this.networkController.getCurrentNetworkTicker
+    }
+    log.debug({ ticker })
+
+    const type = ticker === 'STC' ? 'HD Key Tree' : 'Aptos HD Key Tree'
+    const primaryKeyring = this.keyringController.getKeyringsByType(type)[0];
     if (!primaryKeyring) {
       throw new Error('StarMaskController - No HD Key Tree found');
     }
@@ -1365,6 +1386,34 @@ export default class MetamaskController extends EventEmitter {
     return { ...keyState, identities };
   }
 
+  async addDefaultAccountInCurrentTicker() {
+    log.debug('addDefaultAccountInCurrentTicker')
+    const ticker = this.networkController.getCurrentNetworkTicker()
+    const previousTicker = this.networkController.getPreviousNetworkTicker()
+    log.debug({ ticker, previousTicker })
+    if (ticker === previousTicker) {
+      return
+    }
+    const previousType = TICKER_HE_KEYRING_TYPE[previousTicker]
+    const previousPrimaryKeyring = this.keyringController.getKeyringsByType(previousType)[0];
+    if (!previousPrimaryKeyring) {
+      throw new Error('StarMaskController - No HD Key Tree found');
+    }
+    const opts = await previousPrimaryKeyring.serialize()
+    log.debug({ opts })
+    const type = TICKER_HE_KEYRING_TYPE[ticker]
+    const keyring = await this.keyringController.addNewKeyring(type, {
+      mnemonic: opts.seed,
+      numberOfAccounts: 1,
+    })
+    log.debug({ keyring })
+    const accounts = await keyring.getAccounts()
+    if (accounts.length < 1) {
+      throw new Error('StarMaskController - No accounts found');
+    }
+    log.debug({ accounts })
+    return accounts[0]
+  }
   /**
    * Verifies the validity of the current vault's seed phrase.
    *

@@ -264,14 +264,20 @@ export default class AccountTracker {
     const accountLength = stripHexPrefix(address).length
     log.debug('_updateAccount', { address, ticker, accountLength })
 
-    if (ticker === 'APT') {
+    if (accountLength === 64 && ticker === 'APT') {
       await this._updateAccountAptos(address)
-    } else if (ticker === 'STC') {
+    } else if (accountLength === 32 && ticker === 'STC') {
       await this._updateAccountStarcoin(address)
     }
   }
 
   async _updateAccountStarcoin(address) {
+    log.debug('_updateAccountStarcoin', { address })
+    const accountLength = stripHexPrefix(address).length
+    if (accountLength !== 32) {
+      return
+    }
+    const ticker = 'STC'
     const { accounts, assets, nfts, nftIdentifier } = this.store.getState();
     const currentTokens = {};
     const currentNFTGallery = [];
@@ -299,7 +305,7 @@ export default class AccountTracker {
           }
         });
         if (balanceKeys.length === 0) {
-          accounts[address] = { address, balance: '0x0' };
+          accounts[address] = { address, balance: '0x0', ticker };
         } else {
           balanceKeys.forEach((key) => {
             balanceDecimal = resources[key].json.token.value;
@@ -310,7 +316,7 @@ export default class AccountTracker {
             const balanceHex = new BigNumber(balanceDecimal, 10).toString(16);
             const balance = addHexPrefix(balanceHex);
             if (token === '0x00000000000000000000000000000001::STC::STC') {
-              const result = { address, balance };
+              const result = { address, balance, ticker };
               accounts[address] = result;
             } else {
               currentTokens[token] = balance;
@@ -370,7 +376,7 @@ export default class AccountTracker {
       } catch (error) {
         log.info('_updateAccountStarcoin error', error);
         // HD account will get error: Invalid params: unable to parse AccoutAddress
-        accounts[address] = { address, balance: '0x0' };
+        accounts[address] = { address, balance: '0x0', ticker };
         assets[address] = currentTokens;
         nfts[address] = [];
         nftIdentifier[address] = [];
@@ -387,6 +393,11 @@ export default class AccountTracker {
 
   async _updateAccountAptos(address) {
     log.debug('_updateAccountAptos', { address })
+    const accountLength = stripHexPrefix(address).length
+    if (accountLength !== 64) {
+      return
+    }
+    const ticker = 'APT'
     const { accounts, assets, nfts, nftIdentifier } = this.store.getState();
     const currentTokens = {};
     const currentNFTGallery = [];
@@ -413,7 +424,7 @@ export default class AccountTracker {
         }
       });
       if (balanceKeys.length === 0) {
-        accounts[address] = { address, balance: '0x0' };
+        accounts[address] = { address, balance: '0x0', ticker };
       } else {
         balanceKeys.forEach((key) => {
           balanceDecimal = res.filter((item) => item.type === key)[0].data.coin.value;
@@ -424,7 +435,7 @@ export default class AccountTracker {
           const balanceHex = new BigNumber(balanceDecimal, 10).toString(16);
           const balance = addHexPrefix(balanceHex);
           if (token === '0x1::aptos_coin::AptosCoin') {
-            const result = { address, balance };
+            const result = { address, balance, ticker };
             accounts[address] = result;
           } else {
             currentTokens[token] = balance;
@@ -492,7 +503,7 @@ export default class AccountTracker {
         await faucetClient.fundAccount(address, 0);
       }
       // HD account will get error: Invalid params: unable to parse AccoutAddress
-      accounts[address] = { address, balance: '0x0' };
+      accounts[address] = { address, balance: '0x0', ticker };
       assets[address] = currentTokens;
       nfts[address] = [];
       nftIdentifier[address] = [];
@@ -525,9 +536,17 @@ export default class AccountTracker {
       }
       addresses.forEach((address, index) => {
         const balance = result[index] ? bnToHex(result[index]) : '0x0';
-        accounts[address] = { address, balance };
+        accounts[address] = { address, balance, ticker };
       });
       this.store.updateState({ accounts });
     });
+  }
+
+  _checkAccountExistsInCurrentTicker() {
+    log.debug('AccountTracker _updateAccountsViaBalanceChecker')
+    const { accounts } = this.store.getState();
+    const ticker = this.getCurrentNetworkTicker()
+    const accountsInCurrentTicker = Object.values(accounts).filter((account) => account.ticker === ticker)
+    return accountsInCurrentTicker.length > 0
   }
 }

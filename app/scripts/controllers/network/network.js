@@ -188,6 +188,11 @@ export default class NetworkController extends EventEmitter {
     return ticker;
   }
 
+  getPreviousNetworkTicker() {
+    const { ticker } = this.getPreviousProviderConfig();
+    return ticker;
+  }
+
   setRpcTarget(rpcUrl, chainId, ticker = 'STC', nickname = '', rpcPrefs) {
     assert.ok(
       isPrefixedFormattedHexString(chainId),
@@ -234,6 +239,7 @@ export default class NetworkController extends EventEmitter {
    * Sets the provider config and switches the network.
    */
   setProviderConfig(config) {
+    const configPreviousProviderStore = this.previousProviderStore.getState();
     this.previousProviderStore.updateState(this.getProviderConfig());
     this.providerStore.updateState(config);
     this._switchNetwork(config);
@@ -243,6 +249,10 @@ export default class NetworkController extends EventEmitter {
     const config = this.previousProviderStore.getState();
     this.providerStore.updateState(config);
     this._switchNetwork(config);
+  }
+
+  getPreviousProviderConfig() {
+    return this.previousProviderStore.getState();
   }
 
   getProviderConfig() {
