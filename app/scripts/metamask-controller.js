@@ -79,7 +79,7 @@ export const METAMASK_CONTROLLER_EVENTS = {
   UPDATE_BADGE: 'updateBadge',
 };
 
-const TICKER_HE_KEYRING_TYPE = {
+const TICKER_HD_KEYRING_TYPE = {
   'STC': 'HD Key Tree',
   'APT': 'Aptos HD Key Tree'
 }
@@ -424,8 +424,11 @@ export default class MetamaskController extends EventEmitter {
         //TODO: switch selectedAddress if ticker is changed
         if (!exists) {
           const address = await this.addDefaultAccountInCurrentTicker()
-          log.debug({ address })
           this.preferencesController.setSelectedAddress(address);
+        } else {
+          const type = TICKER_HD_KEYRING_TYPE[ticker]
+          const accounts = await this.keyringController.getKeyringsByType(type)[0].getAccounts()
+          this.preferencesController.setSelectedAddress(accounts[0]);
         }
       }
       this.accountTracker._updateAccounts();
@@ -1394,14 +1397,14 @@ export default class MetamaskController extends EventEmitter {
     if (ticker === previousTicker) {
       return
     }
-    const previousType = TICKER_HE_KEYRING_TYPE[previousTicker]
+    const previousType = TICKER_HD_KEYRING_TYPE[previousTicker]
     const previousPrimaryKeyring = this.keyringController.getKeyringsByType(previousType)[0];
     if (!previousPrimaryKeyring) {
       throw new Error('StarMaskController - No HD Key Tree found');
     }
     const opts = await previousPrimaryKeyring.serialize()
     log.debug({ opts })
-    const type = TICKER_HE_KEYRING_TYPE[ticker]
+    const type = TICKER_HD_KEYRING_TYPE[ticker]
     const keyring = await this.keyringController.addNewKeyring(type, {
       mnemonic: opts.seed,
       numberOfAccounts: 1,
