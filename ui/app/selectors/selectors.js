@@ -180,8 +180,18 @@ export const getMetaMaskAccountsOrdered = createSelector(
   getMetaMaskKeyrings,
   getMetaMaskIdentities,
   getMetaMaskAccounts,
-  (keyrings, identities, accounts) =>
+  getTickerForCurrentProvider,
+  (keyrings, identities, accounts, ticker) =>
     keyrings
+      .filter((keyring) => {
+        if (ticker === 'STC') {
+          return !(['Aptos HD Key Tree', 'Aptos Simple Key Pair'].includes(keyring.type))
+        } else if (ticker === 'APT') {
+          // Do not support onekey and multisign yet
+          return ['Aptos HD Key Tree', 'Aptos Simple Key Pair'].includes(keyring.type)
+        }
+        return true
+      })
       .reduce((list, keyring) => list.concat(keyring.accounts), [])
       .filter((address) => Boolean(identities[address]))
       .map((address) => ({ ...identities[address], ...accounts[address] })),
@@ -399,6 +409,11 @@ export function getRpcPrefsForCurrentProvider(state) {
     rpcPrefs = selectRpcInfo || {};
   }
   return rpcPrefs;
+}
+
+export function getTickerForCurrentProvider(state) {
+  const { provider } = state.starmask;
+  return provider.ticker;
 }
 
 export function getKnownMethodData(state, data) {
