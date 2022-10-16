@@ -84,6 +84,10 @@ const TICKER_HD_KEYRING_TYPE = {
   'APT': 'Aptos HD Key Tree'
 }
 
+const TICKER_SIMPLE_KEYRING_TYPE = {
+  'STC': 'Simple Key Pair',
+  'APT': 'Aptos Simple Key Pair'
+}
 export default class MetamaskController extends EventEmitter {
   /**
    * @constructor
@@ -1144,10 +1148,10 @@ export default class MetamaskController extends EventEmitter {
 
     // Accounts
     const ticker = this.networkController.getCurrentNetworkTicker()
-    const HDtype = (ticker === 'APT') ? 'Aptos HD Key Tree' : 'HD Key Tree'
+    const HDtype = TICKER_HD_KEYRING_TYPE[ticker]
 
     const hdKeyring = this.keyringController.getKeyringsByType(HDtype)[0];
-    const Simpletype = (ticker === 'APT') ? 'Aptos Simple Key Pair' : 'Simple Key Pair'
+    const Simpletype = TICKER_SIMPLE_KEYRING_TYPE[ticker]
 
     const simpleKeyPairKeyrings = this.keyringController.getKeyringsByType(Simpletype);
     const hdAccounts = await hdKeyring.getAccounts();
@@ -1363,11 +1367,11 @@ export default class MetamaskController extends EventEmitter {
     log.debug('metamaskController addNewAccount', { ticker })
     if (!ticker) {
       log.debug('tiker is undefined')
-      ticker = this.networkController.getCurrentNetworkTicker
+      ticker = this.networkController.getCurrentNetworkTicker()
     }
     log.debug({ ticker })
 
-    const type = ticker === 'STC' ? 'HD Key Tree' : 'Aptos HD Key Tree'
+    const type = TICKER_HD_KEYRING_TYPE[ticker]
     const primaryKeyring = this.keyringController.getKeyringsByType(type)[0];
     if (!primaryKeyring) {
       throw new Error('StarMaskController - No HD Key Tree found');
@@ -1407,7 +1411,7 @@ export default class MetamaskController extends EventEmitter {
     log.debug({ opts })
     const type = TICKER_HD_KEYRING_TYPE[ticker]
     const keyring = await this.keyringController.addNewKeyring(type, {
-      mnemonic: opts.seed,
+      mnemonic: opts.mnemonic,
       numberOfAccounts: 1,
     })
     log.debug({ keyring })
@@ -1428,9 +1432,9 @@ export default class MetamaskController extends EventEmitter {
    * @returns {Promise<string>} Seed phrase to be confirmed by the user.
    */
   async verifySeedPhrase() {
-    const primaryKeyring = this.keyringController.getKeyringsByType(
-      'HD Key Tree',
-    )[0];
+    const networkTicker = this.networkController.getCurrentNetworkTicker()
+    const type = TICKER_HD_KEYRING_TYPE[networkTicker]
+    const primaryKeyring = this.keyringController.getKeyringsByType(type)[0];
     if (!primaryKeyring) {
       throw new Error('StarMaskController - No HD Key Tree found');
     }
@@ -1444,7 +1448,6 @@ export default class MetamaskController extends EventEmitter {
     }
 
     try {
-      const networkTicker = this.networkController.getCurrentNetworkTicker()
       await seedPhraseVerifier.verifyAccounts(accounts, seedWords, networkTicker);
       return seedWords;
     } catch (err) {
