@@ -399,8 +399,14 @@
   "connectingToBarnard": {
     "message": "Connexion au réseau de test Barnard"
   },
-  "connectingToDevnet": {
-    "message": "Connexion au réseau de Aptos dev net"
+  "connectingToAptosDev": {
+    "message": "Connexion au réseau de Aptos Dev Network"
+  },
+  "connectingToAptosMain": {
+    "message": "Connexion au réseau de Aptos Main Network"
+  },
+  "connectingToAptosTest": {
+    "message": "Connexion au réseau de Aptos Test Network"
   },
   "connectingToGoerli": {
     "message": "Connexion au réseau de test Goerli"
@@ -1076,6 +1082,9 @@
   },
   "main": {
     "message": "Starcoin Mainnet"
+  },
+  "mainnet": {
+    "message": "Aptos Main Net"
   },
   "max": {
     "message": "Max"
@@ -2178,6 +2187,9 @@
   },
   "testFaucet": {
     "message": "Faucet d'essai"
+  },
+  "testnet": {
+    "message": "Aptos Test Net"
   },
   "thisWillCreate": {
     "message": "Cela créera un nouveau portefeuille et une phrase de sauvegarde"

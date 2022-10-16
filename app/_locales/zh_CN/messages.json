@@ -385,7 +385,13 @@
   "connectingToBarnard": {
     "message": "正在连接 Barnard 测试网络"
   },
-  "connectingToDevnet": {
+  "connectingToAptosDev": {
+    "message": "正在连接 Aptos 开发网络"
+  },
+  "connectingToAptosMain": {
+    "message": "正在连接 Aptos 主网"
+  },
+  "connectingToAptosTest": {
     "message": "正在连接 Aptos 测试网络"
   },
   "connectingToGoerli": {
@@ -544,7 +550,7 @@
     "message": "详情"
   },
   "devnet": {
-    "message": "Aptos测试网络"
+    "message": "Aptos 开发网络"
   },
   "directDepositEther": {
     "message": "直接存入 STC"
@@ -1055,6 +1061,9 @@
   },
   "main": {
     "message": "Starcoin 主网络"
+  },
+  "mainnet": {
+    "message": "Aptos 主网"
   },
   "max": {
     "message": "最大"
@@ -2112,6 +2121,9 @@
   },
   "testFaucet": {
     "message": "测试水管"
+  },
+  "testnet": {
+    "message": "Aptos 测试网络"
   },
   "threshold": {
     "message": "阈值"

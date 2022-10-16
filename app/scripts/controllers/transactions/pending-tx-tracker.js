@@ -124,7 +124,7 @@ export default class PendingTransactionTracker extends EventEmitter {
           return resolve(res);
         });
       });
-      if (transactionReceipt?.block_number || (['devnet'].includes(network) && transactionReceipt?.success)) {
+      if (transactionReceipt?.block_number || (['devnet', 'testnet', 'mainnet'].includes(network) && transactionReceipt?.success)) {
         this.emit('tx:confirmed', txId, transactionReceipt);
         return;
       }
@@ -295,7 +295,7 @@ export default class PendingTransactionTracker extends EventEmitter {
           return resolve(res);
         });
       });
-      if (transactionReceipt?.block_number || (['devnet'].includes(network) && transactionReceipt?.success)) {
+      if (transactionReceipt?.block_number || (['devnet', 'testnet', 'mainnet'].includes(network) && transactionReceipt?.success)) {
         this.emit('tx:confirmed', txId, transactionReceipt);
         return;
       }

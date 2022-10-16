@@ -48,7 +48,11 @@ export default class LoadingNetworkScreen extends PureComponent {
     } else if (providerName === 'proxima') {
       name = this.context.t('connectingToProxima');
     } else if (providerName === 'devnet') {
-      name = this.context.t('connectingToDevnet');
+      name = this.context.t('connectingToAptosDev');
+    } else if (providerName === 'testnet') {
+      name = this.context.t('connectingToAptosTest');
+    } else if (providerName === 'mainnet') {
+      name = this.context.t('connectingToAptosMain');
     } else {
       name = this.context.t('connectingTo', [providerId]);
     }

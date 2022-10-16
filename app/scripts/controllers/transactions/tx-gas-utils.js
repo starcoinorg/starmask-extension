@@ -93,7 +93,7 @@ export default class TxGasUtil {
   async estimateTxGas(txMeta) {
     const network = txMeta.metamaskNetworkId.name
     let result = {}
-    if (['devnet'].includes(network)) {
+    if (['devnet', 'testnet', 'mainnet'].includes(network)) {
       result = await this.estimateTxGasAptos(txMeta)
     } else {
       result = await this.estimateTxGasStarcoin(txMeta)

@@ -1994,7 +1994,7 @@ export default class MetamaskController extends EventEmitter {
   estimateGas(estimateGasParams) {
     return new Promise((resolve, reject) => {
       const { network } = this.networkController.store.getState();
-      if (['devnet'].includes(network.name)) {
+      if (['devnet', 'testnet', 'mainnet'].includes(network.name)) {
         const payload = {
           function: "0x1::coin::transfer",
           type_arguments: ["0x1::aptos_coin::AptosCoin"],

@@ -17,8 +17,6 @@ import {
   NETWORK_TYPE_TO_ID_MAP,
   MAINNET_CHAIN_ID,
   BARNARD_CHAIN_ID,
-  DEVNET,
-  DEVNET_CHAIN_ID,
 } from '../../../../shared/constants/network';
 import {
   isPrefixedFormattedHexString,
@@ -51,7 +49,6 @@ if (process.env.IN_TEST === 'true') {
   // };
 
   defaultProviderConfigOpts = { ticker: 'STC', type: BARNARD, chainId: BARNARD_CHAIN_ID };
-  // defaultProviderConfigOpts = { ticker: 'APT', type: DEVNET, chainId: DEVNET_CHAIN_ID };
 } else {
   defaultProviderConfigOpts = { ticker: 'STC', type: MAINNET, chainId: MAINNET_CHAIN_ID };
 }

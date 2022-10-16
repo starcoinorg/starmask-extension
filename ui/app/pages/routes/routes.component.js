@@ -395,7 +395,11 @@ export default class Routes extends Component {
       case 'proxima':
         return this.context.t('connectingToProxima');
       case 'devnet':
-        return this.context.t('connectingToDevnet');
+        return this.context.t('connectingToAptosDev');
+      case 'testnet':
+        return this.context.t('connectingToAptosTest');
+      case 'mainnet':
+        return this.context.t('connectingToAptosMain');
       default:
         return this.context.t('connectingTo', [providerId]);
     }
@@ -413,6 +417,10 @@ export default class Routes extends Component {
         return this.context.t('proxima');
       case 'devnet':
         return this.context.t('devnet');
+      case 'testnet':
+        return this.context.t('testnet');
+      case 'mainnet':
+        return this.context.t('mainnet');
       default:
         return this.context.t('unknownNetwork');
     }

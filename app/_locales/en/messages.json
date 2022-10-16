@@ -411,8 +411,14 @@
   "connectingToBarnard": {
     "message": "Connecting to Barnard Test Network"
   },
-  "connectingToDevnet": {
+  "connectingToAptosDev": {
     "message": "Connecting to Aptos Dev Network"
+  },
+  "connectingToAptosMain": {
+    "message": "Connecting to Aptos Main Network"
+  },
+  "connectingToAptosTest": {
+    "message": "Connecting to Aptos Test Network"
   },
   "connectingToGoerli": {
     "message": "Connecting to Goerli Test Network"
@@ -1097,6 +1103,9 @@
   },
   "main": {
     "message": "Starcoin Main"
+  },
+  "mainnet": {
+    "message": "Aptos Main Net"
   },
   "max": {
     "message": "Max"
@@ -2205,6 +2214,9 @@
   },
   "testFaucet": {
     "message": "Test Faucet"
+  },
+  "testnet": {
+    "message": "Aptos Test Net"
   },
   "threshold": {
     "message": "threshold"

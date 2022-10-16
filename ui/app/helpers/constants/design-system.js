@@ -31,6 +31,8 @@ export const COLORS = {
   PROXIMA: 'proxima',
   HALLEY: 'halley',
   DEVNET: 'devnet',
+  TESTNET: 'testnet',
+  MAINNET: 'mainnet',
   TRANSPARENT: 'transparent',
 };
 

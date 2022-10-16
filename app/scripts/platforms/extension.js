@@ -119,7 +119,7 @@ export default class ExtensionPlatform {
     const { status, txReceipt: { status: receiptStatus, success } = {}, metamaskNetworkId: { name: network } } = txMeta;
     if (status === TRANSACTION_STATUSES.CONFIRMED) {
       // There was an on-chain failure
-      (['devnet'].includes(network) ? !success : receiptStatus !== 'Executed')
+      (['devnet', 'testnet', 'mainnet'].includes(network) ? !success : receiptStatus !== 'Executed')
         ? this._showFailedTransaction(
           txMeta,
           'Transaction encountered an error.',
@@ -201,7 +201,7 @@ export default class ExtensionPlatform {
     const title = 'Confirmed transaction';
     const { metamaskNetworkId: { name: network } } = txMeta;
 
-    const message = `Transaction ${ nonce } confirmed! ${ url.length ? `View on ${ ['devnet'].includes(network) ? 'Aptos Explorer' : 'StcScan' }` : '' }`;
+    const message = `Transaction ${ nonce } confirmed! ${ url.length ? `View on ${ ['devnet', 'testnet', 'mainnet'].includes(network) ? 'Aptos Explorer' : 'StcScan' }` : '' }`;
     this._showNotification(title, message, url);
   }
 

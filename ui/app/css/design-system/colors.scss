@@ -108,6 +108,8 @@ $barnard: #ff4a8d;
 $proxima: #9064ff;
 $halley: #3099f2;
 $devnet: #F6C343;
+$testnet: #0260a4;
+$mainnet: #f66a0a;
 
 $color-map: (
   'ui-1': $ui-1,
@@ -136,5 +138,7 @@ $color-map: (
   'proxima': $proxima,
   'halley': $halley,
   'devnet': $devnet,
+  'testnet': $testnet,
+  'mainnet': $mainnet,
   'transparent': transparent,
 );

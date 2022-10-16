@@ -7,8 +7,12 @@ import {
   PROXIMA_CHAIN_ID,
   BARNARD,
   BARNARD_CHAIN_ID,
-  DEVNET,
-  DEVNET_CHAIN_ID,
+  APTOS_MAINNET,
+  APTOS_MAINNET_CHAIN_ID,
+  APTOS_TESTNET,
+  APTOS_TESTNET_CHAIN_ID,
+  APTOS_DEVNET,
+  APTOS_DEVNET_CHAIN_ID,
 } from '../../../../../shared/constants/network';
 
 const defaultNetworksData = [
@@ -49,13 +53,31 @@ const defaultNetworksData = [
     blockExplorerUrl: 'https://stcscan.io/proxima',
   },
   {
-    labelKey: DEVNET,
-    iconColor: '#F6C343',
-    providerType: DEVNET,
-    rpcUrl: 'https://fullnode.devnet.aptoslabs.com',
-    chainId: DEVNET_CHAIN_ID,
+    labelKey: APTOS_MAINNET,
+    iconColor: '#f66a0a',
+    providerType: APTOS_MAINNET,
+    rpcUrl: 'https://fullnode.mainnet.aptoslabs.com',
+    chainId: APTOS_MAINNET_CHAIN_ID,
     ticker: 'APT',
-    blockExplorerUrl: 'https://explorer.aptoslabs.com/',
+    blockExplorerUrl: 'https://explorer.aptoslabs.com/?network=premainnet',
+  },
+  {
+    labelKey: APTOS_TESTNET,
+    iconColor: '#0260a4',
+    providerType: APTOS_TESTNET,
+    rpcUrl: 'https://fullnode.testnet.aptoslabs.com',
+    chainId: APTOS_TESTNET_CHAIN_ID,
+    ticker: 'APT',
+    blockExplorerUrl: 'https://explorer.aptoslabs.com/?network=testnet',
+  },
+  {
+    labelKey: APTOS_DEVNET,
+    iconColor: '#F6C343',
+    providerType: APTOS_DEVNET,
+    rpcUrl: 'https://fullnode.devnet.aptoslabs.com',
+    chainId: APTOS_DEVNET_CHAIN_ID,
+    ticker: 'APT',
+    blockExplorerUrl: 'https://explorer.aptoslabs.com/?network=devnet',
   },
 ];
 
