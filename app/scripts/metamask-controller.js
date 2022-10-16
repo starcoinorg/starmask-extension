@@ -974,7 +974,7 @@ export default class MetamaskController extends EventEmitter {
         this.preferencesController.setAddresses(addresses);
 
         const primaryKeyring = this.keyringController.getKeyringsByType(
-          'Aptos HD Key Tree',
+          'HD Key Tree',
         )[0];
         if (!primaryKeyring) {
           throw new Error('StarMaskController - No HD Key Tree found');
@@ -1028,7 +1028,7 @@ export default class MetamaskController extends EventEmitter {
         stcQuery,
       );
       const primaryKeyring = keyringController.getKeyringsByType(
-        'Aptos HD Key Tree',
+        'HD Key Tree',
       )[0];
       if (!primaryKeyring) {
         throw new Error('StarMaskController - No HD Key Tree found');
@@ -1143,12 +1143,13 @@ export default class MetamaskController extends EventEmitter {
     };
 
     // Accounts
-    const hdKeyring = this.keyringController.getKeyringsByType(
-      'Aptos HD Key Tree',
-    )[0];
-    const simpleKeyPairKeyrings = this.keyringController.getKeyringsByType(
-      'Simple Key Pair',
-    );
+    const ticker = this.networkController.getCurrentNetworkTicker()
+    const HDtype = (ticker === 'APT') ? 'Aptos HD Key Tree' : 'HD Key Tree'
+
+    const hdKeyring = this.keyringController.getKeyringsByType(HDtype)[0];
+    const Simpletype = (ticker === 'APT') ? 'Aptos Simple Key Pair' : 'Simple Key Pair'
+
+    const simpleKeyPairKeyrings = this.keyringController.getKeyringsByType(Simpletype);
     const hdAccounts = await hdKeyring.getAccounts();
     const simpleKeyPairKeyringAccounts = await Promise.all(
       simpleKeyPairKeyrings.map((keyring) => keyring.getAccounts()),
@@ -1428,7 +1429,7 @@ export default class MetamaskController extends EventEmitter {
    */
   async verifySeedPhrase() {
     const primaryKeyring = this.keyringController.getKeyringsByType(
-      'Aptos HD Key Tree',
+      'HD Key Tree',
     )[0];
     if (!primaryKeyring) {
       throw new Error('StarMaskController - No HD Key Tree found');

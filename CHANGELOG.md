@@ -1,6 +1,6 @@
 # Changelog
 
-## [4.8.0] - 2022-09-30
+## [5.0.0] - 2022-10-16
 
 - New features:
   - [#80 Support Aptos test dev ](https://github.com/starcoinorg/starmask-extension/issues/80)
