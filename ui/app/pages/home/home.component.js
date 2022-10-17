@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect, Route } from 'react-router-dom';
 import { formatDate } from '../../helpers/utils/util';
@@ -16,6 +17,9 @@ import ConnectedAccounts from '../connected-accounts';
 import { Tabs, Tab } from '../../components/ui/tabs';
 import { EthOverview } from '../../components/app/wallet-overview';
 import SwapsIntroPopup from '../swaps/intro-popup';
+import {
+  getRpcPrefsForCurrentProvider,
+} from '../../selectors';
 
 import {
   ASSET_ROUTE,
@@ -38,7 +42,7 @@ const LEARN_MORE_URL =
 const LEGACY_WEB3_URL =
   'https://metamask.zendesk.com/hc/en-us/articles/360053147012';
 
-export default class Home extends PureComponent {
+class Home extends PureComponent {
   static contextTypes = {
     t: PropTypes.func,
   };
@@ -72,6 +76,7 @@ export default class Home extends PureComponent {
     originOfCurrentTab: PropTypes.string,
     disableWeb3ShimUsageAlert: PropTypes.func.isRequired,
     pendingConfirmations: PropTypes.arrayOf(PropTypes.object).isRequired,
+    rpcPrefs: PropTypes.object,
   };
 
   state = {
@@ -267,6 +272,7 @@ export default class Home extends PureComponent {
       setSwapsWelcomeMessageHasBeenShown,
       swapsEnabled,
       isMainnet,
+      rpcPrefs,
     } = this.props;
 
     if (forgottenPassword) {
@@ -312,24 +318,32 @@ export default class Home extends PureComponent {
                   }
                 />
               </Tab>
-              <Tab
-                activeClassName="home__tab--active"
-                className="home__tab"
-                data-testid="home__nftGallery-tab"
-                name={t('nftGallery')}
-              >
-                <NFTGallery
-                  onClickNFT={(nft) => history.push(`${ NFT_ROUTE }/${ nft }`)}
-                />
-              </Tab>
-              <Tab
-                activeClassName="home__tab--active"
-                className="home__tab"
-                data-testid="home__nftIdentifier-tab"
-                name={t('nftIdentifier')}
-              >
-                <NFTIdentifier />
-              </Tab>
+              {
+                rpcPrefs.ticker === 'STC' ? (
+                  <Tab
+                    activeClassName="home__tab--active"
+                    className="home__tab"
+                    data-testid="home__nftGallery-tab"
+                    name={t('nftGallery')}
+                  >
+                    <NFTGallery
+                      onClickNFT={(nft) => history.push(`${ NFT_ROUTE }/${ nft }`)}
+                    />
+                  </Tab>
+                ) : null
+              }
+              {
+                rpcPrefs.ticker === 'STC' ? (
+                  <Tab
+                    activeClassName="home__tab--active"
+                    className="home__tab"
+                    data-testid="home__nftIdentifier-tab"
+                    name={t('nftIdentifier')}
+                  >
+                    <NFTIdentifier />
+                  </Tab>
+                ) : null
+              }
               <Tab
                 activeClassName="home__tab--active"
                 className="home__tab"
@@ -346,3 +360,19 @@ export default class Home extends PureComponent {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    rpcPrefs: getRpcPrefsForCurrentProvider(state),
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Home);
