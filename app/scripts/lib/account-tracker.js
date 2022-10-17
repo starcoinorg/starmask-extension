@@ -492,10 +492,10 @@ export default class AccountTracker {
       });
       nftIdentifier[address] = currentNFTIdentifier;
     } catch (error) {
-      log.info('_updateAccountAptos error', error);
+      // log.info('_updateAccountAptos error', error);
       const data = JSON.parse(error.message)
       if (data.error_code && data.error_code === 'account_not_found') {
-        log.error(data.error_code)
+        log.warn(data.error_code, 'address')
       }
       // HD account will get error: Invalid params: unable to parse AccoutAddress
       accounts[address] = { address, balance: '0x0', ticker };

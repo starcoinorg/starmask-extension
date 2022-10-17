@@ -1398,10 +1398,8 @@ export default class MetamaskController extends EventEmitter {
   }
 
   async addDefaultAccountInCurrentTicker() {
-    log.debug('addDefaultAccountInCurrentTicker')
     const ticker = this.networkController.getCurrentNetworkTicker()
     const previousTicker = this.networkController.getPreviousNetworkTicker()
-    log.debug({ ticker, previousTicker })
     if (ticker === previousTicker) {
       return
     }
@@ -1411,18 +1409,18 @@ export default class MetamaskController extends EventEmitter {
       throw new Error('StarMaskController - No HD Key Tree found');
     }
     const opts = await previousPrimaryKeyring.serialize()
-    log.debug({ opts })
     const type = TICKER_HD_KEYRING_TYPE[ticker]
-    const keyring = await this.keyringController.addNewKeyring(type, {
-      mnemonic: opts.mnemonic,
-      numberOfAccounts: 1,
-    })
-    log.debug({ keyring })
+    let keyring = this.keyringController.getKeyringsByType(type)[0];
+    if (!keyring) {
+      keyring = await this.keyringController.addNewKeyring(type, {
+        mnemonic: opts.mnemonic,
+        numberOfAccounts: 1,
+      })
+    }
     const accounts = await keyring.getAccounts()
     if (accounts.length < 1) {
       throw new Error('StarMaskController - No accounts found');
     }
-    log.debug({ accounts })
     return accounts[0]
   }
   /**
