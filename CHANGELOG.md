@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.8.0] - 2022-10-17
+
+- Bug fixes:
+
+  - [#85 state.get_with_proof_by_root_raw does not exists](https://github.com/starcoinorg/starmask-extension/issues/85)
+
 ## [4.7.0] - 2022-07-10
 
 - Bug fixes:
