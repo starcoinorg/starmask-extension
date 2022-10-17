@@ -26,7 +26,7 @@ export const COLORS = {
   ALERT1: 'alert-1',
   ALERT2: 'alert-2',
   ALERT3: 'alert-3',
-  MAINNET: 'main',
+  MAIN: 'main',
   BARNARD: 'barnard',
   PROXIMA: 'proxima',
   HALLEY: 'halley',
