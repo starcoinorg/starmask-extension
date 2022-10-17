@@ -42,9 +42,9 @@ export default class Tabs extends Component {
   }
 
   renderTabs() {
-    const numberOfTabs = React.Children.count(this.props.children);
+    const numberOfTabs = React.Children.count(this.props.children.filter(c => !!c));
 
-    return React.Children.map(this.props.children, (child, index) => {
+    return React.Children.map(this.props.children.filter(c => !!c), (child, index) => {
       const tabName = child?.props.name;
       return (
         child &&
@@ -58,14 +58,17 @@ export default class Tabs extends Component {
   }
 
   renderActiveTabContent() {
-    const { children } = this.props;
-    const { activeTabIndex } = this.state;
+    // const { children } = this.props;
+    const children = this.props.children.filter(c => !!c)
+    // const { activeTabIndex } = this.state;
+    let activeTabIndex = this.state.activeTabIndex
 
     if (
       (Array.isArray(children) && !children[activeTabIndex]) ||
       (!Array.isArray(children) && activeTabIndex !== 0)
     ) {
-      throw new Error(`Tab at index '${activeTabIndex}' does not exist`);
+      activeTabIndex = 0
+      // throw new Error(`Tab at index '${ activeTabIndex }' does not exist`);
     }
 
     return children[activeTabIndex]
@@ -92,7 +95,7 @@ export default class Tabs extends Component {
    * @private
    */
   _findChildByName(name) {
-    return React.Children.toArray(this.props.children).findIndex(
+    return React.Children.toArray(this.props.children).filter(c => !!c).findIndex(
       (c) => c?.props.name === name,
     );
   }
