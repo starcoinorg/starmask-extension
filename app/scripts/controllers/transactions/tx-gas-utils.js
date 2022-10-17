@@ -209,8 +209,8 @@ export default class TxGasUtil {
       if (txMeta.txParams.to
         && txMeta.type === TRANSACTION_TYPES.SENT_ETHER) {
         const payload = {
-          function: "0x1::coin::transfer",
-          type_arguments: ["0x1::aptos_coin::AptosCoin"],
+          function: "0x1::aptos_account::transfer",
+          type_arguments: [],
           arguments: [txMeta.txParams.to, hexToDecimal(txMeta.txParams.value)],
         };
         rawTxn = await client.generateTransaction(txMeta.txParams.from, payload, { gas_unit_price: "100" })

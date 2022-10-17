@@ -57,7 +57,6 @@ export default class AccountTracker {
    * @param {Object} opts.blockTracker - A block tracker, which emits events for each new block
    * @param {Function} opts.getCurrentChainId - A function that returns the `chainId` for the current global network
    * @param {Function} opts.getCurrentNetworkTicker - A function that returns the `ticker` for the current global network
-   * @param {Function} opts.getAptosFaucetClient - A function that returns the `faucetClient` for the current global network
    */
   constructor(opts = {}) {
     const initState = {
@@ -81,7 +80,6 @@ export default class AccountTracker {
     this._updateForBlock = this._updateForBlock.bind(this);
     this.getCurrentChainId = opts.getCurrentChainId;
     this.getCurrentNetworkTicker = opts.getCurrentNetworkTicker;
-    this.getAptosFaucetClient = opts.getAptosFaucetClient;
 
     this.web3 = new Web3(this._provider);
   }
@@ -497,9 +495,7 @@ export default class AccountTracker {
       log.info('_updateAccountAptos error', error);
       const data = JSON.parse(error.message)
       if (data.error_code && data.error_code === 'account_not_found') {
-        // create account
-        const faucetClient = this.getAptosFaucetClient();
-        await faucetClient.fundAccount(address, 0);
+        log.error(data.error_code)
       }
       // HD account will get error: Invalid params: unable to parse AccoutAddress
       accounts[address] = { address, balance: '0x0', ticker };

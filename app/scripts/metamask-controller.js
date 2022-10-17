@@ -230,9 +230,6 @@ export default class MetamaskController extends EventEmitter {
       getCurrentNetworkTicker: this.networkController.getCurrentNetworkTicker.bind(
         this.networkController,
       ),
-      getAptosFaucetClient: this.networkController.getAptosFaucetClient.bind(
-        this.networkController,
-      ),
     });
 
     // start and stop polling for balances based on activeControllerConnections
@@ -2002,8 +1999,8 @@ export default class MetamaskController extends EventEmitter {
       const { network } = this.networkController.store.getState();
       if (['devnet', 'testnet', 'mainnet'].includes(network.name)) {
         const payload = {
-          function: "0x1::coin::transfer",
-          type_arguments: ["0x1::aptos_coin::AptosCoin"],
+          function: "0x1::aptos_account::transfer",
+          type_arguments: [],
           arguments: [estimateGasParams.to, 10],
         };
         const client = this.txController.txGasUtil.getAptosClient()

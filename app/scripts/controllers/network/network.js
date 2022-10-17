@@ -9,7 +9,7 @@ import {
   createEventEmitterProxy,
 } from 'swappable-obj-proxy';
 import StcQuery from '@starcoin/stc-query';
-import { AptosClient, FaucetClient } from '@starcoin/aptos';
+import { AptosClient } from '@starcoin/aptos';
 import {
   BARNARD,
   MAINNET,
@@ -191,16 +191,6 @@ export default class NetworkController extends EventEmitter {
     const url = `https://fullnode.${ type }.aptoslabs.com/v1`
     const client = new AptosClient(url);
     return client
-  }
-
-  getAptosFaucetClient() {
-    // TODO: faucetClient is not working on testnet and mainnet, 
-    // we can only use it to create account on devnet
-    const { type, rpcUrl, chainId } = this.getProviderConfig();
-    const nodeUrl = `https://fullnode.${ type }.aptoslabs.com`
-    const faucetUrl = `https://faucet.${ type }.aptoslabs.com`
-    const faucetClient = new FaucetClient(nodeUrl, faucetUrl);
-    return faucetClient
   }
 
   getPreviousNetworkTicker() {
