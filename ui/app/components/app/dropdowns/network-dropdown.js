@@ -236,7 +236,7 @@ class NetworkDropdown extends Component {
             color: providerType === network ? '#ffffff' : '#9b9b9b',
           }}
         >
-          {this.context.t(network)} {data.ticker}
+          {this.context.t(network)}
         </span>
       </DropdownMenuItem>
     );
@@ -283,17 +283,20 @@ class NetworkDropdown extends Component {
             {this.context.t('networks')}
           </div>
           <div className="network-dropdown-divider" />
-          <div className="network-dropdown-content">
+          {/* <div className="network-dropdown-content">
             {this.context.t('defaultNetwork')}
-          </div>
+          </div> */}
         </div>
         {this.renderNetworkEntry('main')}
         {this.renderNetworkEntry('barnard')}
         {this.renderNetworkEntry('proxima')}
         {this.renderNetworkEntry('halley')}
+        <div className="network-dropdown-divider" />
+
         {this.renderNetworkEntry('mainnet')}
         {this.renderNetworkEntry('testnet')}
         {this.renderNetworkEntry('devnet')}
+        <div className="network-dropdown-divider" />
 
         {this.renderCustomRpcList(rpcListDetail, this.props.provider)}
         <DropdownMenuItem

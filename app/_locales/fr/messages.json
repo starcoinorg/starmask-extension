@@ -244,7 +244,7 @@
     "message": "Le solde peut être obsolète"
   },
   "barnard": {
-    "message": "Réseau de test Barnard"
+    "message": "Starcoin Barnard Network"
   },
   "basic": {
     "message": "Basic"
@@ -576,7 +576,7 @@
     "message": "Détails"
   },
   "devnet": {
-    "message": "Aptos Dev Net"
+    "message": "Aptos Dev Network"
   },
   "directDepositEther": {
     "message": "Dépôt direct STC"
@@ -875,7 +875,7 @@
     "message": "Réseau de test Goerli"
   },
   "halley": {
-    "message": "Réseau de test Halley"
+    "message": "Starcoin Halley Network"
   },
   "happyToSeeYou": {
     "message": "Nous sommes heureux de vous voir."
@@ -1081,10 +1081,10 @@
     "message": "Le temps de verrouillage est trop long"
   },
   "main": {
-    "message": "Starcoin Mainnet"
+    "message": "Starcoin Main Network"
   },
   "mainnet": {
-    "message": "Aptos Main Net"
+    "message": "Aptos Main Network"
   },
   "max": {
     "message": "Max"
@@ -1457,7 +1457,7 @@
     "message": "Fournir"
   },
   "proxima": {
-    "message": "Réseau de test Proxima"
+    "message": "Starcoin Proxima Network"
   },
   "publicKey": {
     "message": "Clé publique"
@@ -2189,7 +2189,7 @@
     "message": "Faucet d'essai"
   },
   "testnet": {
-    "message": "Aptos Test Net"
+    "message": "Aptos Test Network"
   },
   "thisWillCreate": {
     "message": "Cela créera un nouveau portefeuille et une phrase de sauvegarde"

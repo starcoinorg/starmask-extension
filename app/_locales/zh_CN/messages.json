@@ -230,7 +230,7 @@
     "message": "余额可能已过期"
   },
   "barnard": {
-    "message": "Barnard 测试网络"
+    "message": "Starcoin Barnard 测试网络"
   },
   "basic": {
     "message": "基本"
@@ -855,7 +855,7 @@
     "message": "Goerli 测试网络"
   },
   "halley": {
-    "message": "Halley 测试网络"
+    "message": "Starcoin Halley 测试网络"
   },
   "happyToSeeYou": {
     "message": "我们很高兴见到您。"
@@ -1422,7 +1422,7 @@
     "message": "提供"
   },
   "proxima": {
-    "message": "Proxima 测试网络"
+    "message": "Starcoin Proxima 测试网络"
   },
   "publicKey": {
     "message": "公钥"

@@ -250,7 +250,7 @@
     "message": "Balance may be outdated"
   },
   "barnard": {
-    "message": "Barnard Test Network"
+    "message": "Starcoin Barnard Network"
   },
   "basic": {
     "message": "Basic"
@@ -588,7 +588,7 @@
     "message": "Details"
   },
   "devnet": {
-    "message": "Aptos Dev Net"
+    "message": "Aptos Dev Network"
   },
   "directDepositEther": {
     "message": "Directly Deposit STC"
@@ -893,7 +893,7 @@
     "message": "Goerli Test Network"
   },
   "halley": {
-    "message": "Halley Test Network"
+    "message": "Starcoin Halley Network"
   },
   "happyToSeeYou": {
     "message": "We’re happy to see you."
@@ -1102,10 +1102,10 @@
     "message": "Lock time is too great"
   },
   "main": {
-    "message": "Starcoin Main"
+    "message": "Starcoin Main Network"
   },
   "mainnet": {
-    "message": "Aptos Main Net"
+    "message": "Aptos Main Network"
   },
   "max": {
     "message": "Max"
@@ -1403,7 +1403,7 @@
     "message": "Block Explorer URL (optional)"
   },
   "optionalCurrencySymbol": {
-    "message": "Currency Symbol (optional)"
+    "message": "Currency Symbol"
   },
   "orderOneHere": {
     "message": "Order a OneKey and keep your funds in cold storage"
@@ -1484,7 +1484,7 @@
     "message": "Provide"
   },
   "proxima": {
-    "message": "Proxima Test Network"
+    "message": "Starcoin Proxima Network"
   },
   "publicKey": {
     "message": "Public Key"
@@ -2216,7 +2216,7 @@
     "message": "Test Faucet"
   },
   "testnet": {
-    "message": "Aptos Test Net"
+    "message": "Aptos Test Network"
   },
   "threshold": {
     "message": "threshold"
