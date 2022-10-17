@@ -301,25 +301,25 @@ class Home extends PureComponent {
             <div className="home__balance-wrapper">
               <EthOverview />
             </div>
-            <Tabs
-              defaultActiveTabName={defaultHomeActiveTabName}
-              onTabClick={onTabClick}
-              tabsClassName="home__tabs"
-            >
-              <Tab
-                activeClassName="home__tab--active"
-                className="home__tab"
-                data-testid="home__asset-tab"
-                name={t('assets')}
-              >
-                <AssetList
-                  onClickAsset={(asset) =>
-                    history.push(`${ ASSET_ROUTE }/${ asset }`)
-                  }
-                />
-              </Tab>
-              {
-                rpcPrefs.ticker === 'STC' ? (
+            {
+              rpcPrefs.ticker === 'STC' ? (
+                <Tabs
+                  defaultActiveTabName={defaultHomeActiveTabName}
+                  onTabClick={onTabClick}
+                  tabsClassName="home__tabs"
+                >
+                  <Tab
+                    activeClassName="home__tab--active"
+                    className="home__tab"
+                    data-testid="home__asset-tab"
+                    name={t('assets')}
+                  >
+                    <AssetList
+                      onClickAsset={(asset) =>
+                        history.push(`${ ASSET_ROUTE }/${ asset }`)
+                      }
+                    />
+                  </Tab>
                   <Tab
                     activeClassName="home__tab--active"
                     className="home__tab"
@@ -330,10 +330,6 @@ class Home extends PureComponent {
                       onClickNFT={(nft) => history.push(`${ NFT_ROUTE }/${ nft }`)}
                     />
                   </Tab>
-                ) : null
-              }
-              {
-                rpcPrefs.ticker === 'STC' ? (
                   <Tab
                     activeClassName="home__tab--active"
                     className="home__tab"
@@ -342,17 +338,44 @@ class Home extends PureComponent {
                   >
                     <NFTIdentifier />
                   </Tab>
-                ) : null
-              }
-              <Tab
-                activeClassName="home__tab--active"
-                className="home__tab"
-                data-testid="home__activity-tab"
-                name={t('activity')}
-              >
-                <TransactionList />
-              </Tab>
-            </Tabs>
+                  <Tab
+                    activeClassName="home__tab--active"
+                    className="home__tab"
+                    data-testid="home__activity-tab"
+                    name={t('activity')}
+                  >
+                    <TransactionList />
+                  </Tab>
+                </Tabs>
+              ) : (
+                <Tabs
+                  defaultActiveTabName={defaultHomeActiveTabName}
+                  onTabClick={onTabClick}
+                  tabsClassName="home__tabs"
+                >
+                  <Tab
+                    activeClassName="home__tab--active"
+                    className="home__tab"
+                    data-testid="home__asset-tab"
+                    name={t('assets')}
+                  >
+                    <AssetList
+                      onClickAsset={(asset) =>
+                        history.push(`${ ASSET_ROUTE }/${ asset }`)
+                      }
+                    />
+                  </Tab>
+                  <Tab
+                    activeClassName="home__tab--active"
+                    className="home__tab"
+                    data-testid="home__activity-tab"
+                    name={t('activity')}
+                  >
+                    <TransactionList />
+                  </Tab>
+                </Tabs>
+              )
+            }
           </div>
           {this.renderNotifications()}
         </div>
