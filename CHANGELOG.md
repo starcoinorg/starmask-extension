@@ -1,9 +1,15 @@
 # Changelog
 
-## [5.0.0] - 2022-10-16
+## [5.0.0] - 2022-10-19
 
 - New features:
   - [#80 Support Aptos test dev ](https://github.com/starcoinorg/starmask-extension/issues/80)
+
+## [4.8.0] - 2022-10-17
+
+- Bug fixes:
+
+  - [#85 state.get_with_proof_by_root_raw does not exists](https://github.com/starcoinorg/starmask-extension/issues/85)
 
 ## [4.7.0] - 2022-07-10
 
