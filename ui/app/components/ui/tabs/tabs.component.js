@@ -68,6 +68,7 @@ export default class Tabs extends Component {
       (!Array.isArray(children) && activeTabIndex !== 0)
     ) {
       activeTabIndex = 0
+      this.handleTabClick(0, React.Children.toArray(this.props.children)[0].props.name)
       // throw new Error(`Tab at index '${ activeTabIndex }' does not exist`);
     }
 
