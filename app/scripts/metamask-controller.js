@@ -230,6 +230,9 @@ export default class MetamaskController extends EventEmitter {
       getCurrentNetworkTicker: this.networkController.getCurrentNetworkTicker.bind(
         this.networkController,
       ),
+      getAptosFaucetClient: this.networkController.getAptosFaucetClient.bind(
+        this.networkController,
+      ),
     });
 
     // start and stop polling for balances based on activeControllerConnections
@@ -317,6 +320,9 @@ export default class MetamaskController extends EventEmitter {
         this.networkController,
       ),
       getCurrentNetworkTicker: this.networkController.getCurrentNetworkTicker.bind(
+        this.networkController,
+      ),
+      getAptosClient: this.networkController.getAptosClient.bind(
         this.networkController,
       ),
       preferencesStore: this.preferencesController.store,
@@ -2000,12 +2006,13 @@ export default class MetamaskController extends EventEmitter {
           type_arguments: ["0x1::aptos_coin::AptosCoin"],
           arguments: [estimateGasParams.to, 10],
         };
-        return this.txController.txGasUtil.client.generateTransaction(estimateGasParams.from, payload, { gas_unit_price: "100" })
+        const client = this.txController.txGasUtil.getAptosClient()
+        return client.generateTransaction(estimateGasParams.from, payload, { gas_unit_price: "100" })
           .then((rawTxn) => {
             return this.keyringController.exportAccount(estimateGasParams.from)
               .then((privateKey) => {
                 const fromAccount = AptosAccount.fromAptosAccountObject({ privateKeyHex: addHexPrefix(privateKey) });
-                return this.txController.txGasUtil.client.simulateTransaction(fromAccount, rawTxn)
+                return client.simulateTransaction(fromAccount, rawTxn)
                   .then((result) => {
                     const transactionRespSimulation = result[0]
                     const gas_used = parseInt(transactionRespSimulation.gas_used, 10)

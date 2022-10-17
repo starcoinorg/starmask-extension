@@ -350,7 +350,7 @@ export default class PendingTransactionTracker extends EventEmitter {
 
   async getSequenceNumber(from, network) {
     let sequenceNumber
-    if (['devnet'].includes(network)) {
+    if (['devnet', 'testnet', 'mainnet'].includes(network)) {
       sequenceNumber = await new Promise((resolve, reject) => {
         return this.query.getAccount(
           from,

@@ -1,6 +1,6 @@
 import StcQuery from '@starcoin/stc-query';
 import log from 'loglevel';
-import { AptosClient, AptosAccount, TxnBuilderTypes, BCS } from '@starcoin/aptos';
+import { AptosAccount, TxnBuilderTypes, BCS } from '@starcoin/aptos';
 import { hexStripZeros } from '@ethersproject/bytes';
 import { addHexPrefix, stripHexPrefix } from '@starcoin/stc-util';
 // import { cloneDeep } from 'lodash';
@@ -35,12 +35,12 @@ and used to get selected account publicKey.
 */
 
 export default class TxGasUtil {
-  constructor(provider, store, getPublicKeyFor, exportAccount) {
+  constructor(provider, store, getPublicKeyFor, exportAccount, getAptosClient) {
     this.query = new StcQuery(provider);
     this.store = store;
     this.getPublicKeyFor = getPublicKeyFor;
     this.exportAccount = exportAccount;
-    this.client = new AptosClient('https://fullnode.devnet.aptoslabs.com/v1');
+    this.getAptosClient = getAptosClient;
   }
 
   /**
@@ -199,11 +199,12 @@ export default class TxGasUtil {
   }
 
   async estimateTxGasAptos(txMeta) {
+    const client = this.getAptosClient()
     let rawTxn
     if (txMeta.txParams.data) {
       const deserializer = new BCS.Deserializer(arrayify(txMeta.txParams.data));
       const entryFunctionPayload = TxnBuilderTypes.TransactionPayloadEntryFunction.deserialize(deserializer);
-      rawTxn = await this.client.generateRawTransaction(txMeta.txParams.from, entryFunctionPayload);
+      rawTxn = await client.generateRawTransaction(txMeta.txParams.from, entryFunctionPayload);
     } else {
       if (txMeta.txParams.to
         && txMeta.type === TRANSACTION_TYPES.SENT_ETHER) {
@@ -212,12 +213,12 @@ export default class TxGasUtil {
           type_arguments: ["0x1::aptos_coin::AptosCoin"],
           arguments: [txMeta.txParams.to, hexToDecimal(txMeta.txParams.value)],
         };
-        rawTxn = await this.client.generateTransaction(txMeta.txParams.from, payload, { gas_unit_price: "100" })
+        rawTxn = await client.generateTransaction(txMeta.txParams.from, payload, { gas_unit_price: "100" })
       }
     }
     const privateKey = await this.exportAccount(txMeta.txParams.from)
     const fromAccount = AptosAccount.fromAptosAccountObject({ privateKeyHex: addHexPrefix(privateKey) });
-    const result = await this.client.simulateTransaction(fromAccount, rawTxn)
+    const result = await client.simulateTransaction(fromAccount, rawTxn)
     // log.debug({ result })
     const transactionRespSimulation = result[0]
     // log.debug('simulated', transactionRespSimulation.gas_used)

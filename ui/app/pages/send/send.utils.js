@@ -356,9 +356,18 @@ async function getSequenceNumber(from, ticker) {
     });
     return sequenceNumber
   } else if (ticker === 'APT') {
-    return global.client.getAccount(from).then((resp) => {
-      return new BigNumber(resp.sequence_number, 10).toNumber()
+    const sequenceNumber = await new Promise((resolve, reject) => {
+      return global.stcQuery.getAccount(
+        from,
+        (err, res) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(new BigNumber(res.sequence_number).toNumber());
+        },
+      );
     });
+    return sequenceNumber;
   }
 }
 

@@ -82,7 +82,7 @@ export default class TransactionController extends EventEmitter {
 
     this.memStore = new ObservableStore({});
     this.query = new StcQuery(this.provider);
-    this.txGasUtil = new TxGasUtil(this.provider, this.preferencesStore, opts.getPublicKeyFor, opts.exportAccount);
+    this.txGasUtil = new TxGasUtil(this.provider, this.preferencesStore, opts.getPublicKeyFor, opts.exportAccount, opts.getAptosClient);
     this._mapMethods();
     this.txStateManager = new TransactionStateManager({
       initState: opts.initState,
@@ -761,11 +761,12 @@ export default class TransactionController extends EventEmitter {
   async signTransactionAptos(txId) {
     const txMeta = this.txStateManager.getTx(txId);
     const fromAddress = txMeta.txParams.from;
+    const client = this.txGasUtil.getAptosClient()
     let rawTxn
     if (txMeta.txParams.data) {
       const deserializer = new BCS.Deserializer(arrayify(txMeta.txParams.data));
       const entryFunctionPayload = TxnBuilderTypes.TransactionPayloadEntryFunction.deserialize(deserializer);
-      rawTxn = await this.txGasUtil.client.generateRawTransaction(txMeta.txParams.from, entryFunctionPayload);
+      rawTxn = await client.generateRawTransaction(txMeta.txParams.from, entryFunctionPayload);
     } else {
       if (txMeta.txParams.to
         && txMeta.type === TRANSACTION_TYPES.SENT_ETHER) {
@@ -774,12 +775,12 @@ export default class TransactionController extends EventEmitter {
           type_arguments: ["0x1::aptos_coin::AptosCoin"],
           arguments: [txMeta.txParams.to, hexToDecimal(txMeta.txParams.value)],
         };
-        rawTxn = await this.txGasUtil.client.generateTransaction(fromAddress, payload, { gas_unit_price: "100" })
+        rawTxn = await client.generateTransaction(fromAddress, payload, { gas_unit_price: "100" })
       }
     }
     const privateKey = await this.txGasUtil.exportAccount(fromAddress)
     const fromAccount = AptosAccount.fromAptosAccountObject({ privateKeyHex: addHexPrefix(privateKey) });
-    const signedTxn = await this.txGasUtil.client.signTransaction(fromAccount, rawTxn);
+    const signedTxn = await client.signTransaction(fromAccount, rawTxn);
     return signedTxn
   }
 
@@ -829,9 +830,10 @@ export default class TransactionController extends EventEmitter {
     const txMeta = this.txStateManager.getTx(txId);
     txMeta.rawTx = hexlify(signedTransaction);
     this.txStateManager.updateTx(txMeta, 'transactions#publishTransaction');
+    const client = this.txGasUtil.getAptosClient()
     let txHash;
     try {
-      const transactionResp = await this.txGasUtil.client.submitTransaction(signedTransaction);
+      const transactionResp = await client.submitTransaction(signedTransaction);
       txHash = transactionResp.hash
     } catch (error) {
       throw error;

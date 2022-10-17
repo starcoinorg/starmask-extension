@@ -5,7 +5,6 @@ import '@formatjs/intl-relativetimeformat/polyfill';
 import PortStream from 'extension-port-stream';
 import extension from 'extensionizer';
 
-import { AptosClient } from '@starcoin/aptos';
 import Eth from 'ethjs';
 import StcQuery from '@starcoin/stc-query';
 import StreamProvider from 'web3-stream-provider';
@@ -129,7 +128,6 @@ function setupWeb3Connection(connectionStream) {
   global.ethereumProvider = providerStream;
   global.stcQuery = new StcQuery(providerStream);
   global.eth = new Eth(providerStream);
-  global.client = new AptosClient('https://fullnode.devnet.aptoslabs.com/v1');
 }
 
 /**

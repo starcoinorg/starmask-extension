@@ -2802,10 +2802,10 @@
     pify "^3.0.0"
     safe-event-emitter "^1.0.1"
 
-"@starcoin/stc-json-rpc@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@starcoin/stc-json-rpc/-/stc-json-rpc-0.2.0.tgz#fc129f8f907e62ce5c1c6d762994f2951facca67"
-  integrity sha512-GaYWmFhL1VHSyb44pGthnpi9dGYzo+nf1BiUgvAMXruQ/dLUnsoP9oSEE4oB8peEs98lAFDtQ4LidQz90O5j8Q==
+"@starcoin/stc-json-rpc@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@starcoin/stc-json-rpc/-/stc-json-rpc-0.2.1.tgz#149b853ae28d42d8e11b719d96c2a6a70f7222bf"
+  integrity sha512-QnMQCXyPA7eSA0eQbG0TMvG7fe80ep+0h0e/g7DzvWGlUPc+PNOPi65rXo4pv1II8w9JoReJDDBJfVFnhFK1hA==
   dependencies:
     eth-json-rpc-middleware "^6.0.0"
     eth-rpc-errors "^3.0.0"

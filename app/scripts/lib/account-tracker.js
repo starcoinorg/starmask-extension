@@ -16,7 +16,6 @@ import pify from 'pify';
 import Web3 from 'web3';
 import BigNumber from 'bignumber.js';
 import SINGLE_CALL_BALANCES_ABI from 'single-call-balance-checker-abi';
-import { FaucetClient } from '@starcoin/aptos'
 // import {
 //   MAINNET_CHAIN_ID,
 //   RINKEBY_CHAIN_ID,
@@ -58,6 +57,7 @@ export default class AccountTracker {
    * @param {Object} opts.blockTracker - A block tracker, which emits events for each new block
    * @param {Function} opts.getCurrentChainId - A function that returns the `chainId` for the current global network
    * @param {Function} opts.getCurrentNetworkTicker - A function that returns the `ticker` for the current global network
+   * @param {Function} opts.getAptosFaucetClient - A function that returns the `faucetClient` for the current global network
    */
   constructor(opts = {}) {
     const initState = {
@@ -81,6 +81,7 @@ export default class AccountTracker {
     this._updateForBlock = this._updateForBlock.bind(this);
     this.getCurrentChainId = opts.getCurrentChainId;
     this.getCurrentNetworkTicker = opts.getCurrentNetworkTicker;
+    this.getAptosFaucetClient = opts.getAptosFaucetClient;
 
     this.web3 = new Web3(this._provider);
   }
@@ -497,9 +498,7 @@ export default class AccountTracker {
       const data = JSON.parse(error.message)
       if (data.error_code && data.error_code === 'account_not_found') {
         // create account
-        const NODE_URL = "https://fullnode.devnet.aptoslabs.com";
-        const FAUCET_URL = "https://faucet.devnet.aptoslabs.com";
-        const faucetClient = new FaucetClient(NODE_URL, FAUCET_URL);
+        const faucetClient = this.getAptosFaucetClient();
         await faucetClient.fundAccount(address, 0);
       }
       // HD account will get error: Invalid params: unable to parse AccoutAddress
