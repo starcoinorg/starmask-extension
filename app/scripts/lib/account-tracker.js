@@ -397,7 +397,7 @@ export default class AccountTracker {
       return
     }
     const ticker = 'APT'
-    const { accounts, assets, nfts, nftIdentifier } = this.store.getState();
+    const { accounts, assets, nfts, nftIdentifier, tokens = [] } = this.store.getState();
     const currentTokens = {};
     const currentNFTGallery = [];
     const currentNFTIdentifier = [];
@@ -408,6 +408,8 @@ export default class AccountTracker {
       const res = await this._query.listResource(address);
       const ACCOUNT_BALANCE = '0x1::coin::CoinStore';
       const balanceKeys = [];
+      const COIN_INFO = '0x1::coin::CoinInfo';
+      const coinInfos = {};
       const NFT_GALLERY = '0x00000000000000000000000000000001::NFTGallery::NFTGallery';
       const nftKeys = [];
       const NFT_IDENTIFIER = '0x00000000000000000000000000000001::IdentifierNFT::IdentifierNFT';
@@ -416,6 +418,10 @@ export default class AccountTracker {
         const key = item.type
         if (key.startsWith(ACCOUNT_BALANCE)) {
           balanceKeys.push(key);
+        } else if (key.startsWith(COIN_INFO)) {
+          coinInfos[key] = {
+            ...item.data
+          };
         } else if (key.startsWith(NFT_GALLERY)) {
           nftKeys.push(key);
         } else if (key.startsWith(NFT_IDENTIFIER)) {
@@ -437,7 +443,21 @@ export default class AccountTracker {
             const result = { address, balance, ticker };
             accounts[address] = result;
           } else {
-            currentTokens[token] = balance;
+            // Aptos only display registered tokens
+            const code = `${ COIN_INFO }<${ token }>`
+            const coinInfo = coinInfos[code]
+            if (coinInfo) {
+              currentTokens[token] = balance;
+              const tokenFilter = tokens.filter(t => t.code === token)
+              if (!tokenFilter.length) {
+                tokens.push({
+                  code: token,
+                  decimals: coinInfo?.decimals,
+                  name: coinInfo?.name,
+                  symbol: coinInfo?.symbol,
+                })
+              }
+            }
           }
         });
       }
@@ -493,9 +513,12 @@ export default class AccountTracker {
       nftIdentifier[address] = currentNFTIdentifier;
     } catch (error) {
       // log.info('_updateAccountAptos error', error);
-      const data = JSON.parse(error.message)
-      if (data.error_code && data.error_code === 'account_not_found') {
-        log.warn(data.error_code, 'address')
+      if (error.message) {
+        // log.error(error.message);
+        const data = JSON.parse(error.message)
+        if (data.error_code && data.error_code === 'account_not_found') {
+          log.warn(data.error_code, 'address')
+        }
       }
       // HD account will get error: Invalid params: unable to parse AccoutAddress
       accounts[address] = { address, balance: '0x0', ticker };
@@ -504,7 +527,7 @@ export default class AccountTracker {
       nftIdentifier[address] = [];
     }
     // update accounts state
-    this.store.updateState({ accounts, assets, nfts, nftIdentifier });
+    this.store.updateState({ accounts, assets, nfts, nftIdentifier, tokens });
   }
 
   /**
