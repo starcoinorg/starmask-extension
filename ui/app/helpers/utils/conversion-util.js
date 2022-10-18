@@ -30,6 +30,8 @@ const BIG_NUMBER_NANO_STC_MULTIPLIER = new BigNumber('1000000000');
 const BIG_NUMBER_MILLI_STC_MULTIPLIER = new BigNumber('1000');
 const BIG_NUMBER_STC_MULTIPLIER = new BigNumber('1');
 
+const BIG_NUMBER_NANO_APT_MULTIPLIER = new BigNumber('100000000');
+
 // Setter Maps
 const toBigNumber = {
   hex: (n) => new BigNumber(stripHexPrefix(n), 16),
@@ -40,11 +42,14 @@ const toNormalizedDenomination = {
   NANOSTC: (bigNumber) => bigNumber.div(BIG_NUMBER_NANO_STC_MULTIPLIER),
   MILLISTC: (bigNumber) => bigNumber.div(BIG_NUMBER_MILLI_STC_MULTIPLIER),
   STC: (bigNumber) => bigNumber.div(BIG_NUMBER_STC_MULTIPLIER),
+  NANOAPT: (bigNumber) => bigNumber.div(BIG_NUMBER_NANO_APT_MULTIPLIER),
 };
 const toSpecifiedDenomination = {
   NANOSTC: (bigNumber) => bigNumber.times(BIG_NUMBER_NANO_STC_MULTIPLIER).round(9),
   MILLISTC: (bigNumber) => bigNumber.times(BIG_NUMBER_MILLI_STC_MULTIPLIER).round(9),
   STC: (bigNumber) => bigNumber.times(BIG_NUMBER_STC_MULTIPLIER).round(9),
+  NANOAPT: (bigNumber) => bigNumber.times(BIG_NUMBER_NANO_APT_MULTIPLIER).round(8),
+
 };
 const baseChange = {
   hex: (n) => n.toString(16),
@@ -64,7 +69,7 @@ const isValidBase = (base) => {
 
 /**
  * Defines which type of denomination a value is in
- * @typedef {('NANOSTC' | 'MILLISTC' | 'STC')} EthDenomination
+ * @typedef {('NANOSTC' | 'MILLISTC' | 'STC' | 'NANOAPT')} EthDenomination
  */
 
 /**
@@ -95,7 +100,7 @@ const converter = ({
   invertConversionRate,
   roundDown,
 }) => {
-  // console.log('converter', 'fromDenomination=', fromDenomination, 'toDenomination=', toDenomination)
+  console.log('converter', 'fromDenomination=', fromDenomination, 'toDenomination=', toDenomination)
   let convertedValue = fromNumericBase
     ? toBigNumber[fromNumericBase](value)
     : value;
@@ -111,7 +116,7 @@ const converter = ({
   if (fromCurrency !== toCurrency) {
     if (conversionRate === null || conversionRate === undefined) {
       throw new Error(
-        `Converting from ${fromCurrency} to ${toCurrency} requires a conversionRate, but one was not provided`,
+        `Converting from ${ fromCurrency } to ${ toCurrency } requires a conversionRate, but one was not provided`,
       );
     }
     let rate = toBigNumber.dec(conversionRate);

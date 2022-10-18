@@ -74,7 +74,7 @@ export function getValueFromWeiHex({
     fromCurrency,
     toCurrency,
     numberOfDecimals,
-    fromDenomination: 'NANOSTC',
+    fromDenomination: `NANO${ toCurrency }`,
     toDenomination,
     conversionRate,
   });
@@ -90,7 +90,7 @@ export function getTransactionFee({
   return conversionUtil(value, {
     fromNumericBase: 'BN',
     toNumericBase: 'dec',
-    fromDenomination: 'NANOSTC',
+    fromDenomination: `NANO${ toCurrency }`,
     fromCurrency,
     toCurrency,
     numberOfDecimals,
