@@ -87,16 +87,20 @@ export default function AccountOptionsMenu({ anchorElement, onClose }) {
       >
         {t('accountDetails')}
       </MenuItem>
-      <MenuItem
-        data-testid="account-options-menu__account-details"
-        onClick={() => {
-          dispatch(showModal({ name: 'SHOW_AUTO_ACCEPT_TOKEN' }));
-          onClose();
-        }}
-        iconClassName="fas fa-hammer"
-      >
-        {t('account')}{t('settings')}
-      </MenuItem>
+      {
+        rpcPrefs.ticker === 'STC' && (
+          <MenuItem
+            data-testid="account-options-menu__account-details"
+            onClick={() => {
+              dispatch(showModal({ name: 'SHOW_AUTO_ACCEPT_TOKEN' }));
+              onClose();
+            }}
+            iconClassName="fas fa-hammer"
+          >
+            {t('account')} {t('settings')}
+          </MenuItem>
+        )
+      }
       {isMultiSign ? (
         <MenuItem
           data-testid="account-options-menu__account-details"
@@ -120,7 +124,7 @@ export default function AccountOptionsMenu({ anchorElement, onClose }) {
         subtitle={
           rpcPrefs.blockExplorerUrl ? (
             <span className="account-options-menu__explorer-origin">
-              {rpcPrefs.blockExplorerUrl.match(/^https?:\/\/(.+)/u)[1]}
+              {rpcPrefs.blockExplorerUrl.match(/^https?:\/\/(.+)/u)[1].split('/')[0]}
             </span>
           ) : null
         }
