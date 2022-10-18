@@ -46,7 +46,7 @@ export function getEthConversionFromWeiHex({
     });
 
     if (convertedValue !== '0' || i === denominations.length - 1) {
-      nonZeroDenomination = `${convertedValue} ${denominations[i]}`;
+      nonZeroDenomination = `${ convertedValue } ${ denominations[i] }`;
       break;
     }
   }
@@ -84,12 +84,12 @@ export function getWeiHexFromDecimalValue({
   return conversionUtil(value, {
     fromNumericBase: 'dec',
     toNumericBase: 'hex',
-    toCurrency: STC,
+    toCurrency: fromCurrency,
     fromCurrency,
     conversionRate,
     invertConversionRate,
     fromDenomination,
-    toDenomination: NANOSTC,
+    toDenomination: `NANO${ fromCurrency }`,
   });
 }
 

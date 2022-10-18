@@ -96,6 +96,7 @@ export default class CurrencyInput extends PureComponent {
   handleChange = (decimalValue) => {
     const {
       currentCurrency: fromCurrency,
+      nativeCurrency,
       conversionRate,
       onChange,
     } = this.props;
@@ -109,8 +110,8 @@ export default class CurrencyInput extends PureComponent {
       })
       : getWeiHexFromDecimalValue({
         value: decimalValue,
-        fromCurrency: STC,
-        fromDenomination: STC,
+        fromCurrency: nativeCurrency,
+        fromDenomination: nativeCurrency,
         conversionRate,
       });
 

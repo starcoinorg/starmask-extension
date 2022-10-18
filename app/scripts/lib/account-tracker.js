@@ -538,7 +538,7 @@ export default class AccountTracker {
   }
 
   _checkAccountExistsInCurrentTicker() {
-    log.debug('AccountTracker _updateAccountsViaBalanceChecker')
+    log.debug('AccountTracker _checkAccountExistsInCurrentTicker')
     const { accounts } = this.store.getState();
     const ticker = this.getCurrentNetworkTicker()
     const accountsInCurrentTicker = Object.values(accounts).filter((account) => account.ticker === ticker)
