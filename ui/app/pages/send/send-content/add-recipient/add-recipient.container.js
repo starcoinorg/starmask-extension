@@ -5,6 +5,7 @@ import {
   accountsWithSendEtherInfoSelector,
   getAddressBook,
   getAddressBookEntry,
+  getTickerForCurrentProvider,
 } from '../../../../selectors';
 
 import { updateSendTo } from '../../../../store/actions';
@@ -23,9 +24,18 @@ function mapStateToProps(state) {
 
   const addressBook = getAddressBook(state);
 
-  const ownedAccounts = accountsWithSendEtherInfoSelector(state).sort((a, b) =>
-    a.name.localeCompare(b.name),
-  );
+  const ticker = getTickerForCurrentProvider(state);
+
+  const ownedAccounts = accountsWithSendEtherInfoSelector(state)
+    .filter(account => {
+      // there are moments that account object balance is undefined, and no ticker field, while switch from aptos to starcoin
+      // so we have to use address length, instead of ticker
+      const length = (ticker === 'STC' ? 34 : 66)
+      return account.address.length === length
+    })
+    .sort((a, b) =>
+      a.name.localeCompare(b.name),
+    );
 
   return {
     addressBook,
