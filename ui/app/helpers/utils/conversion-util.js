@@ -100,7 +100,7 @@ const converter = ({
   invertConversionRate,
   roundDown,
 }) => {
-  console.log('converter', 'fromDenomination=', fromDenomination, 'toDenomination=', toDenomination)
+  // console.log('converter', 'fromDenomination=', fromDenomination, 'toDenomination=', toDenomination)
   let convertedValue = fromNumericBase
     ? toBigNumber[fromNumericBase](value)
     : value;

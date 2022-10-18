@@ -83,30 +83,49 @@ function getSymbol(tokenCode) {
   // return symbol;
 }
 
-async function getDecimals(tokenCode) {
-  const decimals = await new Promise((resolve, reject) => {
-    return global.stcQuery.sendAsync(
-      {
-        method: 'contract.call_v2',
-        params: [
-          {
-            function_id: '0x1::Token::scaling_factor',
-            type_args: [tokenCode],
-            args: [],
-          },
-        ],
-      },
-      (error, result) => {
-        if (error) {
-          return reject(error);
-        }
-        if (result && result[0]) {
-          return resolve(Math.log10(result[0]));
-        }
-        return reject(new Error('invalid token code'));
-      },
-    );
-  });
+async function getDecimals(tokenCode, ticker = 'STC') {
+  const tokenAddress = tokenCode.split('::')[0]
+  let decimals
+  if (ticker === 'APT') {
+    decimals = await new Promise((resolve, reject) => {
+      return global.stcQuery.getAccountResource(
+        tokenAddress,
+        `0x1::coin::CoinInfo<${ tokenCode }>`,
+        (err, res) => {
+          log.info({ err, res })
+          if (err) {
+            log.error(err)
+            return reject(err);
+          }
+          return resolve(res.data.decimals);
+        },
+      );
+    });
+  } else if (ticker === 'STC') {
+    decimals = await new Promise((resolve, reject) => {
+      return global.stcQuery.sendAsync(
+        {
+          method: 'contract.call_v2',
+          params: [
+            {
+              function_id: '0x1::Token::scaling_factor',
+              type_args: [tokenCode],
+              args: [],
+            },
+          ],
+        },
+        (error, result) => {
+          if (error) {
+            return reject(error);
+          }
+          if (result && result[0]) {
+            return resolve(Math.log10(result[0]));
+          }
+          return reject(new Error('invalid token code'));
+        },
+      );
+    });
+  }
   return Promise.resolve(decimals);
   // let decimals = await getDecimalsFromContract(tokenAddress);
 
@@ -140,7 +159,7 @@ export async function fetchSymbolAndDecimals(tokenAddress) {
   };
 }
 
-export async function getSymbolAndDecimals(tokenCode, existingTokens = []) {
+export async function getSymbolAndDecimals(tokenCode, existingTokens = [], ticker = 'STC') {
   const existingToken = existingTokens.find(({ code }) => tokenCode === code);
 
   if (existingToken) {
@@ -154,7 +173,7 @@ export async function getSymbolAndDecimals(tokenCode, existingTokens = []) {
 
   try {
     symbol = await getSymbol(tokenCode);
-    decimals = await getDecimals(tokenCode);
+    decimals = await getDecimals(tokenCode, ticker);
   } catch (error) {
     log.warn(
       `symbol() and decimal() calls for token ${ tokenCode } resulted in error:`,
@@ -169,12 +188,12 @@ export async function getSymbolAndDecimals(tokenCode, existingTokens = []) {
 }
 
 export function tokenInfoGetter() {
-  return async (code) => {
+  return async (code, ticker) => {
     if (tokens[code]) {
       return tokens[code];
     }
 
-    tokens[code] = await getSymbolAndDecimals(code);
+    tokens[code] = await getSymbolAndDecimals(code, [], ticker);
     return tokens[code];
   };
 }

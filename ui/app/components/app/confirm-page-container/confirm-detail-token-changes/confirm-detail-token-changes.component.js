@@ -10,7 +10,7 @@ import { PRIMARY, SECONDARY } from '../../../../helpers/constants/common';
 import Tooltip from '../../../ui/tooltip';
 import InfoIcon from '../../../ui/icon/info-icon.component';
 import { SEVERITIES } from '../../../../helpers/constants/design-system';
-import { useTokenTracker, getTokenInfos } from '../../../../hooks/useTokenTracker';
+import { useTokenTracker } from '../../../../hooks/useTokenTracker';
 import { getSelectedAddress, getAssets, getCurrentEthBalance } from '../../../../selectors';
 import { stringifyBalance } from '../../../../helpers/utils/confirm-tx.util';
 import { ConfirmDetailTokenChangeRow } from '../../confirm-page-container';

@@ -10,7 +10,6 @@
 import StcQuery from '@starcoin/stc-query';
 import { addHexPrefix } from '@starcoin/stc-util';
 import { ObservableStore } from '@metamask/obs-store';
-import { arrayify } from '@ethersproject/bytes';
 import log from 'loglevel';
 import pify from 'pify';
 import Web3 from 'web3';
@@ -397,7 +396,7 @@ export default class AccountTracker {
       return
     }
     const ticker = 'APT'
-    const { accounts, assets, nfts, nftIdentifier, tokens = [] } = this.store.getState();
+    const { accounts, assets, nfts, nftIdentifier } = this.store.getState();
     const currentTokens = {};
     const currentNFTGallery = [];
     const currentNFTIdentifier = [];
@@ -448,15 +447,6 @@ export default class AccountTracker {
             const coinInfo = coinInfos[code]
             if (coinInfo) {
               currentTokens[token] = balance;
-              const tokenFilter = tokens.filter(t => t.code === token)
-              if (!tokenFilter.length) {
-                tokens.push({
-                  code: token,
-                  decimals: coinInfo?.decimals,
-                  name: coinInfo?.name,
-                  symbol: coinInfo?.symbol,
-                })
-              }
             }
           }
         });
@@ -512,7 +502,7 @@ export default class AccountTracker {
       });
       nftIdentifier[address] = currentNFTIdentifier;
     } catch (error) {
-      // log.info('_updateAccountAptos error', error);
+      log.info('_updateAccountAptos error', error);
       if (error.message) {
         // log.error(error.message);
         const data = JSON.parse(error.message)
@@ -526,8 +516,9 @@ export default class AccountTracker {
       nfts[address] = [];
       nftIdentifier[address] = [];
     }
+    // log.debug('before this.store.updateState', { tokens, accountTokens })
     // update accounts state
-    this.store.updateState({ accounts, assets, nfts, nftIdentifier, tokens });
+    this.store.updateState({ accounts, assets, nfts, nftIdentifier });
   }
 
   /**

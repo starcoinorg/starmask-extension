@@ -2802,10 +2802,10 @@
     pify "^3.0.0"
     safe-event-emitter "^1.0.1"
 
-"@starcoin/stc-json-rpc@^0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@starcoin/stc-json-rpc/-/stc-json-rpc-0.2.1.tgz#149b853ae28d42d8e11b719d96c2a6a70f7222bf"
-  integrity sha512-QnMQCXyPA7eSA0eQbG0TMvG7fe80ep+0h0e/g7DzvWGlUPc+PNOPi65rXo4pv1II8w9JoReJDDBJfVFnhFK1hA==
+"@starcoin/stc-json-rpc@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@starcoin/stc-json-rpc/-/stc-json-rpc-0.2.3.tgz#f9ea9b224d29f48c529c4ca160bf0a9dfa0e2582"
+  integrity sha512-7e10ZQXivKXk5p9QOknYGDDRK7v6ru4buWKERH82f3zzLDIqnN2ESi3ptAE+gh1BY3xJsrMOpKZ21RdSIcXXFw==
   dependencies:
     eth-json-rpc-middleware "^6.0.0"
     eth-rpc-errors "^3.0.0"
@@ -2873,6 +2873,14 @@
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/@starcoin/stc-query/-/stc-query-0.4.0.tgz#63397084ac59b85c2792b8e34852925ba3ca09cb"
   integrity sha512-ZutABYVeoRc1t8v5GVSBx3kqWZsn/mfB9hV1sX8fUwfx6H3TW61qZAFm6YrXsZ05i5voRK5+AMS3/aKd2Pk2Hw==
+  dependencies:
+    json-rpc-random-id "^1.0.0"
+    xtend "^4.0.1"
+
+"@starcoin/stc-query@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@starcoin/stc-query/-/stc-query-0.4.1.tgz#7c3047cd8361ab33560fa154cc2525c64ac4a26e"
+  integrity sha512-Q3PJ1/0U8+HYoLgB4GpBUqRlRi8UmyF8qiKNFiIvmFhPk8ZM8Hh79Tj4B+o0CypR5WUE2lNiOGDUXqo8FqQtMg==
   dependencies:
     json-rpc-random-id "^1.0.0"
     xtend "^4.0.1"

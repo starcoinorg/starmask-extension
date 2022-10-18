@@ -10,6 +10,7 @@ import {
   getShouldHideZeroBalanceTokens,
   getSelectedAddress,
   getAssets,
+  getTickerForCurrentProvider,
 } from '../../../selectors';
 import { getTokens, getHiddenTokens } from '../../../ducks/metamask/metamask';
 import { addTokens } from '../../../store/actions';
@@ -30,13 +31,14 @@ export default function TokenList({ onTokenClick }) {
   const [loadingTokenInfos, setLoadingTokenInfos] = useState(false);
   const userAddress = useSelector(getSelectedAddress);
   const assets = useSelector(getAssets, isEqual);
+  const ticker = useSelector(getTickerForCurrentProvider);
   useEffect(() => {
     const fetchData = async () => {
       const currentAssets = assets[userAddress] || undefined;
       if (currentAssets) {
         if (!loadingTokenInfos) {
           setLoadingTokenInfos(true);
-          const assetTokens = await getTokenInfos(currentAssets);
+          const assetTokens = await getTokenInfos(currentAssets, ticker);
           const tokensCode = tokens.map((token) => token.code.toLowerCase())
           const addedTokens = assetTokens.filter((token) =>
             !(tokensCode.includes(token.code.toLowerCase()) || hiddenTokens.includes(token.code.toLowerCase()))

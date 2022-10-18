@@ -59,10 +59,10 @@ export function useTokenTracker(
   return { loading, tokensWithBalances, error };
 }
 
-export async function getTokenInfos(currentAssets) {
+export async function getTokenInfos(currentAssets, ticker = 'STC') {
   return Promise.all(
     Object.keys(currentAssets).map(async (code) => {
-      const result = await tokenInfoGetter()(code)
+      const result = await tokenInfoGetter()(code, ticker)
       return { code, ...result };
     })
   ).then((tokens) => {
