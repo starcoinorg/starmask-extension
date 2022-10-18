@@ -230,7 +230,7 @@
     "message": "余额可能已过期"
   },
   "barnard": {
-    "message": "Starcoin Barnard 测试网络"
+    "message": "Starcoin Barnard 网络"
   },
   "basic": {
     "message": "基本"
@@ -855,7 +855,7 @@
     "message": "Goerli 测试网络"
   },
   "halley": {
-    "message": "Starcoin Halley 测试网络"
+    "message": "Starcoin Halley 网络"
   },
   "happyToSeeYou": {
     "message": "我们很高兴见到您。"
@@ -1060,7 +1060,7 @@
     "message": "锁定时间过长"
   },
   "main": {
-    "message": "Starcoin 主网络"
+    "message": "Starcoin 主网"
   },
   "mainnet": {
     "message": "Aptos 主网"
@@ -1422,7 +1422,7 @@
     "message": "提供"
   },
   "proxima": {
-    "message": "Starcoin Proxima 测试网络"
+    "message": "Starcoin Proxima 网络"
   },
   "publicKey": {
     "message": "公钥"
@@ -1643,7 +1643,7 @@
     "message": "发送代币"
   },
   "sentEther": {
-    "message": "发送 STC"
+    "message": "发送 $1"
   },
   "separateEachWord": {
     "message": "用空格分隔每个单词"

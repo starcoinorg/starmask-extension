@@ -1681,7 +1681,7 @@
     "message": "Envoyer Tokens"
   },
   "sentEther": {
-    "message": "STC envoyé"
+    "message": "$1 envoyé"
   },
   "separateEachWord": {
     "message": "Séparez chaque mot par un seul espace"

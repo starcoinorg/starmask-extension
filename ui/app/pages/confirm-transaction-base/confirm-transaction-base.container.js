@@ -39,6 +39,7 @@ import {
   transactionFeeSelector,
   isCustomPriceExtendMax,
   isCustomLimitExtendMax,
+  getTickerForCurrentProvider,
 } from '../../selectors';
 import { getMostRecentOverviewPage } from '../../ducks/history/history';
 import { transactionMatchesNetwork } from '../../../../shared/modules/transaction.utils';
@@ -197,6 +198,7 @@ const mapStateToProps = (state, ownProps) => {
     gasPriceIsExtendMax,
     gasLimitIsExtendMax,
     tokenChanges,
+    ticker: getTickerForCurrentProvider(state),
   };
 };
 

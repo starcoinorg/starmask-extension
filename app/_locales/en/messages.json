@@ -1708,7 +1708,7 @@
     "message": "Send Tokens"
   },
   "sentEther": {
-    "message": "sent STC"
+    "message": "sent $1"
   },
   "separateEachWord": {
     "message": "Separate each word with a single space"

@@ -104,6 +104,7 @@ export default class ConfirmTransactionBase extends Component {
     gasPriceIsExtendMax: PropTypes.bool,
     gasLimitIsExtendMax: PropTypes.bool,
     tokenChanges: PropTypes.object,
+    ticker: PropTypes.string,
   };
 
   state = {
@@ -734,6 +735,7 @@ export default class ConfirmTransactionBase extends Component {
       hideSenderToRecipient,
       showAccountInHeader,
       txData,
+      ticker,
     } = this.props;
     let titleMultiSign
     const isMultiSign = txData && txData.txParams && txData.txParams.multiSignData
@@ -759,7 +761,7 @@ export default class ConfirmTransactionBase extends Component {
     let functionType = getMethodName(name);
     if (!functionType) {
       if (type) {
-        functionType = getTransactionTypeTitle(t, type);
+        functionType = getTransactionTypeTitle(t, type, ticker);
       } else {
         functionType = t('contractInteraction');
       }
