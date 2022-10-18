@@ -59,7 +59,7 @@ const defaultNetworksData = [
     rpcUrl: 'https://fullnode.mainnet.aptoslabs.com',
     chainId: APTOS_MAINNET_CHAIN_ID,
     ticker: 'APT',
-    blockExplorerUrl: 'https://explorer.aptoslabs.com/?network=premainnet',
+    blockExplorerUrl: 'https://explorer.aptoslabs.com/?network=mainnet',
   },
   {
     labelKey: APTOS_TESTNET,

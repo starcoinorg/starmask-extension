@@ -41,7 +41,7 @@ export function getBlockExplorerUrlForTx(transaction, rpcPrefs = {}) {
   if (ticker === 'STC') {
     blockExplorerUrl = `${ blockExplorerUrl.replace(/\/+$/u, '') }/transactions/detail/${ transaction.hash }`;
   } else {
-    blockExplorerUrl = `${ blockExplorerUrl.replace(/\/+$/u, '') }/txn/${ transaction.hash }?network=${ providerType === 'mainnet' ? 'premainnet' : providerType }`;
+    blockExplorerUrl = `${ blockExplorerUrl.replace(/\/+$/u, '') }/txn/${ transaction.hash }?network=${ providerType }`;
   }
 
   return blockExplorerUrl
