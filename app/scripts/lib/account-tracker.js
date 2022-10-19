@@ -407,8 +407,6 @@ export default class AccountTracker {
       const res = await this._query.listResource(address);
       const ACCOUNT_BALANCE = '0x1::coin::CoinStore';
       const balanceKeys = [];
-      const COIN_INFO = '0x1::coin::CoinInfo';
-      const coinInfos = {};
       const NFT_GALLERY = '0x00000000000000000000000000000001::NFTGallery::NFTGallery';
       const nftKeys = [];
       const NFT_IDENTIFIER = '0x00000000000000000000000000000001::IdentifierNFT::IdentifierNFT';
@@ -417,10 +415,6 @@ export default class AccountTracker {
         const key = item.type
         if (key.startsWith(ACCOUNT_BALANCE)) {
           balanceKeys.push(key);
-        } else if (key.startsWith(COIN_INFO)) {
-          coinInfos[key] = {
-            ...item.data
-          };
         } else if (key.startsWith(NFT_GALLERY)) {
           nftKeys.push(key);
         } else if (key.startsWith(NFT_IDENTIFIER)) {
@@ -442,12 +436,7 @@ export default class AccountTracker {
             const result = { address, balance, ticker };
             accounts[address] = result;
           } else {
-            // Aptos only display registered tokens
-            const code = `${ COIN_INFO }<${ token }>`
-            const coinInfo = coinInfos[code]
-            if (coinInfo) {
-              currentTokens[token] = balance;
-            }
+            currentTokens[token] = balance;
           }
         });
       }
