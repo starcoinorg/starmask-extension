@@ -63,6 +63,7 @@ const AssetList = ({ onClickAsset }) => {
     },
   );
 
+  const image = `/images/${ nativeCurrency.toLowerCase() }.svg`
   return (
     <>
       <AssetListItem
@@ -71,6 +72,7 @@ const AssetList = ({ onClickAsset }) => {
         primary={primaryCurrencyProperties.value}
         tokenSymbol={primaryCurrencyProperties.suffix}
         secondary={showFiat ? secondaryCurrencyDisplay : undefined}
+        tokenImage={image}
       />
       <TokenList
         onTokenClick={(tokenAddress) => {

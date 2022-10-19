@@ -28,7 +28,8 @@ import {
   getSwapsDefaultToken,
   getIsSwapsChain,
   getIsOneKey,
-} from '../../../selectors/selectors';
+  getNativeCurrency,
+} from '../../../selectors';
 import SwapIcon from '../../ui/icon/swap-icon.component';
 import BuyIcon from '../../ui/icon/overview-buy-icon.component';
 import SendIcon from '../../ui/icon/overview-send-icon.component';
@@ -74,7 +75,9 @@ const EthOverview = ({ className }) => {
   const swapsEnabled = useSelector(getSwapsFeatureLiveness);
   const defaultSwapsToken = useSelector(getSwapsDefaultToken);
   const isOneKey = useSelector(getIsOneKey);
+  const nativeCurrency = useSelector(getNativeCurrency);
 
+  const image = `/images/${ nativeCurrency.toLowerCase() }.svg`
   return (
     <WalletOverview
       balance={
@@ -173,7 +176,7 @@ const EthOverview = ({ className }) => {
         </>
       }
       className={className}
-      icon={<Identicon diameter={32} />}
+      icon={<Identicon image={image} diameter={32} />}
     />
   );
 };
