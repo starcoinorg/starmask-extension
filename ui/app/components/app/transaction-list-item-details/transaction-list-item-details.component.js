@@ -186,6 +186,19 @@ export default class TransactionListItemDetails extends PureComponent {
     ) : null
   }
 
+  renderError() {
+    const { t } = this.context;
+    const { rpcPrefs: { ticker }, transactionGroup: { primaryTransaction } } = this.props;
+    const isError = ticker === 'APT' && primaryTransaction.status === 'failed' && primaryTransaction.err?.message
+    return isError ? (
+      <>
+        <div className="transaction-activity-log">
+          Error: {primaryTransaction.err?.message}
+        </div>
+      </>
+    ) : null
+  }
+
   render() {
     const { t } = this.context;
     const { justCopied } = this.state;
@@ -319,6 +332,7 @@ export default class TransactionListItemDetails extends PureComponent {
               />
               <br />
               {this.renderMore()}
+              {this.renderError()}
             </div>
           </div>
         </div>

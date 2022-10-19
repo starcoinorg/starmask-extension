@@ -299,6 +299,14 @@ export default class PendingTransactionTracker extends EventEmitter {
         this.emit('tx:confirmed', txId, transactionReceipt);
         return;
       }
+      if ((['devnet', 'testnet', 'mainnet'].includes(network) && transactionReceipt && !transactionReceipt.success && transactionReceipt.vm_status)) {
+        const txErr = new Error(
+          transactionReceipt.vm_status,
+        );
+        txErr.name = transactionReceipt.vm_status;
+        this.emit('tx:failed', txId, txErr);
+        return;
+      }
     } catch (err) {
       txMeta.warning = {
         error: err.message,
