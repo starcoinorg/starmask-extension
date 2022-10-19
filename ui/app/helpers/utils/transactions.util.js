@@ -34,9 +34,9 @@ import { addCurrencies } from './conversion-util';
 /**
  * @returns {EthersContractCall | undefined}
  */
-export function getTokenData(data) {
+export function getTokenData(data, network) {
   try {
-    const payload = decodeTokenData(data);
+    const payload = decodeTokenData(data, network);
     return payload.params;
   } catch (error) {
     log.debug('Failed to parse transaction data.', error, data);

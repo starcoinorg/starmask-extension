@@ -875,7 +875,7 @@ export function acceptToken(tokenCode, from, ticker) {
   };
 }
 
-export function signTokenTx(sendToken, toAddress, amount, txData) {
+export function signTokenTx(sendToken, toAddress, amount, txData, ticker) {
   return async (dispatch) => {
     dispatch(showLoadingIndication());
     try {
@@ -885,6 +885,7 @@ export function signTokenTx(sendToken, toAddress, amount, txData) {
         toAddress,
         amount,
         sendToken,
+        ticker,
       });
       txData.data = payloadHex;
       txData.type = TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER;

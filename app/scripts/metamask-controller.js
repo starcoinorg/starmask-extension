@@ -1996,11 +1996,22 @@ export default class MetamaskController extends EventEmitter {
     return new Promise((resolve, reject) => {
       const { network } = this.networkController.store.getState();
       if (['devnet', 'testnet', 'mainnet'].includes(network.name)) {
-        const payload = {
-          function: "0x1::aptos_account::transfer",
-          type_arguments: [],
-          arguments: [estimateGasParams.to, 10],
-        };
+        let payload
+        if (estimateGasParams.code !== '0x1::aptos_coin::AptosCoin') {
+          // send other tokens
+          payload = {
+            function: "0x1::coin::transfer",
+            type_arguments: [estimateGasParams.code],
+            arguments: [estimateGasParams.to, 10],
+          };
+        } else {
+          // send APT
+          payload = {
+            function: "0x1::aptos_account::transfer",
+            type_arguments: [],
+            arguments: [estimateGasParams.to, 10],
+          };
+        }
         const client = this.txController.txGasUtil.getAptosClient()
         return client.generateTransaction(estimateGasParams.from, payload, { gas_unit_price: "100" })
           .then((rawTxn) => {

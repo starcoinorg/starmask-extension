@@ -29,6 +29,7 @@ const mapStateToProps = (state, ownProps) => {
       id: transactionId,
       txParams: { to: tokenAddress, data } = {},
       code: tokenCode,
+      metamaskNetworkId: { name: network } = {},
     } = {},
   } = confirmTransaction;
 
@@ -45,9 +46,9 @@ const mapStateToProps = (state, ownProps) => {
   const currentToken = tokens?.find(({ code }) => tokenCode === code);
   const { decimals, symbol: tokenSymbol } = currentToken || {};
 
-  const tokenData = data && getTokenData(data);
-  const tokenValue = tokenData && getTokenValueParam(tokenData);
-  const toAddress = tokenData && getTokenAddressParam(tokenData);
+  const tokenData = data && getTokenData(data, network);
+  const tokenValue = tokenData && getTokenValueParam(tokenData, network);
+  const toAddress = tokenData && getTokenAddressParam(tokenData, network);
   const tokenAmount =
     tokenData && calcTokenAmount(tokenValue, decimals).toFixed();
   const contractExchangeRate = contractExchangeRateSelector(state);

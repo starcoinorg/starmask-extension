@@ -29,6 +29,7 @@ import {
   getDefaultActiveButtonIndex,
   isCustomPriceExtendMax,
   isCustomLimitExtendMax,
+  getTickerForCurrentProvider,
 } from '../../../selectors';
 import { getMostRecentOverviewPage } from '../../../ducks/history/history';
 import { addHexPrefix } from '../../../../../app/scripts/lib/util';
@@ -77,6 +78,7 @@ function mapStateToProps(state) {
     mostRecentOverviewPage: getMostRecentOverviewPage(state),
     gasPriceIsExtendMax: isCustomPriceExtendMax(state, gasPrice),
     gasLimitIsExtendMax: isCustomLimitExtendMax(state, gasLimit),
+    ticker: getTickerForCurrentProvider(state),
   };
 }
 
@@ -86,7 +88,7 @@ function mapDispatchToProps(dispatch) {
     transferNFT: async ({ meta, body, id, to }) => {
       dispatch(transferNFT(meta, body, id, to));
     },
-    sign: async ({ sendToken, to, toReceiptIdentifier, amount, from, gas, gasPrice, data }) => {
+    sign: async ({ sendToken, to, toReceiptIdentifier, amount, from, gas, gasPrice, data, ticker }) => {
       const txParams = constructTxParams({
         amount,
         data,
@@ -99,7 +101,7 @@ function mapDispatchToProps(dispatch) {
       });
 
       sendToken
-        ? dispatch(signTokenTx(sendToken, to, amount, txParams))
+        ? dispatch(signTokenTx(sendToken, to, amount, txParams, ticker))
         : dispatch(signTx(txParams));
     },
     update: ({

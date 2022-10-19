@@ -2,7 +2,7 @@ import { utils, bcs } from '@starcoin/starcoin';
 import { ethers } from 'ethers';
 import abi from 'ethereumjs-abi';
 import { BigNumber } from 'bignumber.js';
-
+import { TxnBuilderTypes, BCS } from '@starcoin/aptos';
 import {
   addCurrencies,
   conversionUtil,
@@ -13,6 +13,7 @@ import {
 } from '../../helpers/utils/conversion-util';
 import { calcTokenAmount } from '../../helpers/utils/token-util';
 import { addHexPrefix } from '../../../../app/scripts/lib/util';
+import { hexToDecimal } from '../../helpers/utils/conversions.util';
 
 import {
   BASE_TOKEN_GAS_COST,
@@ -237,6 +238,7 @@ async function estimateGasForSend({
       toAddress: to,
       amount: value,
       sendToken,
+      ticker,
     });
   } else {
     if (data) {
@@ -375,36 +377,50 @@ function generateTokenPalyloadData({
   toAddress = '0x0',
   amount = '0x0',
   sendToken,
+  ticker = 'STC',
 }) {
   if (!sendToken) {
     return undefined;
   }
-  const functionId = '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2';
-  const strTypeArgs = [sendToken.code];
-  const tyArgs = utils.tx.encodeStructTypeTags(strTypeArgs);
+  let payloadInHex
+  if (ticker === 'STC') {
+    const functionId = '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2';
+    const strTypeArgs = [sendToken.code];
+    const tyArgs = utils.tx.encodeStructTypeTags(strTypeArgs);
 
-  const bnAmount = new BigNumber(amount, 16);
+    const amountSCSHex = (function () {
+      const se = new bcs.BcsSerializer();
+      // eslint-disable-next-line no-undef
+      se.serializeU128(hexToDecimal(amount));
+      return hexlify(se.getBytes());
+    })();
 
-  const amountSCSHex = (function () {
-    const se = new bcs.BcsSerializer();
-    // eslint-disable-next-line no-undef
-    se.serializeU128(BigInt(bnAmount.toString(10)));
-    return hexlify(se.getBytes());
-  })();
+    const args = [arrayify(toAddress), arrayify(amountSCSHex)];
 
-  const args = [arrayify(toAddress), arrayify(amountSCSHex)];
+    const scriptFunction = utils.tx.encodeScriptFunction(
+      functionId,
+      tyArgs,
+      args,
+    );
 
-  const scriptFunction = utils.tx.encodeScriptFunction(
-    functionId,
-    tyArgs,
-    args,
-  );
+    payloadInHex = (function () {
+      const se = new bcs.BcsSerializer();
+      scriptFunction.serialize(se);
+      return hexlify(se.getBytes());
+    })();
+  } else if (ticker === 'APT') {
+    const token = new TxnBuilderTypes.TypeTagStruct(TxnBuilderTypes.StructTag.fromString(sendToken.code));
+    const entryFunctionPayload = new TxnBuilderTypes.TransactionPayloadEntryFunction(
+      TxnBuilderTypes.EntryFunction.natural(
+        "0x1::coin",
+        "transfer",
+        [token],
+        [BCS.bcsToBytes(TxnBuilderTypes.AccountAddress.fromHex(toAddress)), BCS.bcsSerializeUint64(hexToDecimal(amount))],
+      ),
+    );
+    payloadInHex = hexlify(BCS.bcsToBytes(entryFunctionPayload))
+  }
 
-  const payloadInHex = (function () {
-    const se = new bcs.BcsSerializer();
-    scriptFunction.serialize(se);
-    return hexlify(se.getBytes());
-  })();
   return payloadInHex;
 }
 

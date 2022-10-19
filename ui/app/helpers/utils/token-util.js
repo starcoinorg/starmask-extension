@@ -218,9 +218,14 @@ export function calcTokenValue(value, decimals) {
  * @param {Object} tokenData - ethers Interface token data.
  * @returns {string | undefined} A lowercase address string.
  */
-export function getTokenAddressParam(tokenData = []) {
-  const value = tokenData?.args?.[0];
-  return value?.toString().toLowerCase();
+export function getTokenAddressParam(tokenData = [], network) {
+  if (['devnet', 'testnet', 'mainnet'].includes(network)) {
+    return '';
+  } else {
+    const value = tokenData?.args?.[0];
+    return value?.toString().toLowerCase();
+  }
+
 }
 
 /**
@@ -231,18 +236,21 @@ export function getTokenAddressParam(tokenData = []) {
  * @param {Object} tokenData - ethers Interface token data.
  * @returns {string | undefined} A decimal string value.
  */
-export function getTokenValueParam(tokenData = {}) {
-  const value = tokenData?.args?.[tokenData.args.length - 1];
-  if (!value) {
-    return '0';
+export function getTokenValueParam(tokenData = {}, network) {
+  if (['devnet', 'testnet', 'mainnet'].includes(network)) {
+    return '0'
+  } else {
+    const value = tokenData?.args?.[tokenData.args.length - 1];
+    if (!value) {
+      return '0';
+    }
+    const amountNanoSTC = (function () {
+      const bytes = arrayify(value);
+      const de = new bcs.BcsDeserializer(bytes);
+      return de.deserializeU128();
+    })();
+    return amountNanoSTC?.toString().toLowerCase();
   }
-  const amountNanoSTC = (function () {
-    const bytes = arrayify(value);
-    const de = new bcs.BcsDeserializer(bytes);
-    return de.deserializeU128();
-  })();
-
-  return amountNanoSTC?.toString().toLowerCase();
 }
 
 export function getTokenValue(tokenParams = []) {
