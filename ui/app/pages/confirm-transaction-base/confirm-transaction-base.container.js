@@ -84,7 +84,7 @@ const mapStateToProps = (state, ownProps) => {
     provider: { chainId },
   } = starmask;
   const { tokenData, txData, tokenProps, nonce } = confirmTransaction;
-  const { txParams = {}, lastGasPrice, id: transactionId, type } = txData;
+  const { txParams = {}, lastGasPrice, id: transactionId, type, metamaskNetworkId } = txData;
   const transaction =
     Object.values(unapprovedTxs).find(
       ({ id }) => id === (transactionId || Number(paramsTransactionId)),
@@ -141,7 +141,7 @@ const mapStateToProps = (state, ownProps) => {
     conversionRate,
   });
 
-  const methodData = (data && decodeTokenData(data)) || {};
+  const methodData = (data && decodeTokenData(data, metamaskNetworkId?.name)) || {};
 
   let fullTxData = { ...txData, ...transaction };
   if (customTxParamsData) {

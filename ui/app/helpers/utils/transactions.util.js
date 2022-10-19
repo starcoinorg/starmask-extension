@@ -2,7 +2,9 @@ import { MethodRegistry } from 'eth-method-registry';
 // import abi from 'human-standard-token-abi';
 // import { ethers } from 'ethers';
 import { encoding } from '@starcoin/starcoin';
+import { TxnBuilderTypes, BCS } from '@starcoin/aptos';
 import log from 'loglevel';
+import { arrayify } from 'ethers/lib/utils';
 
 import { addHexPrefix } from '../../../../app/scripts/lib/util';
 import {
@@ -42,13 +44,22 @@ export function getTokenData(data) {
   }
 }
 
-export function decodeTokenData(data) {
+export function decodeTokenData(data, network) {
   let name, params;
   try {
-    const txnPayload = encoding.decodeTransactionPayload(data);
-    const keys = Object.keys(txnPayload);
-    name = keys[0];
-    params = txnPayload[keys[0]];
+    if (['devnet', 'testnet', 'mainnet'].includes(network)) {
+      const deserializer = new BCS.Deserializer(arrayify(data));
+      const entryFunctionPayload = TxnBuilderTypes.TransactionPayloadEntryFunction.deserialize(deserializer);
+      if (entryFunctionPayload instanceof TxnBuilderTypes.TransactionPayloadEntryFunction) {
+        name = 'EntryFunction';
+        params = entryFunctionPayload.value;
+      }
+    } else {
+      const txnPayload = encoding.decodeTransactionPayload(data);
+      const keys = Object.keys(txnPayload);
+      name = keys[0];
+      params = txnPayload[keys[0]];
+    }
     return { name, params };
   } catch (error) {
     log.debug('Failed to decode transaction data.', error, data);
