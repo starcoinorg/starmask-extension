@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import {
   getSelectedAddress,
   unconfirmedTransactionsCountSelector,
+  getTickerForCurrentProvider,
 } from '../../selectors';
 import {
   addTokens,
@@ -22,22 +23,23 @@ const mapStateToProps = (state) => {
     unconfirmedTransactionsCount: unconfirmedTransactionsCountSelector(state),
     mostRecentOverviewPage: getMostRecentOverviewPage(state),
     pendingTokens,
+    ticker: getTickerForCurrentProvider(state),
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getAutoAcceptToken: (address) => {
-      return dispatch(getAutoAcceptToken(address)).then((res) => {
+    getAutoAcceptToken: (address, ticker) => {
+      return dispatch(getAutoAcceptToken(address, ticker)).then((res) => {
         return res;
       });
     },
-    checkIsAcceptToken: (address, code) => {
-      return dispatch(checkIsAcceptToken(address, code)).then((res) => {
+    checkIsAcceptToken: (address, code, ticker) => {
+      return dispatch(checkIsAcceptToken(address, code, ticker)).then((res) => {
         return res;
       });
     },
-    acceptToken: (code, address) => dispatch(acceptToken(code, address)),
+    acceptToken: (code, address, ticker) => dispatch(acceptToken(code, address, ticker)),
     addTokens: (tokens) => dispatch(addTokens(tokens)),
     clearPendingTokens: () => dispatch(clearPendingTokens()),
   };

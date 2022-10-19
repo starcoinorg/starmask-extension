@@ -28,6 +28,7 @@ export default class ConfirmAddToken extends Component {
     getAutoAcceptToken: PropTypes.func.isRequired,
     checkIsAcceptToken: PropTypes.func.isRequired,
     acceptToken: PropTypes.func.isRequired,
+    ticker: PropTypes.string,
   };
 
   componentDidMount() {
@@ -50,13 +51,13 @@ export default class ConfirmAddToken extends Component {
   }
 
   getTokenName(name, symbol) {
-    return typeof name === 'undefined' ? symbol : `${name} (${symbol})`;
+    return typeof name === 'undefined' ? symbol : `${ name } (${ symbol })`;
   }
 
   redirect(firstTokenAddress) {
     const { history, mostRecentOverviewPage } = this.props;
     if (firstTokenAddress) {
-      history.push(`${ASSET_ROUTE}/${firstTokenAddress}`);
+      history.push(`${ ASSET_ROUTE }/${ firstTokenAddress }`);
     } else {
       history.push(mostRecentOverviewPage);
     }
@@ -72,6 +73,7 @@ export default class ConfirmAddToken extends Component {
       getAutoAcceptToken,
       checkIsAcceptToken,
       acceptToken,
+      ticker,
     } = this.props;
 
     return (
@@ -107,7 +109,7 @@ export default class ConfirmAddToken extends Component {
                         <div
                           className="token-list__token-icon"
                           style={{
-                            backgroundImage: `url(images/contract/${logo})`,
+                            backgroundImage: `url(images/contract/${ logo })`,
                           }}
                         />
                       ) : (
@@ -164,17 +166,17 @@ export default class ConfirmAddToken extends Component {
                   const code = pendingTokenValues?.[0].code;
                   const firstTokenAddress = code?.toLowerCase();
                   // trigger an accept token txn if not AutoAcceptToken and not AcceptToken
-                  getAutoAcceptToken(selectedAddress)
+                  getAutoAcceptToken(selectedAddress, ticker)
                     .then((autoAcceptToken) => {
                       if (autoAcceptToken) {
                         this.redirect(firstTokenAddress);
                       } else {
-                        checkIsAcceptToken(selectedAddress, code).then(
+                        checkIsAcceptToken(selectedAddress, code, ticker).then(
                           (isAcceptToken) => {
                             if (isAcceptToken) {
                               this.redirect(firstTokenAddress);
                             } else {
-                              acceptToken(code, selectedAddress);
+                              acceptToken(code, selectedAddress, ticker);
                             }
                           },
                         );

@@ -2,6 +2,7 @@ import log from 'loglevel';
 import BigNumber from 'bignumber.js';
 import { ethers } from 'ethers';
 import { bcs, utils } from '@starcoin/starcoin';
+import { TxnBuilderTypes, BCS } from '@starcoin/aptos';
 import contractMap from '@metamask/contract-metadata';
 import * as util from './util';
 import { conversionUtil, multiplyCurrencies } from './conversion-util';
@@ -310,20 +311,34 @@ export function getTokenFiatAmount(
   return result;
 }
 
-export function generateAcceptTokenPayloadHex(tokenCode) {
-  const functionId = '0x1::Account::accept_token';
-  const strTypeArgs = [tokenCode];
-  const tyArgs = utils.tx.encodeStructTypeTags(strTypeArgs);
-  const args = [];
+export function generateAcceptTokenPayloadHex(tokenCode, ticker = 'STC') {
+  let payloadInHex
+  if (ticker === 'STC') {
+    const functionId = '0x1::Account::accept_token';
+    const strTypeArgs = [tokenCode];
+    const tyArgs = utils.tx.encodeStructTypeTags(strTypeArgs);
+    const args = [];
 
-  const scriptFunction = utils.tx.encodeScriptFunction(functionId, tyArgs, args);
+    const scriptFunction = utils.tx.encodeScriptFunction(functionId, tyArgs, args);
 
-  // Multiple BcsSerializers should be used in different closures, otherwise, the latter will be contaminated by the former.
-  const payloadInHex = (function () {
-    const se = new bcs.BcsSerializer();
-    scriptFunction.serialize(se);
-    return hexlify(se.getBytes());
-  })();
+    // Multiple BcsSerializers should be used in different closures, otherwise, the latter will be contaminated by the former.
+    payloadInHex = (function () {
+      const se = new bcs.BcsSerializer();
+      scriptFunction.serialize(se);
+      return hexlify(se.getBytes());
+    })();
+  } else if (ticker === 'APT') {
+    const token = new TxnBuilderTypes.TypeTagStruct(TxnBuilderTypes.StructTag.fromString(tokenCode));
+    const entryFunctionPayload = new TxnBuilderTypes.TransactionPayloadEntryFunction(
+      TxnBuilderTypes.EntryFunction.natural(
+        "0x1::managed_coin",
+        "register",
+        [token],
+        [],
+      ),
+    );
+    payloadInHex = hexlify(BCS.bcsToBytes(entryFunctionPayload))
+  }
   return payloadInHex;
 }
 

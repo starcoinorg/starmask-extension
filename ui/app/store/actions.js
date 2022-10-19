@@ -16,6 +16,7 @@ import switchDirection from '../helpers/utils/switch-direction';
 import { ENVIRONMENT_TYPE_NOTIFICATION } from '../../../shared/constants/app';
 import { TRANSACTION_TYPES } from '../../../shared/constants/transaction';
 import { hasUnconfirmedTransactions } from '../helpers/utils/confirm-tx.util';
+import { decimalToHex } from '../helpers/utils/conversions.util';
 import { setCustomGasLimit } from '../ducks/gas/gas.duck';
 import txHelper from '../../lib/tx-helper';
 import {
@@ -858,13 +859,13 @@ export function updateSendEnsResolutionError(errorMessage) {
   };
 }
 
-export function acceptToken(tokenCode, from) {
+export function acceptToken(tokenCode, from, ticker) {
   return async (dispatch) => {
     try {
-      const payloadInHex = generateAcceptTokenPayloadHex(tokenCode);
+      const payloadInHex = generateAcceptTokenPayloadHex(tokenCode, ticker);
       const txData = {
         from,
-        gasPrice: '0x1',
+        gasPrice: ticker === 'STC' ? '0x1' : addHexPrefix(decimalToHex(100)),
         data: payloadInHex,
       };
       await promisifiedBackground.addUnapprovedTransaction(txData, 'starmask');
@@ -2209,11 +2210,11 @@ export function setAutoLockTimeLimit(value) {
   return setPreference('autoLockTimeLimit', value);
 }
 
-export function getAutoAcceptToken(address) {
+export function getAutoAcceptToken(address, ticker) {
   return function (dispatch) {
     dispatch(showLoadingIndication());
     return new Promise((resolve, reject) => {
-      background.getAutoAcceptToken(address, function (err, result) {
+      background.getAutoAcceptToken(address, ticker, function (err, result) {
         dispatch(hideLoadingIndication());
         if (err) {
           log.error(err);
@@ -2245,11 +2246,11 @@ export function checkIsAddNFTGallery(address, meta, body) {
   };
 }
 
-export function checkIsAcceptToken(address, code) {
+export function checkIsAcceptToken(address, code, ticker = 'STC') {
   return function (dispatch) {
     dispatch(showLoadingIndication());
     return new Promise((resolve, reject) => {
-      background.checkIsAcceptToken(address, code, function (err, result) {
+      background.checkIsAcceptToken(address, code, ticker, function (err, result) {
         dispatch(hideLoadingIndication());
         if (err) {
           log.error(err);

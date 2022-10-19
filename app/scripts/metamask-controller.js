@@ -2910,28 +2910,32 @@ export default class MetamaskController extends EventEmitter {
    * Get AutoAcceptToken for selected account. 
    * @param {string} address - The account address
    */
-  getAutoAcceptToken(adress) {
-    const stcQuery = new StcQuery(this.provider);
-    return new Promise((resolve, reject) => {
-      stcQuery.sendAsync(
-        {
-          method: 'state.get_resource',
-          params: [adress, '0x1::Account::AutoAcceptToken'],
-        },
-        (error, result) => {
-          if (error) {
-            log.error(error);
-            reject(error);
-          } else {
-            const autoAcceptToken = result
-              ? result.raw && parseInt(result.raw, 16) > 0
-              // If an account is just created in the wallet, result is null, should return true.
-              : true;
-            resolve(autoAcceptToken);
-          }
-        },
-      );
-    });
+  getAutoAcceptToken(adress, ticker = 'STC') {
+    if (ticker === 'STC') {
+      const stcQuery = new StcQuery(this.provider);
+      return new Promise((resolve, reject) => {
+        stcQuery.sendAsync(
+          {
+            method: 'state.get_resource',
+            params: [adress, '0x1::Account::AutoAcceptToken'],
+          },
+          (error, result) => {
+            if (error) {
+              log.error(error);
+              reject(error);
+            } else {
+              const autoAcceptToken = result
+                ? result.raw && parseInt(result.raw, 16) > 0
+                // If an account is just created in the wallet, result is null, should return true.
+                : true;
+              resolve(autoAcceptToken);
+            }
+          },
+        );
+      });
+    } else if (ticker === 'APT') {
+      return false
+    }
   }
 
   /**
@@ -2939,22 +2943,26 @@ export default class MetamaskController extends EventEmitter {
    * @param {string} address - The account address
    * @param {string} code - The token code
    */
-  checkIsAcceptToken(address, code) {
-    const stcQuery = new StcQuery(this.provider);
-    return new Promise((resolve, reject) => {
-      stcQuery.getResource(
-        address,
-        `0x00000000000000000000000000000001::Account::Balance<${ code }>`,
-        (error, res) => {
-          if (error) {
-            log.error(error);
-            reject(error);
-          } else {
-            resolve(Boolean(res));
-          }
-        },
-      );
-    });
+  checkIsAcceptToken(address, code, ticker = 'STC') {
+    if (ticker === 'STC') {
+      const stcQuery = new StcQuery(this.provider);
+      return new Promise((resolve, reject) => {
+        stcQuery.getResource(
+          address,
+          `0x00000000000000000000000000000001::Account::Balance<${ code }>`,
+          (error, res) => {
+            if (error) {
+              log.error(error);
+              reject(error);
+            } else {
+              resolve(Boolean(res));
+            }
+          },
+        );
+      });
+    } else if (ticker === 'APT') {
+      return false
+    }
   }
 
   /**
