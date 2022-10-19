@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import {
+  getTickerForCurrentProvider,
+} from '../../selectors';
 import { isValidAddress, isValidChecksumAddress } from '@starcoin/stc-util';
 import contractMap from '@starcoin/contract-metadata';
 
@@ -30,6 +34,7 @@ class AddToken extends Component {
     identities: PropTypes.object,
     showSearchTab: PropTypes.bool.isRequired,
     mostRecentOverviewPage: PropTypes.string.isRequired,
+    ticker: PropTypes.string,
   };
 
   state = {
@@ -154,7 +159,8 @@ class AddToken extends Component {
   }
 
   async attemptToAutoFillTokenParams(code) {
-    const { symbol = '', decimals = 0 } = await this.tokenInfoGetter(code);
+    const { ticker } = this.props
+    const { symbol = '', decimals = 0 } = await this.tokenInfoGetter(code, ticker);
 
     const autoFilled = Boolean(symbol && decimals);
     this.setState({ autoFilled });
@@ -370,4 +376,19 @@ class AddToken extends Component {
   }
 }
 
-export default AddToken;
+function mapStateToProps(state) {
+  return {
+    ticker: getTickerForCurrentProvider(state),
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(AddToken);
+
