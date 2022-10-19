@@ -824,7 +824,7 @@
     "description": "$1 est la limite de gaz personnalisée, en décimal."
   },
   "gasPrice": {
-    "message": "Prix du gaz (NanoSTC)"
+    "message": "Prix du gaz"
   },
   "gasPriceExcessive": {
     "message": "Vos frais de gaz sont inutilement élevés. Pensez à baisser le montant."
