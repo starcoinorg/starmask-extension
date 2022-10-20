@@ -771,11 +771,12 @@ export default class TransactionController extends EventEmitter {
       if (txMeta.txParams.to
         && txMeta.type === TRANSACTION_TYPES.SENT_ETHER) {
         const payload = {
+          type: "entry_function_payload",
           function: "0x1::aptos_account::transfer",
           type_arguments: [],
           arguments: [txMeta.txParams.to, hexToDecimal(txMeta.txParams.value)],
         };
-        rawTxn = await client.generateTransaction(fromAddress, payload, { gas_unit_price: "100" })
+        rawTxn = await client.generateTransaction(fromAddress, payload, { gas_unit_price: "100", max_gas_amount: "2000" })
       }
     }
     const privateKey = await this.txGasUtil.exportAccount(fromAddress)

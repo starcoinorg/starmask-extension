@@ -1997,9 +1997,10 @@ export default class MetamaskController extends EventEmitter {
       const { network } = this.networkController.store.getState();
       if (['devnet', 'testnet', 'mainnet'].includes(network.name)) {
         let payload
-        if (estimateGasParams.code !== '0x1::aptos_coin::AptosCoin') {
+        if (estimateGasParams.code) {
           // send other tokens
           payload = {
+            type: "entry_function_payload",
             function: "0x1::coin::transfer",
             type_arguments: [estimateGasParams.code],
             arguments: [estimateGasParams.to, 10],
@@ -2007,24 +2008,32 @@ export default class MetamaskController extends EventEmitter {
         } else {
           // send APT
           payload = {
+            type: "entry_function_payload",
             function: "0x1::aptos_account::transfer",
             type_arguments: [],
             arguments: [estimateGasParams.to, 10],
           };
         }
         const client = this.txController.txGasUtil.getAptosClient()
-        return client.generateTransaction(estimateGasParams.from, payload, { gas_unit_price: "100" })
+        return client.generateTransaction(estimateGasParams.from, payload, { gas_unit_price: "100", max_gas_amount: "2000" })
           .then((rawTxn) => {
             return this.keyringController.exportAccount(estimateGasParams.from)
               .then((privateKey) => {
                 const fromAccount = AptosAccount.fromAptosAccountObject({ privateKeyHex: addHexPrefix(privateKey) });
-                return client.simulateTransaction(fromAccount, rawTxn)
+                return client.simulateTransaction(fromAccount, rawTxn, {
+                  estimateGasUnitPrice: true,
+                  estimateMaxGasAmount: true,
+                  estimatePrioritizedGasUnitPrice: true,
+                })
                   .then((result) => {
                     const transactionRespSimulation = result[0]
                     const gas_used = parseInt(transactionRespSimulation.gas_used, 10)
                     return resolve(gas_used);
                   })
               })
+          }).catch(error => {
+            log.error(error)
+            reject(error)
           })
       } else {
         // network = 0xfe for `Localhost 9850`

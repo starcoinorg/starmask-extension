@@ -209,17 +209,21 @@ export default class TxGasUtil {
       if (txMeta.txParams.to
         && txMeta.type === TRANSACTION_TYPES.SENT_ETHER) {
         const payload = {
+          type: "entry_function_payload",
           function: "0x1::aptos_account::transfer",
           type_arguments: [],
           arguments: [txMeta.txParams.to, hexToDecimal(txMeta.txParams.value)],
         };
-        rawTxn = await client.generateTransaction(txMeta.txParams.from, payload, { gas_unit_price: "100" })
+        rawTxn = await client.generateTransaction(txMeta.txParams.from, payload, { gas_unit_price: "100", max_gas_amount: "2000" })
       }
     }
     const privateKey = await this.exportAccount(txMeta.txParams.from)
     const fromAccount = AptosAccount.fromAptosAccountObject({ privateKeyHex: addHexPrefix(privateKey) });
-    const result = await client.simulateTransaction(fromAccount, rawTxn)
-    // log.debug({ result })
+    const result = await client.simulateTransaction(fromAccount, rawTxn, {
+      estimateGasUnitPrice: true,
+      estimateMaxGasAmount: true,
+      estimatePrioritizedGasUnitPrice: true,
+    })
     const transactionRespSimulation = result[0]
     // log.debug('simulated', transactionRespSimulation.gas_used)
     const estimatedGasHex = addHexPrefix(new BigNumber(transactionRespSimulation.gas_used).toString(16))
