@@ -260,7 +260,6 @@ export default class AccountTracker {
   async _updateAccount(address) {
     const ticker = this.getCurrentNetworkTicker()
     const accountLength = stripHexPrefix(address).length
-    log.debug('_updateAccount', { address, ticker, accountLength })
 
     if (accountLength === 64 && ticker === 'APT') {
       await this._updateAccountAptos(address)
@@ -270,7 +269,6 @@ export default class AccountTracker {
   }
 
   async _updateAccountStarcoin(address) {
-    log.debug('_updateAccountStarcoin', { address })
     const accountLength = stripHexPrefix(address).length
     if (accountLength !== 32) {
       return
@@ -390,7 +388,6 @@ export default class AccountTracker {
   }
 
   async _updateAccountAptos(address) {
-    log.debug('_updateAccountAptos', { address })
     const accountLength = stripHexPrefix(address).length
     if (accountLength !== 64) {
       return
@@ -541,7 +538,6 @@ export default class AccountTracker {
   }
 
   _checkAccountExistsInCurrentTicker() {
-    log.debug('AccountTracker _checkAccountExistsInCurrentTicker')
     const { accounts } = this.store.getState();
     const ticker = this.getCurrentNetworkTicker()
     const accountsInCurrentTicker = Object.values(accounts).filter((account) => account.ticker === ticker)

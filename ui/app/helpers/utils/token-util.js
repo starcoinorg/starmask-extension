@@ -93,7 +93,6 @@ async function getDecimals(tokenCode, ticker = 'STC') {
         tokenAddress,
         `0x1::coin::CoinInfo<${ tokenCode }>`,
         (err, res) => {
-          log.info({ err, res })
           if (err) {
             log.error(err)
             return reject(err);

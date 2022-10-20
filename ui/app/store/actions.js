@@ -1673,12 +1673,9 @@ export function signMultiSignTransaction(txnHex) {
 
 export function setProviderType(type) {
   return async (dispatch) => {
-    log.debug(`background.setProviderType`, type);
-
     try {
       await promisifiedBackground.setProviderType(type);
     } catch (error) {
-      log.error(error);
       dispatch(displayWarning('Had a problem changing networks!'));
       return;
     }
@@ -1971,7 +1968,6 @@ export function getPublicKeyFor(address) {
     dispatch(showLoadingIndication());
 
     return new Promise((resolve, reject) => {
-      log.debug(`background.getPublicKeyFor`);
       background.getPublicKeyFor(address, function (err, result) {
         dispatch(hideLoadingIndication());
 

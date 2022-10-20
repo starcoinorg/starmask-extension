@@ -296,7 +296,6 @@ export default class NetworkController extends EventEmitter {
   }
 
   _configureInfuraProvider(type, projectId) {
-    log.info('NetworkController - configureInfuraProvider', type);
     const networkClient = createInfuraClient({
       network: type,
       projectId,
@@ -305,7 +304,6 @@ export default class NetworkController extends EventEmitter {
   }
 
   _configureStandardProvider(rpcUrl, chainId) {
-    log.info('NetworkController - configureStandardProvider', rpcUrl);
     const networkClient = createJsonRpcClient({ rpcUrl, chainId });
     this._setNetworkClient(networkClient);
   }
