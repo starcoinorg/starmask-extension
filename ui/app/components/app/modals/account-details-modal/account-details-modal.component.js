@@ -70,13 +70,17 @@ export default class AccountDetailsModal extends Component {
         >
           {this.context.t('viewPublicKey')}
         </Button>
-        <Button
-          type="secondary"
-          className="account-details-modal__button"
-          onClick={() => showReceiptIdentiferModal()}
-        >
-          {this.context.t('viewReceiptIdengifier')}
-        </Button>
+        {
+          rpcPrefs.ticker === 'STC' ? (
+            <Button
+              type="secondary"
+              className="account-details-modal__button"
+              onClick={() => showReceiptIdentiferModal()}
+            >
+              {this.context.t('viewReceiptIdengifier')}
+            </Button>
+          ) : null
+        }
         <Button
           type="secondary"
           className="account-details-modal__button"
