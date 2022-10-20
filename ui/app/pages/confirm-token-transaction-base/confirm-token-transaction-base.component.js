@@ -23,6 +23,7 @@ export default function ConfirmTokenTransactionBase({
   contractExchangeRate,
   conversionRate,
   currentCurrency,
+  network,
 }) {
   const t = useContext(I18nContext);
 
@@ -63,8 +64,7 @@ export default function ConfirmTokenTransactionBase({
     fiatTransactionTotal,
     tokenAmount,
   ]);
-
-  const tokensText = `${tokenAmount} ${tokenSymbol}`;
+  const tokensText = `${ tokenAmount } ${ tokenSymbol }`;
 
   return (
     <ConfirmTransactionBase
@@ -85,8 +85,8 @@ export default function ConfirmTokenTransactionBase({
       }
       primaryTotalTextOverride={
         <div>
-          <span>{`${tokensText} + `}</span>
-          <img src="/images/stc_logo.svg" height="18" alt="" />
+          <span>{`${ tokensText } + `}</span>
+          <img src={`/images/${ ['devnet', 'testnet', 'mainnet'].includes(network) ? 'apt' : 'stc_logo' }.svg`} height="18" alt="" />
           <span>{ethTransactionTotal}</span>
         </div>
       }
@@ -105,4 +105,5 @@ ConfirmTokenTransactionBase.propTypes = {
   contractExchangeRate: PropTypes.number,
   conversionRate: PropTypes.number,
   currentCurrency: PropTypes.string,
+  network: PropTypes.string,
 };
