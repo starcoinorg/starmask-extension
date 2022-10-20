@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import copyToClipboard from 'copy-to-clipboard';
 import { shortenAddress, checksumAddress } from '../../../helpers/utils/util';
-
+import {
+  getTickerForCurrentProvider,
+} from '../../../selectors';
 import Tooltip from '../../ui/tooltip';
 
 class SelectedAccount extends Component {
@@ -16,6 +19,7 @@ class SelectedAccount extends Component {
 
   static propTypes = {
     selectedIdentity: PropTypes.object.isRequired,
+    ticker: PropTypes.string,
   };
 
   componentDidMount() {
@@ -31,8 +35,8 @@ class SelectedAccount extends Component {
 
   render() {
     const { t } = this.context;
-    const { selectedIdentity } = this.props;
-    const checksummedAddress = checksumAddress(selectedIdentity.address);
+    const { selectedIdentity, ticker } = this.props;
+    const checksummedAddress = ticker === 'APT' ? selectedIdentity.address : checksumAddress(selectedIdentity.address);
 
     return (
       <div className="selected-account">
@@ -67,4 +71,20 @@ class SelectedAccount extends Component {
   }
 }
 
-export default SelectedAccount;
+function mapStateToProps(state) {
+  return {
+    ticker: getTickerForCurrentProvider(state),
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(SelectedAccount);
+
+

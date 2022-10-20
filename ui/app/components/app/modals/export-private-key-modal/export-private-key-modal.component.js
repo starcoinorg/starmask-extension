@@ -1,6 +1,8 @@
 import log from 'loglevel';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import React, { Component } from 'react';
+
 
 import { stripHexPrefix } from 'ethereumjs-util';
 import copyToClipboard from 'copy-to-clipboard';
@@ -8,8 +10,11 @@ import { checksumAddress } from '../../../../helpers/utils/util';
 import ReadOnlyInput from '../../../ui/readonly-input';
 import Button from '../../../ui/button';
 import AccountModalContainer from '../account-modal-container';
+import {
+  getTickerForCurrentProvider,
+} from '../../../../selectors';
 
-export default class ExportPrivateKeyModal extends Component {
+class ExportPrivateKeyModal extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
@@ -28,6 +33,7 @@ export default class ExportPrivateKeyModal extends Component {
     hideWarning: PropTypes.func.isRequired,
     clearAccountDetails: PropTypes.func.isRequired,
     previousModalState: PropTypes.string,
+    ticker: PropTypes.string,
   };
 
   state = {
@@ -134,10 +140,12 @@ export default class ExportPrivateKeyModal extends Component {
       showAccountDetailModal,
       hideModal,
       previousModalState,
+      ticker,
     } = this.props;
     const { name, address } = selectedIdentity;
 
     const { privateKey, showWarning } = this.state;
+    const checksummedAddress = ticker === 'APT' ? address : checksumAddress(address);
 
     return (
       <AccountModalContainer
@@ -149,7 +157,7 @@ export default class ExportPrivateKeyModal extends Component {
         <span className="export-private-key-modal__account-name">{name}</span>
         <ReadOnlyInput
           wrapperClass="ellip-address-wrapper"
-          value={checksumAddress(address)}
+          value={checksummedAddress}
         />
         <div className="export-private-key-modal__divider" />
         <span className="export-private-key-modal__body-title">
@@ -172,3 +180,20 @@ export default class ExportPrivateKeyModal extends Component {
     );
   }
 }
+
+
+function mapStateToProps(state) {
+  return {
+    ticker: getTickerForCurrentProvider(state),
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ExportPrivateKeyModal);

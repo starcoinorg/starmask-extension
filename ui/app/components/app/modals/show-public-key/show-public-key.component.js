@@ -1,13 +1,16 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import copyToClipboard from 'copy-to-clipboard';
 import log from 'loglevel';
 import { checksumAddress } from '../../../../helpers/utils/util';
 import ReadOnlyInput from '../../../ui/readonly-input';
 import Button from '../../../ui/button';
 import AccountModalContainer from '../account-modal-container';
-
-export default class ShowPublicKey extends Component {
+import {
+  getTickerForCurrentProvider,
+} from '../../../../selectors';
+class ShowPublicKey extends Component {
   static contextTypes = {
     t: PropTypes.func,
   };
@@ -24,6 +27,7 @@ export default class ShowPublicKey extends Component {
     hideWarning: PropTypes.func.isRequired,
     clearAccountDetails: PropTypes.func.isRequired,
     previousModalState: PropTypes.string,
+    ticker: PropTypes.string,
   };
 
   state = {
@@ -53,8 +57,10 @@ export default class ShowPublicKey extends Component {
       showAccountDetailModal,
       hideModal,
       previousModalState,
+      ticker,
     } = this.props;
     const { name, address } = selectedIdentity;
+    const checksummedAddress = ticker === 'APT' ? address : checksumAddress(address);
 
     return (
       <AccountModalContainer
@@ -66,7 +72,7 @@ export default class ShowPublicKey extends Component {
         <span className="export-private-key-modal__account-name">{name}</span>
         <ReadOnlyInput
           wrapperClass="ellip-address-wrapper"
-          value={checksumAddress(address)}
+          value={checksummedAddress}
         />
         <div className="export-private-key-modal__divider" />
         <span className="export-private-key-modal__body-title">
@@ -97,3 +103,19 @@ export default class ShowPublicKey extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    ticker: getTickerForCurrentProvider(state),
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(ShowPublicKey);
