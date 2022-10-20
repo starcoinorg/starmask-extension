@@ -220,6 +220,10 @@ export function calcTokenValue(value, decimals) {
  */
 export function getTokenAddressParam(tokenData = [], network) {
   if (['devnet', 'testnet', 'mainnet'].includes(network)) {
+    if (tokenData instanceof TxnBuilderTypes.EntryFunction) {
+      const value = tokenData?.args[0]
+      return hexlify(value)
+    }
     return '';
   } else {
     const value = tokenData?.args?.[0];
@@ -238,6 +242,12 @@ export function getTokenAddressParam(tokenData = [], network) {
  */
 export function getTokenValueParam(tokenData = {}, network) {
   if (['devnet', 'testnet', 'mainnet'].includes(network)) {
+    if (tokenData instanceof TxnBuilderTypes.EntryFunction) {
+      const value = tokenData?.args[1];
+      const deserializer = new BCS.Deserializer(value);
+      const amount = deserializer.deserializeU64();
+      return amount?.toString().toLowerCase();
+    }
     return '0'
   } else {
     const value = tokenData?.args?.[tokenData.args.length - 1];
