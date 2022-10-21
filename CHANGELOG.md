@@ -3,7 +3,14 @@
 ## [5.0.1] - 2022-10-20
 
 - New features:
-  - [#80 Support Aptos test dev ](https://github.com/starcoinorg/starmask-extension/issues/80)
+  - [#80 Support Aptos ](https://github.com/starcoinorg/starmask-extension/issues/80)
+    - New features: Support Aptos blockchain
+    - Create new vault or import from mnemonic
+    - Create account or import from private key
+    - Aptos mainnet/testnet/devnet
+    - Send APT
+    - Add token and Send token
+    - Confirm and publish transaction submitted from any Dapps
 
 ## [4.8.0] - 2022-10-17
 
