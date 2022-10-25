@@ -137,4 +137,5 @@ export const SAFE_METHODS = [
   'wallet_watchAsset',
   'web3_clientVersion',
   'web3_sha3',
+  'getAccountResource',
 ];
