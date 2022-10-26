@@ -37,7 +37,7 @@ export default class Welcome extends PureComponent {
     return (
       <div className="welcome-page__wrapper">
         <div className="welcome-page">
-          <img src="images/logo/stc.svg" width="225" height="225" alt="" />
+          <img src="images/logo/starmask.svg" width="225" height="225" alt="" />
           <div className="welcome-page__header">{t('welcome')}</div>
           <div className="welcome-page__description">
             <div>{t('metamaskDescription')}</div>

@@ -127,7 +127,7 @@ export default class UnlockPage extends Component {
     return (
       <div className="unlock-page__container">
         <div className="unlock-page">
-          <img src="images/logo/stc.svg" width="175" height="175" alt="" />
+          <img src="images/logo/starmask.svg" width="175" height="175" alt="" />
           <h1 className="unlock-page__title">{t('welcomeBack')}</h1>
           <div>{t('unlockMessage')}</div>
           <form className="unlock-page__form" onSubmit={this.handleSubmit}>

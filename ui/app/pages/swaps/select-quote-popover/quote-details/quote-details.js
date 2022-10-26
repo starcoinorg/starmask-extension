@@ -80,7 +80,7 @@ const QuoteDetails = ({
       <div className="quote-details__row quote-details__row--high">
         <div className="quote-details__detail-header">
           <img
-            src="/images/logo/stc-blue.svg"
+            src="/images/logo/starmask.svg"
             className="quote-details__metafox-logo"
             alt=""
           />
