@@ -3,6 +3,11 @@
 ## [5.0.5] - 2022-10-31
 
 - New features:
+  - Support switch network between Starcoin Mainnet and Aptos Mainnet, which chainId are the same: 0x1
+
+## [5.0.1] - 2022-10-20
+
+- New features:
   - [#80 Support Aptos ](https://github.com/starcoinorg/starmask-extension/issues/80)
     - New features: Support Aptos blockchain
     - Create new vault or import from mnemonic
