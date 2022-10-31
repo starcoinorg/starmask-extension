@@ -3,9 +3,11 @@ import { omit } from 'lodash';
 import { MESSAGE_TYPE } from '../../../../../shared/constants/app';
 import {
   STC_SYMBOL,
+  APTOS_SYMBOL,
   CHAIN_ID_TO_TYPE_MAP,
   NETWORK_TO_NAME_MAP,
   CHAIN_ID_TO_RPC_URL_MAP,
+  NETWORK_CHAIN_ID_TO_NAME_MAP,
 } from '../../../../../shared/constants/network';
 import {
   isPrefixedFormattedHexString,
@@ -26,14 +28,15 @@ const switchStarcoinChain = {
 };
 export default switchStarcoinChain;
 
-function findExistingNetwork(chainId, findCustomRpcBy) {
+function findExistingNetwork(chainId, findCustomRpcBy, networkType) {
   if (chainId in CHAIN_ID_TO_TYPE_MAP) {
+    const name = NETWORK_CHAIN_ID_TO_NAME_MAP[networkType][chainId]
     return {
       chainId,
-      ticker: STC_SYMBOL,
-      nickname: NETWORK_TO_NAME_MAP[chainId],
-      rpcUrl: CHAIN_ID_TO_RPC_URL_MAP[chainId],
-      type: CHAIN_ID_TO_TYPE_MAP[chainId],
+      ticker: networkType === 'STARCOIN' ? STC_SYMBOL : APTOS_SYMBOL,
+      nickname: NETWORK_TO_NAME_MAP[name],
+      rpcUrl: CHAIN_ID_TO_RPC_URL_MAP[name],
+      type: name,
     };
   }
 
@@ -53,7 +56,6 @@ async function switchEthereumChainHandler(
     requestUserApproval,
   },
 ) {
-  log.debug('switchEthereumChainHandler')
   if (!req.params?.[0] || typeof req.params[0] !== 'object') {
     return end(
       ethErrors.rpc.invalidParams({
@@ -67,9 +69,10 @@ async function switchEthereumChainHandler(
   const { origin } = req;
 
   const { chainId } = req.params[0];
-  log.debug({ chainId })
 
-  const otherKeys = Object.keys(omit(req.params[0], ['chainId']));
+  const { networkType = 'STARCOIN' } = req.params[0];
+
+  const otherKeys = Object.keys(omit(req.params[0], ['chainId', 'networkType']));
 
   if (otherKeys.length > 0) {
     return end(
@@ -80,7 +83,6 @@ async function switchEthereumChainHandler(
   }
 
   const _chainId = typeof chainId === 'string' && chainId.toLowerCase();
-  log.debug({ _chainId })
 
   if (!isPrefixedFormattedHexString(_chainId)) {
     return end(
@@ -98,11 +100,9 @@ async function switchEthereumChainHandler(
     );
   }
 
-  const requestData = findExistingNetwork(_chainId, findCustomRpcBy);
-  log.debug({ requestData })
+  const requestData = findExistingNetwork(_chainId, findCustomRpcBy, networkType);
   if (requestData) {
     const currentChainId = getCurrentChainId();
-    log.debug({ currentChainId })
 
     if (currentChainId === _chainId) {
       res.result = null;
