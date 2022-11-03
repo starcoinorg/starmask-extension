@@ -20,6 +20,7 @@ const switchStarcoinChain = {
   implementation: switchEthereumChainHandler,
   hookNames: {
     getCurrentChainId: true,
+    getNetworkIdentifier: true,
     findCustomRpcBy: true,
     setProviderType: true,
     updateRpcTarget: true,
@@ -50,6 +51,7 @@ async function switchEthereumChainHandler(
   end,
   {
     getCurrentChainId,
+    getNetworkIdentifier,
     findCustomRpcBy,
     setProviderType,
     updateRpcTarget,
@@ -103,8 +105,8 @@ async function switchEthereumChainHandler(
   const requestData = findExistingNetwork(_chainId, findCustomRpcBy, networkType);
   if (requestData) {
     const currentChainId = getCurrentChainId();
-
-    if (currentChainId === _chainId) {
+    const currentNetwork = getNetworkIdentifier();
+    if (currentChainId === _chainId && currentNetwork === requestData.type) {
       res.result = null;
       return end();
     }
