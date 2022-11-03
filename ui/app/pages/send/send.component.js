@@ -24,6 +24,7 @@ import {
   KNOWN_RECIPIENT_ADDRESS_ERROR,
   CONTRACT_ADDRESS_ERROR,
   RECIPIENT_ACCOUNT_NOT_ACCEPT_TOKEN_ERROR,
+  RECIPIENT_ACCOUNT_NOT_REGISTER_TOKEN_ERROR,
   RECIPIENT_ACCOUNT_NOT_ADD_NFT_GALLERY_ERROR,
 } from './send.constants';
 
@@ -51,6 +52,7 @@ export default class SendTransactionScreen extends Component {
     sendToken: PropTypes.object,
     showHexData: PropTypes.bool,
     to: PropTypes.string,
+    ticker: PropTypes.string,
     toReceiptIdentifier: PropTypes.string,
     toNickname: PropTypes.string,
     tokens: PropTypes.array,
@@ -106,6 +108,7 @@ export default class SendTransactionScreen extends Component {
       updateSendTokenBalance,
       assets,
       to,
+      ticker,
       toNickname,
       addressBook,
       updateToNicknameIfNecessary,
@@ -124,24 +127,35 @@ export default class SendTransactionScreen extends Component {
       to: prevTo,
     } = prevProps;
 
-    if (to && sendToken && sendToken.code && to !== prevTo) {
-      const { getAutoAcceptToken, checkIsAcceptToken } = this.props;
-      // if not AutoAcceptToken and not AcceptToken
-      getAutoAcceptToken(to)
-        .then((autoAcceptToken) => {
-          if (!autoAcceptToken) {
-            checkIsAcceptToken(to, sendToken.code).then((isAcceptToken) => {
-              if (!isAcceptToken) {
-                this.setState({
-                  toError: RECIPIENT_ACCOUNT_NOT_ACCEPT_TOKEN_ERROR,
-                  validating: false,
-                });
-              }
+    if (to && sendToken && sendToken?.code && to !== prevTo) {
+      if (ticker === 'APT') {
+        const { checkIsAcceptToken } = this.props;
+        checkIsAcceptToken(to, sendToken?.code, ticker).then((isAcceptToken) => {
+          if (!isAcceptToken) {
+            this.setState({
+              toError: RECIPIENT_ACCOUNT_NOT_REGISTER_TOKEN_ERROR,
+              validating: false,
             });
           }
-        })
-        .catch((e) => log.error(e));
-      return;
+        });
+      } else if (ticker === 'STC') {
+        const { getAutoAcceptToken, checkIsAcceptToken } = this.props;
+        // if not AutoAcceptToken and not AcceptToken
+        getAutoAcceptToken(to)
+          .then((autoAcceptToken) => {
+            if (!autoAcceptToken) {
+              checkIsAcceptToken(to, sendToken.code).then((isAcceptToken) => {
+                if (!isAcceptToken) {
+                  this.setState({
+                    toError: RECIPIENT_ACCOUNT_NOT_ACCEPT_TOKEN_ERROR,
+                    validating: false,
+                  });
+                }
+              });
+            }
+          })
+          .catch((e) => log.error(e));
+      }
     }
 
     if (to && sendNFT && sendNFT.meta && to !== prevTo) {
@@ -276,7 +290,7 @@ export default class SendTransactionScreen extends Component {
 
       // Clear the queryString param after showing the modal
       const cleanUrl = window.location.href.split('?')[0];
-      window.history.pushState({}, null, `${cleanUrl}`);
+      window.history.pushState({}, null, `${ cleanUrl }`);
       window.location.hash = '#send';
     }
   }

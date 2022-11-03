@@ -1486,6 +1486,9 @@
   "recipientAccountNotAcceptToken": {
     "message": "Le destinataire n'accepte pas ce Token et n'a pas activé 'AutoAcceptToken'. Veuillez demander au destinataire d'ajouter et d'accepter ce Token ou d'activer 'AutoAcceptToken' dans la page des paramètres du compte."
   },
+  "recipientAccountNotRegisterToken": {
+    "message": "The recipient does not register this token. Please notify the recipient to add this token first."
+  },
   "recipientAccountNotAddNFTGallery": {
     "message": "Le destinataire n'a pas encore ajouté cette galerie NFT. Veuillez d'abord informer le destinataire qu'il doit \"ajouter une galerie NFT\"."
   },

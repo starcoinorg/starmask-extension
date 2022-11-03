@@ -28,6 +28,7 @@ import {
   isCustomPriceExtendMax,
   isCustomLimitExtendMax,
   getCurrentChainId,
+  getTickerForCurrentProvider,
 } from '../../selectors';
 
 import {
@@ -72,6 +73,7 @@ function mapStateToProps(state) {
     sendToken: getSendToken(state),
     showHexData: getSendHexDataFeatureFlagState(state),
     to: getSendTo(state),
+    ticker: getTickerForCurrentProvider(state),
     toReceiptIdentifier: getSendToReceiptIdentifier(state),
     toNickname: getSendToNickname(state),
     tokens: getTokens(state),
@@ -91,8 +93,8 @@ function mapDispatchToProps(dispatch) {
         return res;
       });
     },
-    checkIsAcceptToken: (address, code) => {
-      return dispatch(checkIsAcceptToken(address, code)).then((res) => {
+    checkIsAcceptToken: (address, code, ticker) => {
+      return dispatch(checkIsAcceptToken(address, code, ticker)).then((res) => {
         return res;
       });
     },

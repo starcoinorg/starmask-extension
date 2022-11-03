@@ -1513,6 +1513,9 @@
   "recipientAccountNotAcceptToken": {
     "message": "The recipient neither  accept this token, nor has enabled 'AutoAcceptToken'. Please notify the recipient to add and accept this token, or enable 'AutoAcceptToken' in the account settings page."
   },
+  "recipientAccountNotRegisterToken": {
+    "message": "The recipient does not register this token. Please notify the recipient to add this token first."
+  },
   "recipientAccountNotAddNFTGallery": {
     "message": "The recipient has not added this NFT gallery yet. Please notify the recipient to 'add NFT gallery' first."
   },

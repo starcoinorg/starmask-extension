@@ -2934,9 +2934,9 @@ export default class MetamaskController extends EventEmitter {
    * @param {string} address - The account address
    */
   getAutoAcceptToken(adress, ticker = 'STC') {
-    if (ticker === 'STC') {
-      const stcQuery = new StcQuery(this.provider);
-      return new Promise((resolve, reject) => {
+    const stcQuery = new StcQuery(this.provider);
+    return new Promise((resolve, reject) => {
+      if (ticker === 'STC') {
         stcQuery.sendAsync(
           {
             method: 'state.get_resource',
@@ -2954,11 +2954,11 @@ export default class MetamaskController extends EventEmitter {
               resolve(autoAcceptToken);
             }
           },
-        );
-      });
-    } else if (ticker === 'APT') {
-      return false
-    }
+        )
+      } else if (ticker === 'APT') {
+        resolve(false);
+      }
+    });
   }
 
   /**
@@ -2967,9 +2967,9 @@ export default class MetamaskController extends EventEmitter {
    * @param {string} code - The token code
    */
   checkIsAcceptToken(address, code, ticker = 'STC') {
-    if (ticker === 'STC') {
-      const stcQuery = new StcQuery(this.provider);
-      return new Promise((resolve, reject) => {
+    const stcQuery = new StcQuery(this.provider);
+    return new Promise((resolve, reject) => {
+      if (ticker === 'STC') {
         stcQuery.getResource(
           address,
           `0x00000000000000000000000000000001::Account::Balance<${ code }>`,
@@ -2982,10 +2982,24 @@ export default class MetamaskController extends EventEmitter {
             }
           },
         );
-      });
-    } else if (ticker === 'APT') {
-      return false
-    }
+      } else if (ticker === 'APT') {
+        stcQuery.getAccountResource(
+          address,
+          `0x1::coin::CoinStore<${ code }>`,
+          (err, res) => {
+            if (err) {
+              if (typeof err?.message === 'string' && err?.message.indexOf('Resource not found')) {
+                log.debug('Resource not found,return false')
+                resolve(false);
+              }
+              reject(err);
+            } else {
+              resolve(Boolean(res));
+            }
+          },
+        );
+      }
+    });
   }
 
   /**
