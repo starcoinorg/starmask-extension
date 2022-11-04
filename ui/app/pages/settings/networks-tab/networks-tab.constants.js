@@ -59,7 +59,7 @@ const defaultNetworksData = [
     rpcUrl: 'https://fullnode.mainnet.aptoslabs.com',
     chainId: APTOS_MAINNET_CHAIN_ID,
     ticker: 'APT',
-    blockExplorerUrl: 'https://explorer.aptoslabs.com/?network=mainnet',
+    blockExplorerUrl: 'https://explorer.aptoslabs.com',
   },
   {
     labelKey: APTOS_TESTNET,
@@ -68,7 +68,7 @@ const defaultNetworksData = [
     rpcUrl: 'https://fullnode.testnet.aptoslabs.com',
     chainId: APTOS_TESTNET_CHAIN_ID,
     ticker: 'APT',
-    blockExplorerUrl: 'https://explorer.aptoslabs.com/?network=testnet',
+    blockExplorerUrl: 'https://explorer.aptoslabs.com',
   },
   {
     labelKey: APTOS_DEVNET,
@@ -77,7 +77,7 @@ const defaultNetworksData = [
     rpcUrl: 'https://fullnode.devnet.aptoslabs.com',
     chainId: APTOS_DEVNET_CHAIN_ID,
     ticker: 'APT',
-    blockExplorerUrl: 'https://explorer.aptoslabs.com/?network=devnet',
+    blockExplorerUrl: 'https://explorer.aptoslabs.com',
   },
 ];
 

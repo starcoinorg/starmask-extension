@@ -7,7 +7,6 @@ import EditableLabel from '../../../ui/editable-label';
 import Button from '../../../ui/button';
 import ReadOnlyInput from '../../../ui/readonly-input/readonly-input';
 
-
 export default class AccountDetailsModal extends Component {
   static propTypes = {
     selectedIdentity: PropTypes.object,
@@ -92,7 +91,7 @@ export default class AccountDetailsModal extends Component {
         >
           {rpcPrefs.blockExplorerUrl
             ? this.context.t('blockExplorerView', [
-              rpcPrefs.blockExplorerUrl.match(/^https?:\/\/(.+)\//u)[1],
+              rpcPrefs.blockExplorerUrl.match(/^https?:\/\/(.+)/u)[1],
             ])
             : this.context.t('viewOnStcscan')}
         </Button>
