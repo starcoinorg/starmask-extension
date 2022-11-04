@@ -2207,7 +2207,7 @@ export function setAutoLockTimeLimit(value) {
   return setPreference('autoLockTimeLimit', value);
 }
 
-export function getAutoAcceptToken(address, ticker) {
+export function getAutoAcceptToken(address, ticker = 'STC') {
   return function (dispatch) {
     dispatch(showLoadingIndication());
     return new Promise((resolve, reject) => {

@@ -88,8 +88,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getAutoAcceptToken: (address) => {
-      return dispatch(getAutoAcceptToken(address)).then((res) => {
+    getAutoAcceptToken: (address, ticker) => {
+      return dispatch(getAutoAcceptToken(address, ticker)).then((res) => {
         return res;
       });
     },

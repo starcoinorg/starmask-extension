@@ -141,7 +141,7 @@ export default class SendTransactionScreen extends Component {
       } else if (ticker === 'STC') {
         const { getAutoAcceptToken, checkIsAcceptToken } = this.props;
         // if not AutoAcceptToken and not AcceptToken
-        getAutoAcceptToken(to)
+        getAutoAcceptToken(to, ticker)
           .then((autoAcceptToken) => {
             if (!autoAcceptToken) {
               checkIsAcceptToken(to, sendToken.code).then((isAcceptToken) => {

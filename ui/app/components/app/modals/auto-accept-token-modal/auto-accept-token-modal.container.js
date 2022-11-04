@@ -10,7 +10,7 @@ import {
   getAutoAcceptToken,
   setAutoAcceptToken,
 } from '../../../../store/actions';
-import { getSelectedIdentity } from '../../../../selectors';
+import { getSelectedIdentity, getTickerForCurrentProvider } from '../../../../selectors';
 import AutoAcceptToken from './auto-accept-token-modal.component';
 
 function mapStateToPropsFactory() {
@@ -40,8 +40,8 @@ function mapDispatchToProps(dispatch) {
         return res;
       });
     },
-    getAutoAcceptToken: (address) => {
-      return dispatch(getAutoAcceptToken(address)).then((res) => {
+    getAutoAcceptToken: (address, ticker) => {
+      return dispatch(getAutoAcceptToken(address, ticker)).then((res) => {
         return res;
       });
     },

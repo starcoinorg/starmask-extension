@@ -37,7 +37,7 @@ export default class AutoAcceptToken extends Component {
     const { selectedIdentity, getAutoAcceptToken } = this.props;
     const { address } = selectedIdentity;
 
-    getAutoAcceptToken(address)
+    getAutoAcceptToken(address, 'STC')
       .then((autoAcceptToken) => {
         this.setState({
           autoAcceptToken,
