@@ -1,6 +1,6 @@
 # Changelog
 
-## [5.0.8] - 2022-11-04
+## [5.0.9] - 2022-11-04
 
 - New features:
   - Support switch network between Starcoin Mainnet and Aptos Mainnet, which chainId are the same: 0x1
