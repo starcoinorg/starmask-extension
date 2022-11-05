@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.1.0] - 2022-11-05
+
+- Bug fixes:
+
+  - [#87 Split SecretRecoveryPhrase input by word](https://github.com/starcoinorg/starmask-extension/issues/87)
+
 ## [5.0.9] - 2022-11-04
 
 - New features:
