@@ -933,7 +933,7 @@
     "message": " Les comptes importés ne seront pas associés à la phrase de sauvegarde de votre compte StarMask créé à l'origine."
   },
   "importAccountSeedPhrase": {
-    "message": "Importer un compte avec une phrase de sauvegarde"
+    "message": "Importez un compte avec une phrase mnémotechnique"
   },
   "importUsingSeed": {
     "message": "Importer à l'aide de la phrase de sauvegarde du compte"
@@ -1622,6 +1622,9 @@
   "secretPhrase": {
     "message": "Entrez votre phrase secrète ici pour restaurer votre coffre-fort."
   },
+  "secretRecoveryPhrase": {
+    "message": "Phrase secrète de récupération"
+  },
   "securityAndPrivacy": {
     "message": "Sécurité et confidentialité"
   },
@@ -1782,6 +1785,33 @@
   },
   "spendLimitTooLarge": {
     "message": "Limite de dépenses trop élevée"
+  },
+  "srpInputNumberOfWords": {
+    "message": "J’ai une phrase de $1 mots",
+    "description": "This is the text for each option in the dropdown where a user selects how many words their secret recovery phrase has during import. The $1 is the number of words (either 12, 15, 18, 21, or 24)."
+  },
+  "srpPasteFailedTooManyWords": {
+    "message": "Le collage a échoué parce que la phrase contenait plus de 24 mots. Une phrase secrète de récupération peut contenir un maximum de 24 mots.",
+    "description": "Description of SRP paste erorr when the pasted content has too many words"
+  },
+  "srpPasteTip": {
+    "message": "Vous pouvez coller toute votre phrase de récupération secrète dans n’importe quel champ",
+    "description": "Our secret recovery phrase input is split into one field per word. This message explains to users that they can paste their entire secrete recovery phrase into any field, and we will handle it correctly."
+  },
+  "srpToggleShow": {
+    "message": "Afficher / Masquer ce mot de la phrase de récupération secrète",
+    "description": "Describes a toggle that is used to show or hide a single word of the secret recovery phrase"
+  },
+  "srpWordHidden": {
+    "message": "Ce mot est caché",
+    "description": "Explains that a word in the secret recovery phrase is hidden"
+  },
+  "srpWordShown": {
+    "message": "Ce mot est affiché",
+    "description": "Explains that a word in the secret recovery phrase is being shown"
+  },
+  "stable": {
+    "message": "Stable"
   },
   "stateLogError": {
     "message": "Erreur lors de la récupération des journaux d'état."

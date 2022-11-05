@@ -20,14 +20,15 @@ export default function Typography({
   fontWeight = 'normal',
   align,
   boxProps = {},
+  as,
 }) {
   const computedClassName = classnames(
     'typography',
     className,
-    `typography--${variant}`,
-    `typography--align-${align}`,
-    `typography--color-${color}`,
-    `typography--weight-${fontWeight}`,
+    `typography--${ variant }`,
+    `typography--align-${ align }`,
+    `typography--color-${ color }`,
+    `typography--weight-${ fontWeight }`,
   );
 
   let Tag = tag ?? variant;

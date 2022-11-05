@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Tooltip from '../tooltip';
+import InfoTooltipIcon from './info-tooltip-icon';
 
 const positionArrowClassMap = {
   top: 'info-tooltip__top-tooltip-arrow',
@@ -15,7 +16,7 @@ export default function InfoTooltip({
   position = '',
   containerClassName,
   wrapperClassName,
-  wide,
+  iconFillColor = 'var(--color-icon-alternative)',
 }) {
   return (
     <div className="info-tooltip">
@@ -30,18 +31,33 @@ export default function InfoTooltip({
         tooltipInnerClassName="info-tooltip__tooltip-content"
         tooltipArrowClassName={positionArrowClassMap[position]}
         html={contentText}
-        theme={wide ? 'tippy-tooltip-wideInfo' : 'tippy-tooltip-info'}
+        theme="tippy-tooltip-info"
       >
-        <img src="images/mm-info-icon.svg" alt="" />
+        <InfoTooltipIcon fillColor={iconFillColor} />
       </Tooltip>
     </div>
   );
 }
 
 InfoTooltip.propTypes = {
+  /**
+   * Text label that shows up after hover
+   */
   contentText: PropTypes.node,
+  /**
+   * Shows position of the tooltip
+   */
   position: PropTypes.oneOf(['top', 'left', 'bottom', 'right']),
-  wide: PropTypes.bool,
+  /**
+   * Add custom CSS class for container
+   */
   containerClassName: PropTypes.string,
+  /**
+   * Add custom CSS class for the wrapper
+   */
   wrapperClassName: PropTypes.string,
+  /**
+   * Add color for the icon
+   */
+  iconFillColor: PropTypes.string,
 };

@@ -951,7 +951,7 @@
     "message": " Imported accounts will not be associated with your originally created StarMask account seedphrase."
   },
   "importAccountSeedPhrase": {
-    "message": "Import an account with seed phrase"
+    "message": "Import a wallet with Secret Recovery Phrase"
   },
   "importUsingSeed": {
     "message": "Import using account seed phrase"
@@ -1649,6 +1649,9 @@
   "secretPhrase": {
     "message": "Enter your secret phrase here to restore your vault."
   },
+  "secretRecoveryPhrase": {
+    "message": "Secret Recovery Phrase"
+  },
   "securityAndPrivacy": {
     "message": "Security & Privacy"
   },
@@ -1809,6 +1812,33 @@
   },
   "spendLimitTooLarge": {
     "message": "Spend limit too large"
+  },
+  "srpInputNumberOfWords": {
+    "message": "I have a $1-word phrase",
+    "description": "This is the text for each option in the dropdown where a user selects how many words their secret recovery phrase has during import. The $1 is the number of words (either 12, 15, 18, 21, or 24)."
+  },
+  "srpPasteFailedTooManyWords": {
+    "message": "Paste failed because it contained over 24 words. A secret recovery phrase can have a maximum of 24 words.",
+    "description": "Description of SRP paste erorr when the pasted content has too many words"
+  },
+  "srpPasteTip": {
+    "message": "You can paste your entire secret recovery phrase into any field",
+    "description": "Our secret recovery phrase input is split into one field per word. This message explains to users that they can paste their entire secrete recovery phrase into any field, and we will handle it correctly."
+  },
+  "srpToggleShow": {
+    "message": "Show/Hide this word of the secret recovery phrase",
+    "description": "Describes a toggle that is used to show or hide a single word of the secret recovery phrase"
+  },
+  "srpWordHidden": {
+    "message": "This word is hidden",
+    "description": "Explains that a word in the secret recovery phrase is hidden"
+  },
+  "srpWordShown": {
+    "message": "This word is being shown",
+    "description": "Explains that a word in the secret recovery phrase is being shown"
+  },
+  "stable": {
+    "message": "Stable"
   },
   "stateLogError": {
     "message": "Error in retrieving state logs."

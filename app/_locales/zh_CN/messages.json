@@ -909,7 +909,7 @@
     "message": "导入的账户将不会与最初创建的 StarMask 账户助记词相关联。"
   },
   "importAccountSeedPhrase": {
-    "message": "使用账户助记词导入账户"
+    "message": "使用账户助记词导入钱包"
   },
   "importUsingSeed": {
     "message": "使用账户助记词导入"
@@ -1587,6 +1587,9 @@
   "secretPhrase": {
     "message": "输入 12 个单词组成的账户助记词恢复您的账户."
   },
+  "secretRecoveryPhrase": {
+    "message": "助记词"
+  },
   "securityAndPrivacy": {
     "message": "安全与隐私"
   },
@@ -1744,6 +1747,33 @@
   },
   "spendLimitTooLarge": {
     "message": "消费限制过大"
+  },
+  "srpInputNumberOfWords": {
+    "message": "我有一个包含$1个单词的助记词",
+    "description": "This is the text for each option in the dropdown where a user selects how many words their secret recovery phrase has during import. The $1 is the number of words (either 12, 15, 18, 21, or 24)."
+  },
+  "srpPasteFailedTooManyWords": {
+    "message": "粘贴失败，因为它包含超过24个单词。一个助记词最多可包含24个单词。",
+    "description": "Description of SRP paste erorr when the pasted content has too many words"
+  },
+  "srpPasteTip": {
+    "message": "您可以将整个助记词粘贴到任何字段中",
+    "description": "Our secret recovery phrase input is split into one field per word. This message explains to users that they can paste their entire secrete recovery phrase into any field, and we will handle it correctly."
+  },
+  "srpToggleShow": {
+    "message": "显示/隐藏助记词中的这个单词",
+    "description": "Describes a toggle that is used to show or hide a single word of the secret recovery phrase"
+  },
+  "srpWordHidden": {
+    "message": "这个单词已隐藏",
+    "description": "Explains that a word in the secret recovery phrase is hidden"
+  },
+  "srpWordShown": {
+    "message": "这个单词处于显示状态",
+    "description": "Explains that a word in the secret recovery phrase is being shown"
+  },
+  "stable": {
+    "message": "稳定"
   },
   "stateLogError": {
     "message": "检索状态日志时出错。"
