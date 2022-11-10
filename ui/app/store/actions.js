@@ -3133,3 +3133,21 @@ export function handlePendingTxsOffline(address) {
     });
   };
 }
+
+export function getAptosTokens(address) {
+  return function (dispatch) {
+    dispatch(showLoadingIndication());
+    return new Promise((resolve, reject) => {
+      background.getAptosTokens(address, function (err, result) {
+        dispatch(hideLoadingIndication());
+        if (err) {
+          log.error(err);
+          dispatch(displayWarning('Had a problem getting AutoAcceptToken.'));
+          reject(err);
+          return;
+        }
+        resolve(result);
+      });
+    });
+  };
+}

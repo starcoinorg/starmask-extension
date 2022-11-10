@@ -404,16 +404,15 @@ export default class AccountTracker {
       const res = await this._query.listResource(address);
       const ACCOUNT_BALANCE = '0x1::coin::CoinStore';
       const balanceKeys = [];
-      const NFT_GALLERY = '0x00000000000000000000000000000001::NFTGallery::NFTGallery';
-      const nftKeys = [];
+      const TOKEN_COLLECTIONS = '0x3::token::Collections';
       const NFT_IDENTIFIER = '0x00000000000000000000000000000001::IdentifierNFT::IdentifierNFT';
       const identifierNFTKeys = [];
       res.forEach((item) => {
         const key = item.type
         if (key.startsWith(ACCOUNT_BALANCE)) {
           balanceKeys.push(key);
-        } else if (key.startsWith(NFT_GALLERY)) {
-          nftKeys.push(key);
+        } else if (key.startsWith(TOKEN_COLLECTIONS)) {
+          nfts[address] = item.data?.create_collection_events?.counter;
         } else if (key.startsWith(NFT_IDENTIFIER)) {
           identifierNFTKeys.push(key);
         }
@@ -438,30 +437,6 @@ export default class AccountTracker {
         });
       }
       assets[address] = currentTokens;
-      nftKeys.forEach((key) => {
-        const T2 = key.substr(
-          NFT_GALLERY.length + 1,
-          key.length - NFT_GALLERY.length - 2,
-        );
-        const T2Arr = T2.split(',');
-        const meta = T2Arr[0].trim();
-        const body = T2Arr[1].trim();
-        const items = resources[key].json.items.map((item) => {
-          return {
-            id: item.id,
-            name: decodeNFTMeta(item.base_meta.name),
-            description: decodeNFTMeta(item.base_meta.description),
-            image: decodeNFTMeta(item.base_meta.image),
-            imageData: decodeNFTMeta(item.base_meta.image_data),
-          };
-        });
-        currentNFTGallery.push({
-          meta,
-          body,
-          items,
-        });
-      });
-      nfts[address] = currentNFTGallery;
 
       identifierNFTKeys.forEach((key) => {
         const T2 = key.substr(

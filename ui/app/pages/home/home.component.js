@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect, Route } from 'react-router-dom';
 import { formatDate } from '../../helpers/utils/util';
@@ -17,9 +16,6 @@ import ConnectedAccounts from '../connected-accounts';
 import { Tabs, Tab } from '../../components/ui/tabs';
 import { EthOverview } from '../../components/app/wallet-overview';
 import SwapsIntroPopup from '../swaps/intro-popup';
-import {
-  getRpcPrefsForCurrentProvider,
-} from '../../selectors';
 
 import {
   ASSET_ROUTE,
@@ -368,6 +364,16 @@ class Home extends PureComponent {
                   <Tab
                     activeClassName="home__tab--active"
                     className="home__tab"
+                    data-testid="home__nftGallery-tab"
+                    name={t('nftGallery')}
+                  >
+                    <NFTGallery
+                      onClickNFT={(nft) => history.push(`${ NFT_ROUTE }/${ nft }`)}
+                    />
+                  </Tab>
+                  <Tab
+                    activeClassName="home__tab--active"
+                    className="home__tab"
                     data-testid="home__activity-tab"
                     name={t('activity')}
                   >
@@ -384,18 +390,4 @@ class Home extends PureComponent {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    rpcPrefs: getRpcPrefsForCurrentProvider(state),
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Home);
+export default Home;

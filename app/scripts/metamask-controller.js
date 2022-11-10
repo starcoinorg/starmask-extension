@@ -946,6 +946,9 @@ export default class MetamaskController extends EventEmitter {
         approvalController.reject,
         approvalController,
       ),
+
+      // aptos
+      getAptosTokens: nodeify(this.getAptosTokens, this),
     };
   }
 
@@ -3023,6 +3026,29 @@ export default class MetamaskController extends EventEmitter {
           }
         },
       );
+    });
+  }
+
+  getAptosTokens(adress) {
+    const stcQuery = new StcQuery(this.provider);
+    return new Promise((resolve, reject) => {
+      const event_handle = '0x3::token::TokenStore'
+      const field_name = 'deposit_events'
+      const limit = 1000
+      stcQuery.sendAsync(
+        {
+          method: 'getEventsByEventHandle',
+          params: [adress, event_handle, field_name, limit],
+        },
+        (error, result) => {
+          if (error) {
+            log.error(error);
+            reject(error);
+          } else {
+            resolve(result);
+          }
+        },
+      )
     });
   }
 }

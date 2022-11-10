@@ -11,6 +11,7 @@ import {
   getUnapprovedTemplatedConfirmations,
   getWeb3ShimUsageStateForOrigin,
   unconfirmedTransactionsCountSelector,
+  getRpcPrefsForCurrentProvider,
 } from '../../selectors';
 
 import {
@@ -97,6 +98,7 @@ const mapStateToProps = (state) => {
     originOfCurrentTab,
     shouldShowWeb3ShimUsageNotification,
     pendingConfirmations,
+    rpcPrefs: getRpcPrefsForCurrentProvider(state),
   };
 };
 
