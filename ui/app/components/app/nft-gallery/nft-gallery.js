@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector, connect } from 'react-redux';
+import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
-import { getAptosTokens, getAptosTableItem } from '../../../store/actions';
+import { getAptosTokens, getAptosTableItem, updateNFTMetas, updateNFTs } from '../../../store/actions';
 import Button from '../../ui/button';
 import { ADD_NFT_ROUTE } from '../../../helpers/constants/routes';
 import { useMetricEvent } from '../../../hooks/useMetricEvent';
@@ -12,14 +12,25 @@ import {
   getCurrentNFTs,
   getTickerForCurrentProvider,
   getSelectedAddress,
-  getCurrentTokenHandle
+  getCurrentTokenHandle,
+  getNFTMetas,
 } from '../../../selectors';
 import NFTGallreyCard from '../nft-galler-card';
 
-const NFTGallery = ({ onClickNFT, getAptosTokens, getAptosTableItem, ticker, nfts, tokenHandle, address }) => {
+const NFTGallery = ({
+  onClickNFT,
+  getAptosTokens,
+  getAptosTableItem,
+  ticker,
+  nfts,
+  tokenHandle,
+  address,
+  nftMetas,
+  updateNFTMetas,
+  updateNFTs,
+}) => {
   const t = useI18nContext();
   const history = useHistory();
-  const [tokens, setTokens] = useState([]);
   const addNFTEvent = useMetricEvent({
     eventOpts: {
       category: 'Navigation',
@@ -49,14 +60,52 @@ const NFTGallery = ({ onClickNFT, getAptosTokens, getAptosTableItem, ticker, nft
           }))
             .then((result) => {
               console.log({ result })
+              const collectionInfos = {}
+              // const nfts = []
+              const collectionTokens = {
+              }
+              result.map((item) => {
+                if (!collectionInfos[item.collection]) {
+                  collectionInfos[item.collection] = {
+                    "description": "",
+                    "image": item.uri,
+                    "name": item.collection,
+                    "imageData": ""
+                  }
+                }
+                if (!collectionTokens[item.collection]) {
+                  collectionTokens[item.collection] = []
+                }
+                collectionTokens[item.collection].push({
+                  "id": item.sequence_number,
+                  "name": item.name,
+                  "description": "",
+                  "image": item.uri,
+                  "imageData": ""
+                })
+              })
+              console.log({ nftMetas, collectionTokens })
+              const newNFTMetas = { ...nftMetas, ...collectionInfos };
+              console.log({ nftMetas, newNFTMetas })
+              updateNFTMetas(newNFTMetas);
+              const collections = Object.keys(collectionTokens).map(k => ({
+                "meta": k,
+                "body": "",
+                "items": collectionTokens[k]
+              }
+              ))
+              const newNFTs = {
+                ...nfts, [address]: collections
+              }
+              console.log({ nfts, collections, newNFTs })
+              updateNFTs(newNFTs);
             })
-          // setTokens(res);
         })
         .catch((e) => console.error(e));
     }
   }, [ticker, address, tokenHandle]);
 
-  console.log({ nfts, tokenHandle, tokens })
+  console.log({ nfts, tokenHandle })
   return (
     <>
       <div className={classNames('nft-list__grid', 'nft-list__grid--3')}>
@@ -95,6 +144,8 @@ NFTGallery.propTypes = {
   ticker: PropTypes.string.isRequired,
   nfts: PropTypes.array.isRequired,
   tokenHandle: PropTypes.string.isRequired,
+  nftMetas: PropTypes.object,
+  updateNFTMetas: PropTypes.func,
 };
 
 
@@ -104,6 +155,7 @@ function mapStateToProps(state) {
     nfts: getCurrentNFTs(state),
     tokenHandle: getCurrentTokenHandle(state),
     address: getSelectedAddress(state),
+    nftMetas: getNFTMetas(state),
   };
 }
 
@@ -119,6 +171,8 @@ function mapDispatchToProps(dispatch) {
         return res;
       });
     },
+    updateNFTMetas: (nft) => dispatch(updateNFTMetas(nft)),
+    updateNFTs: (nft) => dispatch(updateNFTs(nft)),
   };
 }
 

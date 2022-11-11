@@ -3054,6 +3054,13 @@ export function updateNFTMetas(newNFTMetas) {
   };
 }
 
+export function updateNFTs(newNFTs) {
+  return {
+    type: actionConstants.UPDATE_NFTS,
+    newNFTs,
+  };
+}
+
 export function transferNFT(meta, body, id, to) {
   return async (dispatch, getState) => {
     try {

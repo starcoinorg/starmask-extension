@@ -383,6 +383,12 @@ export default function reduceMetamask(state = {}, action) {
         nftMetas: action.newNFTMetas,
       };
 
+    case actionConstants.UPDATE_NFTS:
+      return {
+        ...metamaskState,
+        nfts: action.newNFTs,
+      };
+
     case actionConstants.UPDATE_PREFERENCES: {
       return {
         ...metamaskState,
