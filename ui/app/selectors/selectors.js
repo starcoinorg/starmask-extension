@@ -524,3 +524,7 @@ export function getIsOneKey(state) {
   const keyring = getCurrentKeyring(state);
   return keyring.type === 'OneKey Hardware';
 }
+
+export function getCurrentTokenHandle(state) {
+  return state.starmask.tokenHandles && state.starmask.tokenHandles[state.starmask.selectedAddress] || '';
+}

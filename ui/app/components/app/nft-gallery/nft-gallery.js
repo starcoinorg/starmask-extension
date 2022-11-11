@@ -3,15 +3,20 @@ import PropTypes from 'prop-types';
 import { useSelector, connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
-import { getAptosTokens } from '../../../store/actions';
+import { getAptosTokens, getAptosTableItem } from '../../../store/actions';
 import Button from '../../ui/button';
 import { ADD_NFT_ROUTE } from '../../../helpers/constants/routes';
 import { useMetricEvent } from '../../../hooks/useMetricEvent';
 import { useI18nContext } from '../../../hooks/useI18nContext';
-import { getCurrentNFTs, getTickerForCurrentProvider, getSelectedAddress } from '../../../selectors';
+import {
+  getCurrentNFTs,
+  getTickerForCurrentProvider,
+  getSelectedAddress,
+  getCurrentTokenHandle
+} from '../../../selectors';
 import NFTGallreyCard from '../nft-galler-card';
 
-const NFTGallery = ({ onClickNFT, getAptosTokens, ticker, nfts, address }) => {
+const NFTGallery = ({ onClickNFT, getAptosTokens, getAptosTableItem, ticker, nfts, tokenHandle, address }) => {
   const t = useI18nContext();
   const history = useHistory();
   const [tokens, setTokens] = useState([]);
@@ -23,29 +28,35 @@ const NFTGallery = ({ onClickNFT, getAptosTokens, ticker, nfts, address }) => {
     },
   });
 
-  console.log({ ticker, address, nfts })
+  console.log({ ticker, address, nfts, tokenHandle })
   useEffect(() => {
-    console.log('useEffect', { ticker, address, nfts })
+    console.log('useEffect', { ticker, address, tokenHandle })
 
-    if (ticker === 'APT') {
-      console.log({ nfts })
-      if (typeof nfts === 'string' && parseInt(nfts) > 0) {
-        getAptosTokens(address)
-          .then((res) => {
-            setTokens(res);
-          })
-          .catch((e) => log.error(e));
-      }
-    } else if (ticker === 'STC') {
-      setTokens(nfts);
+    if (ticker === 'APT' && tokenHandle) {
+      console.log({ tokenHandle })
+      getAptosTokens(address)
+        .then((res) => {
+          console.log({ res })
+          Promise.all(res.map((item) => {
+            const sequence_number = item.sequence_number
+            const key = item.data.id.token_data_id
+            const key_type = "0x3::token::TokenDataId"
+            const value_type = "0x3::token::TokenData"
+            return getAptosTableItem(tokenHandle, key_type, value_type, key).then((data) => {
+              console.log('getAptosTableItem', data)
+              return { ...key, sequence_number, uri: data.uri }
+            })
+          }))
+            .then((result) => {
+              console.log({ result })
+            })
+          // setTokens(res);
+        })
+        .catch((e) => console.error(e));
     }
-  }, [ticker, address, nfts]);
+  }, [ticker, address, tokenHandle]);
 
-  // if (ticker === 'APT') {
-  //   console.log({ nfts })
-  //   // nfts = []
-  // }
-  console.log({ nfts, tokens })
+  console.log({ nfts, tokenHandle, tokens })
   return (
     <>
       <div className={classNames('nft-list__grid', 'nft-list__grid--3')}>
@@ -79,9 +90,11 @@ const NFTGallery = ({ onClickNFT, getAptosTokens, ticker, nfts, address }) => {
 NFTGallery.propTypes = {
   onClickNFT: PropTypes.func.isRequired,
   getAptosTokens: PropTypes.func.isRequired,
+  getAptosTableItem: PropTypes.func.isRequired,
   address: PropTypes.string.isRequired,
   ticker: PropTypes.string.isRequired,
-  nfts: PropTypes.oneOfType([PropTypes.array, PropTypes.string]).isRequired,
+  nfts: PropTypes.array.isRequired,
+  tokenHandle: PropTypes.string.isRequired,
 };
 
 
@@ -89,14 +102,20 @@ function mapStateToProps(state) {
   return {
     ticker: getTickerForCurrentProvider(state),
     nfts: getCurrentNFTs(state),
+    tokenHandle: getCurrentTokenHandle(state),
     address: getSelectedAddress(state),
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getAptosTokens: (address, ticker) => {
+    getAptosTokens: (address) => {
       return dispatch(getAptosTokens(address)).then((res) => {
+        return res;
+      });
+    },
+    getAptosTableItem: (token_data_handle, key_type, value_type, key) => {
+      return dispatch(getAptosTableItem(token_data_handle, key_type, value_type, key)).then((res) => {
         return res;
       });
     },

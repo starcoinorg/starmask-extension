@@ -3151,3 +3151,21 @@ export function getAptosTokens(address) {
     });
   };
 }
+
+export function getAptosTableItem(token_data_handle, key_type, value_type, key) {
+  return function (dispatch) {
+    dispatch(showLoadingIndication());
+    return new Promise((resolve, reject) => {
+      background.getAptosTableItem(token_data_handle, key_type, value_type, key, function (err, result) {
+        dispatch(hideLoadingIndication());
+        if (err) {
+          log.error(err);
+          dispatch(displayWarning('Had a problem getting AutoAcceptToken.'));
+          reject(err);
+          return;
+        }
+        resolve(result);
+      });
+    });
+  };
+}

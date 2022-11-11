@@ -63,6 +63,7 @@ export default class AccountTracker {
       accounts: {},
       nfts: {},
       nftIdentifier: {},
+      tokenHandles: {},
       currentBlockGasLimit: '',
     };
     this.store = new ObservableStore(initState);
@@ -393,7 +394,7 @@ export default class AccountTracker {
       return
     }
     const ticker = 'APT'
-    const { accounts, assets, nfts, nftIdentifier } = this.store.getState();
+    const { accounts, assets, tokenHandles, nftIdentifier } = this.store.getState();
     const currentTokens = {};
     const currentNFTGallery = [];
     const currentNFTIdentifier = [];
@@ -412,7 +413,7 @@ export default class AccountTracker {
         if (key.startsWith(ACCOUNT_BALANCE)) {
           balanceKeys.push(key);
         } else if (key.startsWith(TOKEN_COLLECTIONS)) {
-          nfts[address] = item.data?.create_collection_events?.counter;
+          tokenHandles[address] = item.data?.token_data?.handle;
         } else if (key.startsWith(NFT_IDENTIFIER)) {
           identifierNFTKeys.push(key);
         }
@@ -474,12 +475,12 @@ export default class AccountTracker {
       // HD account will get error: Invalid params: unable to parse AccoutAddress
       accounts[address] = { address, balance: '0x0', ticker };
       assets[address] = currentTokens;
-      nfts[address] = [];
+      tokenHandles[address] = [];
       nftIdentifier[address] = [];
     }
     // log.debug('before this.store.updateState', { tokens, accountTokens })
     // update accounts state
-    this.store.updateState({ accounts, assets, nfts, nftIdentifier });
+    this.store.updateState({ accounts, assets, tokenHandles, nftIdentifier });
   }
 
   /**

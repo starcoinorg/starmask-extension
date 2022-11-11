@@ -949,6 +949,7 @@ export default class MetamaskController extends EventEmitter {
 
       // aptos
       getAptosTokens: nodeify(this.getAptosTokens, this),
+      getAptosTableItem: nodeify(this.getAptosTableItem, this),
     };
   }
 
@@ -3039,6 +3040,26 @@ export default class MetamaskController extends EventEmitter {
         {
           method: 'getEventsByEventHandle',
           params: [adress, event_handle, field_name, limit],
+        },
+        (error, result) => {
+          if (error) {
+            log.error(error);
+            reject(error);
+          } else {
+            resolve(result);
+          }
+        },
+      )
+    });
+  }
+
+  getAptosTableItem(token_data_handle, key_type, value_type, key) {
+    const stcQuery = new StcQuery(this.provider);
+    return new Promise((resolve, reject) => {
+      stcQuery.sendAsync(
+        {
+          method: 'getTableItem',
+          params: [token_data_handle, key_type, value_type, key],
         },
         (error, result) => {
           if (error) {
