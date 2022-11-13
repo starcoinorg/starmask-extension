@@ -33,7 +33,7 @@ export default class NFTGalleryCard extends Component {
     const imageSources = (imageUrl) => {
       const urls = imageSourceUrls(imageUrl);
       return urls.map((url, index) => (
-        <source key={`${imageUrl}-${index}`} srcSet={url} />
+        <source key={`${ imageUrl }-${ index }`} srcSet={url} />
       ));
     };
 
@@ -50,7 +50,7 @@ export default class NFTGalleryCard extends Component {
   render() {
     const { nft, nftMetas, onClickNFT } = this.props;
 
-    let metaInfo = nftMetas[nft.meta];
+    let metaInfo = nftMetas && nftMetas[nft.meta];
     if (!metaInfo) {
       metaInfo = this.getNFTGalleryInfo(nft.meta, nft.body);
     }

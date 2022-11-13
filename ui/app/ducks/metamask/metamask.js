@@ -376,18 +376,6 @@ export default function reduceMetamask(state = {}, action) {
       };
     }
 
-    case actionConstants.UPDATE_NFT_METAS:
-      return {
-        ...metamaskState,
-        nftMetas: action.newNFTMetas,
-      };
-
-    case actionConstants.UPDATE_NFTS:
-      return {
-        ...metamaskState,
-        nfts: action.newNFTs,
-      };
-
     case actionConstants.UPDATE_PREFERENCES: {
       return {
         ...metamaskState,
