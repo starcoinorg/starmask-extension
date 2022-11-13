@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.1.1] - 2022-11-13
+
+- Bug fixes:
+
+  - Support display NFT Gallery and NFT Tokens in Aptos networks
+  - Do not display checksumAddress in Starcoin networks
+
 ## [5.1.0] - 2022-11-05
 
 - Bug fixes:
