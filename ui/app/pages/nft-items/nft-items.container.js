@@ -5,6 +5,7 @@ import {
   getCurrentNFTs,
   getNFTMetas,
   getSelectedIdentity,
+  getTickerForCurrentProvider,
 } from '../../selectors';
 import { updateSendNFT } from '../../store/actions';
 import NFTItems from './nft-items.component';
@@ -17,11 +18,13 @@ function mapStateToProps(state, ownProps) {
   const nfts = getCurrentNFTs(state);
   const nftMetas = getNFTMetas(state);
   const selectedIdentity = getSelectedIdentity(state);
+  const ticker = getTickerForCurrentProvider(state);
   return {
     nfts,
     selectedIdentity,
     nftMeta,
     nftMetas,
+    ticker,
   };
 }
 

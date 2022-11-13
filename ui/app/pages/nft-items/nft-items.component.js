@@ -18,6 +18,7 @@ export default class NFTItems extends Component {
     selectedIdentity: PropTypes.object,
     nftMetas: PropTypes.object,
     updateSendNFT: PropTypes.func,
+    ticker: PropTypes.string.isRequired,
     // updateNFTMetas: PropTypes.func,
   };
 
@@ -56,6 +57,7 @@ export default class NFTItems extends Component {
       selectedIdentity,
       nftMeta,
       nftMetas,
+      ticker,
     } = this.props;
     const selectedAccountName = selectedIdentity.name;
 
@@ -88,29 +90,33 @@ export default class NFTItems extends Component {
                   {this.renderPicture(nftItem.image, nftItem.imageData, nftGallery.image, nftGallery.imageData)}
                   <div className="nft-list__photo-card_body">
                     <div>{nftItem.name}</div>
-                    <div>
-                      <Button
-                        className="nft-list__create-gallery"
-                        type="secondary"
-                        rounded
-                        onClick={() => {
-                          this.context.trackEvent({
-                            event: 'Transfer NFT',
-                            category: 'Wallet',
-                            sensitiveProperties: {
-                              id: nftItem.id,
-                              meta: nftItem.meta,
-                              body: nftItem.body,
-                              from: selectedIdentity.address,
-                            },
-                          });
-                          updateSendNFT(nftItem);
-                          history.push(SEND_ROUTE);
-                        }}
-                      >
-                        {this.context.t('transferNFT')}
-                      </Button>
-                    </div>
+                    {
+                      ticker === 'STC' && (
+                        <div>
+                          <Button
+                            className="nft-list__create-gallery"
+                            type="secondary"
+                            rounded
+                            onClick={() => {
+                              this.context.trackEvent({
+                                event: 'Transfer NFT',
+                                category: 'Wallet',
+                                sensitiveProperties: {
+                                  id: nftItem.id,
+                                  meta: nftItem.meta,
+                                  body: nftItem.body,
+                                  from: selectedIdentity.address,
+                                },
+                              });
+                              updateSendNFT(nftItem);
+                              history.push(SEND_ROUTE);
+                            }}
+                          >
+                            {this.context.t('transferNFT')}
+                          </Button>
+                        </div>
+                      )
+                    }
                   </div>
                 </div>
               );

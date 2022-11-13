@@ -121,17 +121,21 @@ const NFTGallery = ({
           </div>
         )}
       </div>
-      <Button
-        className="nft-list__create-gallery"
-        type="secondary"
-        rounded
-        onClick={() => {
-          history.push(ADD_NFT_ROUTE);
-          addNFTEvent();
-        }}
-      >
-        {t('addNFTGallery')}
-      </Button>
+      {
+        ticker === 'STC' && (
+          <Button
+            className="nft-list__create-gallery"
+            type="secondary"
+            rounded
+            onClick={() => {
+              history.push(ADD_NFT_ROUTE);
+              addNFTEvent();
+            }}
+          >
+            {t('addNFTGallery')}
+          </Button>
+        )
+      }
     </>
   );
 };
