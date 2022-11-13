@@ -63,6 +63,7 @@ export default class AccountTracker {
       accounts: {},
       nfts: {},
       nftIdentifier: {},
+      nftMetas: {},
       tokenHandles: {},
       currentBlockGasLimit: '',
     };
@@ -475,7 +476,7 @@ export default class AccountTracker {
       // HD account will get error: Invalid params: unable to parse AccoutAddress
       accounts[address] = { address, balance: '0x0', ticker };
       assets[address] = currentTokens;
-      tokenHandles[address] = [];
+      tokenHandles[address] = '';
       nftIdentifier[address] = [];
     }
     // log.debug('before this.store.updateState', { tokens, accountTokens })
@@ -518,5 +519,15 @@ export default class AccountTracker {
     const ticker = this.getCurrentNetworkTicker()
     const accountsInCurrentTicker = Object.values(accounts).filter((account) => account.ticker === ticker)
     return accountsInCurrentTicker.length > 0
+  }
+
+  updateAccountNFTs(newNFTs) {
+    const { nfts } = this.store.getState();
+    this.store.updateState({ nfts: { ...nfts, ...newNFTs } });
+  }
+
+  updateAccountNFTMetas(newNFTMetas) {
+    const { nftMetas } = this.store.getState();
+    this.store.updateState({ nftMetas: { ...nftMetas, ...newNFTMetas } });
   }
 }

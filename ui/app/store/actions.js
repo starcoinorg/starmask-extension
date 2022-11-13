@@ -3047,17 +3047,26 @@ export function clearPendingNFTs() {
   };
 }
 
+
 export function updateNFTMetas(newNFTMetas) {
-  return {
-    type: actionConstants.UPDATE_NFT_METAS,
-    newNFTMetas,
+  return async (dispatch) => {
+    try {
+      await promisifiedBackground.updateAccountNFTMetas(newNFTMetas);
+      await forceUpdateMetamaskState(dispatch);
+    } catch (err) {
+      throw err;
+    }
   };
 }
 
 export function updateNFTs(newNFTs) {
-  return {
-    type: actionConstants.UPDATE_NFTS,
-    newNFTs,
+  return async (dispatch) => {
+    try {
+      await promisifiedBackground.updateAccountNFTs(newNFTs);
+      await forceUpdateMetamaskState(dispatch);
+    } catch (err) {
+      throw err;
+    }
   };
 }
 

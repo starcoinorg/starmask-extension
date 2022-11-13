@@ -16,7 +16,6 @@ export default function reduceMetamask(state = {}, action) {
     addressBook: [],
     contractExchangeRates: {},
     tokens: [],
-    nftMetas: {},
     pendingTokens: {},
     pendingNFTs: {},
     customNonceValue: '',

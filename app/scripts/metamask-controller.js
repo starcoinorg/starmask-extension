@@ -616,6 +616,7 @@ export default class MetamaskController extends EventEmitter {
    */
   getApi() {
     const {
+      accountTracker,
       alertController,
       approvalController,
       keyringController,
@@ -950,6 +951,14 @@ export default class MetamaskController extends EventEmitter {
       // aptos
       getAptosTokens: nodeify(this.getAptosTokens, this),
       getAptosTableItem: nodeify(this.getAptosTableItem, this),
+      updateAccountNFTs: nodeify(
+        accountTracker.updateAccountNFTs,
+        accountTracker,
+      ),
+      updateAccountNFTMetas: nodeify(
+        accountTracker.updateAccountNFTMetas,
+        accountTracker,
+      ),
     };
   }
 
