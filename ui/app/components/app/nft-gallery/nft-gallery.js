@@ -39,15 +39,10 @@ const NFTGallery = ({
     },
   });
 
-  console.log({ ticker, address, nfts, tokenHandle })
   useEffect(() => {
-    console.log('useEffect', { ticker, address, tokenHandle })
-
     if (ticker === 'APT' && tokenHandle) {
-      console.log({ tokenHandle })
       getAptosTokens(address)
         .then((res) => {
-          console.log({ res })
           Promise.all(res.map((item) => {
             const sequence_number = item.sequence_number
             const key = item.data.id.token_data_id
@@ -59,9 +54,7 @@ const NFTGallery = ({
             })
           }))
             .then((result) => {
-              console.log({ result })
               const collectionInfos = {}
-              // const nfts = []
               const collectionTokens = {
               }
               result.map((item) => {
@@ -76,17 +69,17 @@ const NFTGallery = ({
                 if (!collectionTokens[item.collection]) {
                   collectionTokens[item.collection] = []
                 }
-                collectionTokens[item.collection].push({
-                  "id": item.sequence_number,
-                  "name": item.name,
-                  "description": "",
-                  "image": item.uri,
-                  "imageData": ""
-                })
+                if (collectionTokens[item.collection].filter(t => t.name === item.name).length === 0) {
+                  collectionTokens[item.collection].push({
+                    "id": item.sequence_number,
+                    "name": item.name,
+                    "description": "",
+                    "image": item.uri,
+                    "imageData": ""
+                  })
+                }
               })
-              console.log({ nftMetas, collectionTokens })
               const newNFTMetas = { ...nftMetas, ...collectionInfos };
-              console.log({ nftMetas, newNFTMetas })
               updateNFTMetas(newNFTMetas);
               const collections = Object.keys(collectionTokens).map(k => ({
                 "meta": k,
@@ -97,7 +90,6 @@ const NFTGallery = ({
               const newNFTs = {
                 ...nfts, [address]: collections
               }
-              console.log({ nfts, collections, newNFTs })
               updateNFTs(newNFTs);
             })
         })
@@ -105,7 +97,6 @@ const NFTGallery = ({
     }
   }, [ticker, address, tokenHandle]);
 
-  console.log({ nfts, tokenHandle })
   return (
     <>
       <div className={classNames('nft-list__grid', 'nft-list__grid--3')}>
