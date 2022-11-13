@@ -460,6 +460,9 @@
   "create": {
     "message": "创建"
   },
+  "creator": {
+    "message": "创建者"
+  },
   "createAWallet": {
     "message": "创建钱包"
   },

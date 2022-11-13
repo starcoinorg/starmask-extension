@@ -49,7 +49,6 @@ const NFTGallery = ({
             const key_type = "0x3::token::TokenDataId"
             const value_type = "0x3::token::TokenData"
             return getAptosTableItem(tokenHandle, key_type, value_type, key).then((data) => {
-              console.log('getAptosTableItem', data)
               return { ...key, sequence_number, uri: data.uri }
             })
           }))
@@ -75,7 +74,8 @@ const NFTGallery = ({
                     "name": item.name,
                     "description": "",
                     "image": item.uri,
-                    "imageData": ""
+                    "imageData": "",
+                    "creator": item.creator,
                   })
                 }
               })

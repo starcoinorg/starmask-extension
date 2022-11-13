@@ -492,6 +492,9 @@
   "create": {
     "message": "Create"
   },
+  "creator": {
+    "message": "Creator"
+  },
   "createAWallet": {
     "message": "Create a Wallet"
   },

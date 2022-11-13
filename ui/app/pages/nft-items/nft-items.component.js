@@ -4,6 +4,7 @@ import { DEFAULT_ROUTE, SEND_ROUTE } from '../../helpers/constants/routes';
 import Button from '../../components/ui/button';
 import AssetNavigation from '../asset/components/asset-navigation';
 import { imageSourceUrls } from '../../helpers/utils/nft-util';
+import { shortenAddress } from '../../helpers/utils/util';
 
 export default class NFTItems extends Component {
   static contextTypes = {
@@ -115,6 +116,24 @@ export default class NFTItems extends Component {
                             {this.context.t('transferNFT')}
                           </Button>
                         </div>
+                      )
+                    }
+                    {
+                      ticker === 'APT' && (
+                        <>
+                          <div className="token-title">
+                            {this.context.t('nftGallery')}
+                          </div>
+                          <div>
+                            {nftItem.meta}
+                          </div>
+                          <div className="token-title">
+                            {this.context.t('creator')}
+                          </div>
+                          <div>
+                            {shortenAddress(nftItem.creator)}
+                          </div>
+                        </>
                       )
                     }
                   </div>

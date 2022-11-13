@@ -44,3 +44,10 @@
     font-weight: 900;
   }
 }
+
+.token-title {
+  @include H8;
+  font-weight: 900;
+  margin: 3px, 0 !important;
+  line-height: 240%;
+}
