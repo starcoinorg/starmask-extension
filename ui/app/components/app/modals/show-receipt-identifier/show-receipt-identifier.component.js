@@ -66,7 +66,7 @@ export default class ShowReceiptIdentifier extends Component {
         <span className="export-private-key-modal__account-name">{name}</span>
         <ReadOnlyInput
           wrapperClass="ellip-address-wrapper"
-          value={checksumAddress(address)}
+          value={address}
         />
         <div className="export-private-key-modal__divider" />
         <span className="export-private-key-modal__body-title">

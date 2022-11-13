@@ -145,7 +145,7 @@ class ExportPrivateKeyModal extends Component {
     const { name, address } = selectedIdentity;
 
     const { privateKey, showWarning } = this.state;
-    const checksummedAddress = ticker === 'APT' ? address : checksumAddress(address);
+    const checksummedAddress = address;
 
     return (
       <AccountModalContainer

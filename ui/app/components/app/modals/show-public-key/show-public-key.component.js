@@ -60,7 +60,7 @@ class ShowPublicKey extends Component {
       ticker,
     } = this.props;
     const { name, address } = selectedIdentity;
-    const checksummedAddress = ticker === 'APT' ? address : checksumAddress(address);
+    const checksummedAddress = address;
 
     return (
       <AccountModalContainer
