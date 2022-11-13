@@ -36,7 +36,7 @@ class SelectedAccount extends Component {
   render() {
     const { t } = this.context;
     const { selectedIdentity, ticker } = this.props;
-    const checksummedAddress = ticker === 'APT' ? selectedIdentity.address : checksumAddress(selectedIdentity.address);
+    const checksummedAddress = selectedIdentity.address;
 
     return (
       <div className="selected-account">

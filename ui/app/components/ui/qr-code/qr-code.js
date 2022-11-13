@@ -47,7 +47,7 @@ function QrCodeView(props) {
       <ReadOnlyInput
         wrapperClass="ellip-address-wrapper"
         autoFocus
-        value={checksumAddress(data)}
+        value={data}
       />
     </div>
   );
