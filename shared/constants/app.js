@@ -29,4 +29,6 @@ export const MESSAGE_TYPE = {
   SWITCH_STARCOIN_CHAIN: 'wallet_switchStarcoinChain',
   WATCH_ASSET: 'wallet_watchAsset',
   WATCH_ASSET_LEGACY: 'metamask_watchAsset',
+  APT_SIGN: 'apt_sign',
+
 };

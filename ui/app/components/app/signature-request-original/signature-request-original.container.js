@@ -36,6 +36,7 @@ function mapDispatchToProps(dispatch) {
 function mergeProps(stateProps, dispatchProps, ownProps) {
   const {
     signPersonalMessage,
+    signAptMessage,
     signTypedMessage,
     cancelPersonalMessage,
     cancelTypedMessage,
@@ -58,6 +59,9 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
   if (type === MESSAGE_TYPE.PERSONAL_SIGN) {
     cancel = cancelPersonalMessage;
     sign = signPersonalMessage;
+  } else if (type === MESSAGE_TYPE.APT_SIGN) {
+    cancel = cancelPersonalMessage;
+    sign = signAptMessage;
   } else if (type === MESSAGE_TYPE.ETH_SIGN_TYPED_DATA) {
     cancel = cancelTypedMessage;
     sign = signTypedMessage;

@@ -94,7 +94,7 @@ export default class SignatureRequestOriginal extends Component {
     return (
       <div className="request-signature__account">
         <div className="request-signature__account-text">
-          {`${this.context.t('account')}:`}
+          {`${ this.context.t('account') }:`}
         </div>
 
         <div className="request-signature__account-item">
@@ -106,6 +106,7 @@ export default class SignatureRequestOriginal extends Component {
 
   renderBalance = () => {
     const { conversionRate } = this.props;
+    const { txData: { type } } = this.props;
     const {
       fromAccount: { balance },
     } = this.state;
@@ -121,21 +122,22 @@ export default class SignatureRequestOriginal extends Component {
     return (
       <div className="request-signature__balance">
         <div className="request-signature__balance-text">
-          {`${this.context.t('balance')}:`}
+          {`${ this.context.t('balance') }:`}
         </div>
         <div className="request-signature__balance-value">
-          {`${balanceInStc} STC`}
+          {`${ balanceInStc } ${ type === MESSAGE_TYPE.PERSONAL_SIGN ? 'STC' : 'APT' }`}
         </div>
       </div>
     );
   };
 
   renderRequestIcon = () => {
-    const { requesterAddress } = this.props;
-
+    // const { requesterAddress } = this.props;
+    const { txData: { type } } = this.props;
+    const image = `./images/${ type === MESSAGE_TYPE.PERSONAL_SIGN ? 'stc_logo' : 'apt' }.svg`
     return (
       <div className="request-signature__request-icon">
-        <Identicon diameter={40} address={requesterAddress} />
+        <Identicon diameter={40} image={image} />
       </div>
     );
   };
@@ -161,7 +163,7 @@ export default class SignatureRequestOriginal extends Component {
     return (
       <div className="request-signature__origin-row">
         <div className="request-signature__origin-label">
-          {`${t('origin')}:`}
+          {`${ t('origin') }: `}
         </div>
         {originMetadata?.icon ? (
           <SiteIcon
@@ -213,7 +215,7 @@ export default class SignatureRequestOriginal extends Component {
 
   renderBody = () => {
     let rows;
-    let notice = `${this.context.t('youSign')}:`;
+    let notice = `${ this.context.t('youSign') }: `;
 
     const { txData } = this.props;
     const {
@@ -222,6 +224,10 @@ export default class SignatureRequestOriginal extends Component {
     } = txData;
 
     if (type === MESSAGE_TYPE.PERSONAL_SIGN) {
+      rows = [
+        { name: this.context.t('message'), value: this.msgHexToText(data) },
+      ];
+    } else if (type === MESSAGE_TYPE.APT_SIGN) {
       rows = [
         { name: this.context.t('message'), value: this.msgHexToText(data) },
       ];
@@ -265,9 +271,9 @@ export default class SignatureRequestOriginal extends Component {
             return (
               <div
                 className="request-signature__row"
-                key={`request-signature-row-${index}`}
+                key={`request - signature - row - ${ index } `}
               >
-                <div className="request-signature__row-title">{`${name}:`}</div>
+                <div className="request-signature__row-title">{`${ name }: `}</div>
                 <div className="request-signature__row-value">{value}</div>
               </div>
             );

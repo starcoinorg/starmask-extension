@@ -108,10 +108,10 @@ class ConfirmTxScreen extends Component {
       chainId,
     );
 
-    log.info(`rendering a combined ${unconfTxList.length} unconf msgs & txs`);
+    log.info(`rendering a combined ${ unconfTxList.length } unconf msgs & txs`);
 
     return transactionId
-      ? unconfTxList.find(({ id }) => `${id}` === transactionId)
+      ? unconfTxList.find(({ id }) => `${ id }` === transactionId)
       : unconfTxList[index];
   }
 
@@ -147,6 +147,14 @@ class ConfirmTxScreen extends Component {
     params.metamaskId = msgData.id;
     this.stopPropagation(event);
     return this.props.dispatch(actions.signPersonalMsg(params));
+  }
+
+  signAptMessage(msgData, event) {
+    log.info('conf-tx.js: signing apt message');
+    const params = msgData.msgParams;
+    params.metamaskId = msgData.id;
+    this.stopPropagation(event);
+    return this.props.dispatch(actions.signAptMsg(params));
   }
 
   signTypedMessage(msgData, event) {
@@ -210,7 +218,7 @@ class ConfirmTxScreen extends Component {
     let prevTx;
 
     if (transactionId) {
-      prevTx = currentNetworkTxList.find(({ id }) => `${id}` === transactionId);
+      prevTx = currentNetworkTxList.find(({ id }) => `${ id }` === transactionId);
     } else {
       const { index: prevIndex, unapprovedTxs: prevUnapprovedTxs } = prevProps;
       const prevUnconfTxList = txHelper(
@@ -273,6 +281,7 @@ class ConfirmTxScreen extends Component {
         blockGasLimit={blockGasLimit}
         signMessage={this.signMessage.bind(this, txData)}
         signPersonalMessage={this.signPersonalMessage.bind(this, txData)}
+        signAptMessage={this.signAptMessage.bind(this, txData)}
         signTypedMessage={this.signTypedMessage.bind(this, txData)}
         cancelMessage={this.cancelMessage.bind(this, txData)}
         cancelPersonalMessage={this.cancelPersonalMessage.bind(this, txData)}

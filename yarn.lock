@@ -2596,29 +2596,29 @@
   resolved "https://registry.npmjs.org/@sinonjs/text-encoding/-/text-encoding-0.7.1.tgz"
   integrity sha512-+iTbntw2IZPb/anVDbypzfQa+ay64MW0Zo8aJ8gZPWMMK6/OubMVb6lUPMagqjOPnmtauXnFCACVl3O7ogjeqQ==
 
-"@starcoin/aptos-hd-keyring@^1.6.3":
-  version "1.6.3"
-  resolved "https://registry.yarnpkg.com/@starcoin/aptos-hd-keyring/-/aptos-hd-keyring-1.6.3.tgz#20540bec602a58cc60d0d7c6a5e44aded2bfaa41"
-  integrity sha512-kI3b1OqSjtcbDQA8Xr+LNbqbfxM5UlQzMOvZzGG7Hk5/UX0P6hp5Ph8DojBrf/KXQuLUVaFUqi7gGmUiE2ijng==
+"@starcoin/aptos-hd-keyring@^1.6.5":
+  version "1.6.5"
+  resolved "https://registry.yarnpkg.com/@starcoin/aptos-hd-keyring/-/aptos-hd-keyring-1.6.5.tgz#f09e525354ac6f98846f8022c59cc16649e9a5d6"
+  integrity sha512-hvUBIwTBvpeXTaZQFWc1LrXoDDXq80rYUNug6y2LDnG3VxlPsxLThU3lLG9AWpjmEaDHSPDrBeXVISU7Hb3N6g==
   dependencies:
     "@ethersproject/bytes" "^5.0.6"
+    "@starcoin/aptos-simple-keyring" "^1.6.5"
     "@starcoin/starcoin" "^1.6.2"
-    "@starcoin/stc-simple-keyring" "^1.6.1"
     "@starcoin/stc-util" "^0.6.0"
-    "@starcoin/stc-wallet" "^1.3.0"
     bip39 "^2.2.0"
     eth-sig-util "^3.0.1"
     ethereumjs-util "^7.0.9"
     loglevel "^1.7.1"
 
-"@starcoin/aptos-simple-keyring@^1.6.2":
-  version "1.6.2"
-  resolved "https://registry.yarnpkg.com/@starcoin/aptos-simple-keyring/-/aptos-simple-keyring-1.6.2.tgz#38b893f6b17e1c8e7bd3b12a5a0b6e674cd23a6b"
-  integrity sha512-AGsBlOeyJWAvovSlO2NRL+81PEh1QC6P/ERZC3adTNGf39bWsUJGsqDJ248HNARLm5AL161jxe48qgY7QlS+zQ==
+"@starcoin/aptos-simple-keyring@^1.6.5":
+  version "1.6.5"
+  resolved "https://registry.yarnpkg.com/@starcoin/aptos-simple-keyring/-/aptos-simple-keyring-1.6.5.tgz#bdeebc8d157fd3ba2180a94f24ddf07589dba09a"
+  integrity sha512-nnxd2EAwAG7/yKBCxdT9MgX45GPVAPZfB/auYPdbjbYz5y98ICU1SHMu9VDo0J0Z5Rvl1/7pI8IUcFqi18BrEQ==
   dependencies:
     "@ethersproject/bytes" "^5.0.6"
     "@starcoin/starcoin" "^1.6.2"
-    "@starcoin/stc-util" "^0.3.0"
+    "@starcoin/stc-ed25519" "^0.1.0"
+    "@starcoin/stc-util" "^0.6.0"
     "@starcoin/stc-wallet" "^1.3.0"
     eth-sig-util "^2.5.0"
     ethereumjs-abi "^0.6.5"
@@ -2824,10 +2824,10 @@
     pump "^3.0.0"
     webextension-polyfill-ts "^0.25.0"
 
-"@starcoin/stc-json-rpc-middleware@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.npmjs.org/@starcoin/stc-json-rpc-middleware/-/stc-json-rpc-middleware-0.2.0.tgz#4dc6c310139ed5287a65a84f8001d3438a096de0"
-  integrity sha512-NEi94uTPYuG+xJTyeUjaDmI0g5mw8AQeeedYhGfKBLOVwR1CEWZZNNegNFTkEPt+D39Ltm+zi15sYXERDIui3g==
+"@starcoin/stc-json-rpc-middleware@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@starcoin/stc-json-rpc-middleware/-/stc-json-rpc-middleware-0.3.0.tgz#b4544b9f7f3c47e1d1a0e21c1b1550384de0ba02"
+  integrity sha512-3L6OkN7t7Kp3kIxckwZwqGYENqWidGqO7CAMD2LvvIRwduHHIFf/8gtA56qSKvkczgoNClggdqEK6qzo52Q8Ng==
   dependencies:
     btoa "^1.2.1"
     clone "^2.1.1"
@@ -2851,13 +2851,13 @@
     json-rpc-engine "^5.3.0"
     node-fetch "^2.6.1"
 
-"@starcoin/stc-keyring-controller@^1.7.3":
-  version "1.7.3"
-  resolved "https://registry.yarnpkg.com/@starcoin/stc-keyring-controller/-/stc-keyring-controller-1.7.3.tgz#45be0428a6d5f14e7832edbd5fddd0a409c73c5c"
-  integrity sha512-2VMrehDmo+HEqE/TnWm95fBLIruc4QItarL/s6pmM4lYq6p+oSRgSjwy846F5GdmndCMW6VoVos+e6P/yFLwCg==
+"@starcoin/stc-keyring-controller@^1.7.4":
+  version "1.7.4"
+  resolved "https://registry.yarnpkg.com/@starcoin/stc-keyring-controller/-/stc-keyring-controller-1.7.4.tgz#aee17d5260229cd83eb678d213a4e534215c4c1b"
+  integrity sha512-MuVcGKmTTbYUmcti0Ljh0ha25r/q+Ty69+qUnn6WbvP6tzMYDv20GnxoO3zeP9/jaOWY78oprfHQ4Ltj5N94fg==
   dependencies:
-    "@starcoin/aptos-hd-keyring" "^1.6.3"
-    "@starcoin/aptos-simple-keyring" "^1.6.2"
+    "@starcoin/aptos-hd-keyring" "^1.6.5"
+    "@starcoin/aptos-simple-keyring" "^1.6.5"
     "@starcoin/stc-hd-keyring" "^1.6.1"
     "@starcoin/stc-simple-keyring" "^1.6.1"
     "@starcoin/stc-util" "^0.3.0"

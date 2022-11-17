@@ -14,6 +14,7 @@ export default function createMetamaskMiddleware({
   processTypedMessageV3,
   processTypedMessageV4,
   processPersonalMessage,
+  processAptSignMessage,
   processDecryptMessage,
   processEncryptionPublicKey,
   getPendingNonce,
@@ -23,7 +24,7 @@ export default function createMetamaskMiddleware({
     createScaffoldMiddleware({
       // staticSubprovider
       eth_syncing: false,
-      web3_clientVersion: `MetaMask/v${version}`,
+      web3_clientVersion: `MetaMask/v${ version }`,
     }),
     createWalletSubprovider({
       getAccounts,
@@ -33,6 +34,7 @@ export default function createMetamaskMiddleware({
       processTypedMessageV3,
       processTypedMessageV4,
       processPersonalMessage,
+      processAptSignMessage,
       processDecryptMessage,
       processEncryptionPublicKey,
     }),

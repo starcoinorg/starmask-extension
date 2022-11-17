@@ -138,4 +138,5 @@ export const SAFE_METHODS = [
   'web3_clientVersion',
   'web3_sha3',
   'getAccountResource',
+  'apt_sign',
 ];

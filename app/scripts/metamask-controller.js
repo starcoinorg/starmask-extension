@@ -539,6 +539,7 @@ export default class MetamaskController extends EventEmitter {
       processTypedMessageV3: this.newUnsignedTypedMessage.bind(this),
       processTypedMessageV4: this.newUnsignedTypedMessage.bind(this),
       processPersonalMessage: this.newUnsignedPersonalMessage.bind(this),
+      processAptSignMessage: this.newUnsignedPersonalMessage.bind(this),
       processDecryptMessage: this.newRequestDecryptMessage.bind(this),
       processEncryptionPublicKey: this.newRequestEncryptionPublicKey.bind(this),
       getPendingNonce: this.getPendingNonce.bind(this),
@@ -804,6 +805,7 @@ export default class MetamaskController extends EventEmitter {
 
       // personalMessageManager
       signPersonalMessage: nodeify(this.signPersonalMessage, this),
+      signAptMessage: nodeify(this.signAptMessage, this),
       cancelPersonalMessage: this.cancelPersonalMessage.bind(this),
 
       // typedMessageManager
@@ -1673,8 +1675,8 @@ export default class MetamaskController extends EventEmitter {
    * @param {Object} msgParams - The params of the message to sign & return to the Dapp.
    * @returns {Promise<Object>} A full state update.
    */
-  signPersonalMessage(msgParams) {
-    log.info('StarMaskController - signPersonalMessage');
+  async signPersonalMessage(msgParams) {
+    log.info('StarMaskController - signPersonalMessage', { msgParams });
     const msgId = msgParams.metamaskId;
     const signingMessage = new starcoin_types.SigningMessage(arrayify(msgParams.data));
     const chainId = parseInt(msgParams.networkId, 10);
@@ -1691,6 +1693,58 @@ export default class MetamaskController extends EventEmitter {
       .then((payload) => {
         const { publicKey, signature } = payload;
         return utils.signedMessage.generateSignedMessage(signingMessage, chainId, publicKey, signature)
+      })
+      .then((rawSig) => {
+        // tells the listener that the message has been signed
+        // and can be returned to the dapp
+        this.personalMessageManager.setMsgStatusSigned(msgId, rawSig);
+        return this.getState();
+      });
+  }
+
+  async signAptMessage(msgParams) {
+    // log.info('StarMaskController - signAptMessage', { msgParams });
+    const msgId = msgParams.metamaskId;
+    const chainId = parseInt(this.networkController.getCurrentChainId(), 16);
+    // sets the status op the message to 'approved'
+    // and removes the metamaskId for signing
+    const signMessageResponse = {
+      prefix: 'APTOS',
+      address: msgParams.from,
+      application: msgParams.origin,
+      chainId: chainId,
+      message: msgParams.message,
+      nonce: msgParams.nonce,
+    }
+    return this.personalMessageManager
+      .approveMessage(msgParams)
+      .then((cleanMsgParams) => {
+        // signs the message
+        delete cleanMsgParams.data
+        const getFullMessage = (msgPayload) => {
+          const fullMessage = [signMessageResponse.prefix]
+          if (msgPayload.address) {
+            fullMessage.push(`address: ${ signMessageResponse.address }`)
+          }
+          if (msgPayload.application) {
+            fullMessage.push(`application: ${ signMessageResponse.application }`)
+          }
+          if (msgPayload.chainId) {
+            fullMessage.push(`chainId: ${ signMessageResponse.chainId }`)
+          }
+          fullMessage.push(`message: ${ signMessageResponse.message }`)
+          fullMessage.push(`nonce: ${ signMessageResponse.nonce }`)
+          return fullMessage.join('\n')
+        }
+        const fullMsg = getFullMessage(cleanMsgParams)
+        cleanMsgParams.rawData = fullMsg
+        signMessageResponse.fullMessage = fullMsg
+        return this.keyringController.signPersonalMessage(cleanMsgParams);
+      })
+      .then((payload) => {
+        const { signature } = payload;
+        signMessageResponse.signature = signature
+        return signMessageResponse
       })
       .then((rawSig) => {
         // tells the listener that the message has been signed

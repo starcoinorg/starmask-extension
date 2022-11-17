@@ -576,6 +576,30 @@ export function signPersonalMsg(msgData) {
   };
 }
 
+export function signAptMsg(msgData) {
+  log.debug('action - signAptMsg');
+  return async (dispatch) => {
+    dispatch(showLoadingIndication());
+    log.debug(`actions calling background.signAptMessage`);
+
+    let newState;
+    try {
+      newState = await promisifiedBackground.signAptMessage(msgData);
+    } catch (error) {
+      log.error(error);
+      dispatch(displayWarning(error.message));
+      throw error;
+    } finally {
+      dispatch(hideLoadingIndication());
+    }
+
+    dispatch(updateMetamaskState(newState));
+    dispatch(completedTx(msgData.metamaskId));
+    dispatch(closeCurrentNotificationWindow());
+    return msgData;
+  };
+}
+
 export function decryptMsgInline(decryptedMsgData) {
   log.debug('action - decryptMsgInline');
   return async (dispatch) => {

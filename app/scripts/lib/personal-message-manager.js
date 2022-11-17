@@ -94,7 +94,7 @@ export default class PersonalMessageManager extends EventEmitter {
         return;
       }
       const msgId = this.addUnapprovedMessage(msgParams, req);
-      this.once(`${msgId}:finished`, (data) => {
+      this.once(`${ msgId }:finished`, (data) => {
         switch (data.status) {
           case 'signed':
             resolve(data.rawSig);
@@ -109,9 +109,9 @@ export default class PersonalMessageManager extends EventEmitter {
           default:
             reject(
               new Error(
-                `StarMask Message Signature: Unknown problem: ${JSON.stringify(
+                `StarMask Message Signature: Unknown problem: ${ JSON.stringify(
                   msgParams,
-                )}`,
+                ) }`,
               ),
             );
         }
@@ -130,11 +130,11 @@ export default class PersonalMessageManager extends EventEmitter {
    *
    */
   addUnapprovedMessage(msgParams, req) {
-    log.debug(
-      `PersonalMessageManager addUnapprovedMessage: ${JSON.stringify(
-        msgParams,
-      )}`,
-    );
+    // log.debug(
+    //   `PersonalMessageManager addUnapprovedMessage: ${ JSON.stringify(
+    //     msgParams,
+    //   ) }`,
+    // );
     // add origin from request
     if (req) {
       msgParams.origin = req.origin;
@@ -148,7 +148,7 @@ export default class PersonalMessageManager extends EventEmitter {
       msgParams,
       time,
       status: 'unapproved',
-      type: MESSAGE_TYPE.PERSONAL_SIGN,
+      type: msgParams.message ? MESSAGE_TYPE.APT_SIGN : MESSAGE_TYPE.PERSONAL_SIGN,
     };
     this.addMsg(msgData);
 
@@ -267,14 +267,14 @@ export default class PersonalMessageManager extends EventEmitter {
     const msg = this.getMsg(msgId);
     if (!msg) {
       throw new Error(
-        `PersonalMessageManager - Message not found for id: "${msgId}".`,
+        `PersonalMessageManager - Message not found for id: "${ msgId }".`,
       );
     }
     msg.status = status;
     this._updateMsg(msg);
-    this.emit(`${msgId}:${status}`, msg);
+    this.emit(`${ msgId }:${ status }`, msg);
     if (status === 'rejected' || status === 'signed') {
-      this.emit(`${msgId}:finished`, msg);
+      this.emit(`${ msgId }:finished`, msg);
     }
   }
 
