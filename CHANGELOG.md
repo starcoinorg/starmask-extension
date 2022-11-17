@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.1.2] - 2022-11-18
+
+- Bug fixes:
+
+  - Support signMessage in Aptos networks
+
 ## [5.1.1] - 2022-11-13
 
 - Bug fixes:
