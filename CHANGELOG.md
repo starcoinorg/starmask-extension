@@ -1,10 +1,11 @@
 # Changelog
 
-## [5.1.2] - 2022-11-18
+## [5.1.3] - 2022-11-21
 
-- Bug fixes:
+- New Features:
 
   - Support signMessage in Aptos networks
+  - Support functionAptos in txParams for Dapps to sendUncheckedTransaction in Aptos networks
 
 ## [5.1.1] - 2022-11-13
 
