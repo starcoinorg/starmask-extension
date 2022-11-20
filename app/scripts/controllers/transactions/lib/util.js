@@ -11,6 +11,7 @@ const normalizers = {
   nonce: (nonce) => addHexPrefix(nonce),
   value: (value) => addHexPrefix(value),
   data: (data) => addHexPrefix(data),
+  functionAptos: (functionAptos) => functionAptos,
   multiSignData: (multiSignData) => multiSignData,
   gas: (gas) => addHexPrefix(gas),
   gasPrice: (gasPrice) => addHexPrefix(gasPrice),
@@ -48,9 +49,9 @@ export function validateTxParams(txParams) {
       'Invalid transaction params: must be an object.',
     );
   }
-  if (!txParams.to && !txParams.data) {
+  if (!txParams.to && !txParams.data && !txParams.functionAptos) {
     throw ethErrors.rpc.invalidParams(
-      'Invalid transaction params: must specify "data" for contract deployments, or "to" (and optionally "data") for all other types of transactions.',
+      'Invalid transaction params: must specify "data" or "functionAptos" for contract deployments, or "to" (and optionally "data") for all other types of transactions.',
     );
   }
 

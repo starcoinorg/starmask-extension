@@ -387,7 +387,7 @@ export default class ConfirmTransactionBase extends Component {
   renderData(functionType) {
     const { t } = this.context;
     const {
-      txData: { txParams: { data } = {} } = {},
+      txData: { txParams: { data, functionAptos } = {} } = {},
       methodData: { params } = {},
       hideData,
       dataComponent,
@@ -416,10 +416,26 @@ export default class ConfirmTransactionBase extends Component {
               </div>
             </div>
           )}
-          <div className="confirm-page-container-content__data-box-label">
-            {`${ t('hexData') }: ${ ethUtil.toBuffer(data).length } bytes`}
-          </div>
-          <div className="confirm-page-container-content__data-box">{data}</div>
+          {functionAptos && (
+            <div className="confirm-page-container-content__data-box">
+              <div className="confirm-page-container-content__data-field-label">
+                {`${ t('parameters') }:`}
+              </div>
+              <div>
+                <pre>{JSON.stringify(functionAptos, null, 2)}</pre>
+              </div>
+            </div>
+          )}
+          {
+            data ? (
+              <>
+                <div className="confirm-page-container-content__data-box-label">
+                  {`${ t('hexData') }: ${ ethUtil.toBuffer(data).length } bytes`}
+                </div>
+                <div className="confirm-page-container-content__data-box">{data}</div>
+              </>
+            ) : null
+          }
         </div>
       )
     );

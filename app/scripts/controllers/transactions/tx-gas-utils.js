@@ -205,6 +205,8 @@ export default class TxGasUtil {
       const deserializer = new BCS.Deserializer(arrayify(txMeta.txParams.data));
       const entryFunctionPayload = TxnBuilderTypes.TransactionPayloadEntryFunction.deserialize(deserializer);
       rawTxn = await client.generateRawTransaction(txMeta.txParams.from, entryFunctionPayload);
+    } else if (txMeta.txParams.functionAptos) {
+      rawTxn = await client.generateTransaction(txMeta.txParams.from, txMeta.txParams.functionAptos);
     } else {
       if (txMeta.txParams.to
         && txMeta.type === TRANSACTION_TYPES.SENT_ETHER) {

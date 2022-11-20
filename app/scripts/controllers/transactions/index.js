@@ -177,7 +177,7 @@ export default class TransactionController extends EventEmitter {
    */
   async newUnapprovedTransaction(txParams, opts = {}) {
     log.debug(
-      'StarMaskController newUnapprovedTransaction', { txParams, origin }
+      'StarMaskController newUnapprovedTransaction', { txParams, opts }
     );
 
     const initialTxMeta = await this.addUnapprovedTransaction(
@@ -767,6 +767,8 @@ export default class TransactionController extends EventEmitter {
       const deserializer = new BCS.Deserializer(arrayify(txMeta.txParams.data));
       const entryFunctionPayload = TxnBuilderTypes.TransactionPayloadEntryFunction.deserialize(deserializer);
       rawTxn = await client.generateRawTransaction(txMeta.txParams.from, entryFunctionPayload);
+    } else if (txMeta.txParams.functionAptos) {
+      rawTxn = await client.generateTransaction(txMeta.txParams.from, txMeta.txParams.functionAptos);
     } else {
       if (txMeta.txParams.to
         && txMeta.type === TRANSACTION_TYPES.SENT_ETHER) {
@@ -1118,19 +1120,23 @@ export default class TransactionController extends EventEmitter {
    * @returns {InferTransactionTypeResult}
    */
   async _determineTransactionType(txParams) {
-    const { data, to, type } = txParams;
+    const { data, functionAptos, to, type } = txParams;
     const networkTicker = this._getCurrentNetworkTicker()
     let name;
     try {
       // name = data && hstInterface.parseTransaction({ data }).name;
-      if (data) {
+      if (data || functionAptos) {
         if (type && type === TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER) {
           name = type;
         } else {
           if (networkTicker === 'APT') {
-            const deserializer = new BCS.Deserializer(arrayify(data));
-            const entryFunctionPayload = TxnBuilderTypes.TransactionPayloadEntryFunction.deserialize(deserializer);
-            if (entryFunctionPayload instanceof TxnBuilderTypes.TransactionPayloadEntryFunction) {
+            if (data) {
+              const deserializer = new BCS.Deserializer(arrayify(data));
+              const entryFunctionPayload = TxnBuilderTypes.TransactionPayloadEntryFunction.deserialize(deserializer);
+              if (entryFunctionPayload instanceof TxnBuilderTypes.TransactionPayloadEntryFunction) {
+                name = TRANSACTION_TYPES.CONTRACT_INTERACTION;
+              }
+            } else if (functionAptos) {
               name = TRANSACTION_TYPES.CONTRACT_INTERACTION;
             }
           } else {
@@ -1150,7 +1156,6 @@ export default class TransactionController extends EventEmitter {
     } catch (error) {
       log.debug('Failed to parse transaction data.', error, data);
     }
-
     const tokenMethodName = [
       TRANSACTION_TYPES.TOKEN_METHOD_APPROVE,
       TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER,
@@ -1159,11 +1164,10 @@ export default class TransactionController extends EventEmitter {
       TRANSACTION_TYPES.DEPLOY_CONTRACT,
     ].find((methodName) => methodName === name && name.toLowerCase());
 
-    log.debug({ tokenMethodName });
     let result;
-    if (data && tokenMethodName) {
+    if ((data || functionAptos) && tokenMethodName) {
       result = tokenMethodName;
-    } else if (data && !to) {
+    } else if ((data || functionAptos) && !to) {
       result = TRANSACTION_TYPES.DEPLOY_CONTRACT;
     }
 
