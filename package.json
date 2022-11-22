@@ -51,7 +51,7 @@
     "@starcoin/contract-metadata": "^0.6.0",
     "@starcoin/starcoin": "2.3.1",
     "@starcoin/stc-block-tracker": "^0.1.0",
-    "@starcoin/stc-inpage-provider": "^0.3.4",
+    "@starcoin/stc-inpage-provider": "^0.4.0",
     "@starcoin/stc-json-rpc": "^0.2.4",
     "@starcoin/stc-json-rpc-middleware": "^0.3.0",
     "@starcoin/stc-keyring-controller": "^1.7.4",
