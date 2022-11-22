@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.1.4] - 2022-11-22
+
+- New Features:
+
+  - Support aptos-wallet-adapter
+
 ## [5.1.3] - 2022-11-21
 
 - New Features:
