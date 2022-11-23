@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.1.5] - 2022-11-23
+
+- Bug fixes:
+
+  - Display client.simulateTransaction fail reason in Aptos networks
+
 ## [5.1.4] - 2022-11-22
 
 - New Features:
