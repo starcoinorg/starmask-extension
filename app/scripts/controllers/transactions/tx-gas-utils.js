@@ -228,22 +228,27 @@ export default class TxGasUtil {
     })
     const transactionRespSimulation = result[0]
     // log.debug('simulated', transactionRespSimulation.gas_used)
-    const estimatedGasHex = addHexPrefix(new BigNumber(transactionRespSimulation.gas_used).toString(16))
+    let estimatedGasHex
     let tokenChanges
-    // const queryTokenChanges = (transactionRespSimulation) => {
-    //   const matches = transactionRespSimulation.changes.reduce((acc, item) => {
-    //     const reg = /^0x1\:\:coin\:\:CoinStore<(.*)>$/i
-    //     const result = item.data?.type.match(reg)
-    //     // log.debug({ item, result }, txMeta.txParams.from, hexStripZeros(txMeta.txParams.from), item.address, hexStripZeros(txMeta.txParams.from) === item.address)
-    //     if (result && result.length === 2 && hexStripZeros(txMeta.txParams.from) === item.address) {
-    //       acc[result[1]] = addHexPrefix(new BigNumber(item.data.data.coin.value).toString(16))
-    //     }
-    //     return acc
-    //   }, {})
-    //   return matches
-    // }
-    // const tokenChanges2 = queryTokenChanges(transactionRespSimulation)
-    // log.debug({ tokenChanges2 })
+    if (transactionRespSimulation.success) {
+      estimatedGasHex = addHexPrefix(new BigNumber(transactionRespSimulation.gas_used).toString(16))
+      // const queryTokenChanges = (transactionRespSimulation) => {
+      //   const matches = transactionRespSimulation.changes.reduce((acc, item) => {
+      //     const reg = /^0x1\:\:coin\:\:CoinStore<(.*)>$/i
+      //     const result = item.data?.type.match(reg)
+      //     // log.debug({ item, result }, txMeta.txParams.from, hexStripZeros(txMeta.txParams.from), item.address, hexStripZeros(txMeta.txParams.from) === item.address)
+      //     if (result && result.length === 2 && hexStripZeros(txMeta.txParams.from) === item.address) {
+      //       acc[result[1]] = addHexPrefix(new BigNumber(item.data.data.coin.value).toString(16))
+      //     }
+      //     return acc
+      //   }, {})
+      //   return matches
+      // }
+      // const tokenChanges2 = queryTokenChanges(transactionRespSimulation)
+      // log.debug({ tokenChanges2 })
+    } else {
+      throw new Error(`simulateTransaction failed: ${ transactionRespSimulation.vm_status } ${ JSON.stringify({ gas_unit_price: transactionRespSimulation.gas_unit_price, max_gas_amount: transactionRespSimulation.max_gas_amount }) }`)
+    }
     return { estimatedGasHex, tokenChanges };
   }
 
