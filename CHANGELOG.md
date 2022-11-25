@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.1.6] - 2022-11-25
+
+- Bug fixes:
+
+  - estimatedGasHex should be gas_used \* gas_unit_price
+
 ## [5.1.5] - 2022-11-23
 
 - Bug fixes:
