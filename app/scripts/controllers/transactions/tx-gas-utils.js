@@ -227,11 +227,13 @@ export default class TxGasUtil {
       estimatePrioritizedGasUnitPrice: true,
     })
     const transactionRespSimulation = result[0]
+    // log.debug({ transactionRespSimulation })
+    // log.debug(parseInt(transactionRespSimulation.gas_used) * parseInt(transactionRespSimulation.gas_unit_price))
     // log.debug('simulated', transactionRespSimulation.gas_used)
     let estimatedGasHex
     let tokenChanges
     if (transactionRespSimulation.success) {
-      estimatedGasHex = addHexPrefix(new BigNumber(transactionRespSimulation.gas_used).toString(16))
+      estimatedGasHex = addHexPrefix(new BigNumber(parseInt(transactionRespSimulation.gas_used) * parseInt(transactionRespSimulation.gas_unit_price)).toString(16))
       // const queryTokenChanges = (transactionRespSimulation) => {
       //   const matches = transactionRespSimulation.changes.reduce((acc, item) => {
       //     const reg = /^0x1\:\:coin\:\:CoinStore<(.*)>$/i
