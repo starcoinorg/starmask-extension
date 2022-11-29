@@ -312,13 +312,12 @@ export default class TransactionController extends EventEmitter {
    * @returns {Promise<object>} resolves with txMeta
    */
   async addTxGasDefaults(txMeta, getCodeResponse) {
-    const defaultGasPrice = await this._getDefaultGasPrice(txMeta);
     const {
+      gasUnitPrice: defaultGasPrice,
       gasLimit: defaultGasLimit,
       tokenChanges,
       simulationFails,
     } = await this._getDefaultGasLimit(txMeta, getCodeResponse);
-
     // eslint-disable-next-line no-param-reassign
     txMeta = this.txStateManager.getTx(txMeta.id);
     if (simulationFails) {
@@ -383,6 +382,8 @@ export default class TransactionController extends EventEmitter {
 
     const {
       blockGasLimit,
+      gasUsed,
+      gasUnitPrice,
       estimatedGasHex,
       tokenChanges,
       simulationFails,
@@ -390,11 +391,11 @@ export default class TransactionController extends EventEmitter {
 
     // add additional gas buffer to our estimation for safety
     const gasLimit = this.txGasUtil.addGasBuffer(
-      addHexPrefix(estimatedGasHex),
+      gasUsed,
       blockGasLimit,
       txMeta.txParams.addGasBufferMultiplier && parseFloat(txMeta.txParams.addGasBufferMultiplier) > 0 ? parseFloat(txMeta.txParams.addGasBufferMultiplier) : 1.5
     );
-    return { gasLimit, tokenChanges, simulationFails };
+    return { gasUsed, gasUnitPrice, gasLimit, tokenChanges, simulationFails };
   }
 
   /**
@@ -766,9 +767,9 @@ export default class TransactionController extends EventEmitter {
     if (txMeta.txParams.data) {
       const deserializer = new BCS.Deserializer(arrayify(txMeta.txParams.data));
       const entryFunctionPayload = TxnBuilderTypes.TransactionPayloadEntryFunction.deserialize(deserializer);
-      rawTxn = await client.generateRawTransaction(txMeta.txParams.from, entryFunctionPayload);
+      rawTxn = await client.generateRawTransaction(txMeta.txParams.from, entryFunctionPayload, { gas_unit_price: (hexToDecimal(txMeta.txParams.gasPrice)).toString(), max_gas_amount: (hexToDecimal(txMeta.txParams.gas)).toString() });
     } else if (txMeta.txParams.functionAptos) {
-      rawTxn = await client.generateTransaction(txMeta.txParams.from, txMeta.txParams.functionAptos);
+      rawTxn = await client.generateTransaction(txMeta.txParams.from, txMeta.txParams.functionAptos, { gas_unit_price: (hexToDecimal(txMeta.txParams.gasPrice)).toString(), max_gas_amount: (hexToDecimal(txMeta.txParams.gas)).toString() });
     } else {
       if (txMeta.txParams.to
         && txMeta.type === TRANSACTION_TYPES.SENT_ETHER) {

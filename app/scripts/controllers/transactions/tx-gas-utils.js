@@ -68,11 +68,15 @@ export default class TxGasUtil {
     let estimatedGasHex = bnToHex(saferGasLimitBN);
     let tokenChanges;
     let simulationFails;
+    let gasUsed;
+    let gasUnitPrice;
     try {
       const result = await this.estimateTxGas(txMeta);
+      gasUsed = result.gasUsed;
+      gasUnitPrice = result.gasUnitPrice;
       estimatedGasHex = result.estimatedGasHex;
       tokenChanges = result.tokenChanges;
-
+      block.gasLimit = result.maxGasAmount
     } catch (error) {
       log.warn({ error });
       simulationFails = {
@@ -82,7 +86,7 @@ export default class TxGasUtil {
       };
     }
 
-    return { blockGasLimit: block.gasLimit, estimatedGasHex, tokenChanges, simulationFails };
+    return { blockGasLimit: block.gasLimit, gasUsed, gasUnitPrice, estimatedGasHex, tokenChanges, simulationFails };
   }
 
   /**
@@ -111,7 +115,7 @@ export default class TxGasUtil {
     // // estimate tx gas requirements
     // return await this.query.estimateGas(txParams);
 
-    const maxGasAmount = 40000000;
+    let maxGasAmount = 40000000;
     const gasUnitPrice = txMeta.txParams.gasPrice || 1;
     const expirationTimestampSecs = await this.getExpirationTimestampSecs(txMeta.txParams);
     const selectedAddressHex = txMeta.txParams.from;
@@ -176,7 +180,6 @@ export default class TxGasUtil {
         const reg = /^(0x[a-zA-Z0-9]{32})\/[01]\/0x00000000000000000000000000000001\:\:Account\:\:Balance<(.*)>$/i
         const result = item.access_path.match(reg)
         if (result && result.length === 3 && selectedAddressHex === result[1]) {
-          const maxGasAmount = new BigNumber(40000000, 10).toString(16);
           acc[result[2]] = addHexPrefix(new BigNumber(item.value.Resource.json.token.value, 10).toString(16))
         }
         return acc
@@ -185,7 +188,11 @@ export default class TxGasUtil {
     }
     let estimatedGasHex;
     let tokenChanges;
+    let gasUsed;
     if (dryRunRawResult.status === 'Executed') {
+      gasUsed = addHexPrefix(new BigNumber(dryRunRawResult.gas_used).toString(16))
+      maxGasAmount = addHexPrefix(new BigNumber(maxGasAmount).toString(16))
+      gasUnitPrice = addHexPrefix(new BigNumber(gasUnitPrice).toString(16))
       estimatedGasHex = new BigNumber(dryRunRawResult.gas_used, 10).toString(16);
       tokenChanges = queryTokenChanges(dryRunRawResult)
     } else {
@@ -194,7 +201,7 @@ export default class TxGasUtil {
       }
       throw new Error(`Starmask: contract.dry_run_raw failed. Error: ${ JSON.stringify(dryRunRawResult.explained_status) }`)
     }
-    const result = { estimatedGasHex, tokenChanges };
+    const result = { estimatedGasHex, tokenChanges, gasUsed, gasUnitPrice };
     return result;
   }
 
@@ -227,12 +234,16 @@ export default class TxGasUtil {
       estimatePrioritizedGasUnitPrice: true,
     })
     const transactionRespSimulation = result[0]
-    // log.debug({ transactionRespSimulation })
-    // log.debug(parseInt(transactionRespSimulation.gas_used) * parseInt(transactionRespSimulation.gas_unit_price))
     // log.debug('simulated', transactionRespSimulation.gas_used)
     let estimatedGasHex
     let tokenChanges
+    let gasUsed
+    let gasUnitPrice
+    let maxGasAmount
     if (transactionRespSimulation.success) {
+      maxGasAmount = addHexPrefix(new BigNumber(transactionRespSimulation.max_gas_amount).toString(16))
+      gasUsed = addHexPrefix(new BigNumber(transactionRespSimulation.gas_used).toString(16))
+      gasUnitPrice = addHexPrefix(new BigNumber(transactionRespSimulation.gas_unit_price).toString(16))
       estimatedGasHex = addHexPrefix(new BigNumber(parseInt(transactionRespSimulation.gas_used) * parseInt(transactionRespSimulation.gas_unit_price)).toString(16))
       // const queryTokenChanges = (transactionRespSimulation) => {
       //   const matches = transactionRespSimulation.changes.reduce((acc, item) => {
@@ -251,7 +262,7 @@ export default class TxGasUtil {
     } else {
       throw new Error(`simulateTransaction failed: ${ transactionRespSimulation.vm_status } ${ JSON.stringify({ gas_unit_price: transactionRespSimulation.gas_unit_price, max_gas_amount: transactionRespSimulation.max_gas_amount }) }`)
     }
-    return { estimatedGasHex, tokenChanges };
+    return { estimatedGasHex, tokenChanges, gasUsed, gasUnitPrice, maxGasAmount };
   }
 
   async getSequenceNumber(from, ticker) {
@@ -332,9 +343,12 @@ export default class TxGasUtil {
     return bnToHex(upperGasLimitBn);
   }
 
+  // used in swap
   async getBufferedGasLimit(txMeta, multiplier) {
     const {
       blockGasLimit,
+      gasUsed,
+      gasUnitPrice,
       estimatedGasHex,
       tokenChanges,
       simulationFails,
@@ -346,7 +360,6 @@ export default class TxGasUtil {
       blockGasLimit,
       multiplier,
     );
-    log.debug('getBufferedGasLimit', { gasLimit, simulationFails })
     return { gasLimit, tokenChanges, simulationFails };
   }
 }
