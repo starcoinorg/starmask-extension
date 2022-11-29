@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.1.7] - 2022-11-30
+
+- Bug fixes:
+  - Use gas_unit_price from sumulateTransaction in Aptos networks
+  - Replace txParams.data with txParams.functionAptos while Add/Send token in Apots networks
+
 ## [5.1.6] - 2022-11-25
 
 - Bug fixes:
