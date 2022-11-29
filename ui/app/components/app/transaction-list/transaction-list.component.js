@@ -35,7 +35,7 @@ const getTransactionGroupRecipientAddressFilter = (
         code === tokenCode &&
         [txParams?.from, txParams?.to].includes(recipientAddress)) ||
       (txParams?.to === SWAPS_CHAINID_CONTRACT_ADDRESS_MAP[chainId] &&
-        txParams.data.match(recipientAddress.slice(2)))
+        txParams?.data && txParams?.data.match(recipientAddress.slice(2)))
     );
   };
 };

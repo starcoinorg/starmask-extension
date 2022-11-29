@@ -909,13 +909,17 @@ export function signTokenTx(sendToken, toAddress, amount, txData, ticker) {
     try {
       // const token = global.eth.contract(abi).at(tokenAddress);
       // const txPromise = token.transfer(toAddress, addHexPrefix(amount), txData);
-      const payloadHex = generateTokenPalyloadData({
+      const payload = generateTokenPalyloadData({
         toAddress,
         amount,
         sendToken,
         ticker,
       });
-      txData.data = payloadHex;
+      if (ticker === 'STC') {
+        txData.data = payload
+      } else if (ticker === 'APT') {
+        txData.functionAptos = payload
+      }
       txData.type = TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER;
       txData.code = sendToken.code;
       await promisifiedBackground.addUnapprovedTransaction(txData, 'starmask');

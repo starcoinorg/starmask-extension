@@ -2,7 +2,6 @@ import { utils, bcs } from '@starcoin/starcoin';
 import { ethers } from 'ethers';
 import abi from 'ethereumjs-abi';
 import { BigNumber } from 'bignumber.js';
-import { TxnBuilderTypes, BCS } from '@starcoin/aptos';
 import {
   addCurrencies,
   conversionUtil,
@@ -234,12 +233,17 @@ async function estimateGasForSend({
   if (sendToken) {
     paramsForGasEstimate.code = sendToken.code;
     paramsForGasEstimate.value = '0x0';
-    paramsForGasEstimate.data = generateTokenPalyloadData({
+    const payload = generateTokenPalyloadData({
       toAddress: to,
       amount: value,
       sendToken,
       ticker,
     });
+    if (ticker === 'STC') {
+      paramsForGasEstimate.data = payload
+    } else if (ticker === 'APT') {
+      paramsForGasEstimate.functionAptos = payload
+    }
   } else {
     if (data) {
       paramsForGasEstimate.data = data;
@@ -382,7 +386,7 @@ function generateTokenPalyloadData({
   if (!sendToken) {
     return undefined;
   }
-  let payloadInHex
+  let payload
   if (ticker === 'STC') {
     const functionId = '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2';
     const strTypeArgs = [sendToken.code];
@@ -403,25 +407,21 @@ function generateTokenPalyloadData({
       args,
     );
 
-    payloadInHex = (function () {
+    payload = (function () {
       const se = new bcs.BcsSerializer();
       scriptFunction.serialize(se);
       return hexlify(se.getBytes());
     })();
   } else if (ticker === 'APT') {
-    const token = new TxnBuilderTypes.TypeTagStruct(TxnBuilderTypes.StructTag.fromString(sendToken.code));
-    const entryFunctionPayload = new TxnBuilderTypes.TransactionPayloadEntryFunction(
-      TxnBuilderTypes.EntryFunction.natural(
-        "0x1::coin",
-        "transfer",
-        [token],
-        [BCS.bcsToBytes(TxnBuilderTypes.AccountAddress.fromHex(toAddress)), BCS.bcsSerializeUint64(hexToDecimal(amount))],
-      ),
-    );
-    payloadInHex = hexlify(BCS.bcsToBytes(entryFunctionPayload))
+    payload = {
+      type: "entry_function_payload",
+      function: "0x1::coin::transfer",
+      type_arguments: [sendToken.code],
+      arguments: [toAddress, hexToDecimal(amount)],
+    };
   }
 
-  return payloadInHex;
+  return payload;
 }
 
 function generateTokenTransferData({
