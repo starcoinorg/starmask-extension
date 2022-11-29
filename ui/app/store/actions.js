@@ -10,7 +10,7 @@ import {
   loadRelativeTimeFormatLocaleData,
 } from '../helpers/utils/i18n-helper';
 import { getMethodDataAsync } from '../helpers/utils/transactions.util';
-import { fetchSymbolAndDecimals, generateAcceptTokenPayloadHex, generateAutoAcceptTokenPayloadHex } from '../helpers/utils/token-util';
+import { fetchSymbolAndDecimals, generateAcceptTokenPayload, generateAutoAcceptTokenPayloadHex } from '../helpers/utils/token-util';
 import { generateAcceptNFTGalleryPayloadHex, generateTransferNFTPayloadHex } from '../helpers/utils/nft-util';
 import switchDirection from '../helpers/utils/switch-direction';
 import { ENVIRONMENT_TYPE_NOTIFICATION } from '../../../shared/constants/app';
@@ -886,12 +886,16 @@ export function updateSendEnsResolutionError(errorMessage) {
 export function acceptToken(tokenCode, from, ticker) {
   return async (dispatch) => {
     try {
-      const payloadInHex = generateAcceptTokenPayloadHex(tokenCode, ticker);
+      const payload = generateAcceptTokenPayload(tokenCode, ticker);
       const txData = {
         from,
         gasPrice: ticker === 'STC' ? '0x1' : addHexPrefix(decimalToHex(100)),
-        data: payloadInHex,
       };
+      if (ticker === 'STC') {
+        txData.data = payloadInHex
+      } else if (ticker === 'APT') {
+        txData.functionAptos = payload
+      }
       await promisifiedBackground.addUnapprovedTransaction(txData, 'starmask');
     } catch (error) {
       log.error(error);

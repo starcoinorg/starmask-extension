@@ -328,8 +328,8 @@ export function getTokenFiatAmount(
   return result;
 }
 
-export function generateAcceptTokenPayloadHex(tokenCode, ticker = 'STC') {
-  let payloadInHex
+export function generateAcceptTokenPayload(tokenCode, ticker = 'STC') {
+  let payload
   if (ticker === 'STC') {
     const functionId = '0x1::Account::accept_token';
     const strTypeArgs = [tokenCode];
@@ -339,24 +339,20 @@ export function generateAcceptTokenPayloadHex(tokenCode, ticker = 'STC') {
     const scriptFunction = utils.tx.encodeScriptFunction(functionId, tyArgs, args);
 
     // Multiple BcsSerializers should be used in different closures, otherwise, the latter will be contaminated by the former.
-    payloadInHex = (function () {
+    payload = (function () {
       const se = new bcs.BcsSerializer();
       scriptFunction.serialize(se);
       return hexlify(se.getBytes());
     })();
   } else if (ticker === 'APT') {
-    const token = new TxnBuilderTypes.TypeTagStruct(TxnBuilderTypes.StructTag.fromString(tokenCode));
-    const entryFunctionPayload = new TxnBuilderTypes.TransactionPayloadEntryFunction(
-      TxnBuilderTypes.EntryFunction.natural(
-        "0x1::managed_coin",
-        "register",
-        [token],
-        [],
-      ),
-    );
-    payloadInHex = hexlify(BCS.bcsToBytes(entryFunctionPayload))
+    payload = {
+      type: "entry_function_payload",
+      function: "0x1::managed_coin::register",
+      type_arguments: [tokenCode],
+      arguments: [],
+    };
   }
-  return payloadInHex;
+  return payload;
 }
 
 export function generateAutoAcceptTokenPayloadHex(value) {
