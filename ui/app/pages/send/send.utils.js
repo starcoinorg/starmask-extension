@@ -275,13 +275,13 @@ async function estimateGasForSend({
     const sequenceNumber = await getSequenceNumber(paramsForGasEstimate.from, ticker)
     paramsForGasEstimate.sequenceNumber = sequenceNumber;
     // get gas_used from contract.dry_run_raw
-    const estimatedGas = await estimateGasMethod(paramsForGasEstimate);
+    const { gas_unit_price, gas_used: estimatedGas, max_gas_amount } = await estimateGasMethod(paramsForGasEstimate);
     const estimateWithBuffer = addGasBuffer(
       estimatedGas.toString(16),
-      blockGasLimit,
+      ticker === 'STC' ? blockGasLimit : parseInt(max_gas_amount, 10).toString(16),
       1.5,
     );
-    return addHexPrefix(estimateWithBuffer);
+    return { gasPrice: addHexPrefix(gas_unit_price.toString(16)), gas: addHexPrefix(estimateWithBuffer) };
   } catch (error) {
     const simulationFailed =
       error.message.includes('Transaction execution error.') ||
@@ -294,7 +294,7 @@ async function estimateGasForSend({
         blockGasLimit,
         1.5,
       );
-      return addHexPrefix(estimateWithBuffer);
+      return { gasPrice, gas: addHexPrefix(estimateWithBuffer) };
     }
     throw error;
   }

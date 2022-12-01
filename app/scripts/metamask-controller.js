@@ -2082,7 +2082,7 @@ export default class MetamaskController extends EventEmitter {
           };
         }
         const client = this.txController.txGasUtil.getAptosClient()
-        return client.generateTransaction(estimateGasParams.from, payload, { gas_unit_price: "100", max_gas_amount: "2000" })
+        return client.generateTransaction(estimateGasParams.from, payload)
           .then((rawTxn) => {
             return this.keyringController.exportAccount(estimateGasParams.from)
               .then((privateKey) => {
@@ -2094,8 +2094,11 @@ export default class MetamaskController extends EventEmitter {
                 })
                   .then((result) => {
                     const transactionRespSimulation = result[0]
-                    const gas_used = parseInt(transactionRespSimulation.gas_used, 10)
-                    return resolve(gas_used);
+                    return resolve({
+                      gas_unit_price: parseInt(transactionRespSimulation.gas_unit_price, 10),
+                      gas_used: parseInt(transactionRespSimulation.gas_used, 10),
+                      max_gas_amount: parseInt(transactionRespSimulation.max_gas_amount, 10),
+                    });
                   })
               })
           }).catch(error => {
@@ -2109,30 +2112,33 @@ export default class MetamaskController extends EventEmitter {
         const tokenCode = estimateGasParams.code ? estimateGasParams.code : '0x00000000000000000000000000000001::STC::STC'
         return this.keyringController.getPublicKeyFor(estimateGasParams.from)
           .then((publicKey) => {
+            const gas_unit_price = 1
+            const max_gas_amount = 40000000
+            let gas_used = 0
+            if (!estimateGasParams.to) {
+              return resolve({ gas_unit_price, gas_used });
+            }
             const params = {
               chain_id: chainId,
-              gas_unit_price: 1,
+              gas_unit_price,
               sender: estimateGasParams.from,
               sender_public_key: publicKey,
               sequence_number: estimateGasParams.sequenceNumber,
-              max_gas_amount: 40000000,
+              max_gas_amount,
               script: {
                 code: '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2',
                 type_args: [tokenCode],
                 args: [estimateGasParams.to, `${ hexToDecimal(estimateGasParams.gas) }u128`]
               },
             };
-            if (!estimateGasParams.to) {
-              return resolve(0);
-            }
             return this.txController.txGasUtil.query.estimateGas(
               params,
               (err, res) => {
                 if (err) {
                   return reject(err);
                 }
-                const gas_used = parseInt(res.gas_used, 10);
-                return resolve(gas_used);
+                gas_used = parseInt(res.gas_used, 10);
+                return resolve({ gas_unit_price, gas_used, max_gas_amount });
               },
             );
           });

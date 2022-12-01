@@ -754,7 +754,8 @@ export function updateGasData({
         data,
         ticker: rpcPrefs.ticker,
       })
-        .then((gas) => {
+        .then(({ gasPrice, gas }) => {
+          dispatch(setGasPrice(gasPrice));
           dispatch(setGasLimit(gas));
           dispatch(setCustomGasLimit(gas));
           dispatch(updateSendErrors({ gasLoadingError: null }));

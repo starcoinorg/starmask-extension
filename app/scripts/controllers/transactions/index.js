@@ -779,7 +779,7 @@ export default class TransactionController extends EventEmitter {
           type_arguments: [],
           arguments: [txMeta.txParams.to, hexToDecimal(txMeta.txParams.value)],
         };
-        rawTxn = await client.generateTransaction(fromAddress, payload, { gas_unit_price: "100", max_gas_amount: "2000" })
+        rawTxn = await client.generateTransaction(fromAddress, payload, { gas_unit_price: (hexToDecimal(txMeta.txParams.gasPrice)).toString(), max_gas_amount: (hexToDecimal(txMeta.txParams.gas)).toString() })
       }
     }
     const privateKey = await this.txGasUtil.exportAccount(fromAddress)
