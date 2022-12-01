@@ -1,5 +1,10 @@
 # Changelog
 
+## [5.1.8] - 2022-12-01
+
+- Bug fixes:
+  - The decimals of value is not correct while click Max in send page with APT
+
 ## [5.1.7] - 2022-11-30
 
 - Bug fixes:
