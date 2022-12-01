@@ -58,20 +58,21 @@ export default class CurrencyInput extends PureComponent {
   }
 
   getDecimalValue(props) {
-    const { value: hexValue, currentCurrency, conversionRate } = props;
+    const { value: hexValue, currentCurrency, conversionRate, nativeCurrency } = props;
     const decimalValueString = this.shouldUseFiat()
       ? getValueFromWeiHex({
         value: hexValue,
+        fromCurrency: nativeCurrency,
         toCurrency: currentCurrency,
         conversionRate,
         numberOfDecimals: 2,
       })
       : getValueFromWeiHex({
         value: hexValue,
-        toCurrency: STC,
+        fromCurrency: nativeCurrency,
+        toCurrency: nativeCurrency,
         numberOfDecimals: 6,
       });
-
     return Number(decimalValueString) || 0;
   }
 
