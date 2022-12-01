@@ -38,7 +38,7 @@ export function getAveragePriceEstimateInHexWEI(state) {
     },
   } = state;
   if (['devnet', 'testnet', 'mainnet'].includes(name)) {
-    return addHexPrefix(decimalToHex(100))
+    return addHexPrefix(decimalToHex(150))
   } else {
     const averagePriceEstimate = state.gas.basicEstimates.average;
     return getGasPriceInHexWei(averagePriceEstimate || '0x0');
