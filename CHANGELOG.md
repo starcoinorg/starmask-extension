@@ -1,5 +1,9 @@
 # Changelog
 
+## [5.1.9] - 2022-12-01
+
+- Change Publisher account
+
 ## [5.1.8] - 2022-12-01
 
 - Bug fixes:
