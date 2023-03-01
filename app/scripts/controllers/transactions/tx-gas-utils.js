@@ -115,7 +115,12 @@ export default class TxGasUtil {
     // // estimate tx gas requirements
     // return await this.query.estimateGas(txParams);
 
-    let maxGasAmount = 40000000;
+    let maxGasAmount = 10000000;
+    const balance = await this.query.getBalance(txMeta.txParams.from);
+    if (balance < maxGasAmount) {
+      maxGasAmount = balance;
+    }
+    
     let gasUnitPrice = txMeta.txParams.gasPrice || 1;
     const expirationTimestampSecs = await this.getExpirationTimestampSecs(txMeta.txParams);
     const selectedAddressHex = txMeta.txParams.from;
