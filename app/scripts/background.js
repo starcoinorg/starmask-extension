@@ -13,6 +13,7 @@ import extension from 'extensionizer';
 import { storeAsStream, storeTransformStream } from '@metamask/obs-store';
 import PortStream from 'extension-port-stream';
 import { captureException } from '@sentry/browser';
+import browser from 'webextension-polyfill';
 
 import {
   ENVIRONMENT_TYPE_POPUP,
@@ -440,8 +441,9 @@ function setupController(initState, initLangCode) {
     if (count) {
       label = String(count);
     }
-    extension.browserAction.setBadgeText({ text: label });
-    extension.browserAction.setBadgeBackgroundColor({ color: '#037DD6' });
+
+    browser.action.setBadgeText({ text: label });
+    browser.action.setBadgeBackgroundColor({ color: '#037DD6' });
   }
 
   return Promise.resolve();

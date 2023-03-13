@@ -2224,7 +2224,8 @@
         "event-stream": true,
         "fancy-log": true,
         "lodash.assign": true,
-        "tiny-lr": true
+        "tiny-lr": true,
+        "readable-stream": true
       }
     },
     "gulp-rename": {

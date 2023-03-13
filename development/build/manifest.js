@@ -37,27 +37,27 @@ function createManifestTasks({ browserPlatforms }) {
 
   // dev: remove bg-libs, add chromereload, add perms
   const envDev = createTaskForModifyManifestForEnvironment((manifest) => {
-    const scripts = manifest.background.scripts.filter(
-      (scriptName) => !scriptsToExcludeFromBackgroundDevBuild[scriptName],
-    );
-    scripts.push('chromereload.js');
-    manifest.background = {
-      ...manifest.background,
-      scripts,
-    };
+    // const scripts = manifest.background.scripts.filter(
+    //   (scriptName) => !scriptsToExcludeFromBackgroundDevBuild[scriptName],
+    // );
+    // scripts.push('chromereload.js');
+    // manifest.background = {
+    //   ...manifest.background,
+    //   scripts,
+    // };
     manifest.permissions = [...manifest.permissions, 'webRequestBlocking'];
   });
 
   // testDev: remove bg-libs, add perms
   const envTestDev = createTaskForModifyManifestForEnvironment((manifest) => {
-    const scripts = manifest.background.scripts.filter(
-      (scriptName) => !scriptsToExcludeFromBackgroundDevBuild[scriptName],
-    );
-    scripts.push('chromereload.js');
-    manifest.background = {
-      ...manifest.background,
-      scripts,
-    };
+    // const scripts = manifest.background.scripts.filter(
+    //   (scriptName) => !scriptsToExcludeFromBackgroundDevBuild[scriptName],
+    // );
+    // scripts.push('chromereload.js');
+    // manifest.background = {
+    //   ...manifest.background,
+    //   scripts,
+    // };
     manifest.permissions = [
       ...manifest.permissions,
       'webRequestBlocking',

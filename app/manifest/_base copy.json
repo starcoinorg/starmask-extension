@@ -1,9 +1,17 @@
 {
   "author": "westar.io",
   "background": {
-    "service_worker": "app-init.js"
+    "scripts": [
+      "globalthis.js",
+      "initSentry.js",
+      "lockdown.js",
+      "runLockdown.js",
+      "bg-libs.js",
+      "background.js"
+    ],
+    "persistent": true
   },
-  "action": {
+  "browser_action": {
     "default_icon": {
       "16": "images/icon-16.png",
       "19": "images/icon-19.png",
@@ -67,7 +75,7 @@
     "162": "images/icon-162.png",
     "512": "images/icon-512.png"
   },
-  "manifest_version": 3,
+  "manifest_version": 2,
   "name": "__MSG_appName__",
   "permissions": [
     "storage",
@@ -77,5 +85,9 @@
     "notifications"
   ],
   "short_name": "__MSG_appName__",
-  "version": "5.1.9"
+  "version": "5.1.9",
+  "web_accessible_resources": [
+    "inpage.js",
+    "phishing.html"
+  ]
 }
