@@ -32,15 +32,13 @@ function importAllScripts() {
   loadFile('./globalthis.js');
   loadFile('./initSentry.js');
 
+  loadFile('./init-globals.js');
   loadFile('./lockdown.js');
   loadFile('./runLockdown.js');
   loadFile('./chromereload.js');
   loadFile('./background.js');
   tryImport(...files);
-
 }
-
-console.log('???')
 
 self.addEventListener('install', importAllScripts);
 
