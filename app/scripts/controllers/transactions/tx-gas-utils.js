@@ -58,8 +58,8 @@ export default class TxGasUtil {
     });
     const blockNumber = chainInfo && chainInfo.head ? chainInfo.head.number : 0;
 
-    // maxGasAmount is dynamical adjusted, today it is about 40000000
-    const maxGasAmount = new BigNumber(40000000, 10).toString(16);
+    // maxGasAmount is dynamical adjusted, today it is about 10000000
+    const maxGasAmount = new BigNumber(10000000, 10).toString(16);
     const gasLimit = addHexPrefix(maxGasAmount);
     const block = { number: blockNumber, gasLimit };
     // fallback to block gasLimit
@@ -115,7 +115,7 @@ export default class TxGasUtil {
     // // estimate tx gas requirements
     // return await this.query.estimateGas(txParams);
 
-    let maxGasAmount = 40000000;
+    let maxGasAmount = 10000000;
     let gasUnitPrice = txMeta.txParams.gasPrice || 1;
     const expirationTimestampSecs = await this.getExpirationTimestampSecs(txMeta.txParams);
     const selectedAddressHex = txMeta.txParams.from;

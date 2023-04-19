@@ -832,7 +832,7 @@
     "message": "Gas Limit"
   },
   "gasLimitExtendMax": {
-    "message": "Your gas limit is extend the max value: 40000000."
+    "message": "Your gas limit is extend the max value: 10000000."
   },
   "gasLimitInfoTooltipContent": {
     "message": "Gas limit is the maximum amount of units of gas you are willing to spend."
