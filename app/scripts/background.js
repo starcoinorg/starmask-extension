@@ -203,7 +203,8 @@ function setupController(initState, initLangCode) {
   //
 
   const controller = new MetamaskController({
-    infuraProjectId: process.env.INFURA_PROJECT_ID,
+    // infuraProjectId: process.env.INFURA_PROJECT_ID,
+    infuraProjectId: 'mfhbebgoclkghebffdldpobeajmbecfk',
     // User confirmation callbacks:
     showUserConfirmation: triggerUi,
     openPopup,
