@@ -125,6 +125,16 @@ initialize().catch(log.error);
 async function initialize() {
   const initState = await loadStateFromPersistence();
   const initLangCode = await getFirstPreferredLangCode();
+  let isFirstMetaMaskControllerSetup;
+
+  const sessionData = await browser.storage.session.get([
+    'isFirstMetaMaskControllerSetup',
+  ]);
+
+  isFirstMetaMaskControllerSetup =
+    sessionData?.isFirstMetaMaskControllerSetup === undefined;
+  await browser.storage.session.set({ isFirstMetaMaskControllerSetup });
+
   await setupController(initState, initLangCode);
   log.debug('StarMask initialization complete.');
 }
