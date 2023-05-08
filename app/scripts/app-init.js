@@ -1,29 +1,22 @@
 
+function tryImport(...fileNames) {
+  try {
+    const startTime = new Date().getTime();
+    // eslint-disable-next-line
+    importScripts(...fileNames);
+    const endTime = new Date().getTime();
+
+
+    return true;
+  } catch (e) {
+    console.error(e);
+  }
+
+  return false;
+}
 
 function importAllScripts() {
   const files = [];
-  const loadTimeLogs = [];
-  function tryImport(...fileNames) {
-    try {
-      const startTime = new Date().getTime();
-      // eslint-disable-next-line
-      importScripts(...fileNames);
-      const endTime = new Date().getTime();
-      loadTimeLogs.push({
-        name: fileNames[0],
-        value: endTime - startTime,
-        children: [],
-        startTime,
-        endTime,
-      });
-
-      return true;
-    } catch (e) {
-      console.error(e);
-    }
-
-    return false;
-  }
 
   const loadFile = (fileName) => {
     files.push(fileName);
@@ -33,9 +26,9 @@ function importAllScripts() {
   loadFile('./initSentry.js');
 
   loadFile('./init-globals.js');
-  loadFile('./lockdown.js');
-  loadFile('./runLockdown.js');
-  loadFile('./chromereload.js');
+  // loadFile('./lockdown.js');
+  // loadFile('./runLockdown.js');
+  // loadFile('./chromereload.js');
   loadFile('./background.js');
   tryImport(...files);
 }
@@ -47,15 +40,16 @@ chrome.runtime.onMessage.addListener(() => {
   return false;
 });
 
-chrome.runtime.onStartup.addListener(() => {
-  globalThis.isFirstTimeProfileLoaded = true;
-});
+// chrome.runtime.onStartup.addListener(() => {
+//   globalThis.isFirstTimeProfileLoaded = true;
+// });
+
 
 const registerInPageContentScript = async () => {
   try {
     await chrome.scripting.registerContentScripts([
       {
-        id: 'inpage',
+        id: 'inpages',
         matches: ['file://*/*', 'http://*/*', 'https://*/*'],
         js: ['inpage.js'],
         runAt: 'document_start',

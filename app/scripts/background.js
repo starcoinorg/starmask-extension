@@ -377,54 +377,6 @@ function setupController(initState, initLangCode) {
     controller.setupUntrustedCommunication(portStream, remotePort.sender);
   }
 
-  // setup state persistence
-  pump(
-    storeAsStream(controller.store),
-    debounce(1000),
-    storeTransformStream(versionifyData),
-    createStreamSink(persistData),
-    (error) => {
-      log.error('StarMask - Persistence pipeline failed', error);
-    },
-  );
-
-  /**
-   * Assigns the given state to the versioned object (with metadata), and returns that.
-   * @param {Object} state - The state object as emitted by the MetaMaskController.
-   * @returns {VersionedData} The state object wrapped in an object that includes a metadata key.
-   * @private
-   * @ignore
-   * @typedef {Object} VersionedData
-   * @property {Object} data - The state object as emitted by the MetaMaskController.
-   * @property {string} version - The version of the state object.
-   * @property {number} lastUpdated - The time the state object was last updated.
-   * @property {string} [migrationData] - The migration data for the state object.
-   * @property {string} [migratedVersion] - The version of the state object after migration.
-   * @property {number} [migratedLastUpdated] - The time the state object was last updated after migration.
-   * @property {string} [migratedMigrationData] - The migration data for the state object after migration.
-   * @property {string} [migratedData] - The state object after migration.
-   * @property {string} [migrated] - Whether or not the state object was migrated.
-   * /
-   * @typedef {Object} State
-   * 
-   **/
-  function versionifyData(state) {
-    return {
-      data: state,
-      version: global.platform.getVersion(),
-      lastUpdated: Date.now(),
-    };
-  }
-
-  /**
-   * Persists the given state to the browser's local storage.
-   *  
-   * @param {VersionedData} versionedData - The state object wrapped in an object that includes a metadata key.
-   **/
-  function persistData(versionedData) {
-    extension.storage.local.set({ metaMaskState: versionedData });
-  }
-
   //
   // User Interface setup
   //

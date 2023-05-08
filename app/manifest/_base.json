@@ -18,16 +18,6 @@
     "default_title": "StarMask",
     "default_popup": "popup.html"
   },
-  "commands": {
-    "_execute_browser_action": {
-      "suggested_key": {
-        "windows": "Ctrl+Shift+S",
-        "mac": "Ctrl+Shift+S",
-        "chromeos": "Ctrl+Shift+S",
-        "linux": "Ctrl+Shift+S"
-      }
-    }
-  },
   "content_scripts": [
     {
       "matches": [
@@ -36,8 +26,8 @@
         "https://*/*"
       ],
       "js": [
-        "disable-console.js",
         "globalthis.js",
+        "disable-console.js",
         "lockdown.js",
         "runLockdown.js",
         "contentscript.js"
@@ -74,8 +64,9 @@
     "unlimitedStorage",
     "webRequest",
     "activeTab",
-    "notifications"
+    "notifications",
+    "scripting"
   ],
   "short_name": "__MSG_appName__",
-  "version": "5.1.9"
+  "version": "5.2.4"
 }

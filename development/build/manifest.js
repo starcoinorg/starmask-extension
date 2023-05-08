@@ -45,7 +45,7 @@ function createManifestTasks({ browserPlatforms }) {
     //   ...manifest.background,
     //   scripts,
     // };
-    manifest.permissions = [...manifest.permissions, 'webRequestBlocking'];
+    manifest.permissions = [...manifest.permissions, 'declarativeNetRequest'];
   });
 
   // testDev: remove bg-libs, add perms
@@ -60,7 +60,7 @@ function createManifestTasks({ browserPlatforms }) {
     // };
     manifest.permissions = [
       ...manifest.permissions,
-      'webRequestBlocking',
+      'declarativeNetRequest',
       'http://localhost/*',
     ];
   });
@@ -69,7 +69,7 @@ function createManifestTasks({ browserPlatforms }) {
   const envTest = createTaskForModifyManifestForEnvironment((manifest) => {
     manifest.permissions = [
       ...manifest.permissions,
-      'webRequestBlocking',
+      'declarativeNetRequest',
       'http://localhost/*',
     ];
   });

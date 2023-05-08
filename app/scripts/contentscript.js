@@ -4,6 +4,7 @@ import LocalMessageDuplexStream from 'post-message-stream';
 import ObjectMultiplex from 'obj-multiplex';
 import extension from 'extensionizer';
 import PortStream from 'extension-port-stream';
+import browser from 'webextension-polyfill';
 
 // These require calls need to use require to be statically recognized by browserify
 const fs = require('fs');
@@ -13,7 +14,8 @@ const inpageContent = fs.readFileSync(
   path.join(__dirname, '..', '..', 'dist', 'chrome', 'inpage.js'),
   'utf8',
 );
-const inpageSuffix = `//# sourceURL=${extension.runtime.getURL('inpage.js')}\n`;
+const inpageSuffix = `//# sourceURL=${browser.runtime.getURL('inpage.js')}\n`;
+console.log(inpageSuffix, 'inpage')
 const inpageBundle = inpageContent + inpageSuffix;
 
 const CONTENT_SCRIPT = 'starmask-contentscript';

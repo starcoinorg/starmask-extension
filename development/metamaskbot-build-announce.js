@@ -55,10 +55,6 @@ async function start() {
     })
     .join(', ');
 
-    const appinitUrl = `${BUILD_LINK_BASE}/build-artifacts/source-map-explorer/appinit.html`;
-    const appinitLink = `<a href="${appinitUrl}">appinit</a>`;
-    bundleLinks.push(appinitLink);
-
 
   const coverageUrl = `${BUILD_LINK_BASE}/coverage/index.html`;
   const coverageLink = `<a href="${coverageUrl}">Report</a>`;
