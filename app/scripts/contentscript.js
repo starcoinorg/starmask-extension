@@ -56,7 +56,7 @@ async function setupStreams() {
     name: CONTENT_SCRIPT,
     target: INPAGE,
   });
-  const extensionPort = extension.runtime.connect({ name: CONTENT_SCRIPT });
+  const extensionPort = browser.runtime.connect({ name: CONTENT_SCRIPT });
   const extensionStream = new PortStream(extensionPort);
 
   // create and connect channel muxers
@@ -226,7 +226,7 @@ function blockedDomainCheck() {
  */
 function redirectToPhishingWarning() {
   console.debug('StarMask: Routing to Phishing Warning component.');
-  const extensionURL = extension.runtime.getURL('phishing.html');
+  const extensionURL = browser.runtime.getURL('phishing.html');
   window.location.href = `${extensionURL}#${querystring.stringify({
     hostname: window.location.hostname,
     href: window.location.href,

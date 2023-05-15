@@ -3,6 +3,7 @@ import extension from 'extensionizer';
 import ethUtil from 'ethereumjs-util';
 import BN from 'bn.js';
 import { memoize } from 'lodash';
+import browser from 'webextension-polyfill';
 
 import {
   ENVIRONMENT_TYPE_POPUP,
@@ -135,7 +136,7 @@ function BnMultiplyByFraction(targetBN, numerator, denominator) {
  * @returns {Error|undefined}
  */
 function checkForError() {
-  const { lastError } = extension.runtime;
+  const { lastError } = browser.runtime;
   if (!lastError) {
     return undefined;
   }

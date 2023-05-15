@@ -18,6 +18,7 @@ import ExtensionPlatform from './platforms/extension';
 import { setupMultiplex } from './lib/stream-utils';
 import { getEnvironmentType } from './lib/util';
 import metaRPCClientFactory from './lib/metaRPCClientFactory';
+import browser from 'webextension-polyfill';
 
 start().catch(log.error);
 
@@ -29,7 +30,7 @@ async function start() {
   const windowType = getEnvironmentType();
 
   // setup stream to background
-  const extensionPort = extension.runtime.connect({ name: windowType });
+  const extensionPort = browser.runtime.connect({ name: windowType });
   const connectionStream = new PortStream(extensionPort);
 
   const activeTab = await queryCurrentActiveTab(windowType);
@@ -70,7 +71,7 @@ async function queryCurrentActiveTab(windowType) {
       return;
     }
 
-    extension.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
       const [activeTab] = tabs;
       const { id, title, url } = activeTab;
       const { origin, protocol } = url ? new URL(url) : {};

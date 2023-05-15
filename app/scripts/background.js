@@ -224,7 +224,7 @@ function setupController(initState, initLangCode) {
     initLangCode,
     // platform specific api
     platform,
-    extension,
+    extension: browser,
     getRequestAccountTabIds: () => {
       return requestAccountTabIds;
     },
@@ -293,8 +293,8 @@ function setupController(initState, initLangCode) {
   //
   // connect to other contexts
   //
-  extension.runtime.onConnect.addListener(connectRemote);
-  extension.runtime.onConnectExternal.addListener(connectExternal);
+  browser.runtime.onConnect.addListener(connectRemote);
+  browser.runtime.onConnectExternal.addListener(connectExternal);
 
   const metamaskInternalProcessHash = {
     [ENVIRONMENT_TYPE_POPUP]: true,
@@ -508,7 +508,7 @@ async function openPopup() {
 }
 
 // On first install, open a new tab with MetaMask
-extension.runtime.onInstalled.addListener(({ reason }) => {
+browser.runtime.onInstalled.addListener(({ reason }) => {
   if (
     reason === 'install' &&
     !(process.env.STARMASK_DEBUG || process.env.IN_TEST)

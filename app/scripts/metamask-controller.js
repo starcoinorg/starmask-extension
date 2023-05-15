@@ -72,6 +72,7 @@ import seedPhraseVerifier from './lib/seed-phrase-verifier';
 import MetaMetricsController from './controllers/metametrics';
 import { segment, segmentLegacy } from './lib/segment';
 import createMetaRPCHandler from './lib/createMetaRPCHandler';
+import browser from 'webextension-polyfill'
 
 export const METAMASK_CONTROLLER_EVENTS = {
   // Fired after state changes that impact the extension badge (unapproved msg count)
@@ -164,6 +165,7 @@ export default class MetamaskController extends EventEmitter {
       version: this.platform.getVersion(),
       environment: process.env.STARMASK_ENVIRONMENT,
       initState: initState.MetaMetricsController,
+      extension: browser
     });
 
     this.appStateController = new AppStateController({

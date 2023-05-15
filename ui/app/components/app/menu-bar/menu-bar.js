@@ -11,6 +11,8 @@ import { useI18nContext } from '../../../hooks/useI18nContext';
 import { useMetricEvent } from '../../../hooks/useMetricEvent';
 import { getOriginOfCurrentTab } from '../../../selectors';
 import AccountOptionsMenu from './account-options-menu';
+import browser from 'webextension-polyfill';
+
 
 export default function MenuBar() {
   const t = useI18nContext();
@@ -32,7 +34,7 @@ export default function MenuBar() {
   const showStatus =
     getEnvironmentType() === ENVIRONMENT_TYPE_POPUP &&
     origin &&
-    origin !== extension.runtime.id;
+    origin !== browser.runtime.id;
 
   return (
     <div className="menu-bar">

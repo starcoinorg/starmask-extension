@@ -53,6 +53,16 @@ const copyTargets = [
     pattern: `runLockdown.js`,
     dest: ``,
   },
+  {
+    src: `./app/scripts/`,
+    pattern: `app-init.js`,
+    dest: ``,
+  },
+  {
+    src: `./app/scripts/`,
+    pattern: `init-globals.js`,
+    dest: ``,
+  },
 ];
 
 const languageTags = new Set();

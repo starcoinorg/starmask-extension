@@ -5,6 +5,8 @@ import createRandomId from '../../shared/modules/random-id';
 import { setupMultiplex } from './lib/stream-utils';
 import { getEnvironmentType } from './lib/util';
 import ExtensionPlatform from './platforms/extension';
+import browser from 'webextension-polyfill';
+
 
 document.addEventListener('DOMContentLoaded', start);
 
@@ -16,7 +18,7 @@ function start() {
 
   global.platform = new ExtensionPlatform();
 
-  const extensionPort = extension.runtime.connect({
+  const extensionPort = browser.runtime.connect({
     name: getEnvironmentType(),
   });
   const connectionStream = new PortStream(extensionPort);

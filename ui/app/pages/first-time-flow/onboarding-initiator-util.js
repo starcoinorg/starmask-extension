@@ -1,24 +1,23 @@
 import extension from 'extensionizer';
 import log from 'loglevel';
+import browser from 'webextension-polyfill';
 
 const returnToOnboardingInitiatorTab = async (onboardingInitiator) => {
   const tab = await new Promise((resolve) => {
-    extension.tabs.update(
+    browser.tabs.update(
       onboardingInitiator.tabId,
-      { active: true },
-      // eslint-disable-next-line no-shadow
-      (tab) => {
-        if (tab) {
-          resolve(tab);
-        } else {
-          // silence console message about unchecked error
-          if (extension.runtime.lastError) {
-            log.debug(extension.runtime.lastError);
-          }
-          resolve();
+      { active: true }
+    ).then((tab) => {
+      if (tab) {
+        resolve(tab);
+      } else {
+        // silence console message about unchecked error
+        if (browser.runtime.lastError) {
+          log.debug(browser.runtime.lastError);
         }
-      },
-    );
+        resolve();
+      }
+    });
   });
 
   if (tab) {
@@ -35,13 +34,13 @@ const returnToOnboardingInitiatorTab = async (onboardingInitiator) => {
 export const returnToOnboardingInitiator = async (onboardingInitiator) => {
   const tab = await new Promise((resolve) => {
     // eslint-disable-next-line no-shadow
-    extension.tabs.get(onboardingInitiator.tabId, (tab) => {
+    browser.tabs.get(onboardingInitiator.tabId).then((tab) => {
       if (tab) {
         resolve(tab);
       } else {
         // silence console message about unchecked error
-        if (extension.runtime.lastError) {
-          log.debug(extension.runtime.lastError);
+        if (browser.runtime.lastError) {
+          log.debug(browser.runtime.lastError);
         }
         resolve();
       }

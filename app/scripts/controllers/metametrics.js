@@ -81,6 +81,7 @@ export default class MetaMetricsController {
     version,
     environment,
     initState,
+    extension
   }) {
     const prefState = preferencesStore.getState();
     this.chainId = getCurrentChainId();
@@ -88,6 +89,7 @@ export default class MetaMetricsController {
     this.locale = prefState.currentLocale.replace('_', '-');
     this.version =
       environment === 'production' ? version : `${version}-${environment}`;
+    this.extension = extension;
 
     this.store = new ObservableStore({
       participateInMetaMetrics: null,

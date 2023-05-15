@@ -1,9 +1,10 @@
 import extension from 'extensionizer';
 import promisify from 'pify';
 import allLocales from '../../_locales/index.json';
+import browser from 'webextension-polyfill';
 
-const getPreferredLocales = extension.i18n
-  ? promisify(extension.i18n.getAcceptLanguages, { errorFirst: false })
+const getPreferredLocales = browser.i18n
+  ? promisify(browser.i18n.getAcceptLanguages, { errorFirst: false })
   : async () => [];
 
 // mapping some browsers return hyphen instead underscore in locale codes (e.g. zh_TW -> zh-tw)
