@@ -23,11 +23,11 @@ const renderPicture = (image, imageData) => {
 }
 
 const NFTIdentifierCard = ({ nft }) => {
-  const item = nft.items[0];
+  const item = nft?.items?.[0] || {};
   return (
     <div className="nft-list__photo-card">
-      {renderPicture(item.image, item.imageData)}
-      <div className="nft-list__photo-card_body">{item.name}</div>
+      {renderPicture(item?.image || '', item?.imageData || '')}
+      <div className="nft-list__photo-card_body">{item?.name || ''}</div>
       <div className="nft-list__photo-card_description">
         {item.description}
       </div>
