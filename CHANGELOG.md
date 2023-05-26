@@ -1,5 +1,11 @@
 # Changelog
 
+## [5.2.4] - 2023-05-26
+
+- Bug fixes:
+  - Fix the problem that the transfer default Gas Limit is 0 when the balance is 0
+  - Fix nft display error
+
 ## [5.1.9] - 2022-12-01
 
 - Change Publisher account
