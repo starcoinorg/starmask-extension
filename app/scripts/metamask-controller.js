@@ -2115,7 +2115,7 @@ export default class MetamaskController extends EventEmitter {
         return this.keyringController.getPublicKeyFor(estimateGasParams.from)
           .then((publicKey) => {
             const gas_unit_price = 1
-            const max_gas_amount = 40000000
+            const max_gas_amount = 10000000
             let gas_used = 0
             if (!estimateGasParams.to) {
               return resolve({ gas_unit_price, gas_used });

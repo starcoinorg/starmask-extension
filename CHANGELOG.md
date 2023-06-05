@@ -258,7 +258,7 @@
 
 - New features:
 
-  1. Check the max gasPrice(10000) and the max gasLimit(40000000)
+  1. Check the max gasPrice(10000) and the max gasLimit(10000000)
   2. Execute empty_script to miniliaze the gas fee to around 8439
 
 - Bug fixes:
