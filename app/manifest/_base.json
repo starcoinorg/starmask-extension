@@ -60,12 +60,20 @@
   "manifest_version": 3,
   "name": "__MSG_appName__",
   "permissions": [
+    "activeTab",
+    "alarms",
+    "clipboardWrite",
+    "notifications",
+    "scripting",
     "storage",
     "unlimitedStorage",
-    "webRequest",
-    "activeTab",
-    "notifications",
-    "scripting"
+    "webRequest"
+  ],
+  "host_permissions": [
+    "http://localhost:8545/",
+    "file://*/*",
+    "http://*/*",
+    "https://*/*"
   ],
   "short_name": "__MSG_appName__",
   "version": "5.2.5"

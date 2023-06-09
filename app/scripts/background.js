@@ -61,6 +61,9 @@ if (inTest || process.env.STARMASK_DEBUG) {
   global.metamaskGetState = localStore.get.bind(localStore);
 }
 
+const ACK_KEEP_ALIVE_MESSAGE = 'ACK_KEEP_ALIVE_MESSAGE';
+const WORKER_KEEP_ALIVE_MESSAGE = 'WORKER_KEEP_ALIVE_MESSAGE';
+
 // initialization flow
 initialize().catch(log.error);
 
@@ -337,6 +340,13 @@ function setupController(initState, initLangCode) {
       // communication with popup
       controller.isClientOpen = true;
       controller.setupTrustedCommunication(portStream, remotePort.sender);
+
+      remotePort.onMessage.addListener((message) => {
+        if (message.name === WORKER_KEEP_ALIVE_MESSAGE) {
+          // To test un-comment this line and wait for 1 minute. An error should be shown on MetaMask UI.
+          remotePort.postMessage({ name: ACK_KEEP_ALIVE_MESSAGE });
+        }
+      });
 
       if (processName === ENVIRONMENT_TYPE_POPUP) {
         popupIsOpen = true;

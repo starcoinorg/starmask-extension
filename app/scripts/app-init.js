@@ -1,11 +1,12 @@
 
+let scriptsLoadInitiated = false;
+
 function tryImport(...fileNames) {
   try {
     const startTime = new Date().getTime();
     // eslint-disable-next-line
     importScripts(...fileNames);
     const endTime = new Date().getTime();
-
 
     return true;
   } catch (e) {
@@ -16,6 +17,12 @@ function tryImport(...fileNames) {
 }
 
 function importAllScripts() {
+  // Bail if we've already imported scripts
+  if (scriptsLoadInitiated) {
+    return;
+  }
+  scriptsLoadInitiated = true;
+
   const files = [];
 
   const loadFile = (fileName) => {

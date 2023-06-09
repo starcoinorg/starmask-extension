@@ -5,9 +5,9 @@
  */
 
 // eslint-disable-next-line import/unambiguous
-const keys = ['XMLHttpRequest'];
+const AllKeys = ['XMLHttpRequest'];
 
-keys.forEach((key) => {
+AllKeys.forEach((key) => {
   if (!Reflect.has(globalThis, key)) {
     globalThis[key] = undefined;
   }

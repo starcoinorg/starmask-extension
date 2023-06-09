@@ -30,5 +30,11 @@ export const MESSAGE_TYPE = {
   WATCH_ASSET: 'wallet_watchAsset',
   WATCH_ASSET_LEGACY: 'metamask_watchAsset',
   APT_SIGN: 'apt_sign',
+  SEND_METADATA: 'starmask_sendDomainMetadata',
 
+};
+
+export const EXTENSION_MESSAGES = {
+  CONNECTION_READY: 'CONNECTION_READY',
+  READY: 'STARMASK_EXTENSION_READY',
 };

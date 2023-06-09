@@ -20,6 +20,52 @@ import { getEnvironmentType } from './lib/util';
 import metaRPCClientFactory from './lib/metaRPCClientFactory';
 import browser from 'webextension-polyfill';
 
+
+const ONE_SECOND_IN_MILLISECONDS = 1_000;
+
+// Service Worker Keep Alive Message Constants
+const WORKER_KEEP_ALIVE_INTERVAL = ONE_SECOND_IN_MILLISECONDS;
+const WORKER_KEEP_ALIVE_MESSAGE = 'WORKER_KEEP_ALIVE_MESSAGE';
+const ACK_KEEP_ALIVE_WAIT_TIME = 60_000; // 1 minute
+const ACK_KEEP_ALIVE_MESSAGE = 'ACK_KEEP_ALIVE_MESSAGE';
+
+let lastMessageReceivedTimestamp = Date.now();
+
+let extensionPort;
+let ackTimeoutToDisplayError;
+
+const ackKeepAliveListener = (message) => {
+  if (message.name === ACK_KEEP_ALIVE_MESSAGE) {
+    lastMessageReceivedTimestamp = Date.now();
+    clearTimeout(ackTimeoutToDisplayError);
+  }
+};
+
+const keepAliveInterval = setInterval(() => {
+  browser.runtime.sendMessage({ name: WORKER_KEEP_ALIVE_MESSAGE });
+
+  if (extensionPort !== null && extensionPort !== undefined) {
+    extensionPort.postMessage({ name: WORKER_KEEP_ALIVE_MESSAGE });
+
+    if (extensionPort.onMessage.hasListener(ackKeepAliveListener) === false) {
+      extensionPort.onMessage.addListener(ackKeepAliveListener);
+    }
+  }
+
+  ackTimeoutToDisplayError = setTimeout(() => {
+    if (
+      Date.now() - lastMessageReceivedTimestamp >
+      ACK_KEEP_ALIVE_WAIT_TIME
+    ) {
+      clearInterval(keepAliveInterval);
+      displayCriticalError(
+        'somethingIsWrong',
+        new Error("Something's gone wrong. Try reloading the page."),
+      );
+    }
+  }, ACK_KEEP_ALIVE_WAIT_TIME);
+}, WORKER_KEEP_ALIVE_INTERVAL);
+
 start().catch(log.error);
 
 async function start() {

@@ -34,6 +34,7 @@ cleanContextForImports();
 import log from 'loglevel';
 import LocalMessageDuplexStream from 'post-message-stream';
 import { initializeProvider } from '@starcoin/stc-inpage-provider';
+import shouldInjectProvider from '../../shared/modules/provider-injection';
 
 restoreContextAfterImports();
 
@@ -49,9 +50,12 @@ const starmaskStream = new LocalMessageDuplexStream({
   target: 'starmask-contentscript',
 });
 
-initializeProvider({
-  connectionStream: starmaskStream,
-  jsonRpcStreamName: 'starmask-provider',
-  logger: log,
-  shouldSendMetadata: false,
-});
+if (shouldInjectProvider()) {
+  initializeProvider({
+    connectionStream: starmaskStream,
+    jsonRpcStreamName: 'starmask-provider',
+    logger: log,
+    shouldSendMetadata: false,
+  });  
+}
+
