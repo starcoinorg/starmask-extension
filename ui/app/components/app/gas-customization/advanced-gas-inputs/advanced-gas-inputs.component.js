@@ -68,6 +68,14 @@ export default class AdvancedGasInputs extends Component {
     this.changeGasLimit({ target: { value: num } });
   };
 
+  hasChangeGasLimitCheck = () => {
+    setTimeout(() => {
+      if(this.state.gasLimit === 0) {
+        this.changeGasLimitEvent(100)
+      }
+    }, 0);
+  }
+
   changeGasLimit = (e) => {
     this.props.updateCustomGasLimit(Number(e.target.value));
   };
@@ -274,7 +282,7 @@ export default class AdvancedGasInputs extends Component {
         {this.renderGasInput({
           label: this.context.t('gasLimit'),
           tooltipTitle: this.context.t('gasLimitInfoTooltipContent'),
-          value: this.state.gasLimit || this.changeGasLimitEvent(100),
+          value: this.state.gasLimit || this.hasChangeGasLimitCheck(),
           onChange: this.onChangeGasLimit,
           errorComponent: gasLimitErrorComponent,
           customMessageComponent: gasLimitCustomMessageComponent,
