@@ -704,6 +704,9 @@
   "enterMaxSpendLimit": {
     "message": "Enter Max Spend Limit"
   },
+  "enterOptionalPassword": {
+    "message": "Enter optional password"
+  },
   "enterPassword": {
     "message": "Enter password"
   },

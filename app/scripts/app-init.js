@@ -47,9 +47,9 @@ chrome.runtime.onMessage.addListener(() => {
   return false;
 });
 
-// chrome.runtime.onStartup.addListener(() => {
-//   globalThis.isFirstTimeProfileLoaded = true;
-// });
+chrome.runtime.onStartup.addListener(() => {
+  globalThis.isFirstTimeProfileLoaded = true;
+});
 
 
 const registerInPageContentScript = async () => {

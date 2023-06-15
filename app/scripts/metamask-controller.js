@@ -325,7 +325,7 @@ export default class MetamaskController extends EventEmitter {
         this.networkController,
       ),
       preferencesStore: this.preferencesController.store,
-      txHistoryLimit: 40,
+      txHistoryLimit: 60,
       signTransaction: this.keyringController.signTransaction.bind(
         this.keyringController,
       ),
@@ -499,6 +499,36 @@ export default class MetamaskController extends EventEmitter {
       EnsController: this.ensController.store,
       ApprovalController: this.approvalController,
     });
+
+    // if this is the first time, clear the state of by calling these methods
+    const resetMethods = [
+      this.accountTracker.resetState,
+      this.txController.resetState,
+      this.messageManager.resetState,
+      this.personalMessageManager.resetState,
+      this.decryptMessageManager.resetState,
+      this.encryptionPublicKeyManager.resetState,
+      this.typedMessageManager.resetState,
+      this.swapsController.resetState,
+      this.ensController.resetState,
+      this.approvalController.clear.bind(this.approvalController),
+      // WE SHOULD ADD TokenListController.resetState here too. But it's not implemented yet.
+    ];
+
+    if (globalThis.isFirstTimeProfileLoaded === true) {
+      this.resetStates(resetMethods);
+    }
+
+    // Automatic login via config password or loginToken
+    if (
+      !this.isUnlocked() &&
+      this.onboardingController.store.getState().completedOnboarding
+    ) {
+      this._loginUser();
+    } else {
+      this._startUISync();
+    }
+
     this.memStore.subscribe(this.sendUpdate.bind(this));
 
     const password = process.env.CONF?.password;
@@ -1228,6 +1258,71 @@ export default class MetamaskController extends EventEmitter {
     }
 
     return this.keyringController.fullUpdate();
+  }
+
+  
+  async _loginUser() {
+    try {
+      // Automatic login via config password
+      const password = process.env.CONF?.PASSWORD;
+      if (password) {
+        await this.submitPassword(password);
+      }
+      // Automatic login via storage encryption key
+      else if (isManifestV3) {
+        await this.submitEncryptionKey();
+      }
+      // Updating accounts in this.accountTracker before starting UI syncing ensure that
+      // state has account balance before it is synced with UI
+      await this.accountTracker._updateAccounts();
+    } finally {
+      this._startUISync();
+    }
+  }
+
+  _startUISync() {
+    // Message startUISync is used in MV3 to start syncing state with UI
+    // Sending this message after login is completed helps to ensure that incomplete state without
+    // account details are not flushed to UI.
+    this.emit('startUISync');
+    this.startUISync = true;
+    this.memStore.subscribe(this.sendUpdate.bind(this));
+  }
+
+  /**
+   * Submits a user's encryption key to log the user in via login token
+   */
+  async submitEncryptionKey() {
+    try {
+      const { loginToken, loginSalt } = await browser.storage.session.get([
+        'loginToken',
+        'loginSalt',
+      ]);
+      if (loginToken && loginSalt) {
+        const { vault } = this.keyringController.store.getState();
+
+        const jsonVault = JSON.parse(vault);
+
+        if (jsonVault.salt !== loginSalt) {
+          console.warn(
+            'submitEncryptionKey: Stored salt and vault salt do not match',
+          );
+          await this.clearLoginArtifacts();
+          return;
+        }
+
+        await this.keyringController.submitEncryptionKey(loginToken, loginSalt);
+      }
+    } catch (e) {
+      // If somehow this login token doesn't work properly,
+      // remove it and the user will get shown back to the unlock screen
+      await this.clearLoginArtifacts();
+      throw e;
+    }
+  }
+
+  async clearLoginArtifacts() {
+    await browser.storage.session.remove(['loginToken', 'loginSalt']);
   }
 
   /**
@@ -2260,6 +2355,22 @@ export default class MetamaskController extends EventEmitter {
       });
     };
     this.on('update', handleUpdate);
+    const startUISync = () => {
+      if (outStream._writableState.ended) {
+        return;
+      }
+      // send notification to client-side
+      outStream.write({
+        jsonrpc: '2.0',
+        method: 'startUISync',
+      });
+    };
+
+    if (this.startUISync) {
+      startUISync();
+    } else {
+      this.once('startUISync', startUISync);
+    }
     outStream.on('end', () => {
       this.activeControllerConnections -= 1;
       this.emit(

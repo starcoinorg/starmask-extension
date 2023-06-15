@@ -26,8 +26,8 @@
         "https://*/*"
       ],
       "js": [
-        "globalthis.js",
         "disable-console.js",
+        "globalthis.js",
         "lockdown.js",
         "runLockdown.js",
         "contentscript.js"

@@ -181,6 +181,24 @@ function bnToHex(inputBn) {
   return addHexPrefix(inputBn.toString(16));
 }
 
+/**
+ * Create a defered Promise.
+ *
+ * @returns A deferred Promise.
+ */
+function deferredPromise() {
+  let resolve;
+  let reject;
+  const promise = new Promise(
+    (innerResolve, innerReject) => {
+      resolve = innerResolve;
+      reject = innerReject;
+    },
+  );
+  return { promise, resolve, reject };
+}
+
+
 export {
   getPlatform,
   getEnvironmentType,
@@ -190,4 +208,5 @@ export {
   checkForError,
   addHexPrefix,
   bnToHex,
+  deferredPromise
 };

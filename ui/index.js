@@ -25,9 +25,32 @@ import {
   getUnconnectedAccountAlertEnabledness,
   getUnconnectedAccountAlertShown,
 } from './app/ducks/metamask/metamask';
+import {_setBackgroundConnection} from './app/store/actions'
 
 global.STARMASK_DEBUG = process.env.STARMASK_DEBUG;
 log.setLevel(global.STARMASK_DEBUG ? 'debug' : 'warn');
+
+let reduxStore;
+
+/**
+ * Method to update backgroundConnection object use by UI
+ *
+ * @param backgroundConnection - connection object to background
+ */
+export const updateBackgroundConnection = (backgroundConnection) => {
+  _setBackgroundConnection(backgroundConnection);
+  backgroundConnection.onNotification((data) => {
+    if (data.method === 'sendUpdate') {
+      reduxStore.dispatch(actions.updateMetamaskState(data.params[0]));
+    } else {
+      throw new Error(
+        `Internal JSON-RPC Notification Not Handled:\n\n ${JSON.stringify(
+          data,
+        )}`,
+      );
+    }
+  });
+};
 export default function launchMetamaskUi(opts, cb) {
   const { backgroundConnection } = opts;
   actions._setBackgroundConnection(backgroundConnection);
@@ -107,6 +130,7 @@ async function startApp(metamaskState, backgroundConnection, opts) {
   }
 
   const store = configureStore(draftInitialState);
+  reduxStore = store;
 
   // if unconfirmed txs, start on txConf page
   const unapprovedTxsAll = txHelper(

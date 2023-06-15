@@ -3,13 +3,11 @@ import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
 import '@formatjs/intl-relativetimeformat/polyfill';
 
 import PortStream from 'extension-port-stream';
-import extension from 'extensionizer';
 
 import Eth from 'ethjs';
 import StcQuery from '@starcoin/stc-query';
 import StreamProvider from 'web3-stream-provider';
 import log from 'loglevel';
-import launchMetaMaskUi from '../../ui';
 import {
   ENVIRONMENT_TYPE_FULLSCREEN,
   ENVIRONMENT_TYPE_POPUP,
@@ -19,6 +17,7 @@ import { setupMultiplex } from './lib/stream-utils';
 import { getEnvironmentType } from './lib/util';
 import metaRPCClientFactory from './lib/metaRPCClientFactory';
 import browser from 'webextension-polyfill';
+import launchMetaMaskUi, { updateBackgroundConnection } from '../../ui';
 
 
 const ONE_SECOND_IN_MILLISECONDS = 1_000;
@@ -40,6 +39,14 @@ const ackKeepAliveListener = (message) => {
     clearTimeout(ackTimeoutToDisplayError);
   }
 };
+
+function displayCriticalError(container, err) {
+  container.innerHTML =
+    '<div class="critical-error">The StarMask app failed to load: please open and close StarMask again to restart.</div>';
+  container.style.height = '80px';
+  log.error(err.stack);
+  throw err;
+}
 
 const keepAliveInterval = setInterval(() => {
   browser.runtime.sendMessage({ name: WORKER_KEEP_ALIVE_MESSAGE });
@@ -75,20 +82,48 @@ async function start() {
   // identify window type (popup, notification)
   const windowType = getEnvironmentType();
 
+  let isUIInitialised = false;
+
   // setup stream to background
-  const extensionPort = browser.runtime.connect({ name: windowType });
-  const connectionStream = new PortStream(extensionPort);
+  extensionPort = browser.runtime.connect({ name: windowType });
+  let connectionStream = new PortStream(extensionPort);
 
   const activeTab = await queryCurrentActiveTab(windowType);
-  initializeUiWithTab(activeTab);
+  // initializeUiWithTab(activeTab);
 
-  function displayCriticalError(container, err) {
-    container.innerHTML =
-      '<div class="critical-error">The StarMask app failed to load: please open and close StarMask again to restart.</div>';
-    container.style.height = '80px';
-    log.error(err.stack);
-    throw err;
-  }
+  const messageListener = async (message) => {
+    console.log('message listener', message, 'isUIInitialised', isUIInitialised)
+    if (message?.data?.method === 'startUISync') {
+      if (isUIInitialised) {
+        // Currently when service worker is revived we create new streams
+        // in later version we might try to improve it by reviving same streams.
+        updateUiStreams();
+      } else {
+        initializeUiWithTab(activeTab);
+      }
+    }
+  };
+
+  const resetExtensionStreamAndListeners = () => {
+    extensionPort.onMessage.removeListener(messageListener);
+    extensionPort.onDisconnect.removeListener(
+      resetExtensionStreamAndListeners,
+    );
+
+    // message below will try to activate service worker
+    // in MV3 is likely that reason of stream closing is service worker going in-active
+    browser.runtime.sendMessage({ name: WORKER_KEEP_ALIVE_MESSAGE });
+
+    extensionPort = browser.runtime.connect({ name: windowType });
+    connectionStream = new PortStream(extensionPort);
+    extensionPort.onMessage.addListener(messageListener);
+    extensionPort.onDisconnect.addListener(resetExtensionStreamAndListeners);
+  };
+
+  extensionPort.onMessage.addListener(messageListener);
+  extensionPort.onDisconnect.addListener(resetExtensionStreamAndListeners);
+
+  // initializeUiWithTab(activeTab);
 
   function initializeUiWithTab(tab) {
     const container = document.getElementById('app-content');
@@ -98,6 +133,8 @@ async function start() {
         return;
       }
 
+      isUIInitialised = true;
+
       const state = store.getState();
       const { starmask: { completedOnboarding } = {} } = state;
 
@@ -106,7 +143,28 @@ async function start() {
       }
     });
   }
+
+  // Function to update new backgroundConnection in the UI
+  function updateUiStreams() {
+    connectToAccountManager(connectionStream, (err, backgroundConnection) => {
+      if (err) {
+        displayCriticalError(
+          'troubleStarting',
+          err,
+          ///: BEGIN:ONLY_INCLUDE_IN(flask)
+          undefined,
+          backgroundConnection,
+          ///: END:ONLY_INCLUDE_IN
+        );
+        return;
+      }
+
+      updateBackgroundConnection(backgroundConnection);
+    });
+  }
 }
+
+ 
 
 async function queryCurrentActiveTab(windowType) {
   return new Promise((resolve) => {

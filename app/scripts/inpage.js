@@ -44,13 +44,13 @@ log.setDefaultLevel(process.env.STARMASK_DEBUG ? 'debug' : 'warn');
 // setup plugin communication
 //
 
-// setup background connection
+if (shouldInjectProvider()) {
+  // setup background connection
 const starmaskStream = new LocalMessageDuplexStream({
   name: 'starmask-inpage',
   target: 'starmask-contentscript',
 });
 
-if (shouldInjectProvider()) {
   initializeProvider({
     connectionStream: starmaskStream,
     jsonRpcStreamName: 'starmask-provider',

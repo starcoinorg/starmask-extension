@@ -9,16 +9,20 @@ import endOfStream from 'end-of-stream';
 import pump from 'pump';
 import debounce from 'debounce-stream';
 import log from 'loglevel';
-import extension from 'extensionizer';
 import { storeAsStream, storeTransformStream } from '@metamask/obs-store';
 import PortStream from 'extension-port-stream';
 import { captureException } from '@sentry/browser';
 import browser from 'webextension-polyfill';
+import { checkForLastErrorAndLog } from '../../shared/modules/browser-runtime.utils';
+import { deferredPromise, getPlatform } from './lib/util';
+
 
 import {
   ENVIRONMENT_TYPE_POPUP,
   ENVIRONMENT_TYPE_NOTIFICATION,
   ENVIRONMENT_TYPE_FULLSCREEN,
+  EXTENSION_MESSAGES,
+  PLATFORM_FIREFOX
 } from '../../shared/constants/app';
 import migrations from './migrations';
 import Migrator from './lib/migrator';
@@ -63,6 +67,61 @@ if (inTest || process.env.STARMASK_DEBUG) {
 
 const ACK_KEEP_ALIVE_MESSAGE = 'ACK_KEEP_ALIVE_MESSAGE';
 const WORKER_KEEP_ALIVE_MESSAGE = 'WORKER_KEEP_ALIVE_MESSAGE';
+
+const {
+  promise: isInitialized,
+  resolve: resolveInitialization,
+  reject: rejectInitialization,
+} = deferredPromise();
+
+  /**
+ * Sends a message to the dapp(s) content script to signal it can connect to MetaMask background as
+ * the backend is not active. It is required to re-connect dapps after service worker re-activates.
+ * For non-dapp pages, the message will be sent and ignored.
+ */
+  const sendReadyMessageToTabs = async () => {
+    const tabs = await browser.tabs
+      .query({
+        /**
+         * Only query tabs that our extension can run in. To do this, we query for all URLs that our
+         * extension can inject scripts in, which is by using the "<all_urls>" value and __without__
+         * the "tabs" manifest permission. If we included the "tabs" permission, this would also fetch
+         * URLs that we'd not be able to inject in, e.g. chrome://pages, chrome://extension, which
+         * is not what we'd want.
+         *
+         * You might be wondering, how does the "url" param work without the "tabs" permission?
+         *
+         * @see {@link https://bugs.chromium.org/p/chromium/issues/detail?id=661311#c1}
+         *  "If the extension has access to inject scripts into Tab, then we can return the url
+         *   of Tab (because the extension could just inject a script to message the location.href)."
+         */
+        url: '<all_urls>',
+        windowType: 'normal',
+      })
+      .then((result) => {
+        checkForLastErrorAndLog();
+        return result;
+      })
+      .catch(() => {
+        checkForLastErrorAndLog();
+      });
+  
+    /** @todo we should only sendMessage to dapp tabs, not all tabs. */
+    for (const tab of tabs) {
+      browser.tabs
+        .sendMessage(tab.id, {
+          name: EXTENSION_MESSAGES.READY,
+        })
+        .then(() => {
+          checkForLastErrorAndLog();
+        })
+        .catch(() => {
+          // An error may happen if the contentscript is blocked from loading,
+          // and thus there is no runtime.onMessage handler to listen to the message.
+          checkForLastErrorAndLog();
+        });
+    }
+  };
 
 // initialization flow
 initialize().catch(log.error);
@@ -138,8 +197,10 @@ async function initialize() {
     sessionData?.isFirstMetaMaskControllerSetup === undefined;
   await browser.storage.session.set({ isFirstMetaMaskControllerSetup });
 
-  await setupController(initState, initLangCode);
+  setupController(initState, initLangCode);
+  await sendReadyMessageToTabs();
   log.debug('StarMask initialization complete.');
+  resolveInitialization();
 }
 
 //
@@ -329,11 +390,23 @@ function setupController(initState, initLangCode) {
    */
   function connectRemote(remotePort) {
     const processName = remotePort.name;
-    const isMetaMaskInternalProcess = metamaskInternalProcessHash[processName];
 
     if (metamaskBlockedPorts.includes(remotePort.name)) {
       return;
     }
+
+    let isMetaMaskInternalProcess = false;
+    const sourcePlatform = getPlatform();
+    const senderUrl = remotePort.sender?.url
+      ? new URL(remotePort.sender.url)
+      : null;
+
+      if (sourcePlatform === PLATFORM_FIREFOX) {
+        isMetaMaskInternalProcess = metamaskInternalProcessHash[processName];
+      } else {
+        isMetaMaskInternalProcess =
+          senderUrl?.origin === `chrome-extension://${browser.runtime.id}`;
+      }
 
     if (isMetaMaskInternalProcess) {
       const portStream = new PortStream(remotePort);
