@@ -1,0 +1,31 @@
+name: Release Drafter
+on:
+    push:
+      branches:
+        - main
+      tags:
+      - "v*"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 14.15.1
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.15.1
+      - name: npm install
+        run: |
+          npm install
+      - name: npm run setup && npm run build
+        run: |
+          npm run setup && npm run build
+      - name: Upload a Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./dist/*
+          asset_name: release-${{ github.sha }}.zip
+          asset_content_type: application/zip
