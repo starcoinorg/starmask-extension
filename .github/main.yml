@@ -14,9 +14,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 14.15.1
-      - name: npm install
-        run: |
-          npm install
       - name: npm run setup && npm run build
         run: |
           npm run setup && npm run build
