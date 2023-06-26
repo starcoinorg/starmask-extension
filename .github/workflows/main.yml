@@ -5,6 +5,9 @@ on:
         - main
       tags:
       - "v*"
+    release:
+        types:
+        - created
 jobs:
   build:
     runs-on: ubuntu-latest
