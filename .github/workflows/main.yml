@@ -26,8 +26,8 @@ jobs:
           draft: false
           prerelease: false
           release_name: release
-          tag_name: build
-          body_path: CHANGELOG.md
+          tag_name: ${{ github.ref }}
+          body_path: uploadlog.md
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload a Release Asset
