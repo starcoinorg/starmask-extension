@@ -14,9 +14,12 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 14.15.1
-      - name: npm run setup && npm run build
+      - name: npm run setup
         run: |
-          npm run setup && npm run build
+          npm run setup
+      - name: npm run build 
+        run: |
+            npm run build
       - name: Upload a Release Asset
         uses: actions/upload-release-asset@v1
         env:
