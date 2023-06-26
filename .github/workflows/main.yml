@@ -27,7 +27,9 @@ jobs:
           prerelease: false
           release_name: ${{ github.ref }}
           tag_name: ${{ github.ref }}
-          body_path: ./dist/*
+          body_path: CHANGELOG.md
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload a Release Asset
         uses: actions/upload-release-asset@v1
         env:
