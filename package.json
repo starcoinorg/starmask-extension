@@ -57,7 +57,6 @@
     "@starcoin/stc-keyring-controller": "^1.7.4",
     "@starcoin/stc-multisign-keyring": "^0.4.1",
     "@starcoin/stc-nonce-tracker": "^0.3.0",
-    "@starcoin/stc-onekey-keyring": "^1.2.0",
     "@starcoin/stc-query": "^0.4.1",
     "@starcoin/stc-util": "0.6.0",
     "@zxing/library": "^0.8.0",
