@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "setup": "yarn install && yarn setup:postinstall",
-    "setup:postinstall": "yarn allow-scripts",
-    "setup:postinstalls": "yarn patch-package && yarn allow-scripts",
+    "setup:postinstalls": "yarn allow-scripts",
+    "setup:postinstall": "yarn patch-package && yarn allow-scripts",
     "start": "node development/build/index.js dev",
     "start:lavamoat": "yarn build dev",
     "dist": "yarn build prod",
@@ -18,18 +18,10 @@
     "start:dev": "concurrently -k -n build,react,redux yarn:start yarn:devtools:react yarn:devtools:redux"
   },
   "resolutions": {
-    "**/regenerator-runtime": "^0.13.7",
-    "**/configstore/dot-prop": "^5.1.1",
-    "**/ethers/elliptic": "^6.5.4",
-    "**/knex/minimist": "^1.2.5",
-    "**/optimist/minimist": "^1.2.5",
-    "**/socketcluster/minimist": "^1.2.5",
-    "**/redux/symbol-observable": "^2.0.3",
-    "**/redux-devtools-instrument/symbol-observable": "^2.0.3",
-    "**/rxjs/symbol-observable": "^2.0.3",
     "analytics-node/axios": "^0.21.1",
     "netmask": "^2.0.1",
-    "pull-ws": "^3.3.2"
+    "pull-ws": "^3.3.2",
+    "sass@^1.32.4": "patch:sass@npm%3A1.35.2#./.yarn/patches/sass-npm-1.35.2-6df4e15d13.patch"
   },
   "dependencies": {
     "@babel/runtime": "^7.5.5",
@@ -130,11 +122,12 @@
     "react-tippy": "^1.2.2",
     "react-toggle-button": "^2.2.0",
     "react-transition-group": "^1.2.1",
-    "readable-stream": "^2.3.8",
+    "readable-stream": "2.3.3",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "reselect": "^3.0.1",
     "rpc-cap": "^3.2.1",
+    "safe-buffer": "^5.2.1",
     "safe-event-emitter": "^1.0.1",
     "ses": "^0.12.4",
     "single-call-balance-checker-abi": "^1.0.0",
@@ -173,7 +166,9 @@
     "@storybook/storybook-deployer": "^2.8.7",
     "@testing-library/react": "^10.4.8",
     "@testing-library/react-hooks": "^3.2.1",
+    "@types/gulp-sass": "^5.0.0",
     "@types/react": "^16.9.53",
+    "@types/sass": "^1.43.1",
     "addons-linter": "1.14.0",
     "babelify": "^10.0.0",
     "brfs": "^2.0.2",
@@ -234,6 +229,7 @@
     "redux-mock-store": "^1.5.4",
     "remote-redux-devtools": "^0.5.16",
     "resolve-url-loader": "^3.1.2",
+    "sass": "1.32.4",
     "sass-loader": "^10.1.1",
     "selenium-webdriver": "4.0.0-alpha.7",
     "serve-handler": "^6.1.2",
@@ -242,7 +238,6 @@
     "source-map-explorer": "^2.4.2",
     "string.prototype.matchall": "^4.0.2",
     "style-loader": "^0.21.0",
-    "sass": "^1.63.6",
     "stylelint": "^13.6.1",
     "through2": "^2.0.3",
     "ttest": "^2.1.1",
@@ -266,6 +261,8 @@
       "sha3": false,
       "bufferutil": false,
       "utf-8-validate": false,
+      "es5-ext": true,
+      "@fortawesome/fontawesome-free": true,
       "leveldown": false,
       "ursa-optional": false,
       "gc-stats": false,
@@ -276,5 +273,6 @@
       "scrypt": false,
       "postinstall-postinstall": false
     }
-  }
+  },
+  "packageManager": "yarn@1.22.1"
 }

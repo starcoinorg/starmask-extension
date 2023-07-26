@@ -11,3 +11,5 @@ ui/app/css/output/*
 yarn-error.log
 .giignore.swap
 .DS_Store
+
+.yarn/cache
