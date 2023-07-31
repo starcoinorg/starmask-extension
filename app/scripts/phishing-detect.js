@@ -7,7 +7,6 @@ import { getEnvironmentType } from './lib/util';
 import ExtensionPlatform from './platforms/extension';
 import browser from 'webextension-polyfill';
 
-
 document.addEventListener('DOMContentLoaded', start);
 
 function start() {
