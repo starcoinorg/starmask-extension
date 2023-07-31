@@ -29,7 +29,7 @@ module.exports = {
           loader: 'sass-loader',
           options: {
             sourceMap: true,
-            implementation: require('sass'),
+            implementation: require('gulp-sass')(require('sass')),
             sassOptions: {
               includePaths: ['ui/app/css/'],
             },

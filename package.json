@@ -17,7 +17,7 @@
     "start:dev": "concurrently -k -n build,react,redux yarn:start yarn:devtools:react yarn:devtools:redux"
   },
   "resolutions": {
-    "**/regenerator-runtime": "^0.13.7",
+    "**/regenerator-runtime": "0.13.7",
     "**/configstore/dot-prop": "^5.1.1",
     "**/ethers/elliptic": "^6.5.4",
     "**/knex/minimist": "^1.2.5",
@@ -57,7 +57,6 @@
     "@starcoin/stc-keyring-controller": "^1.7.4",
     "@starcoin/stc-multisign-keyring": "^0.4.1",
     "@starcoin/stc-nonce-tracker": "^0.3.0",
-    "@starcoin/stc-onekey-keyring": "^1.2.0",
     "@starcoin/stc-query": "^0.4.1",
     "@starcoin/stc-util": "0.6.0",
     "@zxing/library": "^0.8.0",
@@ -204,7 +203,7 @@
     "gulp-livereload": "^4.0.0",
     "gulp-rename": "^2.0.0",
     "gulp-rtlcss": "^1.4.0",
-    "gulp-sass": "^4.1.0",
+    "gulp-sass": "5.1.0",
     "gulp-sourcemaps": "^2.6.0",
     "gulp-stylelint": "^13.0.0",
     "gulp-terser-js": "^5.2.2",
@@ -232,7 +231,7 @@
     "redux-mock-store": "^1.5.4",
     "remote-redux-devtools": "^0.5.16",
     "resolve-url-loader": "^3.1.2",
-    "sass": "^1.32.4",
+    "sass": "1.32.4",
     "sass-loader": "^10.1.1",
     "selenium-webdriver": "4.0.0-alpha.7",
     "serve-handler": "^6.1.2",
@@ -249,13 +248,8 @@
     "watchify": "^3.11.1",
     "webpack": "^4.41.6"
   },
-  "engines": {
-    "node": "^14.15.1",
-    "yarn": "^1.16.0"
-  },
   "lavamoat": {
     "allowScripts": {
-      "node-sass": true,
       "chromedriver": true,
       "geckodriver": true,
       "@sentry/cli": true,
