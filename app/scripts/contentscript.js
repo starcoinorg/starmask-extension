@@ -1,5 +1,5 @@
 import pump from 'pump';
-import LocalMessageDuplexStream from '@starcoin-org/post-message-stream';
+import { WindowPostMessageStream } from '@starcoin-org/post-message-stream';
 import ObjectMultiplex from 'obj-multiplex';
 import browser from 'webextension-polyfill';
 import PortStream from 'extension-port-stream';
@@ -8,7 +8,8 @@ import log from 'loglevel';
 
 import { EXTENSION_MESSAGES, MESSAGE_TYPE } from '../../shared/constants/app';
 import { checkForLastError } from '../../shared/modules/browser-runtime.utils';
-import querystring from 'querystring';
+import { isManifestV3 } from '../../shared/modules/mv3.utils';
+import shouldInjectProvider from '../../shared/modules/provider-injection';
 
 // These require calls need to use require to be statically recognized by browserify
 const fs = require('fs');
@@ -31,7 +32,7 @@ const PHISHING_SAFELIST = 'starmask-phishing-safelist';
 const PROVIDER = 'starmask-provider';
 
 // For more information about these legacy streams, see here:
-// https://github.com/MetaMask/starmask-extension/issues/15491
+// https://github.com/starmask/starmask-extension/issues/15491
 // TODO:LegacyProvider: Delete
 const LEGACY_CONTENT_SCRIPT = 'contentscript';
 const LEGACY_INPAGE = 'inpage';
@@ -46,7 +47,7 @@ let legacyExtMux,
   legacyPagePublicConfigChannel,
   notificationTransformStream;
 
-// const phishingPageUrl = new URL(process.env.PHISHING_WARNING_PAGE_URL);
+const phishingPageUrl = new URL(process.env.PHISHING_WARNING_PAGE_URL);
 
 let phishingExtChannel,
   phishingExtMux,
@@ -63,6 +64,23 @@ let extensionMux,
   pageMux,
   pageChannel;
 
+/**
+ * Injects a script tag into the current document
+ *
+ * @param {string} content - Code to be executed in the current document
+ */
+function injectScript(content) {
+  try {
+    const container = document.head || document.documentElement;
+    const scriptTag = document.createElement('script');
+    scriptTag.setAttribute('async', 'false');
+    scriptTag.textContent = content;
+    container.insertBefore(scriptTag, container.children[0]);
+    container.removeChild(scriptTag);
+  } catch (error) {
+    console.error('starmask: Provider injection failed.', error);
+  }
+}
 
 /**
  * SERVICE WORKER LOGIC
@@ -136,12 +154,14 @@ const runWorkerKeepAliveInterval = () => {
 
 function setupPhishingPageStreams() {
   // the transport-specific streams for communication between inpage and background
-  const phishingPageStream = new LocalMessageDuplexStream({
+  const phishingPageStream = new WindowPostMessageStream({
     name: CONTENT_SCRIPT,
     target: PHISHING_WARNING_PAGE,
   });
 
-  runWorkerKeepAliveInterval();
+  if (isManifestV3) {
+    runWorkerKeepAliveInterval();
+  }
 
   // create and connect channel muxers
   // so we can handle the channels individually
@@ -170,7 +190,7 @@ const setupPhishingExtStreams = () => {
     logStreamDisconnectWarning('MetaMask Background Multiplex', err);
     window.postMessage(
       {
-        target: PHISHING_WARNING_PAGE, // the @starcoin-org/post-message-stream "target"
+        target: PHISHING_WARNING_PAGE, // the post-message-stream "target"
         data: {
           // this object gets passed to obj-multiplex
           name: PHISHING_SAFELIST, // the obj-multiplex channel name
@@ -245,7 +265,6 @@ const onDisconnectDestroyPhishingStreams = () => {
  * @returns {Promise|undefined}
  */
 const onMessageSetUpPhishingStreams = (msg) => {
-  console.log(msg, 'msg:')
   if (msg.name === EXTENSION_MESSAGES.READY) {
     if (!phishingExtStream) {
       setupPhishingExtStreams();
@@ -275,17 +294,18 @@ const initPhishingStreams = () => {
 
 const setupPageStreams = () => {
   // the transport-specific streams for communication between inpage and background
-  const pageStream = new LocalMessageDuplexStream({
+  const pageStream = new WindowPostMessageStream({
     name: CONTENT_SCRIPT,
     target: INPAGE,
   });
 
-  pageStream.on('data', ({ data: { method } }) => {
-    console.log('pageStream: ', method)
-    if (!IGNORE_INIT_METHODS_FOR_KEEP_ALIVE.includes(method)) {
-      runWorkerKeepAliveInterval();
-    }
-  });
+  if (isManifestV3) {
+    pageStream.on('data', ({ data: { method } }) => {
+      if (!IGNORE_INIT_METHODS_FOR_KEEP_ALIVE.includes(method)) {
+        runWorkerKeepAliveInterval();
+      }
+    });
+  }
 
   // create and connect channel muxers
   // so we can handle the channels individually
@@ -356,17 +376,18 @@ const destroyExtensionStreams = () => {
 
 // TODO:LegacyProvider: Delete
 const setupLegacyPageStreams = () => {
-  const legacyPageStream = new LocalMessageDuplexStream({
+  const legacyPageStream = new WindowPostMessageStream({
     name: LEGACY_CONTENT_SCRIPT,
     target: LEGACY_INPAGE,
   });
 
-  legacyPageStream.on('data', ({ data: { method } }) => {
-    console.log('legacyPageStream: ', method)
-    if (!IGNORE_INIT_METHODS_FOR_KEEP_ALIVE.includes(method)) {
-      runWorkerKeepAliveInterval();
-    }
-  });
+  if (isManifestV3) {
+    legacyPageStream.on('data', ({ data: { method } }) => {
+      if (!IGNORE_INIT_METHODS_FOR_KEEP_ALIVE.includes(method)) {
+        runWorkerKeepAliveInterval();
+      }
+    });
+  }
 
   legacyPageMux = new ObjectMultiplex();
   legacyPageMux.setMaxListeners(25);
@@ -464,9 +485,11 @@ const onMessageSetUpExtensionStreams = (msg) => {
 /**
  * This listener destroys the extension streams when the extension port is disconnected,
  * so that streams may be re-established later when the extension port is reconnected.
+ *
+ * @param {Error} [err] - Stream connection error
  */
-const onDisconnectDestroyStreams = () => {
-  const err = checkForLastError();
+const onDisconnectDestroyStreams = (err) => {
+  const lastErr = err || checkForLastError();
 
   extensionPort.onDisconnect.removeListener(onDisconnectDestroyStreams);
 
@@ -480,8 +503,8 @@ const onDisconnectDestroyStreams = () => {
    * may cause issues. We suspect that this is a chromium bug as this event should only be called
    * once the port and connections are ready. Delay time is arbitrary.
    */
-  if (err) {
-    console.warn(`${err} Resetting the streams.`);
+  if (lastErr) {
+    console.warn(`${lastErr} Resetting the streams.`);
     setTimeout(setupExtensionStreams, 1000);
   }
 };
@@ -538,13 +561,14 @@ function logStreamDisconnectWarning(remoteLabel, error) {
  */
 function extensionStreamMessageListener(msg) {
   if (
-    STARMASK_EXTENSION_CONNECT_SENT &&
+    METAMASK_EXTENSION_CONNECT_SENT &&
+    isManifestV3 &&
     msg.data.method === 'starmask_chainChanged'
   ) {
-    STARMASK_EXTENSION_CONNECT_SENT = false;
+    METAMASK_EXTENSION_CONNECT_SENT = false;
     window.postMessage(
       {
-        target: INPAGE, // the @starcoin-org/post-message-stream "target"
+        target: INPAGE, // the post-message-stream "target"
         data: {
           // this object gets passed to obj-multiplex
           name: PROVIDER, // the obj-multiplex channel name
@@ -562,12 +586,12 @@ function extensionStreamMessageListener(msg) {
 /**
  * This function must ONLY be called in pump destruction/close callbacks.
  * Notifies the inpage context that streams have failed, via window.postMessage.
- * Relies on obj-multiplex and @starcoin-org/post-message-stream implementation details.
+ * Relies on obj-multiplex and post-message-stream implementation details.
  */
 function notifyInpageOfStreamFailure() {
   window.postMessage(
     {
-      target: INPAGE, // the @starcoin-org/post-message-stream "target"
+      target: INPAGE, // the post-message-stream "target"
       data: {
         // this object gets passed to obj-multiplex
         name: PROVIDER, // the obj-multiplex channel name
@@ -585,26 +609,48 @@ function notifyInpageOfStreamFailure() {
  * Redirects the current page to a phishing information page
  */
 function redirectToPhishingWarning() {
-  console.debug('StarMask: Routing to Phishing Warning component.');
-  const extensionURL = browser.runtime.getURL('phishing.html');
-  window.location.href = `${extensionURL}#${querystring.stringify({
-    hostname: window.location.hostname,
-    href: window.location.href,
-  })}`;
+  console.debug('StarMask: Routing to Phishing Warning page.');
+  const { hostname, href } = window.location;
+  const baseUrl = process.env.PHISHING_WARNING_PAGE_URL;
+
+  const querystring = new URLSearchParams({ hostname, href });
+  window.location.href = `${baseUrl}#${querystring}`;
+  // eslint-disable-next-line no-constant-condition
+  while (1) {
+    console.log(
+      'StarMask: Locking js execution, redirection will complete shortly',
+    );
+  }
 }
 
 const start = () => {
-  // const isDetectedPhishingSite =
-  //   window.location.origin === phishingPageUrl.origin &&
-  //   window.location.pathname === phishingPageUrl.pathname;
+  const isDetectedPhishingSite =
+    window.location.origin === phishingPageUrl.origin &&
+    window.location.pathname === phishingPageUrl.pathname;
 
-  // if (isDetectedPhishingSite) {
+  if (isDetectedPhishingSite) {
     initPhishingStreams();
-    // return;
-  // }
+    return;
+  }
 
-  initStreams();
+  if (shouldInjectProvider()) {
+    if (!isManifestV3) {
+      injectScript(inpageBundle);
+    }
+    initStreams();
+
+    // https://bugs.chromium.org/p/chromium/issues/detail?id=1457040
+    // Temporary workaround for chromium bug that breaks the content script <=> background connection
+    // for prerendered pages. This resets potentially broken extension streams if a page transitions
+    // from the prerendered state to the active state.
+    if (document.prerendering) {
+      document.addEventListener('prerenderingchange', () => {
+        onDisconnectDestroyStreams(
+          new Error('Prerendered page has become active.'),
+        );
+      });
+    }
+  }
 };
 
-console.log('start')
 start();
