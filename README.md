@@ -12,13 +12,13 @@ yarn start
 
 # Development
 
-It is convenient to use `yarn link @starcoin/xxx` for debugging in localhost,
+It is convenient to use `yarn link @starcoin-org/xxx` for debugging in localhost,
 
 but dont forget doing the following steps before next release:
 
 ```
-yarn unlink @starcoin/xxx`
-yarn add @starcoin/xxx
+yarn unlink @starcoin-org/xxx`
+yarn add @starcoin-org/xxx
 yarn setup:postinstall
 ```
 
@@ -75,7 +75,7 @@ before this line:
 
 # How to display custom tokens logo in Main network
 
-1. Maintain custom tokens in [@starcoin/starmask-contract-metadata](https://github.com/starcoinorg/starmask-contract-metadata)
+1. Maintain custom tokens in [@starcoin-org/starmask-contract-metadata](https://github.com/starcoinorg/starmask-contract-metadata)
 
 - add token info in `contract-map.json`
 - add logo svg/png in folder `images`
@@ -83,7 +83,7 @@ before this line:
 
 2. in `starmask-extension`
 
-- update `@starcoin/starmask-contract-metadata` version to the latest one
+- update `@starcoin-org/starmask-contract-metadata` version to the latest one
 - copy and paste logo into folder `app/images/contract`
 
 # Docs

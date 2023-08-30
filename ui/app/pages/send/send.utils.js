@@ -1,4 +1,4 @@
-import { utils, bcs } from '@starcoin/starcoin';
+import { utils, bcs } from '@starcoin-org/starcoin';
 import { ethers } from 'ethers';
 import abi from 'ethereumjs-abi';
 import { BigNumber } from 'bignumber.js';

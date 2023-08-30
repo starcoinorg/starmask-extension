@@ -1,6 +1,6 @@
-import StcQuery from '@starcoin/stc-query';
+import StcQuery from '@starcoin-org/stc-query';
 // const EthContract = require('ethjs-contract')
-import { PollingBlockTracker } from '@starcoin/stc-block-tracker';
+import { PollingBlockTracker } from '@starcoin-org/stc-block-tracker';
 // const abi = require('human-standard-token-abi')
 import SafeEventEmitter from 'safe-event-emitter';
 import { isEqual } from 'lodash';

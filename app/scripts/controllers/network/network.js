@@ -2,14 +2,14 @@ import assert from 'assert';
 import EventEmitter from 'events';
 import { ComposedStore, ObservableStore } from '@metamask/obs-store';
 import { JsonRpcEngine } from 'json-rpc-engine';
-import providerFromEngine from '@starcoin/stc-json-rpc-middleware/providerFromEngine';
+import providerFromEngine from '@starcoin-org/stc-json-rpc-middleware/providerFromEngine';
 import log from 'loglevel';
 import {
   createSwappableProxy,
   createEventEmitterProxy,
 } from 'swappable-obj-proxy';
-import StcQuery from '@starcoin/stc-query';
-import { AptosClient } from '@starcoin/aptos';
+import StcQuery from '@starcoin-org/stc-query';
+import { AptosClient } from '@starcoin-org/aptos';
 import {
   BARNARD,
   MAINNET,

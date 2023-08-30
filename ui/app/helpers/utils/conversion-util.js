@@ -23,7 +23,7 @@
 
 import BigNumber from 'bignumber.js';
 
-import { stripHexPrefix, BN } from '@starcoin/stc-util';
+import { stripHexPrefix, BN } from '@starcoin-org/stc-util';
 
 // Big Number Constants
 const BIG_NUMBER_NANO_STC_MULTIPLIER = new BigNumber('1000000000');

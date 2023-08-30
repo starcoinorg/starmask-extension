@@ -1,4 +1,4 @@
-import { isValidAddress } from '@starcoin/stc-util';
+import { isValidAddress } from '@starcoin-org/stc-util';
 import { ethErrors } from 'eth-rpc-errors';
 import { addHexPrefix } from '../../../lib/util';
 import { TRANSACTION_STATUSES } from '../../../../../shared/constants/transaction';

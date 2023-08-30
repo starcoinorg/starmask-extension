@@ -99,7 +99,7 @@
 
 - Bug fixes:
 
-  - [#67 Couldn't find package "@onekeyhq/connect@8.6.1" required by "@starcoin/stc-onekey-keyring@^1.1.1"](https://github.com/starcoinorg/starmask-extension/issues/67)
+  - [#67 Couldn't find package "@onekeyhq/connect@8.6.1" required by "@starcoin-org/stc-onekey-keyring@^1.1.1"](https://github.com/starcoinorg/starmask-extension/issues/67)
 
   - Chrome extension icon is scaled, should be 48x48
 
@@ -283,7 +283,7 @@
   1. do not fetch https://min-api.cryptocompare.com for CurrencyRate
   2. do not fetch https://api.coingecko.com for updateExchangeRates
   3. do not call eth_call for getContractMethodData and tryReverseResolveAddress
-  4. update @starcoin/stc-inpage-provider from 0.3.1 to 0.3.4
+  4. update @starcoin-org/stc-inpage-provider from 0.3.1 to 0.3.4
 
 ## [1.9.1] - 2021-08-07
 
@@ -336,7 +336,7 @@
 ## [1.6.0] - 2021-06-26
 
 - fix bug: the exported privateKey and receiptIdentifier of HD accounts are the same
-- sync with @starcoin/stc-keyring-controller^1.3.1
+- sync with @starcoin-org/stc-keyring-controller^1.3.1
 
 ## [1.5.1] - 2021-06-25
 

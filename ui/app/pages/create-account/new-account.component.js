@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { utils, encoding } from '@starcoin/starcoin';
+import { utils, encoding } from '@starcoin-org/starcoin';
 import copyToClipboard from 'copy-to-clipboard';
 import ReadOnlyInput from '../../components/ui/readonly-input';
 import Dropdown from '../../components/ui/dropdown';

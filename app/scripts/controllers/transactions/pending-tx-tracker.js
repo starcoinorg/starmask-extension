@@ -1,6 +1,6 @@
 import EventEmitter from 'safe-event-emitter';
 import log from 'loglevel';
-import StcQuery from '@starcoin/stc-query';
+import StcQuery from '@starcoin-org/stc-query';
 import BigNumber from 'bignumber.js';
 import { TRANSACTION_STATUSES } from '../../../../shared/constants/transaction';
 

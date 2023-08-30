@@ -1,8 +1,8 @@
 import { MethodRegistry } from 'eth-method-registry';
 // import abi from 'human-standard-token-abi';
 // import { ethers } from 'ethers';
-import { encoding } from '@starcoin/starcoin';
-import { TxnBuilderTypes, BCS } from '@starcoin/aptos';
+import { encoding } from '@starcoin-org/starcoin';
+import { TxnBuilderTypes, BCS } from '@starcoin-org/aptos';
 import log from 'loglevel';
 import { arrayify } from 'ethers/lib/utils';
 

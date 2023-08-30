@@ -2596,38 +2596,38 @@
   resolved "https://registry.npmjs.org/@sinonjs/text-encoding/-/text-encoding-0.7.1.tgz"
   integrity sha512-+iTbntw2IZPb/anVDbypzfQa+ay64MW0Zo8aJ8gZPWMMK6/OubMVb6lUPMagqjOPnmtauXnFCACVl3O7ogjeqQ==
 
-"@starcoin/aptos-hd-keyring@^1.6.5":
+"@starcoin-org/aptos-hd-keyring@^1.6.5":
   version "1.6.5"
-  resolved "https://registry.yarnpkg.com/@starcoin/aptos-hd-keyring/-/aptos-hd-keyring-1.6.5.tgz#f09e525354ac6f98846f8022c59cc16649e9a5d6"
+  resolved "https://registry.yarnpkg.com/@starcoin-org/aptos-hd-keyring/-/aptos-hd-keyring-1.6.5.tgz#f09e525354ac6f98846f8022c59cc16649e9a5d6"
   integrity sha512-hvUBIwTBvpeXTaZQFWc1LrXoDDXq80rYUNug6y2LDnG3VxlPsxLThU3lLG9AWpjmEaDHSPDrBeXVISU7Hb3N6g==
   dependencies:
     "@ethersproject/bytes" "^5.0.6"
-    "@starcoin/aptos-simple-keyring" "^1.6.5"
-    "@starcoin/starcoin" "^1.6.2"
-    "@starcoin/stc-util" "^0.6.0"
+    "@starcoin-org/aptos-simple-keyring" "^1.6.5"
+    "@starcoin-org/starcoin" "^1.6.2"
+    "@starcoin-org/stc-util" "^0.6.0"
     bip39 "^2.2.0"
     eth-sig-util "^3.0.1"
     ethereumjs-util "^7.0.9"
     loglevel "^1.7.1"
 
-"@starcoin/aptos-simple-keyring@^1.6.5":
+"@starcoin-org/aptos-simple-keyring@^1.6.5":
   version "1.6.5"
-  resolved "https://registry.yarnpkg.com/@starcoin/aptos-simple-keyring/-/aptos-simple-keyring-1.6.5.tgz#bdeebc8d157fd3ba2180a94f24ddf07589dba09a"
+  resolved "https://registry.yarnpkg.com/@starcoin-org/aptos-simple-keyring/-/aptos-simple-keyring-1.6.5.tgz#bdeebc8d157fd3ba2180a94f24ddf07589dba09a"
   integrity sha512-nnxd2EAwAG7/yKBCxdT9MgX45GPVAPZfB/auYPdbjbYz5y98ICU1SHMu9VDo0J0Z5Rvl1/7pI8IUcFqi18BrEQ==
   dependencies:
     "@ethersproject/bytes" "^5.0.6"
-    "@starcoin/starcoin" "^1.6.2"
-    "@starcoin/stc-ed25519" "^0.1.0"
-    "@starcoin/stc-util" "^0.6.0"
-    "@starcoin/stc-wallet" "^1.3.0"
+    "@starcoin-org/starcoin" "^1.6.2"
+    "@starcoin-org/stc-ed25519" "^0.1.0"
+    "@starcoin-org/stc-util" "^0.6.0"
+    "@starcoin-org/stc-wallet" "^1.3.0"
     eth-sig-util "^2.5.0"
     ethereumjs-abi "^0.6.5"
     events "^1.1.1"
     xtend "^4.0.1"
 
-"@starcoin/aptos@^1.3.16":
+"@starcoin-org/aptos@^1.3.16":
   version "1.3.16"
-  resolved "https://registry.yarnpkg.com/@starcoin/aptos/-/aptos-1.3.16.tgz#9dfe8ae3b266916ba40862aeefdae532e62043d2"
+  resolved "https://registry.yarnpkg.com/@starcoin-org/aptos/-/aptos-1.3.16.tgz#9dfe8ae3b266916ba40862aeefdae532e62043d2"
   integrity sha512-cOSoQc7ibtI8jHOLLiq9f8yeCVGEs7dvAnn9JWRIiq0wRIVltyH/4SvPdGgkFhExIEcxnX0AtnkfAAI0o7xk3Q==
   dependencies:
     "@noble/hashes" "1.1.3"
@@ -2636,14 +2636,14 @@
     form-data "4.0.0"
     tweetnacl "1.0.3"
 
-"@starcoin/contract-metadata@^0.6.0":
+"@starcoin-org/contract-metadata@^0.6.0":
   version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@starcoin/contract-metadata/-/contract-metadata-0.6.0.tgz#b991c5172ca2e39e0b8d09426dfc7034d6bb7de7"
+  resolved "https://registry.yarnpkg.com/@starcoin-org/contract-metadata/-/contract-metadata-0.6.0.tgz#b991c5172ca2e39e0b8d09426dfc7034d6bb7de7"
   integrity sha512-UedJUdWORITz0sK/gApNsbwhK2z+BVRbcMlquyyfXzPzn++jTT4qXSo9SfSFia0bUQCiBDJKErtjacjoF2QRzQ==
 
-"@starcoin/starcoin@2.3.1":
+"@starcoin-org/starcoin@2.3.1":
   version "2.3.1"
-  resolved "https://registry.yarnpkg.com/@starcoin/starcoin/-/starcoin-2.3.1.tgz#f927bdbd19861b57c2e2a62191f7b5ffbec6434b"
+  resolved "https://registry.yarnpkg.com/@starcoin-org/starcoin/-/starcoin-2.3.1.tgz#f927bdbd19861b57c2e2a62191f7b5ffbec6434b"
   integrity sha512-eKZwAbKmVpn9UEqpKPSkwhT3ULn1maeoHINi0Mh0zhV3rNgMJ9xseoHs5kdiM6+Jf0VBBRaSuO11sl0HxPQfGw==
   dependencies:
     "@ethersproject/basex" "^5.0.4"
@@ -2670,9 +2670,9 @@
     lodash "^4.17.21"
     ws "7.2.3"
 
-"@starcoin/starcoin@^1.2.1":
+"@starcoin-org/starcoin@^1.2.1":
   version "1.4.2"
-  resolved "https://registry.npmjs.org/@starcoin/starcoin/-/starcoin-1.4.2.tgz#4327fdccfe963ad2fe30ab8bbe5f9081adea7400"
+  resolved "https://registry.npmjs.org/@starcoin-org/starcoin/-/starcoin-1.4.2.tgz#4327fdccfe963ad2fe30ab8bbe5f9081adea7400"
   integrity sha512-2+NIsptmJU4dbijg8UquUwysA0xEsL7NAGEoaCEGjNSq+T+mqZAfIgSWykL6QLMZvz1kpcqrDEdmHUERi1LixA==
   dependencies:
     "@ethersproject/basex" "^5.0.4"
@@ -2684,7 +2684,7 @@
     "@ethersproject/properties" "^5.0.4"
     "@ethersproject/sha2" "^5.0.4"
     "@ethersproject/web" "^5.0.9"
-    "@starcoin/stc-ed25519" "^0.1.0"
+    "@starcoin-org/stc-ed25519" "^0.1.0"
     bech32 "^2.0.0"
     ethereumjs-util "5.1.0"
     is-alphabetical "^1.0.4"
@@ -2698,9 +2698,9 @@
     read-bigint "^0.1.6"
     ws "7.2.3"
 
-"@starcoin/starcoin@^1.6.2":
+"@starcoin-org/starcoin@^1.6.2":
   version "1.6.2"
-  resolved "https://registry.npmjs.org/@starcoin/starcoin/-/starcoin-1.6.2.tgz#457e5f0ed7d7af44532aba64aab69ceee5ae200c"
+  resolved "https://registry.npmjs.org/@starcoin-org/starcoin/-/starcoin-1.6.2.tgz#457e5f0ed7d7af44532aba64aab69ceee5ae200c"
   integrity sha512-zr5oYgBwi+xzfKD6+kCeqWqccbzMdBwz+kMr9hGIX915L4T2POgK8Y9w98r/0WqgEuMsx4iB9JHUBg3K1DNdOg==
   dependencies:
     "@ethersproject/basex" "^5.0.4"
@@ -2712,7 +2712,7 @@
     "@ethersproject/properties" "^5.0.4"
     "@ethersproject/sha2" "^5.0.4"
     "@ethersproject/web" "^5.0.9"
-    "@starcoin/stc-ed25519" "^0.1.0"
+    "@starcoin-org/stc-ed25519" "^0.1.0"
     bech32 "^2.0.0"
     ethereumjs-util "5.1.0"
     fs "^0.0.1-security"
@@ -2728,9 +2728,9 @@
     read-bigint "^0.1.6"
     ws "7.2.3"
 
-"@starcoin/starcoin@^1.9.0":
+"@starcoin-org/starcoin@^1.9.0":
   version "1.9.0"
-  resolved "https://registry.yarnpkg.com/@starcoin/starcoin/-/starcoin-1.9.0.tgz#3196b84ee0132522fc45f6ef627e81f90e899937"
+  resolved "https://registry.yarnpkg.com/@starcoin-org/starcoin/-/starcoin-1.9.0.tgz#3196b84ee0132522fc45f6ef627e81f90e899937"
   integrity sha512-ePtrpgnLHiwSHAv0NWQgmYFhzx+wOwcaqEXoIMOWFlQS1YY0JATdU1Nw4j+fvZBAP4zZxmHq4Vm8u3Ju7gPDoA==
   dependencies:
     "@ethersproject/basex" "^5.0.4"
@@ -2742,7 +2742,7 @@
     "@ethersproject/properties" "^5.0.4"
     "@ethersproject/sha2" "^5.0.4"
     "@ethersproject/web" "^5.0.9"
-    "@starcoin/stc-ed25519" "^0.1.0"
+    "@starcoin-org/stc-ed25519" "^0.1.0"
     bech32 "^2.0.0"
     ethereumjs-util "5.1.0"
     fs "^0.0.1-security"
@@ -2758,57 +2758,57 @@
     read-bigint "^0.1.6"
     ws "7.2.3"
 
-"@starcoin/stc-block-tracker@^0.1.0":
+"@starcoin-org/stc-block-tracker@^0.1.0":
   version "0.1.0"
-  resolved "https://registry.npmjs.org/@starcoin/stc-block-tracker/-/stc-block-tracker-0.1.0.tgz"
+  resolved "https://registry.npmjs.org/@starcoin-org/stc-block-tracker/-/stc-block-tracker-0.1.0.tgz"
   integrity sha512-YRDYWtVzFqRRd6Tt8s8JZS1+gSHHy3CjzLoFsu+V0BQFP5IURXFhqCyLZ5kTpdH7FK/UtlXr6wSE18mzuGuLdw==
   dependencies:
     "@metamask/safe-event-emitter" "^2.0.0"
     json-rpc-random-id "^1.0.1"
     pify "^3.0.0"
 
-"@starcoin/stc-ed25519@^0.1.0":
+"@starcoin-org/stc-ed25519@^0.1.0":
   version "0.1.0"
-  resolved "https://registry.npmjs.org/@starcoin/stc-ed25519/-/stc-ed25519-0.1.0.tgz#56e65b388889a5953e01806cc3deaa20ddaf8174"
+  resolved "https://registry.npmjs.org/@starcoin-org/stc-ed25519/-/stc-ed25519-0.1.0.tgz#56e65b388889a5953e01806cc3deaa20ddaf8174"
   integrity sha512-H3oz8fNQD604Ak0cSNTDcbfzLxsB9XAKw1aJO7iBPuZWcHF8bgn7xxOzsinx5V5LGaPeleWc/Qw4vCKnK6cxHQ==
 
-"@starcoin/stc-hd-keyring@^1.6.1":
+"@starcoin-org/stc-hd-keyring@^1.6.1":
   version "1.6.1"
-  resolved "https://registry.yarnpkg.com/@starcoin/stc-hd-keyring/-/stc-hd-keyring-1.6.1.tgz#418e429f9c1d552fd9e3fe2e9624ccef69c48fcf"
+  resolved "https://registry.yarnpkg.com/@starcoin-org/stc-hd-keyring/-/stc-hd-keyring-1.6.1.tgz#418e429f9c1d552fd9e3fe2e9624ccef69c48fcf"
   integrity sha512-Mao9HuIdAdip/hU5CSlzQjYNE+/GPOBE3pykrLhJ6T0gglt0dwSzraQgtiFvyDsRhF7KV9hKc++ZLATa9t4sLg==
   dependencies:
     "@ethersproject/bytes" "^5.0.6"
-    "@starcoin/starcoin" "^1.6.2"
-    "@starcoin/stc-simple-keyring" "^1.5.3"
-    "@starcoin/stc-util" "^0.3.0"
-    "@starcoin/stc-wallet" "1.3.0"
+    "@starcoin-org/starcoin" "^1.6.2"
+    "@starcoin-org/stc-simple-keyring" "^1.5.3"
+    "@starcoin-org/stc-util" "^0.3.0"
+    "@starcoin-org/stc-wallet" "1.3.0"
     bip39 "^2.2.0"
     eth-sig-util "^3.0.1"
     ethereumjs-util "^7.0.9"
     loglevel "^1.7.1"
 
-"@starcoin/stc-hdkey@^0.2.0":
+"@starcoin-org/stc-hdkey@^0.2.0":
   version "0.2.0"
-  resolved "https://registry.npmjs.org/@starcoin/stc-hdkey/-/stc-hdkey-0.2.0.tgz#03f39fd2308df9811789ee57ad2c0bdc911663ca"
+  resolved "https://registry.npmjs.org/@starcoin-org/stc-hdkey/-/stc-hdkey-0.2.0.tgz#03f39fd2308df9811789ee57ad2c0bdc911663ca"
   integrity sha512-PTs8WSDn9bdcicFW962pcc/fYc51IOLogpFaN57tqvE+Socpfpnt5l56yiQaGmpR8Th6aoeOb8XYdGWhDc59zw==
   dependencies:
-    "@starcoin/stc-util" "^0.3.0"
+    "@starcoin-org/stc-util" "^0.3.0"
     coinstring "^2.0.0"
     safe-buffer "^5.1.1"
     secp256k1 "^3.0.1"
 
-"@starcoin/stc-hdkey@^0.3.0":
+"@starcoin-org/stc-hdkey@^0.3.0":
   version "0.3.0"
-  resolved "https://registry.npmjs.org/@starcoin/stc-hdkey/-/stc-hdkey-0.3.0.tgz#58a9bc254357f9827d46d0d166afda216edcc4df"
+  resolved "https://registry.npmjs.org/@starcoin-org/stc-hdkey/-/stc-hdkey-0.3.0.tgz#58a9bc254357f9827d46d0d166afda216edcc4df"
   integrity sha512-y8z4GUvttmph/0tJ3PCio2Q7F0kE/6ZuE2jssWcZd85Tvf/F6ztHfGDrj/6/t4QY5L/P7YhjLrrUCKWZtdNGZA==
   dependencies:
     coinstring "^2.0.0"
     safe-buffer "^5.1.1"
     secp256k1 "^3.0.1"
 
-"@starcoin/stc-inpage-provider@^0.4.0":
+"@starcoin-org/stc-inpage-provider@^0.4.0":
   version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@starcoin/stc-inpage-provider/-/stc-inpage-provider-0.4.0.tgz#2055abb7e1b8dbf27b773cb360f0a56505a0f298"
+  resolved "https://registry.yarnpkg.com/@starcoin-org/stc-inpage-provider/-/stc-inpage-provider-0.4.0.tgz#2055abb7e1b8dbf27b773cb360f0a56505a0f298"
   integrity sha512-K1hyQvQ97lfVuEIxwbnCojuegvwatQrJ1+DZ8/5AAaTd/XDP1aUmHRtBXC5QUrQSzKlX0DaYgyL2QgPoz4lS8w==
   dependencies:
     "@metamask/object-multiplex" "^1.1.0"
@@ -2824,9 +2824,9 @@
     pump "^3.0.0"
     webextension-polyfill-ts "^0.25.0"
 
-"@starcoin/stc-json-rpc-middleware@^0.3.0":
+"@starcoin-org/stc-json-rpc-middleware@^0.3.0":
   version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@starcoin/stc-json-rpc-middleware/-/stc-json-rpc-middleware-0.3.0.tgz#b4544b9f7f3c47e1d1a0e21c1b1550384de0ba02"
+  resolved "https://registry.yarnpkg.com/@starcoin-org/stc-json-rpc-middleware/-/stc-json-rpc-middleware-0.3.0.tgz#b4544b9f7f3c47e1d1a0e21c1b1550384de0ba02"
   integrity sha512-3L6OkN7t7Kp3kIxckwZwqGYENqWidGqO7CAMD2LvvIRwduHHIFf/8gtA56qSKvkczgoNClggdqEK6qzo52Q8Ng==
   dependencies:
     btoa "^1.2.1"
@@ -2841,9 +2841,9 @@
     pify "^3.0.0"
     safe-event-emitter "^1.0.1"
 
-"@starcoin/stc-json-rpc@^0.2.4":
+"@starcoin-org/stc-json-rpc@^0.2.4":
   version "0.2.4"
-  resolved "https://registry.yarnpkg.com/@starcoin/stc-json-rpc/-/stc-json-rpc-0.2.4.tgz#fed07f4a76a771d72274bd5215736f6aa4c12fde"
+  resolved "https://registry.yarnpkg.com/@starcoin-org/stc-json-rpc/-/stc-json-rpc-0.2.4.tgz#fed07f4a76a771d72274bd5215736f6aa4c12fde"
   integrity sha512-9hHOmfblEt6lTFNk0eWMSul995G/EjHx4T4KvJ6V1rISNqk9pe6/AqaIdzGyardecUCA7F+XuC0kpzWzhrH9ew==
   dependencies:
     eth-json-rpc-middleware "^6.0.0"
@@ -2851,16 +2851,16 @@
     json-rpc-engine "^5.3.0"
     node-fetch "^2.6.1"
 
-"@starcoin/stc-keyring-controller@^1.7.4":
+"@starcoin-org/stc-keyring-controller@^1.7.4":
   version "1.7.4"
-  resolved "https://registry.yarnpkg.com/@starcoin/stc-keyring-controller/-/stc-keyring-controller-1.7.4.tgz#aee17d5260229cd83eb678d213a4e534215c4c1b"
+  resolved "https://registry.yarnpkg.com/@starcoin-org/stc-keyring-controller/-/stc-keyring-controller-1.7.4.tgz#aee17d5260229cd83eb678d213a4e534215c4c1b"
   integrity sha512-MuVcGKmTTbYUmcti0Ljh0ha25r/q+Ty69+qUnn6WbvP6tzMYDv20GnxoO3zeP9/jaOWY78oprfHQ4Ltj5N94fg==
   dependencies:
-    "@starcoin/aptos-hd-keyring" "^1.6.5"
-    "@starcoin/aptos-simple-keyring" "^1.6.5"
-    "@starcoin/stc-hd-keyring" "^1.6.1"
-    "@starcoin/stc-simple-keyring" "^1.6.1"
-    "@starcoin/stc-util" "^0.3.0"
+    "@starcoin-org/aptos-hd-keyring" "^1.6.5"
+    "@starcoin-org/aptos-simple-keyring" "^1.6.5"
+    "@starcoin-org/stc-hd-keyring" "^1.6.1"
+    "@starcoin-org/stc-simple-keyring" "^1.6.1"
+    "@starcoin-org/stc-util" "^0.3.0"
     bip39 "^2.4.0"
     bluebird "^3.5.0"
     browser-passworder "^2.0.3"
@@ -2868,96 +2868,96 @@
     loglevel "^1.5.0"
     obs-store "^4.0.3"
 
-"@starcoin/stc-multisign-keyring@^0.4.1":
+"@starcoin-org/stc-multisign-keyring@^0.4.1":
   version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@starcoin/stc-multisign-keyring/-/stc-multisign-keyring-0.4.1.tgz#d5072f488bce85439902835c6d84d5ffb1a02065"
+  resolved "https://registry.yarnpkg.com/@starcoin-org/stc-multisign-keyring/-/stc-multisign-keyring-0.4.1.tgz#d5072f488bce85439902835c6d84d5ffb1a02065"
   integrity sha512-l8Rsx+OhmijDnv6ovSLntE9nlXyXZesBO/TKEOs4HYOSkftDd6845Nx5Z2I8GPmgCxCkypmMfI5nqdhtvtmD3Q==
   dependencies:
     "@ethersproject/bytes" "^5.0.6"
-    "@starcoin/starcoin" "^1.9.0"
-    "@starcoin/stc-util" "^0.3.0"
-    "@starcoin/stc-wallet" "^1.2.2"
+    "@starcoin-org/starcoin" "^1.9.0"
+    "@starcoin-org/stc-util" "^0.3.0"
+    "@starcoin-org/stc-wallet" "^1.2.2"
     eth-sig-util "^2.5.0"
     ethereumjs-abi "^0.6.5"
     events "^1.1.1"
     loglevel "^1.8.0"
     xtend "^4.0.1"
 
-"@starcoin/stc-nonce-tracker@^0.3.0":
+"@starcoin-org/stc-nonce-tracker@^0.3.0":
   version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@starcoin/stc-nonce-tracker/-/stc-nonce-tracker-0.3.0.tgz#805cbe7d27bc7e36941289e8dbf1bb466cb64d5b"
+  resolved "https://registry.yarnpkg.com/@starcoin-org/stc-nonce-tracker/-/stc-nonce-tracker-0.3.0.tgz#805cbe7d27bc7e36941289e8dbf1bb466cb64d5b"
   integrity sha512-yu/MblSY5b2iCJqXIR6OUp1aXxojlAqGsjdTB8R7bsG7Rj2Ywret0DpIe1sjFr8xhm8FJongDEHirpbwkXX0rg==
   dependencies:
     "@ethersproject/bignumber" "^5.1.1"
-    "@starcoin/stc-block-tracker" "^0.1.0"
-    "@starcoin/stc-query" "^0.4.0"
-    "@starcoin/stc-util" "^0.4.1"
+    "@starcoin-org/stc-block-tracker" "^0.1.0"
+    "@starcoin-org/stc-query" "^0.4.0"
+    "@starcoin-org/stc-util" "^0.4.1"
     assert "^1.4.1"
     await-semaphore "^0.1.3"
 
-"@starcoin/stc-onekey-keyring@^1.2.0":
+"@starcoin-org/stc-onekey-keyring@^1.2.0":
   version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@starcoin/stc-onekey-keyring/-/stc-onekey-keyring-1.2.0.tgz#399a3a6248e8b20c3f86dc3fbaa8574e0013291d"
+  resolved "https://registry.yarnpkg.com/@starcoin-org/stc-onekey-keyring/-/stc-onekey-keyring-1.2.0.tgz#399a3a6248e8b20c3f86dc3fbaa8574e0013291d"
   integrity sha512-/UqyJn5+TFKII1OVQP61+m491IopLf/YuAyZXZBGEDdmONUWd/plu8AV/eLYIp2uqy9WaueKCkcY7nc3dTe5wA==
   dependencies:
     "@onekeyfe/js-sdk" "^1.1.6"
-    "@starcoin/starcoin" "^1.6.2"
-    "@starcoin/stc-hdkey" "^0.2.0"
-    "@starcoin/stc-util" "^0.3.0"
+    "@starcoin-org/starcoin" "^1.6.2"
+    "@starcoin-org/stc-hdkey" "^0.2.0"
+    "@starcoin-org/stc-util" "^0.3.0"
     eth-sig-util "^1.4.2"
     ethereumjs-tx "^1.3.4"
     loglevel "^1.7.1"
 
-"@starcoin/stc-query@^0.4.0":
+"@starcoin-org/stc-query@^0.4.0":
   version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@starcoin/stc-query/-/stc-query-0.4.0.tgz#63397084ac59b85c2792b8e34852925ba3ca09cb"
+  resolved "https://registry.yarnpkg.com/@starcoin-org/stc-query/-/stc-query-0.4.0.tgz#63397084ac59b85c2792b8e34852925ba3ca09cb"
   integrity sha512-ZutABYVeoRc1t8v5GVSBx3kqWZsn/mfB9hV1sX8fUwfx6H3TW61qZAFm6YrXsZ05i5voRK5+AMS3/aKd2Pk2Hw==
   dependencies:
     json-rpc-random-id "^1.0.0"
     xtend "^4.0.1"
 
-"@starcoin/stc-query@^0.4.1":
+"@starcoin-org/stc-query@^0.4.1":
   version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@starcoin/stc-query/-/stc-query-0.4.1.tgz#7c3047cd8361ab33560fa154cc2525c64ac4a26e"
+  resolved "https://registry.yarnpkg.com/@starcoin-org/stc-query/-/stc-query-0.4.1.tgz#7c3047cd8361ab33560fa154cc2525c64ac4a26e"
   integrity sha512-Q3PJ1/0U8+HYoLgB4GpBUqRlRi8UmyF8qiKNFiIvmFhPk8ZM8Hh79Tj4B+o0CypR5WUE2lNiOGDUXqo8FqQtMg==
   dependencies:
     json-rpc-random-id "^1.0.0"
     xtend "^4.0.1"
 
-"@starcoin/stc-simple-keyring@^1.5.3":
+"@starcoin-org/stc-simple-keyring@^1.5.3":
   version "1.5.3"
-  resolved "https://registry.npmjs.org/@starcoin/stc-simple-keyring/-/stc-simple-keyring-1.5.3.tgz#dc440693122caea938ed44020ed8c9a9becfa032"
+  resolved "https://registry.npmjs.org/@starcoin-org/stc-simple-keyring/-/stc-simple-keyring-1.5.3.tgz#dc440693122caea938ed44020ed8c9a9becfa032"
   integrity sha512-T4QGJ5DoQSoCQ9CJwT+ov1UyEsZc5Y4l+1Pxk/GVzR8mfFX/FOwmli68SQ8NXELFDa6/h741rso1L4URtaTcsg==
   dependencies:
     "@ethersproject/bytes" "^5.0.6"
-    "@starcoin/starcoin" "^1.6.2"
-    "@starcoin/stc-util" "^0.3.0"
-    "@starcoin/stc-wallet" "^1.2.2"
+    "@starcoin-org/starcoin" "^1.6.2"
+    "@starcoin-org/stc-util" "^0.3.0"
+    "@starcoin-org/stc-wallet" "^1.2.2"
     eth-sig-util "^2.5.0"
     ethereumjs-abi "^0.6.5"
     events "^1.1.1"
     xtend "^4.0.1"
 
-"@starcoin/stc-simple-keyring@^1.6.1":
+"@starcoin-org/stc-simple-keyring@^1.6.1":
   version "1.6.1"
-  resolved "https://registry.yarnpkg.com/@starcoin/stc-simple-keyring/-/stc-simple-keyring-1.6.1.tgz#a568f182c6c33acfb2666d4dff36bd0ce3ea7055"
+  resolved "https://registry.yarnpkg.com/@starcoin-org/stc-simple-keyring/-/stc-simple-keyring-1.6.1.tgz#a568f182c6c33acfb2666d4dff36bd0ce3ea7055"
   integrity sha512-VxLfQIJXp02AfK+goEwzbnAA8s/ByGIdOnWtu0DKR2xGuhV3q5KCYDHu5SKen1P/7oaweMHwFxVrvXRG0DWM8A==
   dependencies:
     "@ethersproject/bytes" "^5.0.6"
-    "@starcoin/starcoin" "^1.6.2"
-    "@starcoin/stc-util" "^0.3.0"
-    "@starcoin/stc-wallet" "^1.3.0"
+    "@starcoin-org/starcoin" "^1.6.2"
+    "@starcoin-org/stc-util" "^0.3.0"
+    "@starcoin-org/stc-wallet" "^1.3.0"
     eth-sig-util "^2.5.0"
     ethereumjs-abi "^0.6.5"
     events "^1.1.1"
     xtend "^4.0.1"
 
-"@starcoin/stc-util@0.6.0", "@starcoin/stc-util@^0.6.0":
+"@starcoin-org/stc-util@0.6.0", "@starcoin-org/stc-util@^0.6.0":
   version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@starcoin/stc-util/-/stc-util-0.6.0.tgz#96d721fab2156ceccb9e7427fa2f37cce73076f7"
+  resolved "https://registry.yarnpkg.com/@starcoin-org/stc-util/-/stc-util-0.6.0.tgz#96d721fab2156ceccb9e7427fa2f37cce73076f7"
   integrity sha512-G7nrEPijZHF5MEgaC5x5A+28u5Xm3oOAHZfJyzplC6A9vrlGWmqi14z0IEio4k4K50XgyQ+i7s1ClSorgtgrrg==
   dependencies:
-    "@starcoin/stc-ed25519" "^0.1.0"
+    "@starcoin-org/stc-ed25519" "^0.1.0"
     bn.js "^4.11.0"
     create-hash "^1.1.2"
     ethjs-util "0.1.6"
@@ -2967,9 +2967,9 @@
     safe-buffer "^5.1.1"
     secp256k1 "^3.0.1"
 
-"@starcoin/stc-util@^0.3.0":
+"@starcoin-org/stc-util@^0.3.0":
   version "0.3.0"
-  resolved "https://registry.npmjs.org/@starcoin/stc-util/-/stc-util-0.3.0.tgz"
+  resolved "https://registry.npmjs.org/@starcoin-org/stc-util/-/stc-util-0.3.0.tgz"
   integrity sha512-FUF50Di094I45llxs6/qnJaQub0+Dr/rFrM3HbictIN7SmHtikD+ZyOsF+EV/8BOjmOK5sm99ImKaj49PmMjhw==
   dependencies:
     bn.js "^4.11.0"
@@ -2982,12 +2982,12 @@
     safe-buffer "^5.1.1"
     secp256k1 "^3.0.1"
 
-"@starcoin/stc-util@^0.4.1":
+"@starcoin-org/stc-util@^0.4.1":
   version "0.4.1"
-  resolved "https://registry.npmjs.org/@starcoin/stc-util/-/stc-util-0.4.1.tgz#3ad13dc5dfca76a9f71544261e544a440650c4a7"
+  resolved "https://registry.npmjs.org/@starcoin-org/stc-util/-/stc-util-0.4.1.tgz#3ad13dc5dfca76a9f71544261e544a440650c4a7"
   integrity sha512-KaNVfmiBH+y6AGgbV0iqEkLbfXjMBw27xYAoS+JC9fEthUvo3ff5vzVBLJEjWiXuOxaJ4V0DkCBbQ4q7jEoPuQ==
   dependencies:
-    "@starcoin/stc-ed25519" "^0.1.0"
+    "@starcoin-org/stc-ed25519" "^0.1.0"
     bn.js "^4.11.0"
     create-hash "^1.1.2"
     ethjs-util "0.1.6"
@@ -2997,14 +2997,14 @@
     safe-buffer "^5.1.1"
     secp256k1 "^3.0.1"
 
-"@starcoin/stc-wallet@1.3.0", "@starcoin/stc-wallet@^1.3.0":
+"@starcoin-org/stc-wallet@1.3.0", "@starcoin-org/stc-wallet@^1.3.0":
   version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@starcoin/stc-wallet/-/stc-wallet-1.3.0.tgz#969862825b38feddc33cd8d8f500e2dfa63341ea"
+  resolved "https://registry.yarnpkg.com/@starcoin-org/stc-wallet/-/stc-wallet-1.3.0.tgz#969862825b38feddc33cd8d8f500e2dfa63341ea"
   integrity sha512-/6bPuO9R8pYONWDY0juo5/NqnH38ZM4XHlqsu9BaDnDKZTx8jzUeUlygo1hZR4wjs61H2nX/PLnDbdRg3tAW+w==
   dependencies:
-    "@starcoin/starcoin" "^1.2.1"
-    "@starcoin/stc-hdkey" "^0.3.0"
-    "@starcoin/stc-util" "0.6.0"
+    "@starcoin-org/starcoin" "^1.2.1"
+    "@starcoin-org/stc-hdkey" "^0.3.0"
+    "@starcoin-org/stc-util" "0.6.0"
     aes-js "^3.1.1"
     bs58check "^2.1.2"
     ethereumjs-util "^6.0.0"
@@ -3015,14 +3015,14 @@
     utf8 "^3.0.0"
     uuid "^3.3.2"
 
-"@starcoin/stc-wallet@^1.2.2":
+"@starcoin-org/stc-wallet@^1.2.2":
   version "1.2.2"
-  resolved "https://registry.npmjs.org/@starcoin/stc-wallet/-/stc-wallet-1.2.2.tgz#7d13e615460a947cb86e8cb0b8f3e2e1aca41c22"
+  resolved "https://registry.npmjs.org/@starcoin-org/stc-wallet/-/stc-wallet-1.2.2.tgz#7d13e615460a947cb86e8cb0b8f3e2e1aca41c22"
   integrity sha512-Y6LjkZxMnUAu2UvFUsyoZqKw8KwvNBc60+CkMJ9pKbRxPZffD1DYRCaBVIrWZz319/+0XteJrW62bZa0G5+lpQ==
   dependencies:
-    "@starcoin/starcoin" "^1.2.1"
-    "@starcoin/stc-hdkey" "^0.3.0"
-    "@starcoin/stc-util" "^0.3.0"
+    "@starcoin-org/starcoin" "^1.2.1"
+    "@starcoin-org/stc-hdkey" "^0.3.0"
+    "@starcoin-org/stc-util" "^0.3.0"
     aes-js "^3.1.1"
     bs58check "^2.1.2"
     ethereumjs-util "^6.0.0"
@@ -17470,9 +17470,9 @@ posix-character-classes@^0.1.0:
   resolved "https://registry.npmjs.org/posix-character-classes/-/posix-character-classes-0.1.1.tgz"
   integrity sha1-AerA/jta9xoqbAL+q7jB/vfgDqs=
 
-post-message-stream@^3.0.0:
+@starcoin-org/post-message-stream@^3.0.0:
   version "3.0.0"
-  resolved "https://registry.npmjs.org/post-message-stream/-/post-message-stream-3.0.0.tgz"
+  resolved "https://registry.npmjs.org/@starcoin-org/post-message-stream/-/@starcoin-org/post-message-stream-3.0.0.tgz"
   integrity sha1-kNn1S9IJ5rb110eVuHWIIFtUcEg=
   dependencies:
     readable-stream "^2.1.4"

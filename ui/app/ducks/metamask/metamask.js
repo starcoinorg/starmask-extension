@@ -1,4 +1,4 @@
-import { encoding } from '@starcoin/starcoin';
+import { encoding } from '@starcoin-org/starcoin';
 import { addHexPrefix } from '../../../../app/scripts/lib/util';
 import * as actionConstants from '../../store/actionConstants';
 import { ALERT_TYPES } from '../../../../shared/constants/alerts';

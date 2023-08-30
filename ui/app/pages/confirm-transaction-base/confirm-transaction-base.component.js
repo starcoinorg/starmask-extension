@@ -1,7 +1,7 @@
 import ethUtil from 'ethereumjs-util';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { encoding, starcoin_types } from '@starcoin/starcoin';
+import { encoding, starcoin_types } from '@starcoin-org/starcoin';
 import { ENVIRONMENT_TYPE_NOTIFICATION } from '../../../../shared/constants/app';
 import { getEnvironmentType } from '../../../../app/scripts/lib/util';
 import ConfirmPageContainer, {

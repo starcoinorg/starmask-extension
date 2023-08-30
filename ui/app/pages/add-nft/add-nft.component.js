@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { isValidAddress } from '@starcoin/stc-util';
+import { isValidAddress } from '@starcoin-org/stc-util';
 import { checkExistingNFT } from '../../helpers/utils/util';
 import { getNFTGalleryInfo } from '../../helpers/utils/nft-util';
 import { CONFIRM_ADD_NFT_ROUTE } from '../../helpers/constants/routes';

@@ -7,8 +7,8 @@
  * on each new block.
  */
 
-import StcQuery from '@starcoin/stc-query';
-import { addHexPrefix } from '@starcoin/stc-util';
+import StcQuery from '@starcoin-org/stc-query';
+import { addHexPrefix } from '@starcoin-org/stc-util';
 import { ObservableStore } from '@metamask/obs-store';
 import log from 'loglevel';
 import pify from 'pify';

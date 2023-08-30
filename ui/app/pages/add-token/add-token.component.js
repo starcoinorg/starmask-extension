@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import {
   getTickerForCurrentProvider,
 } from '../../selectors';
-import { isValidAddress, isValidChecksumAddress } from '@starcoin/stc-util';
-import contractMap from '@starcoin/contract-metadata';
+import { isValidAddress, isValidChecksumAddress } from '@starcoin-org/stc-util';
+import contractMap from '@starcoin-org/contract-metadata';
 
 import { checkExistingCodes } from '../../helpers/utils/util';
 import { tokenInfoGetter } from '../../helpers/utils/token-util';

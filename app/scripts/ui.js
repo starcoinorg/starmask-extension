@@ -5,7 +5,7 @@ import '@formatjs/intl-relativetimeformat/polyfill';
 import PortStream from 'extension-port-stream';
 
 import Eth from 'ethjs';
-import StcQuery from '@starcoin/stc-query';
+import StcQuery from '@starcoin-org/stc-query';
 import StreamProvider from 'web3-stream-provider';
 import log from 'loglevel';
 import {

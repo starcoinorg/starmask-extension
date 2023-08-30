@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
 import pump from 'pump';
 import { ethers } from 'ethers';
-import { AptosAccount } from '@starcoin/aptos';
+import { AptosAccount } from '@starcoin-org/aptos';
 const { arrayify, hexlify } = ethers.utils;
 import { ObservableStore } from '@metamask/obs-store';
 import { storeAsStream } from '@metamask/obs-store/dist/asStream';
@@ -10,24 +10,24 @@ import { debounce } from 'lodash';
 import createEngineStream from 'json-rpc-middleware-stream/engineStream';
 import createFilterMiddleware from 'eth-json-rpc-filters';
 import createSubscriptionManager from 'eth-json-rpc-filters/subscriptionManager';
-import providerAsMiddleware from '@starcoin/stc-json-rpc-middleware/providerAsMiddleware';
-import KeyringController from '@starcoin/stc-keyring-controller';
+import providerAsMiddleware from '@starcoin-org/stc-json-rpc-middleware/providerAsMiddleware';
+import KeyringController from '@starcoin-org/stc-keyring-controller';
 import { Mutex } from 'await-semaphore';
 import {
   stripHexPrefix,
   toChecksumAddress,
   privateToPublicED,
   addHexPrefix,
-} from '@starcoin/stc-util';
-import { utils, starcoin_types, encoding } from '@starcoin/starcoin';
+} from '@starcoin-org/stc-util';
+import { utils, starcoin_types, encoding } from '@starcoin-org/starcoin';
 import BigNumber from 'bignumber.js';
 import log from 'loglevel';
-import OneKeyKeyring from '@starcoin/stc-onekey-keyring';
-import MutiSignKeyring from '@starcoin/stc-multisign-keyring';
+import OneKeyKeyring from '@starcoin-org/stc-onekey-keyring';
+import MutiSignKeyring from '@starcoin-org/stc-multisign-keyring';
 // import LedgerBridgeKeyring from '@metamask/eth-ledger-bridge-keyring';
-import StcQuery from '@starcoin/stc-query';
+import StcQuery from '@starcoin-org/stc-query';
 import nanoid from 'nanoid';
-import contractMap from '@starcoin/contract-metadata';
+import contractMap from '@starcoin-org/contract-metadata';
 import {
   AddressBookController,
   ApprovalController,

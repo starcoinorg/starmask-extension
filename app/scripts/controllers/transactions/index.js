@@ -1,16 +1,16 @@
 import EventEmitter from 'safe-event-emitter';
 import { ObservableStore } from '@metamask/obs-store';
 import ethUtil from 'ethereumjs-util';
-import StcQuery from '@starcoin/stc-query';
+import StcQuery from '@starcoin-org/stc-query';
 import { ethErrors } from 'eth-rpc-errors';
 // import abi from 'human-standard-token-abi';
 // import { ethers } from 'ethers';
-import NonceTracker from '@starcoin/stc-nonce-tracker';
+import NonceTracker from '@starcoin-org/stc-nonce-tracker';
 import { ethers } from 'ethers';
-import { bcs, encoding, utils, starcoin_types } from '@starcoin/starcoin';
+import { bcs, encoding, utils, starcoin_types } from '@starcoin-org/starcoin';
 import log from 'loglevel';
 import BigNumber from 'bignumber.js';
-import { AptosAccount, TxnBuilderTypes, BCS } from '@starcoin/aptos';
+import { AptosAccount, TxnBuilderTypes, BCS } from '@starcoin-org/aptos';
 import cleanErrorStack from '../../lib/cleanErrorStack';
 import {
   hexToBn,

@@ -1,5 +1,5 @@
 import namehash from 'eth-ens-namehash';
-import StcQuery from '@starcoin/stc-query';
+import StcQuery from '@starcoin-org/stc-query';
 import EthContract from 'ethjs-contract';
 import contentHash from 'content-hash';
 import registryAbi from './contracts/registry';

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { debounce } from 'lodash';
 import log from 'loglevel';
-import { isValidAddress } from '@starcoin/stc-util';
+import { isValidAddress } from '@starcoin-org/stc-util';
 import { isValidReceipt } from '../../helpers/utils/util';
 import {
   getAmountErrorObject,

@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import { bcs, utils } from '@starcoin/starcoin';
+import { bcs, utils } from '@starcoin-org/starcoin';
 
 const { arrayify, hexlify } = ethers.utils;
 

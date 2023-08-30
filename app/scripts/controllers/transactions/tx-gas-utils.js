@@ -1,12 +1,12 @@
-import StcQuery from '@starcoin/stc-query';
+import StcQuery from '@starcoin-org/stc-query';
 import log from 'loglevel';
-import { AptosAccount, TxnBuilderTypes, BCS } from '@starcoin/aptos';
+import { AptosAccount, TxnBuilderTypes, BCS } from '@starcoin-org/aptos';
 import { hexStripZeros } from '@ethersproject/bytes';
-import { addHexPrefix, stripHexPrefix } from '@starcoin/stc-util';
+import { addHexPrefix, stripHexPrefix } from '@starcoin-org/stc-util';
 // import { cloneDeep } from 'lodash';
 import BigNumber from 'bignumber.js';
 // eslint-disable-next-line camelcase
-import { bcs, encoding, utils, starcoin_types } from '@starcoin/starcoin';
+import { bcs, encoding, utils, starcoin_types } from '@starcoin-org/starcoin';
 import { hexToBn, BnMultiplyByFraction, bnToHex } from '../../lib/util';
 import { conversionUtil } from '../../../../ui/app/helpers/utils/conversion-util';
 import { TRANSACTION_TYPES } from '../../../../shared/constants/transaction';

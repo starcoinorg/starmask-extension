@@ -1,7 +1,7 @@
 import punycode from 'punycode/punycode';
 import abi from 'human-standard-token-abi';
 import BigNumber from 'bignumber.js';
-import * as stcUtil from '@starcoin/stc-util';
+import * as stcUtil from '@starcoin-org/stc-util';
 import { DateTime } from 'luxon';
 import { addHexPrefix } from '../../../../app/scripts/lib/util';
 import {

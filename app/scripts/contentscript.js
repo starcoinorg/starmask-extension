@@ -1,5 +1,5 @@
 import pump from 'pump';
-import LocalMessageDuplexStream from 'post-message-stream';
+import LocalMessageDuplexStream from '@starcoin-org/post-message-stream';
 import ObjectMultiplex from 'obj-multiplex';
 import browser from 'webextension-polyfill';
 import PortStream from 'extension-port-stream';
@@ -170,7 +170,7 @@ const setupPhishingExtStreams = () => {
     logStreamDisconnectWarning('MetaMask Background Multiplex', err);
     window.postMessage(
       {
-        target: PHISHING_WARNING_PAGE, // the post-message-stream "target"
+        target: PHISHING_WARNING_PAGE, // the @starcoin-org/post-message-stream "target"
         data: {
           // this object gets passed to obj-multiplex
           name: PHISHING_SAFELIST, // the obj-multiplex channel name
@@ -544,7 +544,7 @@ function extensionStreamMessageListener(msg) {
     STARMASK_EXTENSION_CONNECT_SENT = false;
     window.postMessage(
       {
-        target: INPAGE, // the post-message-stream "target"
+        target: INPAGE, // the @starcoin-org/post-message-stream "target"
         data: {
           // this object gets passed to obj-multiplex
           name: PROVIDER, // the obj-multiplex channel name
@@ -562,12 +562,12 @@ function extensionStreamMessageListener(msg) {
 /**
  * This function must ONLY be called in pump destruction/close callbacks.
  * Notifies the inpage context that streams have failed, via window.postMessage.
- * Relies on obj-multiplex and post-message-stream implementation details.
+ * Relies on obj-multiplex and @starcoin-org/post-message-stream implementation details.
  */
 function notifyInpageOfStreamFailure() {
   window.postMessage(
     {
-      target: INPAGE, // the post-message-stream "target"
+      target: INPAGE, // the @starcoin-org/post-message-stream "target"
       data: {
         // this object gets passed to obj-multiplex
         name: PROVIDER, // the obj-multiplex channel name

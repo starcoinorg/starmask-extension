@@ -1,8 +1,8 @@
 import log from 'loglevel';
 import BigNumber from 'bignumber.js';
 import { ethers } from 'ethers';
-import { bcs, utils } from '@starcoin/starcoin';
-import { TxnBuilderTypes, BCS } from '@starcoin/aptos';
+import { bcs, utils } from '@starcoin-org/starcoin';
+import { TxnBuilderTypes, BCS } from '@starcoin-org/aptos';
 import contractMap from '@metamask/contract-metadata';
 import * as util from './util';
 import { conversionUtil, multiplyCurrencies } from './conversion-util';

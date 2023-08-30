@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import contractMap from '@starcoin/contract-metadata';
+import contractMap from '@starcoin-org/contract-metadata';
 import Fuse from 'fuse.js';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '../../../components/ui/text-field';
