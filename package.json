@@ -57,7 +57,6 @@
     "@starcoin/stc-keyring-controller": "^1.7.4",
     "@starcoin/stc-multisign-keyring": "^0.4.1",
     "@starcoin/stc-nonce-tracker": "^0.3.0",
-    "@starcoin/stc-onekey-keyring": "^1.2.0",
     "@starcoin/stc-query": "^0.4.1",
     "@starcoin/stc-util": "0.6.0",
     "@zxing/library": "^0.8.0",
@@ -106,6 +105,7 @@
     "loglevel": "^1.4.1",
     "luxon": "^1.24.1",
     "nanoid": "^2.1.6",
+    "node-sass": "^9.0.0",
     "nonce-tracker": "^1.0.0",
     "obj-multiplex": "^1.0.0",
     "pify": "^5.0.0",
@@ -137,6 +137,7 @@
     "safe-event-emitter": "^1.0.1",
     "ses": "^0.12.4",
     "single-call-balance-checker-abi": "^1.0.0",
+    "stc-lib-onekey-keyring": "1.0.0",
     "swappable-obj-proxy": "^1.1.0",
     "textarea-caret": "^3.0.1",
     "unicode-confusables": "^0.1.1",
@@ -232,8 +233,8 @@
     "redux-mock-store": "^1.5.4",
     "remote-redux-devtools": "^0.5.16",
     "resolve-url-loader": "^3.1.2",
-    "sass": "^1.32.4",
-    "sass-loader": "^10.1.1",
+    "sass": "^1.69.0",
+    "sass-loader": "^13.3.2",
     "selenium-webdriver": "4.0.0-alpha.7",
     "serve-handler": "^6.1.2",
     "sinon": "^9.0.0",
@@ -248,10 +249,6 @@
     "vinyl-source-stream": "^2.0.0",
     "watchify": "^3.11.1",
     "webpack": "^4.41.6"
-  },
-  "engines": {
-    "node": "^14.15.1",
-    "yarn": "^1.16.0"
   },
   "lavamoat": {
     "allowScripts": {

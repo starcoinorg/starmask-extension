@@ -22,7 +22,7 @@ import {
 import { utils, starcoin_types, encoding } from '@starcoin/starcoin';
 import BigNumber from 'bignumber.js';
 import log from 'loglevel';
-import OneKeyKeyring from '@starcoin/stc-onekey-keyring';
+import OneKeyKeyring from 'stc-lib-onekey-keyring;
 import MutiSignKeyring from '@starcoin/stc-multisign-keyring';
 // import LedgerBridgeKeyring from '@metamask/eth-ledger-bridge-keyring';
 import StcQuery from '@starcoin/stc-query';
