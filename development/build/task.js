@@ -85,6 +85,7 @@ function runInChildProcess(task) {
     await new Promise((resolve, reject) => {
       childProcess.once('close', (errCode) => {
         if (errCode !== 0) {
+          console.log(errCode, 'erroce')
           reject(
             new Error(
               `StarMask build: runInChildProcess for task "${taskName}" encountered an error ${errCode}`,

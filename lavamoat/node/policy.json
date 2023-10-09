@@ -2263,7 +2263,6 @@
       "packages": {
         "chalk": true,
         "lodash": true,
-        "node-sass": true,
         "plugin-error": true,
         "replace-ext": true,
         "strip-ansi": true,
@@ -2923,45 +2922,6 @@
         "process": true,
         "setImmediate": true,
         "setTimeout": true
-      }
-    },
-    "node-sass": {
-      "builtin": {
-        "fs.existsSync": true,
-        "fs.readFileSync": true,
-        "fs.readdirSync": true,
-        "os.EOL": true,
-        "path.delimiter": true,
-        "path.join": true,
-        "path.resolve": true
-      },
-      "globals": {
-        "__dirname": true,
-        "console.log": true,
-        "process.arch": true,
-        "process.argv.slice": true,
-        "process.cwd": true,
-        "process.env.SASS_BINARY_DIR": true,
-        "process.env.SASS_BINARY_NAME": true,
-        "process.env.SASS_BINARY_PATH": true,
-        "process.env.SASS_BINARY_SITE": true,
-        "process.env.SASS_PATH.split": true,
-        "process.env.hasOwnProperty": true,
-        "process.env.npm_config_cache": true,
-        "process.env.npm_config_sass_binary_cache": true,
-        "process.env.npm_config_sass_binary_dir": true,
-        "process.env.npm_config_sass_binary_name": true,
-        "process.env.npm_config_sass_binary_path": true,
-        "process.env.npm_config_sass_binary_site": true,
-        "process.execPath": true,
-        "process.platform": true,
-        "process.sass": "write",
-        "process.versions.modules": true
-      },
-      "packages": {
-        "lodash": true,
-        "mkdirp": true,
-        "true-case-path": true
       }
     },
     "normalize-path": {
