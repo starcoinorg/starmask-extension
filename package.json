@@ -253,7 +253,7 @@
     "allowScripts": {
       "chromedriver": true,
       "geckodriver": true,
-      "@sentry/cli": true,
+      "@sentry/cli": false,
       "electron": true,
       "core-js": false,
       "core-js-pure": false,
