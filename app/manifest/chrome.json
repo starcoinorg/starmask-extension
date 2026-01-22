@@ -6,5 +6,5 @@
     "matches": ["https://*.starcoin.org/*"],
     "ids": ["*"]
   },
-  "minimum_chrome_version": "63"
+  "minimum_chrome_version": "88"
 }

@@ -61,7 +61,6 @@
   "name": "__MSG_appName__",
   "permissions": [
     "activeTab",
-    "alarms",
     "clipboardWrite",
     "notifications",
     "scripting",
@@ -72,8 +71,12 @@
   "host_permissions": [
     "http://localhost:8545/",
     "file://*/*",
-    "http://*/*",
-    "https://*/*"
+    "https://*.starcoin.org/*",
+    "http://*.starcoin.org/*",
+    "https://*.aptoslabs.com/*",
+    "http://*.aptoslabs.com/*",
+    "https://*.sentry.io/*",
+    "https://*.metamask.io/*"
   ],
   "short_name": "__MSG_appName__",
   "version": "5.2.5"

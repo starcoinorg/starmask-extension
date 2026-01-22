@@ -30,7 +30,7 @@ function importAllScripts() {
   };
 
   loadFile('./globalthis.js');
-  loadFile('./initSentry.js');
+  // loadFile('./initSentry.js');
 
   loadFile('./init-globals.js');
   // loadFile('./lockdown.js');

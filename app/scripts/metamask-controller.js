@@ -73,7 +73,7 @@ import MetaMetricsController from './controllers/metametrics';
 import { segment, segmentLegacy } from './lib/segment';
 import createMetaRPCHandler from './lib/createMetaRPCHandler';
 import browser from 'webextension-polyfill'
-
+import { isManifestV3 } from '../../shared/modules/mv3.utils';
 export const METAMASK_CONTROLLER_EVENTS = {
   // Fired after state changes that impact the extension badge (unapproved msg count)
   // The process of updating the badge happens in app/scripts/background.js.
@@ -96,7 +96,7 @@ export default class MetamaskController extends EventEmitter {
    */
   constructor(opts) {
     super();
-
+    const { isFirstStarMaskControllerSetup } = opts;
     this.defaultMaxListeners = 20;
 
     this.sendUpdate = debounce(this.privateSendUpdate.bind(this), 200);
@@ -515,9 +515,22 @@ export default class MetamaskController extends EventEmitter {
       // WE SHOULD ADD TokenListController.resetState here too. But it's not implemented yet.
     ];
 
+    /*
     if (globalThis.isFirstTimeProfileLoaded === true) {
       this.resetStates(resetMethods);
+    }*/
+    if (isManifestV3) {
+      if (isFirstStarMaskControllerSetup === true) {
+        this.resetStates(resetMethods);
+        this.extension.storage.session.set({
+          isFirstStarMaskControllerSetup: false,
+        });
+      }
+    } else {
+      // it's always the first time in MV2
+      this.resetStates(resetMethods);
     }
+
 
     // Automatic login via config password or loginToken
     if (
@@ -1260,7 +1273,7 @@ export default class MetamaskController extends EventEmitter {
     return this.keyringController.fullUpdate();
   }
 
-  
+
   async _loginUser() {
     try {
       // Automatic login via config password
@@ -3116,7 +3129,7 @@ export default class MetamaskController extends EventEmitter {
   }
 
   /**
-   * Get AutoAcceptToken for selected account. 
+   * Get AutoAcceptToken for selected account.
    * @param {string} address - The account address
    */
   getAutoAcceptToken(adress, ticker = 'STC') {
