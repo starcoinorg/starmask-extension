@@ -600,7 +600,7 @@ export const signAndSendTransactions = (history, metaMetricsEvent) => {
     );
     const estimatedGasLimitWithMultiplier = estimatedGasLimit
       .times(usedQuote?.gasMultiplier || FALLBACK_GAS_MULTIPLIER, 10)
-      .round(0)
+      .dp(0)
       .toString(16);
     const maxGasLimit =
       customSwapsGas ||

@@ -75,26 +75,23 @@ const AssetList = ({ onClickAsset }) => {
   );
 
   const image = `/images/${ nativeCurrency.toLowerCase() }.svg`
-  const hasVm2Balance = vm2Balance && vm2Balance !== '0x0';
   return (
     <>
       <AssetListItem
         onClick={() => onClickAsset(nativeCurrency)}
         data-testid="wallet-balance"
-        primary={hasVm2Balance ? `VM1: ${primaryCurrencyProperties.value}` : primaryCurrencyProperties.value}
-        tokenSymbol={primaryCurrencyProperties.suffix}
+        primary={primaryCurrencyProperties.value}
+        tokenSymbol={`${primaryCurrencyProperties.suffix}-VM1`}
         secondary={showFiat ? secondaryCurrencyDisplay : undefined}
         tokenImage={image}
       />
-      {hasVm2Balance ? (
-        <AssetListItem
-          onClick={() => onClickAsset(nativeCurrency)}
-          data-testid="wallet-balance-vm2"
-          primary={`VM2: ${vm2PrimaryCurrencyProperties.value}`}
-          tokenSymbol={vm2PrimaryCurrencyProperties.suffix}
-          tokenImage={image}
-        />
-      ) : null}
+      <AssetListItem
+        onClick={() => onClickAsset(nativeCurrency)}
+        data-testid="wallet-balance-vm2"
+        primary={vm2PrimaryCurrencyProperties.value}
+        tokenSymbol={`${vm2PrimaryCurrencyProperties.suffix}-VM2`}
+        tokenImage={image}
+      />
       <TokenList
         onTokenClick={(tokenAddress) => {
           onClickAsset(tokenAddress);

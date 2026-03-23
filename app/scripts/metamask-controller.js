@@ -22,7 +22,7 @@ import {
 import { utils, starcoin_types, encoding } from '@starcoin/starcoin';
 import BigNumber from 'bignumber.js';
 import log from 'loglevel';
-import OneKeyKeyring from '@starcoin/stc-onekey-keyring';
+// import OneKeyKeyring from '@starcoin/stc-onekey-keyring';
 import MutiSignKeyring from '@starcoin/stc-multisign-keyring';
 // import LedgerBridgeKeyring from '@metamask/eth-ledger-bridge-keyring';
 import StcQuery from '@starcoin/stc-query';
@@ -261,7 +261,7 @@ export default class MetamaskController extends EventEmitter {
     });
 
     // const additionalKeyrings = [TrezorKeyring, LedgerBridgeKeyring];
-    const additionalKeyrings = [OneKeyKeyring, MutiSignKeyring];
+    const additionalKeyrings = [MutiSignKeyring];
     this.keyringController = new KeyringController({
       keyringTypes: additionalKeyrings,
       initState: initState.KeyringController,
@@ -1378,9 +1378,9 @@ export default class MetamaskController extends EventEmitter {
   async getKeyringForDevice(deviceName, hdPath = null) {
     let keyringName = null;
     switch (deviceName) {
-      case 'onekey':
-        keyringName = OneKeyKeyring.type;
-        break;
+      // case 'onekey':
+      //   keyringName = OneKeyKeyring.type;
+      //   break;
       // case 'ledger':
       //   keyringName = LedgerBridgeKeyring.type;
       //   break;

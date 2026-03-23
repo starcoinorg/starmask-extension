@@ -65,7 +65,7 @@ export function getRenderableTokenData(
     primaryLabel: symbol,
     secondaryLabel: name || contractMap[checksumAddress(address)]?.name,
     rightPrimaryLabel:
-      string && `${new BigNumber(string).round(6).toString()} ${symbol}`,
+      string && `${new BigNumber(string).dp(6).toString()} ${symbol}`,
     rightSecondaryLabel: formattedFiat,
     iconUrl: usedIconUrl,
     identiconAddress: usedIconUrl ? null : address,

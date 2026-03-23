@@ -32,11 +32,11 @@ export default function ExchangeRateDisplay({
     secondaryTokenAmount,
   )
     .div(primaryTokenAmount)
-    .round(9)
+    .dp(9)
     .toString(10);
   const conversionRateFromSecondaryToPrimary = new BigNumber(primaryTokenAmount)
     .div(secondaryTokenAmount)
-    .round(9)
+    .dp(9)
     .toString(10);
 
   const baseSymbol = showPrimaryToSecondary

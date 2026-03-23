@@ -1382,7 +1382,7 @@ export default class TransactionController extends EventEmitter {
         const quoteVsExecutionRatio = `${ new BigNumber(tokensReceived, 10)
           .div(txMeta.swapMetaData.token_to_amount, 10)
           .times(100)
-          .round(2) }%`;
+          .dp(2) }%`;
 
         const estimatedVsUsedGasRatio = `${ new BigNumber(
           txMeta.txReceipt.gasUsed,
@@ -1390,7 +1390,7 @@ export default class TransactionController extends EventEmitter {
         )
           .div(txMeta.swapMetaData.estimated_gas, 10)
           .times(100)
-          .round(2) }%`;
+          .dp(2) }%`;
 
         this._trackMetaMetricsEvent({
           event: 'Swap Completed',

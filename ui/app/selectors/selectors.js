@@ -413,7 +413,7 @@ export function getRpcPrefsForCurrentProvider(state) {
 
 export function getTickerForCurrentProvider(state) {
   const rpcPrefs = getRpcPrefsForCurrentProvider(state);
-  return rpcPrefs.ticker;
+  return rpcPrefs.ticker || state.starmask.provider.ticker;
 }
 
 export function getKnownMethodData(state, data) {

@@ -103,7 +103,7 @@ export default class EditApprovalPermission extends PureComponent {
                   'edit-approval-permission__edit-section__option-label--selected': selectedOptionIsUnlimited,
                 })}
               >
-                {new BigNumber(tokenAmount).lessThan(
+                {new BigNumber(tokenAmount).isLessThan(
                   new BigNumber(tokenBalance),
                 )
                   ? t('proposedApprovalLimit')
@@ -194,13 +194,13 @@ export default class EditApprovalPermission extends PureComponent {
     }
 
     const maxTokenAmount = calcTokenAmount(MAX_UNSIGNED_256_INT, decimals);
-    if (customSpendLimitNumber.greaterThan(maxTokenAmount)) {
+    if (customSpendLimitNumber.isGreaterThan(maxTokenAmount)) {
       return t('spendLimitTooLarge');
     }
 
     if (
       requiredMinimum !== undefined &&
-      customSpendLimitNumber.lessThan(requiredMinimum)
+      customSpendLimitNumber.isLessThan(requiredMinimum)
     ) {
       return t('spendLimitInsufficient');
     }

@@ -752,7 +752,7 @@ export function updateGasData({
         value,
         estimateGasPrice: gasPrice,
         data,
-        ticker: rpcPrefs.ticker,
+        ticker: rpcPrefs.ticker || getState().starmask.provider.ticker,
       })
         .then(({ gasPrice, gas }) => {
           dispatch(setGasPrice(gasPrice));
@@ -766,6 +766,8 @@ export function updateGasData({
           dispatch(updateSendErrors({ gasLoadingError: err.message }));
           dispatch(gasLoadingFinished());
         });
+    } else {
+      dispatch(gasLoadingFinished());
     }
   };
 }

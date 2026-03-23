@@ -419,7 +419,10 @@ export default class SendTransactionScreen extends Component {
           this.props.scanQrCode();
         }}
         onChange={this.onRecipientInputChange}
-        onValidAddressTyped={(address) => this.props.updateSendTo(address, '')}
+        onValidAddressTyped={(address) => {
+          this.props.updateSendTo(address, '');
+          this.updateGas({ to: address });
+        }}
         onPaste={(text) => {
           if (isValidReceipt(text)) {
             // TODO: should check address existing first

@@ -69,11 +69,8 @@ function createStyleTasks({ livereload }) {
 async function buildScssPipeline(src, dest, devMode, rtl) {
   if (!sass) {
     // eslint-disable-next-line node/global-require
-    sass = require('gulp-sass');
-    // use our own compiler which runs sass in its own process
-    // in order to not pollute the intrinsics
-    // eslint-disable-next-line node/global-require
-    sass.compiler = require('./sass-compiler.js');
+    // gulp-sass v5+ requires passing the compiler to the factory function
+    sass = require('gulp-sass')(require('sass'));
   }
   await pump(
     ...[

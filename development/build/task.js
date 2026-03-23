@@ -68,9 +68,18 @@ function runInChildProcess(task) {
     );
   }
   return instrumentForTaskStats(taskName, async () => {
-    const childProcess = spawn('yarn', ['build', taskName, '--skip-stats'], {
-      env: process.env,
-    });
+    let childProcess;
+    if (process.env.ENABLE_LAVAMOAT === 'false') {
+      childProcess = spawn(
+        'node',
+        ['development/build/index.js', taskName, '--skip-stats'],
+        { env: process.env },
+      );
+    } else {
+      childProcess = spawn('yarn', ['build', taskName, '--skip-stats'], {
+        env: process.env,
+      });
+    }
     // forward logs to main process
     // skip the first stdout event (announcing the process command)
     childProcess.stdout.once('data', () => {
