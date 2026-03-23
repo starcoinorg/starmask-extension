@@ -12,6 +12,7 @@ export function constructTxParams({
   from,
   gas,
   gasPrice,
+  vmType,
 }) {
   const txParams = {
     data,
@@ -20,6 +21,10 @@ export function constructTxParams({
     gas,
     gasPrice,
   };
+
+  if (vmType && vmType !== 'vm1') {
+    txParams.vmType = vmType;
+  }
 
   if (!sendToken) {
     txParams.value = amount;

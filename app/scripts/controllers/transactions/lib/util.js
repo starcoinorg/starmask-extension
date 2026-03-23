@@ -18,6 +18,7 @@ const normalizers = {
   expiredSecs: (expiredSecs) => addHexPrefix(expiredSecs),
   addGasBufferMultiplier: (addGasBufferMultiplier) => addGasBufferMultiplier,
   tokenChanges: (tokenChanges) => tokenChanges,
+  vmType: (vmType) => vmType,
 };
 
 /**

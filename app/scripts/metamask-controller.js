@@ -1119,7 +1119,12 @@ export default class MetamaskController extends EventEmitter {
       const cached = this.accountTracker.store.getState().accounts[address];
 
       if (cached && cached.balance) {
-        resolve(cached.balance);
+        // Also consider VM2 balance for account discovery
+        if (cached.balance === '0x0' && cached.vm2Balance && cached.vm2Balance !== '0x0') {
+          resolve(cached.vm2Balance);
+        } else {
+          resolve(cached.balance);
+        }
       } else {
         stcQuery.getResource(
           address,
@@ -1141,7 +1146,22 @@ export default class MetamaskController extends EventEmitter {
               }
               const balanceHex = new BigNumber(balanceDecimal, 10).toString(16);
               const balance = addHexPrefix(balanceHex);
-              resolve(balance || '0x0');
+              if (!balance || balance === '0x0') {
+                // VM1 balance is zero, check if account exists on VM2
+                stcQuery.sendAsync(
+                  { method: 'state2.get_resource', params: [address, '0x00000000000000000000000000000001::account::Account'] },
+                  (err2, res2) => {
+                    if (err2 || !res2) {
+                      resolve('0x0');
+                    } else {
+                      // Account exists on VM2, treat as non-zero for discovery
+                      resolve('0x1');
+                    }
+                  },
+                );
+              } else {
+                resolve(balance);
+              }
             }
           },
         );
@@ -2206,7 +2226,14 @@ export default class MetamaskController extends EventEmitter {
         // network = 0xfe for `Localhost 9850`
         // network = { name: XXX, id: XXX_NETWORK_ID } for others
         const chainId = network.id ? network.id : Number(hexToDecimal(network));
-        const tokenCode = estimateGasParams.code ? estimateGasParams.code : '0x00000000000000000000000000000001::STC::STC'
+        const isVM2 = estimateGasParams.vmType === 'vm2';
+        const defaultTokenCode = isVM2
+          ? '0x00000000000000000000000000000001::starcoin_coin::STC'
+          : '0x00000000000000000000000000000001::STC::STC';
+        const tokenCode = estimateGasParams.code ? estimateGasParams.code : defaultTokenCode;
+        const transferScript = isVM2
+          ? '0x00000000000000000000000000000001::transfer_scripts::peer_to_peer_v2'
+          : '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2';
         return this.keyringController.getPublicKeyFor(estimateGasParams.from)
           .then((publicKey) => {
             const gas_unit_price = 1
@@ -2223,7 +2250,7 @@ export default class MetamaskController extends EventEmitter {
               sequence_number: estimateGasParams.sequenceNumber,
               max_gas_amount,
               script: {
-                code: '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2',
+                code: transferScript,
                 type_args: [tokenCode],
                 args: [estimateGasParams.to, `${ hexToDecimal(estimateGasParams.gas) }u128`]
               },

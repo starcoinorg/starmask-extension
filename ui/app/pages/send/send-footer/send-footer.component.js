@@ -35,6 +35,7 @@ export default class SendFooter extends Component {
     gasPriceIsExtendMax: PropTypes.bool,
     gasLimitIsExtendMax: PropTypes.bool,
     ticker: PropTypes.string,
+    vmType: PropTypes.string,
   };
 
   static contextTypes = {
@@ -71,6 +72,7 @@ export default class SendFooter extends Component {
       history,
       gasEstimateType,
       ticker,
+      vmType,
     } = this.props;
     const { metricsEvent } = this.context;
 
@@ -99,7 +101,7 @@ export default class SendFooter extends Component {
           to,
           unapprovedTxs,
         })
-        : sign({ data, sendToken, to, toReceiptIdentifier, amount, from, gas, gasPrice, ticker });
+        : sign({ data, sendToken, to, toReceiptIdentifier, amount, from, gas, gasPrice, ticker, vmType });
     }
     Promise.resolve(promise).then(() => {
       metricsEvent({

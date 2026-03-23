@@ -20,6 +20,7 @@ import {
   getSendToAccounts,
   getSendToReceiptIdentifier,
   getSendHexData,
+  getSendVMType,
   getTokenBalance,
   getUnapprovedTxs,
   getSendErrors,
@@ -79,6 +80,7 @@ function mapStateToProps(state) {
     gasPriceIsExtendMax: isCustomPriceExtendMax(state, gasPrice),
     gasLimitIsExtendMax: isCustomLimitExtendMax(state, gasLimit),
     ticker: getTickerForCurrentProvider(state),
+    vmType: getSendVMType(state),
   };
 }
 
@@ -88,7 +90,7 @@ function mapDispatchToProps(dispatch) {
     transferNFT: async ({ meta, body, id, to }) => {
       dispatch(transferNFT(meta, body, id, to));
     },
-    sign: async ({ sendToken, to, toReceiptIdentifier, amount, from, gas, gasPrice, data, ticker }) => {
+    sign: async ({ sendToken, to, toReceiptIdentifier, amount, from, gas, gasPrice, data, ticker, vmType }) => {
       const txParams = constructTxParams({
         amount,
         data,
@@ -98,6 +100,7 @@ function mapDispatchToProps(dispatch) {
         sendToken,
         to,
         toReceiptIdentifier,
+        vmType,
       });
 
       sendToken

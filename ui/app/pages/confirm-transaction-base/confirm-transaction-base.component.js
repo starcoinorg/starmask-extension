@@ -783,6 +783,11 @@ export default class ConfirmTransactionBase extends Component {
       }
     }
 
+    const vmType = txData && txData.txParams && txData.txParams.vmType;
+    if (vmType && vmType !== 'vm1') {
+      functionType = `${functionType} (${vmType.toUpperCase()})`;
+    }
+
     return (
       <ConfirmPageContainer
         fromName={fromName}

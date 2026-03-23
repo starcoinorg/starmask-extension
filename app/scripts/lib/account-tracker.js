@@ -387,6 +387,155 @@ export default class AccountTracker {
     //   return;
     // }
     this.store.updateState({ accounts, assets, nfts, nftIdentifier });
+
+    // Also query VM2 STC balance for this address
+    try {
+      await this._updateVM2Resources(address);
+    } catch (err) {
+      log.info('_updateVM2Resources skipped', err.message || err);
+    }
+  }
+
+  /**
+   * Queries VM2 resources via state2.list_resource and stores VM2 balance, tokens, and NFTs
+   * @param {string} address - the account address
+   */
+  async _updateVM2Resources(address) {
+    const { accounts, assets, nfts, nftIdentifier } = this.store.getState();
+    const resourceType = '0x00000000000000000000000000000001::Account::Account';
+
+    try {
+      // First check if account exists on VM2
+      const accountRes = await new Promise((resolve, reject) => {
+        this._query.sendAsync(
+          { method: 'state2.get_resource', params: [address, resourceType] },
+          (err, res) => {
+            if (err) return reject(err);
+            return resolve(res);
+          },
+        );
+      });
+
+      if (!accountRes) {
+        if (accounts[address]) {
+          accounts[address].vm2Balance = '0x0';
+        }
+        this.store.updateState({ accounts });
+        return;
+      }
+
+      // Query all VM2 resources via state2.list_resource
+      const res = await new Promise((resolve, reject) => {
+        this._query.sendAsync(
+          { method: 'state2.list_resource', params: [address, { decode: true }] },
+          (err, listRes) => {
+            if (err) return reject(err);
+            return resolve(listRes);
+          },
+        );
+      });
+
+      if (!res || !res.resources) {
+        if (accounts[address]) {
+          accounts[address].vm2Balance = '0x0';
+        }
+        this.store.updateState({ accounts });
+        return;
+      }
+
+      const { resources } = res;
+      const ACCOUNT_BALANCE = '0x00000000000000000000000000000001::Account::Balance';
+      const NFT_GALLERY = '0x00000000000000000000000000000001::NFTGallery::NFTGallery';
+      const NFT_ID = '0x00000000000000000000000000000001::IdentifierNFT::IdentifierNFT';
+
+      const vm2Tokens = {};
+      const vm2NFTGallery = [];
+      const vm2NFTIdentifier = [];
+
+      Object.keys(resources).forEach((key) => {
+        if (key.startsWith(ACCOUNT_BALANCE)) {
+          const balanceDecimal = resources[key].json.token.value;
+          const token = key.substr(
+            ACCOUNT_BALANCE.length + 1,
+            key.length - ACCOUNT_BALANCE.length - 2,
+          );
+          const balanceHex = new BigNumber(balanceDecimal, 10).toString(16);
+          const balance = addHexPrefix(balanceHex);
+          if (token === '0x00000000000000000000000000000001::STC::STC') {
+            if (accounts[address]) {
+              accounts[address].vm2Balance = balance;
+            }
+          } else {
+            vm2Tokens[`vm2::${token}`] = balance;
+          }
+        } else if (key.startsWith(NFT_GALLERY)) {
+          try {
+            const T2 = key.substr(
+              NFT_GALLERY.length + 1,
+              key.length - NFT_GALLERY.length - 2,
+            );
+            const T2Arr = T2.split(',');
+            const meta = T2Arr[0].trim();
+            const body = T2Arr[1].trim();
+            const items = resources[key].json.items.map((item) => ({
+              id: item.id,
+              name: decodeNFTMeta(item.base_meta.name),
+              description: decodeNFTMeta(item.base_meta.description),
+              image: decodeNFTMeta(item.base_meta.image),
+              imageData: decodeNFTMeta(item.base_meta.image_data),
+            }));
+            vm2NFTGallery.push({ meta, body, items, vmType: 'vm2' });
+          } catch (e) {
+            log.info('VM2 NFT gallery parse error', e);
+          }
+        } else if (key.startsWith(NFT_ID)) {
+          try {
+            const T2 = key.substr(
+              NFT_ID.length + 1,
+              key.length - NFT_ID.length - 2,
+            );
+            const T2Arr = T2.split(',');
+            const meta = T2Arr[0].trim();
+            const body = T2Arr[1].trim();
+            const items = resources[key].json.nft.vec.map((item) => ({
+              id: item.id,
+              name: decodeNFTMeta(item.base_meta.name),
+              description: decodeNFTMeta(item.base_meta.description),
+              image: decodeNFTMeta(item.base_meta.image),
+              imageData: decodeNFTMeta(item.base_meta.image_data),
+            }));
+            vm2NFTIdentifier.push({ meta, body, items, vmType: 'vm2' });
+          } catch (e) {
+            log.info('VM2 NFT identifier parse error', e);
+          }
+        }
+      });
+
+      // Merge VM2 tokens into assets (prefixed with vm2:: to distinguish)
+      if (assets[address]) {
+        Object.assign(assets[address], vm2Tokens);
+      }
+
+      // Merge VM2 NFTs
+      if (nfts[address]) {
+        nfts[address] = nfts[address].filter((n) => n.vmType !== 'vm2').concat(vm2NFTGallery);
+      }
+      if (nftIdentifier[address]) {
+        nftIdentifier[address] = nftIdentifier[address].filter((n) => n.vmType !== 'vm2').concat(vm2NFTIdentifier);
+      }
+
+      // Set default vm2Balance if not found
+      if (accounts[address] && !accounts[address].vm2Balance) {
+        accounts[address].vm2Balance = '0x0';
+      }
+
+      this.store.updateState({ accounts, assets, nfts, nftIdentifier });
+    } catch (err) {
+      if (accounts[address]) {
+        accounts[address].vm2Balance = '0x0';
+      }
+      this.store.updateState({ accounts });
+    }
   }
 
   async _updateAccountAptos(address) {

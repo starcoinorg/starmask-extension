@@ -92,6 +92,7 @@ export default class PendingTransactionTracker extends EventEmitter {
     const {
       metamaskNetworkId: { name: network }
     } = txMeta;
+    const isVM2 = txMeta.txParams && txMeta.txParams.vmType === 'vm2';
 
     // Only check submitted txs
     if (txMeta.status !== TRANSACTION_STATUSES.UNKNOWN) {
@@ -116,14 +117,7 @@ export default class PendingTransactionTracker extends EventEmitter {
     }
 
     try {
-      const transactionReceipt = await new Promise((resolve, reject) => {
-        return this.query.getTransactionReceipt(txHash, (err, res) => {
-          if (err) {
-            return reject(err);
-          }
-          return resolve(res);
-        });
-      });
+      const transactionReceipt = await this._getTransactionReceipt(txHash, isVM2);
       if (transactionReceipt?.block_number || (['devnet', 'testnet', 'mainnet'].includes(network) && transactionReceipt?.success)) {
         this.emit('tx:confirmed', txId, transactionReceipt);
         return;
@@ -264,6 +258,7 @@ export default class PendingTransactionTracker extends EventEmitter {
     const {
       metamaskNetworkId: { name: network }
     } = txMeta;
+    const isVM2 = txMeta.txParams && txMeta.txParams.vmType === 'vm2';
     // Only check submitted txs
     if (txMeta.status !== TRANSACTION_STATUSES.SUBMITTED) {
       return;
@@ -287,14 +282,7 @@ export default class PendingTransactionTracker extends EventEmitter {
     }
 
     try {
-      const transactionReceipt = await new Promise((resolve, reject) => {
-        return this.query.getTransactionReceipt(txHash, (err, res) => {
-          if (err) {
-            return reject(err);
-          }
-          return resolve(res);
-        });
-      });
+      const transactionReceipt = await this._getTransactionReceipt(txHash, isVM2);
       if (transactionReceipt?.block_number || (['devnet', 'testnet', 'mainnet'].includes(network) && transactionReceipt?.success)) {
         this.emit('tx:confirmed', txId, transactionReceipt);
         return;
@@ -331,11 +319,11 @@ export default class PendingTransactionTracker extends EventEmitter {
   async _checkIfTxWasDropped(txMeta) {
     const {
       hash: txHash,
-      txParams: { nonce, from },
+      txParams: { nonce, from, vmType },
       metamaskNetworkId: { name: network }
     } = txMeta;
 
-    const networkNextNonce = await this.getSequenceNumber(from, network)
+    const networkNextNonce = await this.getSequenceNumber(from, network, vmType)
 
     if (parseInt(nonce, 16) >= networkNextNonce) {
       return false;
@@ -356,7 +344,7 @@ export default class PendingTransactionTracker extends EventEmitter {
     return true;
   }
 
-  async getSequenceNumber(from, network) {
+  async getSequenceNumber(from, network, vmType) {
     let sequenceNumber
     if (['devnet', 'testnet', 'mainnet'].includes(network)) {
       sequenceNumber = await new Promise((resolve, reject) => {
@@ -367,6 +355,20 @@ export default class PendingTransactionTracker extends EventEmitter {
               return reject(err);
             }
             return resolve(new BigNumber(res.sequence_number).toNumber());
+          },
+        );
+      });
+    } else if (vmType === 'vm2') {
+      // VM2: use state2.get_resource for sequence number
+      sequenceNumber = await new Promise((resolve, reject) => {
+        return this.query.sendAsync(
+          { method: 'state2.get_resource', params: [from, '0x00000000000000000000000000000001::Account::Account'] },
+          (err, res) => {
+            if (err) {
+              return reject(err);
+            }
+            const sequence_number = res && res.value && res.value[6] && res.value[6][1].U64 || 0;
+            return resolve(new BigNumber(sequence_number, 10).toNumber());
           },
         );
       });
@@ -387,6 +389,33 @@ export default class PendingTransactionTracker extends EventEmitter {
       });
     }
     return sequenceNumber
+  }
+
+  /**
+   * Get transaction receipt, using VM2 RPC method if isVM2
+   * @param {string} txHash - the transaction hash
+   * @param {boolean} isVM2 - whether this is a VM2 transaction
+   * @returns {Promise<Object>} the transaction receipt
+   * @private
+   */
+  async _getTransactionReceipt(txHash, isVM2) {
+    if (isVM2) {
+      return new Promise((resolve, reject) => {
+        return this.query.sendAsync(
+          { method: 'chain2.get_transaction_info', params: [txHash] },
+          (err, res) => {
+            if (err) return reject(err);
+            return resolve(res);
+          },
+        );
+      });
+    }
+    return new Promise((resolve, reject) => {
+      return this.query.getTransactionReceipt(txHash, (err, res) => {
+        if (err) return reject(err);
+        return resolve(res);
+      });
+    });
   }
 
   /**

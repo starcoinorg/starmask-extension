@@ -382,13 +382,16 @@ function generateTokenPalyloadData({
   amount = '0x0',
   sendToken,
   ticker = 'STC',
+  vmType = 'vm1',
 }) {
   if (!sendToken) {
     return undefined;
   }
   let payload
   if (ticker === 'STC') {
-    const functionId = '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2';
+    const functionId = vmType === 'vm2'
+      ? '0x00000000000000000000000000000001::transfer_scripts::peer_to_peer_v2'
+      : '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2';
     const strTypeArgs = [sendToken.code];
     const tyArgs = utils.tx.encodeStructTypeTags(strTypeArgs);
 

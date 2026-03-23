@@ -69,6 +69,10 @@ export function getSendHexData(state) {
   return state.starmask.send.data;
 }
 
+export function getSendVMType(state) {
+  return state.starmask.send.vmType || 'vm1';
+}
+
 export function getSendHexDataFeatureFlagState(state) {
   return state.starmask.featureFlags.sendHexData;
 }

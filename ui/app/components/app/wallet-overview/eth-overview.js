@@ -64,6 +64,7 @@ const EthOverview = ({ className }) => {
   const showFiat = useSelector(getShouldShowFiat);
   const selectedAccount = useSelector(getSelectedAccount);
   const { balance } = selectedAccount;
+  const vm2Balance = selectedAccount.vm2Balance || '0x0';
   const isMainnetChain = useSelector(getIsMainnet);
   const isTestnetChain = useSelector(getIsTestnet);
   const isSwapsChain = useSelector(getIsSwapsChain);
@@ -115,6 +116,17 @@ const EthOverview = ({ className }) => {
                 hideTitle
               />
             )}
+            {vm2Balance && vm2Balance !== '0x0' ? (
+              <div className="eth-overview__vm2-balance" style={{ marginTop: '4px', fontSize: '12px', color: '#6a737d' }}>
+                <span>VM2: </span>
+                <UserPreferencedCurrencyDisplay
+                  value={vm2Balance}
+                  type={PRIMARY}
+                  ethNumberOfDecimals={4}
+                  hideTitle
+                />
+              </div>
+            ) : null}
           </div>
         </Tooltip>
       }
