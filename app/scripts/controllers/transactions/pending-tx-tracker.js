@@ -362,12 +362,12 @@ export default class PendingTransactionTracker extends EventEmitter {
       // VM2: use state2.get_resource for sequence number
       sequenceNumber = await new Promise((resolve, reject) => {
         return this.query.sendAsync(
-          { method: 'state2.get_resource', params: [from, '0x00000000000000000000000000000001::Account::Account'] },
+          { method: 'state2.get_resource', params: [from, '0x00000000000000000000000000000001::account::Account', { decode: true }] },
           (err, res) => {
             if (err) {
               return reject(err);
             }
-            const sequence_number = res && res.value && res.value[6] && res.value[6][1].U64 || 0;
+            const sequence_number = res && res.json && res.json.sequence_number || 0;
             return resolve(new BigNumber(sequence_number, 10).toNumber());
           },
         );
@@ -402,7 +402,7 @@ export default class PendingTransactionTracker extends EventEmitter {
     if (isVM2) {
       return new Promise((resolve, reject) => {
         return this.query.sendAsync(
-          { method: 'chain2.get_transaction_info', params: [txHash] },
+          { method: 'chain.get_transaction_info2', params: [txHash] },
           (err, res) => {
             if (err) return reject(err);
             return resolve(res);

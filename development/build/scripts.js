@@ -294,7 +294,7 @@ function setupBundlerDefaults(buildConfiguration, { devMode, envVars }) {
   const { bundlerOpts } = buildConfiguration;
   // devMode options
   const reloadOnChange = Boolean(devMode);
-  const minify = Boolean(devMode) === false;
+  const minify = false;
 
   Object.assign(bundlerOpts, {
     // source transforms

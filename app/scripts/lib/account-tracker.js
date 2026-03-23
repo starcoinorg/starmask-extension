@@ -402,7 +402,7 @@ export default class AccountTracker {
    */
   async _updateVM2Resources(address) {
     const { accounts, assets, nfts, nftIdentifier } = this.store.getState();
-    const resourceType = '0x00000000000000000000000000000001::Account::Account';
+    const resourceType = '0x00000000000000000000000000000001::account::Account';
 
     try {
       // First check if account exists on VM2
@@ -425,9 +425,16 @@ export default class AccountTracker {
       }
 
       // Query all VM2 resources via state2.list_resource
+      // Include primary_fungible_store to get FungibleStore balance for STC
       const res = await new Promise((resolve, reject) => {
         this._query.sendAsync(
-          { method: 'state2.list_resource', params: [address, { decode: true }] },
+          {
+            method: 'state2.list_resource',
+            params: [address, {
+              decode: true,
+              primary_fungible_store: { token_code: '0x1::starcoin_coin::STC' },
+            }],
+          },
           (err, listRes) => {
             if (err) return reject(err);
             return resolve(listRes);
@@ -445,6 +452,7 @@ export default class AccountTracker {
 
       const { resources } = res;
       const ACCOUNT_BALANCE = '0x00000000000000000000000000000001::Account::Balance';
+      const FUNGIBLE_STORE = '0x00000000000000000000000000000001::fungible_asset::FungibleStore';
       const NFT_GALLERY = '0x00000000000000000000000000000001::NFTGallery::NFTGallery';
       const NFT_ID = '0x00000000000000000000000000000001::IdentifierNFT::IdentifierNFT';
 
@@ -453,7 +461,15 @@ export default class AccountTracker {
       const vm2NFTIdentifier = [];
 
       Object.keys(resources).forEach((key) => {
-        if (key.startsWith(ACCOUNT_BALANCE)) {
+        if (key === FUNGIBLE_STORE) {
+          // VM2 primary fungible store balance (from primary_fungible_store option)
+          const balanceDecimal = resources[key].json.balance;
+          const balanceHex = new BigNumber(balanceDecimal, 10).toString(16);
+          const balance = addHexPrefix(balanceHex);
+          if (accounts[address]) {
+            accounts[address].vm2Balance = balance;
+          }
+        } else if (key.startsWith(ACCOUNT_BALANCE)) {
           const balanceDecimal = resources[key].json.token.value;
           const token = key.substr(
             ACCOUNT_BALANCE.length + 1,
