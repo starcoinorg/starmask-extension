@@ -108,7 +108,7 @@ export default class SignatureRequestOriginal extends Component {
     const { conversionRate } = this.props;
     const { txData: { type } } = this.props;
     const {
-      fromAccount: { balance },
+      fromAccount: { balance, vm2Balance },
     } = this.state;
 
     const balanceInStc = conversionUtil(balance, {
@@ -119,13 +119,33 @@ export default class SignatureRequestOriginal extends Component {
       conversionRate,
     });
 
+    const hasVm2Balance = vm2Balance && vm2Balance !== '0x0';
+    const vm2BalanceInStc = hasVm2Balance
+      ? conversionUtil(vm2Balance, {
+          fromNumericBase: 'hex',
+          toNumericBase: 'dec',
+          fromDenomination: 'NANOSTC',
+          numberOfDecimals: 6,
+          conversionRate,
+        })
+      : null;
+
+    const unit = type === MESSAGE_TYPE.PERSONAL_SIGN ? 'STC' : 'APT';
+
     return (
       <div className="request-signature__balance">
         <div className="request-signature__balance-text">
           {`${ this.context.t('balance') }:`}
         </div>
         <div className="request-signature__balance-value">
-          {`${ balanceInStc } ${ type === MESSAGE_TYPE.PERSONAL_SIGN ? 'STC' : 'APT' }`}
+          {hasVm2Balance ? (
+            <div>
+              <div>{`VM1: ${ balanceInStc } ${ unit }`}</div>
+              <div>{`VM2: ${ vm2BalanceInStc } ${ unit }`}</div>
+            </div>
+          ) : (
+            `${ balanceInStc } ${ unit }`
+          )}
         </div>
       </div>
     );

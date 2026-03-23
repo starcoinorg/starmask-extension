@@ -97,11 +97,14 @@ const mapStateToProps = (state, ownProps) => {
     value: amount,
     data,
     tokenChanges,
+    vmType: txVmType,
   } = (transaction && transaction.txParams) || txParams;
   const accounts = getMetaMaskAccounts(state);
   const assetImage = assetImages[txParamsToAddress];
 
   const { balance } = accounts[fromAddress];
+  const vm2Balance = accounts[fromAddress] && accounts[fromAddress].vm2Balance || '0x0';
+  const effectiveBalance = txVmType === 'vm2' ? vm2Balance : balance;
   const { name: fromName } = identities[fromAddress];
   const toAddress = propsToAddress || txParamsToAddress;
 
@@ -137,7 +140,7 @@ const mapStateToProps = (state, ownProps) => {
   const insufficientBalance = !isBalanceSufficient({
     amount,
     gasTotal: calcGasTotal(gasLimit, gasPrice),
-    balance,
+    balance: effectiveBalance,
     conversionRate,
   });
 

@@ -784,8 +784,8 @@ export default class ConfirmTransactionBase extends Component {
     }
 
     const vmType = txData && txData.txParams && txData.txParams.vmType;
-    if (vmType && vmType !== 'vm1') {
-      functionType = `${functionType} (${vmType.toUpperCase()})`;
+    if (ticker === 'STC') {
+      functionType = `${functionType} (${(vmType || 'vm1').toUpperCase()})`;
     }
 
     return (

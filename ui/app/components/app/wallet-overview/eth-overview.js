@@ -89,6 +89,9 @@ const EthOverview = ({ className }) => {
         >
           <div className="eth-overview__balance">
             <div className="eth-overview__primary-container">
+              {vm2Balance && vm2Balance !== '0x0' ? (
+                <span style={{ fontSize: '10px', color: '#6a737d', marginRight: '4px', fontWeight: 'bold' }}>VM1</span>
+              ) : null}
               <UserPreferencedCurrencyDisplay
                 className={classnames('eth-overview__primary-balance', {
                   'eth-overview__cached-balance': balanceIsCached,
@@ -117,9 +120,10 @@ const EthOverview = ({ className }) => {
               />
             )}
             {vm2Balance && vm2Balance !== '0x0' ? (
-              <div className="eth-overview__vm2-balance" style={{ marginTop: '4px', fontSize: '12px', color: '#6a737d' }}>
-                <span>VM2: </span>
+              <div className="eth-overview__vm2-balance" style={{ marginTop: '6px', display: 'flex', alignItems: 'center' }}>
+                <span style={{ fontSize: '10px', color: '#6a737d', marginRight: '4px', fontWeight: 'bold' }}>VM2</span>
                 <UserPreferencedCurrencyDisplay
+                  className="eth-overview__primary-balance"
                   value={vm2Balance}
                   type={PRIMARY}
                   ethNumberOfDecimals={4}
