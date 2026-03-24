@@ -213,6 +213,16 @@ export default class TxGasUtil {
       gasUnitPrice = addHexPrefix(new BigNumber(gasUnitPrice).toString(16))
       estimatedGasHex = new BigNumber(dryRunRawResult.gas_used, 10).toString(16);
       tokenChanges = queryTokenChanges(dryRunRawResult)
+    } else if (vmType === 'vm2') {
+      // VM2 dry_run may fail due to node aggregator bug (DELAYED_MATERIALIZATION)
+      // Use default gas estimates so the UI can still proceed
+      log.info('VM2 dry_run_raw failed, using default gas estimates:', JSON.stringify(dryRunRawResult.status));
+      const defaultGas = 1000000; // 1M gas units as safe default
+      gasUsed = addHexPrefix(new BigNumber(defaultGas).toString(16))
+      maxGasAmount = addHexPrefix(new BigNumber(maxGasAmount).toString(16))
+      gasUnitPrice = addHexPrefix(new BigNumber(gasUnitPrice).toString(16))
+      estimatedGasHex = new BigNumber(defaultGas).toString(16);
+      tokenChanges = {}
     } else {
       const methodName = vmType === 'vm2' ? 'contract2.dry_run_raw' : 'contract.dry_run_raw';
       // Handle different error status formats between VM1 and VM2

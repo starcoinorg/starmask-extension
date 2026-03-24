@@ -83,9 +83,11 @@ export default class AccountTracker {
     this.getCurrentNetworkTicker = opts.getCurrentNetworkTicker;
 
     this.web3 = new Web3(this._provider);
+    console.warn('[AccountTracker] constructor called - DEBUG BUILD v2');
   }
 
   start() {
+    console.warn('[AccountTracker] start() called');
     // remove first to avoid double add
     this._blockTracker.removeListener('latest', this._updateForBlock);
     // add listener
@@ -214,6 +216,7 @@ export default class AccountTracker {
   async _updateAccounts() {
     const { accounts } = this.store.getState();
     const addresses = Object.keys(accounts);
+    console.warn('[AccountTracker] _updateAccounts() addresses:', addresses);
     // const chainId = this.getCurrentChainId();
 
     // switch (chainId) {
@@ -262,10 +265,11 @@ export default class AccountTracker {
   async _updateAccount(address) {
     const ticker = this.getCurrentNetworkTicker()
     const accountLength = stripHexPrefix(address).length
+    console.warn('_updateAccount: address', address, 'ticker', ticker, 'accountLength', accountLength)
 
     if (accountLength === 64 && ticker === 'APT') {
       await this._updateAccountAptos(address)
-    } else if (accountLength === 32 && ticker === 'STC') {
+    } else if (accountLength === 32) {
       await this._updateAccountStarcoin(address)
     }
   }
@@ -392,7 +396,7 @@ export default class AccountTracker {
     try {
       await this._updateVM2Resources(address);
     } catch (err) {
-      log.info('_updateVM2Resources skipped', err.message || err);
+      console.warn('_updateVM2Resources skipped', err.message || err);
     }
   }
 
@@ -406,17 +410,23 @@ export default class AccountTracker {
 
     try {
       // First check if account exists on VM2
+      console.warn('_updateVM2Resources: checking account', address);
       const accountRes = await new Promise((resolve, reject) => {
         this._query.sendAsync(
           { method: 'state2.get_resource', params: [address, resourceType] },
           (err, res) => {
-            if (err) return reject(err);
+            if (err) {
+              console.warn('_updateVM2Resources: state2.get_resource error', err.message || err);
+              return reject(err);
+            }
+            console.warn('_updateVM2Resources: state2.get_resource result', typeof res, res ? 'truthy' : 'falsy');
             return resolve(res);
           },
         );
       });
 
       if (!accountRes) {
+        console.warn('_updateVM2Resources: no account found, setting vm2Balance=0x0');
         if (accounts[address]) {
           accounts[address].vm2Balance = '0x0';
         }
@@ -424,8 +434,40 @@ export default class AccountTracker {
         return;
       }
 
+      // Query real VM2 STC balance via contract2.call_v2 (coin::balance)
+      // This is needed because CoinStore uses aggregators and raw decode shows 0
+      try {
+        const balResult = await new Promise((resolve, reject) => {
+          this._query.sendAsync(
+            {
+              method: 'contract2.call_v2',
+              params: [{
+                function_id: '0x1::coin::balance',
+                type_args: ['0x1::starcoin_coin::STC'],
+                args: [address],
+              }],
+            },
+            (err, res2) => {
+              if (err) return reject(err);
+              return resolve(res2);
+            },
+          );
+        });
+        if (balResult && Array.isArray(balResult) && balResult.length > 0) {
+          const balanceDecimal = balResult[0];
+          const balanceHex = new BigNumber(balanceDecimal, 10).toString(16);
+          if (accounts[address]) {
+            accounts[address].vm2Balance = addHexPrefix(balanceHex);
+          }
+          console.warn('_updateVM2Resources: coin::balance =', balanceDecimal, '-> hex', addHexPrefix(balanceHex));
+        }
+      } catch (balErr) {
+        console.warn('_updateVM2Resources: contract2.call_v2 coin::balance error', balErr.message || balErr);
+      }
+
       // Query all VM2 resources via state2.list_resource
       // Include primary_fungible_store to get FungibleStore balance for STC
+      console.warn('_updateVM2Resources: querying list_resource');
       const res = await new Promise((resolve, reject) => {
         this._query.sendAsync(
           {
@@ -436,14 +478,20 @@ export default class AccountTracker {
             }],
           },
           (err, listRes) => {
-            if (err) return reject(err);
+            if (err) {
+              console.warn('_updateVM2Resources: state2.list_resource error', err.message || err);
+              return reject(err);
+            }
+            console.warn('_updateVM2Resources: state2.list_resource result keys', listRes ? Object.keys(listRes) : 'null');
             return resolve(listRes);
           },
         );
       });
 
       if (!res || !res.resources) {
-        if (accounts[address]) {
+        console.warn('_updateVM2Resources: no resources found');
+        // Only set vm2Balance=0x0 if coin::balance didn't already set it
+        if (accounts[address] && !accounts[address].vm2Balance) {
           accounts[address].vm2Balance = '0x0';
         }
         this.store.updateState({ accounts });
@@ -451,6 +499,7 @@ export default class AccountTracker {
       }
 
       const { resources } = res;
+      console.warn('_updateVM2Resources: resource keys', Object.keys(resources));
       const ACCOUNT_BALANCE = '0x00000000000000000000000000000001::Account::Balance';
       const FUNGIBLE_STORE = '0x00000000000000000000000000000001::fungible_asset::FungibleStore';
       const NFT_GALLERY = '0x00000000000000000000000000000001::NFTGallery::NFTGallery';
@@ -460,14 +509,20 @@ export default class AccountTracker {
       const vm2NFTGallery = [];
       const vm2NFTIdentifier = [];
 
+      // Track whether coin::balance already set the balance
+      const hasBalanceFromCallV2 = accounts[address] && accounts[address].vm2Balance && accounts[address].vm2Balance !== '0x0';
+
       Object.keys(resources).forEach((key) => {
         if (key === FUNGIBLE_STORE) {
-          // VM2 primary fungible store balance (from primary_fungible_store option)
-          const balanceDecimal = resources[key].json.balance;
-          const balanceHex = new BigNumber(balanceDecimal, 10).toString(16);
-          const balance = addHexPrefix(balanceHex);
-          if (accounts[address]) {
-            accounts[address].vm2Balance = balance;
+          // VM2 primary fungible store balance - only use if coin::balance didn't set it
+          if (!hasBalanceFromCallV2) {
+            const balanceDecimal = resources[key].json.balance;
+            console.warn('_updateVM2Resources: FungibleStore balance decimal', balanceDecimal);
+            const balanceHex = new BigNumber(balanceDecimal, 10).toString(16);
+            const balance = addHexPrefix(balanceHex);
+            if (accounts[address]) {
+              accounts[address].vm2Balance = balance;
+            }
           }
         } else if (key.startsWith(ACCOUNT_BALANCE)) {
           const balanceDecimal = resources[key].json.token.value;
@@ -478,7 +533,8 @@ export default class AccountTracker {
           const balanceHex = new BigNumber(balanceDecimal, 10).toString(16);
           const balance = addHexPrefix(balanceHex);
           if (token === '0x00000000000000000000000000000001::STC::STC') {
-            if (accounts[address]) {
+            // Only use if coin::balance didn't set it
+            if (!hasBalanceFromCallV2 && accounts[address]) {
               accounts[address].vm2Balance = balance;
             }
           } else {
@@ -546,7 +602,9 @@ export default class AccountTracker {
       }
 
       this.store.updateState({ accounts, assets, nfts, nftIdentifier });
+      console.warn('_updateVM2Resources: completed successfully, vm2Balance=', accounts[address] && accounts[address].vm2Balance);
     } catch (err) {
+      console.warn('_updateVM2Resources: caught error', err.message || err);
       if (accounts[address]) {
         accounts[address].vm2Balance = '0x0';
       }

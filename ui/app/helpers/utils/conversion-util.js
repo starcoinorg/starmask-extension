@@ -134,15 +134,15 @@ const converter = ({
     }
   }
 
-  if (numberOfDecimals) {
+  if (numberOfDecimals !== undefined && numberOfDecimals !== null && numberOfDecimals !== false) {
     convertedValue = convertedValue.dp(
-      numberOfDecimals,
+      Number(numberOfDecimals),
       BigNumber.ROUND_HALF_DOWN,
     );
   }
 
-  if (roundDown) {
-    convertedValue = convertedValue.dp(roundDown, BigNumber.ROUND_DOWN);
+  if (roundDown !== undefined && roundDown !== null && roundDown !== false) {
+    convertedValue = convertedValue.dp(Number(roundDown), BigNumber.ROUND_DOWN);
   }
 
   if (toNumericBase) {

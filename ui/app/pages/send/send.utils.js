@@ -207,11 +207,17 @@ async function estimateGasForSend({
   gasPrice,
   estimateGasMethod,
   ticker,
+  vmType,
 }) {
   const paramsForGasEstimate = { from: selectedAddress, to, toReceiptIdentifier, value, gasPrice };
+
+  if (vmType) {
+    paramsForGasEstimate.vmType = vmType;
+  }
+
   // if recipient has no code, gas is 21k max:
   if (!sendToken && !data) {
-    if (ticker === 'STC') {
+    if (ticker === 'STC' && vmType !== 'vm2') {
       const code = await new Promise((resolve, reject) => {
         return global.stcQuery.getCode('0x00000000000000000000000000000001::Account', (error, result) => {
           if (error) {
@@ -272,7 +278,7 @@ async function estimateGasForSend({
   // run tx
   try {
     // get sequence_number from contract.get_resource
-    const sequenceNumber = await getSequenceNumber(paramsForGasEstimate.from, ticker)
+    const sequenceNumber = await getSequenceNumber(paramsForGasEstimate.from, ticker, vmType)
     paramsForGasEstimate.sequenceNumber = sequenceNumber;
     // get gas_used from contract.dry_run_raw
     const { gas_unit_price, gas_used: estimatedGas, max_gas_amount } = await estimateGasMethod(paramsForGasEstimate);
@@ -344,8 +350,23 @@ function addGasBuffer(
   return upperGasLimit;
 }
 
-async function getSequenceNumber(from, ticker) {
+async function getSequenceNumber(from, ticker, vmType) {
   if (ticker === 'STC') {
+    if (vmType === 'vm2') {
+      const sequenceNumber = await new Promise((resolve, reject) => {
+        return global.stcQuery.sendAsync(
+          { method: 'state2.get_resource', params: [from, '0x00000000000000000000000000000001::account::Account', { decode: true }] },
+          (err, res) => {
+            if (err) {
+              return reject(err);
+            }
+            const sequence_number = res && res.json && res.json.sequence_number || 0;
+            return resolve(new BigNumber(sequence_number, 10).toNumber());
+          },
+        );
+      });
+      return sequenceNumber;
+    }
     const sequenceNumber = await new Promise((resolve, reject) => {
       return global.stcQuery.getResource(
         from,

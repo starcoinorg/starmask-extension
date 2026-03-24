@@ -2255,6 +2255,23 @@ export default class MetamaskController extends EventEmitter {
                 args: [estimateGasParams.to, `${ hexToDecimal(estimateGasParams.gas) }u128`]
               },
             };
+            if (isVM2) {
+              return this.txController.txGasUtil.query.sendAsync(
+                { method: 'contract2.dry_run', params: [params] },
+                (err, res) => {
+                  if (err) {
+                    log.warn('VM2 contract2.dry_run failed, using defaults:', err);
+                    return resolve({ gas_unit_price, gas_used: 1000000, max_gas_amount });
+                  }
+                  if (res && res.status === 'Executed') {
+                    gas_used = parseInt(res.gas_used, 10);
+                    return resolve({ gas_unit_price, gas_used, max_gas_amount });
+                  }
+                  log.warn('VM2 contract2.dry_run status:', res && res.status);
+                  return resolve({ gas_unit_price, gas_used: 1000000, max_gas_amount });
+                },
+              );
+            }
             return this.txController.txGasUtil.query.estimateGas(
               params,
               (err, res) => {

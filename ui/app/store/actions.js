@@ -737,8 +737,11 @@ export function updateGasData({
 }) {
   return (dispatch, getState) => {
     dispatch(gasLoadingStarted());
+
+    const state = getState();
+    const vmType = state.starmask.send.vmType || 'vm1';
+
     if (to) {
-      const state = getState();
       const rpcPrefs = getRpcPrefsForCurrentProvider(
         state,
       );
@@ -753,6 +756,7 @@ export function updateGasData({
         estimateGasPrice: gasPrice,
         data,
         ticker: rpcPrefs.ticker || getState().starmask.provider.ticker,
+        vmType,
       })
         .then(({ gasPrice, gas }) => {
           dispatch(setGasPrice(gasPrice));

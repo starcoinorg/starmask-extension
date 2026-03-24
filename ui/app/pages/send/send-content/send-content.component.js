@@ -62,7 +62,10 @@ export default class SendContent extends Component {
               <span style={{ fontSize: '14px', color: '#333' }}>VM Type</span>
               <select
                 value={vmType || 'vm1'}
-                onChange={(e) => setVMType(e.target.value)}
+                onChange={(e) => {
+                  setVMType(e.target.value);
+                  this.updateGas();
+                }}
                 style={{ padding: '4px 8px', borderRadius: '4px', border: '1px solid #ccc', fontSize: '14px' }}
               >
                 <option value="vm1">VM1 (Move)</option>

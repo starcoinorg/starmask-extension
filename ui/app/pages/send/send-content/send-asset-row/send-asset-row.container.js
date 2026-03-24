@@ -3,6 +3,7 @@ import {
   getMetaMaskAccounts,
   getNativeCurrency,
   getSendTokenCode,
+  getSendVMType,
 } from '../../../../selectors';
 import { updateSendToken } from '../../../../store/actions';
 import SendAssetRow from './send-asset-row.component';
@@ -14,6 +15,7 @@ function mapStateToProps(state) {
     sendTokenCode: getSendTokenCode(state),
     accounts: getMetaMaskAccounts(state),
     nativeCurrency: getNativeCurrency(state),
+    vmType: getSendVMType(state),
   };
 }
 

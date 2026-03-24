@@ -22,6 +22,7 @@ export default class SendAssetRow extends Component {
     sendTokenCode: PropTypes.string,
     setSendToken: PropTypes.func.isRequired,
     nativeCurrency: PropTypes.string,
+    vmType: PropTypes.string,
   };
 
   static contextTypes = {
@@ -105,10 +106,13 @@ export default class SendAssetRow extends Component {
 
   renderNativeCurrency(insideDropdown = false) {
     const { t } = this.context;
-    const { accounts, selectedAddress, nativeCurrency } = this.props;
+    const { accounts, selectedAddress, nativeCurrency, vmType } = this.props;
 
-    const balanceValue = accounts[selectedAddress]
-      ? accounts[selectedAddress].balance
+    const account = accounts[selectedAddress];
+    const balanceValue = account
+      ? (vmType === 'vm2' && account.vm2Balance && account.vm2Balance !== '0x0'
+        ? account.vm2Balance
+        : account.balance)
       : '';
 
     return (
