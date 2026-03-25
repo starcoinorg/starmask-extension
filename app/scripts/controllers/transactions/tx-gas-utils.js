@@ -136,6 +136,7 @@ export default class TxGasUtil {
         let scriptFunction;
         if (vmType === 'vm2') {
           // VM2: use starcoin_account::transfer with u64 amount, no type args
+          // IMPORTANT: The Move function expects 16-byte address, NOT 32-byte!
           const functionId = '0x1::starcoin_account::transfer'
           const tyArgs = []
           const amountSCSHex = (function () {
@@ -143,8 +144,24 @@ export default class TxGasUtil {
             se.serializeU64(BigInt(sendAmountNanoSTC.toString(10)))
             return hexlify(se.getBytes())
           })()
+          // Extract 16-byte address from receiver (may be 16, 20, or 32 bytes input)
+          const receiverBytes = arrayify(txMeta.txParams.to);
+          let receiver16Bytes;
+          if (receiverBytes.length === 16) {
+            receiver16Bytes = receiverBytes;
+          } else if (receiverBytes.length === 32) {
+            // 32-byte format: [16 zeros][16 real address] - extract last 16
+            receiver16Bytes = receiverBytes.slice(16);
+          } else if (receiverBytes.length === 20) {
+            // 20-byte Ethereum-style: take last 16 bytes
+            receiver16Bytes = receiverBytes.slice(4);
+          } else {
+            log.warn(`VM2 gas estimate: Unexpected receiver address length: ${receiverBytes.length}`);
+            receiver16Bytes = receiverBytes;
+          }
+          log.debug(`VM2 gas estimate: receiver -> 16-byte ${hexlify(receiver16Bytes)}`);
           const args = [
-            arrayify(txMeta.txParams.to),
+            receiver16Bytes,
             arrayify(amountSCSHex),
           ]
           scriptFunction = utils.tx.encodeScriptFunction(functionId, tyArgs, args)
@@ -167,29 +184,68 @@ export default class TxGasUtil {
         transactionPayload = scriptFunction;
       }
     }
-    const rawUserTransaction = utils.tx.generateRawUserTransaction(
-      selectedAddressHex,
-      transactionPayload,
-      maxGasAmount,
-      gasUnitPrice,
-      selectedSequenceNumber,
-      expirationTimestampSecs,
-      chainId,
-    );
+    
+    let rawUserTransaction;
+    if (vmType === 'vm2') {
+      // VM2 requires gas_token_code = '0x1::starcoin_coin::STC' (not '0x1::STC::STC')
+      const senderSCS = encoding.addressToSCS(selectedAddressHex);
+      const vm2GasTokenCode = '0x1::starcoin_coin::STC';
+      rawUserTransaction = new starcoin_types.RawUserTransaction(
+        senderSCS,
+        BigInt(selectedSequenceNumber),
+        transactionPayload,
+        BigInt(maxGasAmount),
+        BigInt(gasUnitPrice),
+        vm2GasTokenCode,
+        BigInt(expirationTimestampSecs),
+        new starcoin_types.ChainId(chainId)
+      );
+    } else {
+      // VM1 uses the standard generateRawUserTransaction
+      rawUserTransaction = utils.tx.generateRawUserTransaction(
+        selectedAddressHex,
+        transactionPayload,
+        maxGasAmount,
+        gasUnitPrice,
+        selectedSequenceNumber,
+        expirationTimestampSecs,
+        chainId,
+      );
+    }
 
     const rawUserTransactionHex = encoding.bcsEncode(rawUserTransaction);
 
     const dryRunMethod = vmType === 'vm2' ? 'contract2.dry_run_raw' : 'contract.dry_run_raw';
+    // For VM2, we need to bypass StcQuery's explained_status.Error check because 
+    // VM2 dry_run may return errors that we want to handle gracefully with fallbacks
     const dryRunRawResult = await new Promise((resolve, reject) => {
-      return this.query.sendAsync(
-        { method: dryRunMethod, params: [rawUserTransactionHex, selectedPublicKeyHex] },
-        (err, res) => {
-          if (err) {
-            return reject(err);
-          }
-          return resolve(res);
-        },
-      );
+      if (vmType === 'vm2') {
+        // Bypass StcQuery - use provider directly to avoid automatic error conversion
+        this.query.currentProvider.sendAsync(
+          { jsonrpc: '2.0', id: Date.now(), method: dryRunMethod, params: [rawUserTransactionHex, selectedPublicKeyHex] },
+          (err, response) => {
+            if (err) {
+              return reject(err);
+            }
+            if (response.error) {
+              return reject(new Error(response.error.message));
+            }
+            // Return result directly, even if it has explained_status.Error
+            // The fallback logic below will handle it
+            return resolve(response.result);
+          },
+        );
+      } else {
+        return this.query.sendAsync(
+          { method: dryRunMethod, params: [rawUserTransactionHex, selectedPublicKeyHex] },
+          (err, res) => {
+            if (err) {
+              return reject(err);
+            }
+            return resolve(res);
+          },
+        );
+      }
     });
     const queryTokenChanges = (dryRunRawResult) => {
       if (!dryRunRawResult.write_set || !Array.isArray(dryRunRawResult.write_set)) {

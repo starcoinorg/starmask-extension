@@ -2254,23 +2254,27 @@ export default class MetamaskController extends EventEmitter {
                 code: transferScript,
                 type_args: isVM2 ? [] : [tokenCode],
                 args: isVM2
-                  ? [estimateGasParams.to, `${ hexToDecimal(estimateGasParams.gas) }u64`]
+                  ? [estimateGasParams.to, `${ hexToDecimal(estimateGasParams.value || '0x0') }u64`]
                   : [estimateGasParams.to, `${ hexToDecimal(estimateGasParams.gas) }u128`]
               },
             };
             if (isVM2) {
-              return this.txController.txGasUtil.query.sendAsync(
-                { method: 'contract2.dry_run', params: [params] },
-                (err, res) => {
-                  if (err) {
-                    log.warn('VM2 contract2.dry_run failed, using defaults:', err);
+              // Bypass StcQuery to avoid automatic explained_status.Error conversion
+              // Use provider directly so we can handle errors gracefully with fallbacks
+              return this.txController.txGasUtil.query.currentProvider.sendAsync(
+                { jsonrpc: '2.0', id: Date.now(), method: 'contract2.dry_run', params: [params] },
+                (err, response) => {
+                  if (err || response.error) {
+                    log.warn('VM2 contract2.dry_run failed, using defaults:', err || response.error);
                     return resolve({ gas_unit_price, gas_used: 1000000, max_gas_amount });
                   }
+                  const res = response.result;
                   if (res && res.status === 'Executed') {
                     gas_used = parseInt(res.gas_used, 10);
                     return resolve({ gas_unit_price, gas_used, max_gas_amount });
                   }
-                  log.warn('VM2 contract2.dry_run status:', res && res.status);
+                  // Handle non-Executed status (e.g., explained_status.Error)
+                  log.warn('VM2 contract2.dry_run status:', res && res.status, res && res.explained_status);
                   return resolve({ gas_unit_price, gas_used: 1000000, max_gas_amount });
                 },
               );

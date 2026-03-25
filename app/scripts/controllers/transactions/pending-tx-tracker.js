@@ -118,7 +118,7 @@ export default class PendingTransactionTracker extends EventEmitter {
 
     try {
       const transactionReceipt = await this._getTransactionReceipt(txHash, isVM2);
-      if (transactionReceipt?.block_number || (['devnet', 'testnet', 'mainnet'].includes(network) && transactionReceipt?.success)) {
+      if (transactionReceipt?.block_number || (['dev', 'test', 'main'].includes(network) && transactionReceipt?.success)) {
         this.emit('tx:confirmed', txId, transactionReceipt);
         return;
       }
@@ -259,6 +259,9 @@ export default class PendingTransactionTracker extends EventEmitter {
       metamaskNetworkId: { name: network }
     } = txMeta;
     const isVM2 = txMeta.txParams && txMeta.txParams.vmType === 'vm2';
+    
+    log.debug('_checkPendingTx called', { txId, txHash, network, isVM2, status: txMeta.status });
+    
     // Only check submitted txs
     if (txMeta.status !== TRANSACTION_STATUSES.SUBMITTED) {
       return;
@@ -283,11 +286,14 @@ export default class PendingTransactionTracker extends EventEmitter {
 
     try {
       const transactionReceipt = await this._getTransactionReceipt(txHash, isVM2);
-      if (transactionReceipt?.block_number || (['devnet', 'testnet', 'mainnet'].includes(network) && transactionReceipt?.success)) {
+      log.debug('_checkPendingTx got receipt', { txId, txHash, isVM2, transactionReceipt });
+      
+      if (transactionReceipt?.block_number || (['dev', 'test', 'main'].includes(network) && transactionReceipt?.success)) {
+        log.debug('_checkPendingTx confirming tx', { txId, block_number: transactionReceipt?.block_number });
         this.emit('tx:confirmed', txId, transactionReceipt);
         return;
       }
-      if ((['devnet', 'testnet', 'mainnet'].includes(network) && transactionReceipt && !transactionReceipt.success && transactionReceipt.vm_status)) {
+      if ((['dev', 'test', 'main'].includes(network) && transactionReceipt && !transactionReceipt.success && transactionReceipt.vm_status)) {
         const txErr = new Error(
           transactionReceipt.vm_status,
         );
@@ -295,7 +301,9 @@ export default class PendingTransactionTracker extends EventEmitter {
         this.emit('tx:failed', txId, txErr);
         return;
       }
+      log.debug('_checkPendingTx no confirmation yet', { txId, transactionReceipt });
     } catch (err) {
+      log.debug('_checkPendingTx error', { txId, error: err.message });
       txMeta.warning = {
         error: err.message,
         message: 'There was a problem loading this transaction.',
@@ -346,7 +354,7 @@ export default class PendingTransactionTracker extends EventEmitter {
 
   async getSequenceNumber(from, network, vmType) {
     let sequenceNumber
-    if (['devnet', 'testnet', 'mainnet'].includes(network)) {
+    if (['dev', 'test', 'main'].includes(network)) {
       sequenceNumber = await new Promise((resolve, reject) => {
         return this.query.getAccount(
           from,

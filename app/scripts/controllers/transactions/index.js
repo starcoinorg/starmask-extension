@@ -760,15 +760,51 @@ export default class TransactionController extends EventEmitter {
         log.error('payload is undefined');
         throw new Error('StarMask - signTransaction: payload is undefined');
       }
-      rawUserTransaction = utils.tx.generateRawUserTransaction(
-        fromAddress,
-        payload,
-        maxGasAmount,
-        gasUnitPrice,
-        nonce,
-        expirationTimestampSecs,
-        chainId,
-      );
+      
+      // For VM2 transactions, we need to use a different gas_token_code
+      if (isVM2) {
+        // VM2 requires gas_token_code = '0x1::starcoin_coin::STC' (not '0x1::STC::STC')
+        // Also, addressToSCS() only handles 16-byte addresses.
+        // If fromAddress is a 32-byte VM2 format address, we need to extract the 16-byte portion.
+        // Starcoin address is 16 bytes, which is the last half of SHA3-256(pubkey || 0x00)
+        let senderAddressForTx = fromAddress;
+        const addressBytes = arrayify(fromAddress);
+        log.debug(`VM2 signTransaction: fromAddress=${fromAddress}, bytes.length=${addressBytes.length}`);
+        
+        if (addressBytes.length === 32) {
+          // VM2 32-byte format: [16 zeros padding][16 bytes real address]
+          // Extract the last 16 bytes which should be the actual Starcoin address
+          senderAddressForTx = hexlify(addressBytes.slice(16));
+          log.debug(`VM2: Extracted 16-byte sender from 32-byte: ${senderAddressForTx}`);
+        } else if (addressBytes.length !== 16) {
+          // Unexpected address length - log warning but try to proceed
+          log.warn(`VM2: Unexpected sender address length: ${addressBytes.length} bytes`);
+        }
+        
+        const senderSCS = encoding.addressToSCS(senderAddressForTx);
+        const vm2GasTokenCode = '0x1::starcoin_coin::STC';
+        rawUserTransaction = new starcoin_types.RawUserTransaction(
+          senderSCS,
+          BigInt(nonce),
+          payload,
+          BigInt(maxGasAmount),
+          BigInt(gasUnitPrice),
+          vm2GasTokenCode,
+          BigInt(expirationTimestampSecs),
+          new starcoin_types.ChainId(chainId)
+        );
+      } else {
+        // VM1 uses the standard generateRawUserTransaction
+        rawUserTransaction = utils.tx.generateRawUserTransaction(
+          fromAddress,
+          payload,
+          maxGasAmount,
+          gasUnitPrice,
+          nonce,
+          expirationTimestampSecs,
+          chainId,
+        );
+      }
     }
     const signedTransactionHex = await this.signEthTx(
       rawUserTransaction,
