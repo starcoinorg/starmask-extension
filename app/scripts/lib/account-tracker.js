@@ -196,7 +196,11 @@ export default class AccountTracker {
     if (!currentBlock) {
       return;
     }
-    const currentBlockGasLimit = currentBlock.gasLimit;
+    // Starcoin blocks don't have gasLimit (unlike Ethereum).
+    // Use a reasonable default max_gas_amount for Starcoin (10M).
+    // Ethereum blocks have gasLimit, Starcoin uses per-tx max_gas_amount.
+    const STARCOIN_DEFAULT_GAS_LIMIT = '0x989680'; // 10000000 in hex
+    const currentBlockGasLimit = currentBlock.gasLimit || STARCOIN_DEFAULT_GAS_LIMIT;
     this.store.updateState({ currentBlockGasLimit });
 
     try {
