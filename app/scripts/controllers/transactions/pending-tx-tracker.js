@@ -418,11 +418,15 @@ export default class PendingTransactionTracker extends EventEmitter {
         );
       });
     }
+    // For VM1, use chain.get_transaction_info
     return new Promise((resolve, reject) => {
-      return this.query.getTransactionReceipt(txHash, (err, res) => {
-        if (err) return reject(err);
-        return resolve(res);
-      });
+      return this.query.sendAsync(
+        { method: 'chain.get_transaction_info', params: [txHash] },
+        (err, res) => {
+          if (err) return reject(err);
+          return resolve(res);
+        },
+      );
     });
   }
 

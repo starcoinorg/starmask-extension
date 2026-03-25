@@ -539,25 +539,23 @@ export default class TransactionController extends EventEmitter {
           const sequenceNumber = await this._getVM2SequenceNumber(fromAddress);
           txMeta.txParams.nonce = addHexPrefix(sequenceNumber.toString(16));
         } else {
-          // wait for a nonce
+          // For VM1, also get sequence number directly from chain to avoid stale NonceTracker data
           let { customNonceValue } = txMeta;
           customNonceValue = Number(customNonceValue);
-          nonceLock = await this.nonceTracker.getNonceLock(fromAddress, networkTicker);
-          // add nonce to txParams
-          // if txMeta has lastGasPrice then it is a retry at same nonce with higher
-          // gas price transaction and therefor the nonce should not be calculated
-          const nonce = txMeta.lastGasPrice
-            ? txMeta.txParams.nonce
-            : nonceLock.nextNonce;
-          const customOrNonce =
-            customNonceValue === 0 ? customNonceValue : customNonceValue || nonce;
-
-          txMeta.txParams.nonce = addHexPrefix(customOrNonce.toString(16));
-          // add nonce debugging information to txMeta
-          txMeta.nonceDetails = nonceLock.nonceDetails;
-          if (customNonceValue) {
-            txMeta.nonceDetails.customNonceValue = customNonceValue;
+          
+          let nonce;
+          if (txMeta.lastGasPrice) {
+            // Retry transaction - keep existing nonce
+            nonce = txMeta.txParams.nonce;
+          } else if (customNonceValue || customNonceValue === 0) {
+            // Custom nonce provided
+            nonce = customNonceValue;
+          } else {
+            // Get sequence number directly from chain (like VM2)
+            nonce = await this._getVM1SequenceNumber(fromAddress);
           }
+          
+          txMeta.txParams.nonce = addHexPrefix(nonce.toString(16));
         }
       }
       this.txStateManager.updateTx(txMeta, 'transactions#approveTransaction');
@@ -1086,6 +1084,49 @@ export default class TransactionController extends EventEmitter {
     /** see txStateManager */
     this.getFilteredTxList = (opts) =>
       this.txStateManager.getFilteredTxList(opts);
+  }
+
+  /**
+    Fetches the sequence number for a VM1 account from chain RPC,
+    accounting for locally pending VM1 transactions to avoid nonce conflicts.
+    @param {string} address - the account address
+    @returns {Promise<number>} the sequence number
+  */
+  async _getVM1SequenceNumber(address) {
+    const chainNonce = await new Promise((resolve, reject) => {
+      this.query.sendAsync(
+        { method: 'contract.get_resource', params: [address, '0x1::Account::Account'] },
+        (err, res) => {
+          if (err) {
+            return reject(err);
+          }
+          // Parse sequence_number from value array: [["sequence_number", {"U64": "10"}], ...]
+          let sequenceNumber = 0;
+          if (res && res.value && Array.isArray(res.value)) {
+            const seqEntry = res.value.find(([key]) => key === 'sequence_number');
+            if (seqEntry && seqEntry[1] && seqEntry[1].U64) {
+              sequenceNumber = seqEntry[1].U64;
+            }
+          }
+          return resolve(new BigNumber(sequenceNumber, 10).toNumber());
+        },
+      );
+    });
+
+    // Check pending VM1 transactions for this address to avoid nonce conflicts
+    const pendingTxs = this.txStateManager.getFilteredTxList({
+      from: address,
+      status: TRANSACTION_STATUSES.SUBMITTED,
+    }).filter((tx) => tx.txParams && tx.txParams.vmType !== 'vm2');
+
+    if (pendingTxs.length > 0) {
+      const maxPendingNonce = Math.max(
+        ...pendingTxs.map((tx) => parseInt(tx.txParams.nonce, 16) || 0),
+      );
+      return Math.max(chainNonce, maxPendingNonce + 1);
+    }
+
+    return chainNonce;
   }
 
   /**
