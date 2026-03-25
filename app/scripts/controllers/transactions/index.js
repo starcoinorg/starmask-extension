@@ -393,7 +393,7 @@ export default class TransactionController extends EventEmitter {
     const gasLimit = this.txGasUtil.addGasBuffer(
       gasUsed,
       blockGasLimit,
-      txMeta.txParams.addGasBufferMultiplier && parseFloat(txMeta.txParams.addGasBufferMultiplier) > 0 ? parseFloat(txMeta.txParams.addGasBufferMultiplier) : 1.5
+      txMeta.txParams.addGasBufferMultiplier && parseFloat(txMeta.txParams.addGasBufferMultiplier) > 0 ? parseFloat(txMeta.txParams.addGasBufferMultiplier) : 2.0
     );
     return { gasUsed, gasUnitPrice, gasLimit, tokenChanges, simulationFails };
   }

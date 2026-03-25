@@ -285,7 +285,7 @@ async function estimateGasForSend({
     const estimateWithBuffer = addGasBuffer(
       estimatedGas.toString(16),
       ticker === 'STC' ? blockGasLimit : parseInt(max_gas_amount, 10).toString(16),
-      1.5,
+      2.0,
     );
     return { gasPrice: addHexPrefix(gas_unit_price.toString(16)), gas: addHexPrefix(estimateWithBuffer) };
   } catch (error) {

@@ -2255,7 +2255,7 @@ export default class MetamaskController extends EventEmitter {
                 type_args: isVM2 ? [] : [tokenCode],
                 args: isVM2
                   ? [estimateGasParams.to, `${ hexToDecimal(estimateGasParams.value || '0x0') }u64`]
-                  : [estimateGasParams.to, `${ hexToDecimal(estimateGasParams.gas) }u128`]
+                  : [estimateGasParams.to, `${ hexToDecimal(estimateGasParams.value || '0x0') }u128`]
               },
             };
             if (isVM2) {
