@@ -132,24 +132,38 @@ export default class TxGasUtil {
     } else {
       if (txMeta.txParams.to
         && txMeta.type === TRANSACTION_TYPES.SENT_ETHER) {
-        const functionId = vmType === 'vm2'
-          ? '0x1::transfer_scripts::peer_to_peer_v2'
-          : '0x1::TransferScripts::peer_to_peer_v2'
-        const strTypeArgs = vmType === 'vm2'
-          ? ['0x1::starcoin_coin::STC']
-          : ['0x1::STC::STC']
-        const tyArgs = utils.tx.encodeStructTypeTags(strTypeArgs)
         const sendAmountNanoSTC = hexToBn(txMeta.txParams.value)
-        const amountSCSHex = (function () {
-          const se = new bcs.BcsSerializer()
-          se.serializeU128(BigInt(sendAmountNanoSTC.toString(10)))
-          return hexlify(se.getBytes())
-        })()
-        const args = [
-          arrayify(txMeta.txParams.to),
-          arrayify(amountSCSHex),
-        ]
-        const scriptFunction = utils.tx.encodeScriptFunction(functionId, tyArgs, args)
+        let scriptFunction;
+        if (vmType === 'vm2') {
+          // VM2: use starcoin_account::transfer with u64 amount, no type args
+          const functionId = '0x1::starcoin_account::transfer'
+          const tyArgs = []
+          const amountSCSHex = (function () {
+            const se = new bcs.BcsSerializer()
+            se.serializeU64(BigInt(sendAmountNanoSTC.toString(10)))
+            return hexlify(se.getBytes())
+          })()
+          const args = [
+            arrayify(txMeta.txParams.to),
+            arrayify(amountSCSHex),
+          ]
+          scriptFunction = utils.tx.encodeScriptFunction(functionId, tyArgs, args)
+        } else {
+          // VM1: use TransferScripts::peer_to_peer_v2 with u128 amount
+          const functionId = '0x1::TransferScripts::peer_to_peer_v2'
+          const strTypeArgs = ['0x1::STC::STC']
+          const tyArgs = utils.tx.encodeStructTypeTags(strTypeArgs)
+          const amountSCSHex = (function () {
+            const se = new bcs.BcsSerializer()
+            se.serializeU128(BigInt(sendAmountNanoSTC.toString(10)))
+            return hexlify(se.getBytes())
+          })()
+          const args = [
+            arrayify(txMeta.txParams.to),
+            arrayify(amountSCSHex),
+          ]
+          scriptFunction = utils.tx.encodeScriptFunction(functionId, tyArgs, args)
+        }
         transactionPayload = scriptFunction;
       }
     }

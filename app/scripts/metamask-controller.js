@@ -2232,7 +2232,7 @@ export default class MetamaskController extends EventEmitter {
           : '0x00000000000000000000000000000001::STC::STC';
         const tokenCode = estimateGasParams.code ? estimateGasParams.code : defaultTokenCode;
         const transferScript = isVM2
-          ? '0x00000000000000000000000000000001::transfer_scripts::peer_to_peer_v2'
+          ? '0x00000000000000000000000000000001::starcoin_account::transfer'
           : '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2';
         return this.keyringController.getPublicKeyFor(estimateGasParams.from)
           .then((publicKey) => {
@@ -2242,6 +2242,7 @@ export default class MetamaskController extends EventEmitter {
             if (!estimateGasParams.to) {
               return resolve({ gas_unit_price, gas_used });
             }
+            // VM2 uses u64 amount with no type_args, VM1 uses u128 with type_args
             const params = {
               chain_id: chainId,
               gas_unit_price,
@@ -2251,8 +2252,10 @@ export default class MetamaskController extends EventEmitter {
               max_gas_amount,
               script: {
                 code: transferScript,
-                type_args: [tokenCode],
-                args: [estimateGasParams.to, `${ hexToDecimal(estimateGasParams.gas) }u128`]
+                type_args: isVM2 ? [] : [tokenCode],
+                args: isVM2
+                  ? [estimateGasParams.to, `${ hexToDecimal(estimateGasParams.gas) }u64`]
+                  : [estimateGasParams.to, `${ hexToDecimal(estimateGasParams.gas) }u128`]
               },
             };
             if (isVM2) {

@@ -714,14 +714,6 @@ export default class TransactionController extends EventEmitter {
         txMeta.type === TRANSACTION_TYPES.SENT_ETHER ||
         (txMeta.type === TRANSACTION_TYPES.RETRY && !txParams.data)
       ) {
-        const functionId = isVM2
-          ? '0x00000000000000000000000000000001::transfer_scripts::peer_to_peer_v2'
-          : '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2';
-
-        const tyArgs = isVM2
-          ? [{ Struct: { address: '0x1', module: 'starcoin_coin', name: 'STC', type_params: [] } }]
-          : [{ Struct: { address: '0x1', module: 'STC', name: 'STC', type_params: [] } }];
-
         const receiver = txParams.toReceiptIdentifier ? txParams.toReceiptIdentifier : txParams.to;
         let receiverAddressHex;
 
@@ -732,21 +724,32 @@ export default class TransactionController extends EventEmitter {
           receiverAddressHex = receiver;
         }
 
-        // Multiple BcsSerializers should be used in different closures, otherwise, the latter will be contaminated by the former.
-        const amountSCSHex = (function () {
-          const se = new bcs.BcsSerializer();
-          // eslint-disable-next-line no-undef
-          se.serializeU128(BigInt(sendAmount));
-          return hexlify(se.getBytes());
-        })();
-
-        const args = [arrayify(receiverAddressHex), arrayify(amountSCSHex)];
-
-        const scriptFunction = utils.tx.encodeScriptFunction(
-          functionId,
-          tyArgs,
-          args,
-        );
+        let scriptFunction;
+        if (isVM2) {
+          // VM2: use starcoin_account::transfer with u64 amount, no type args
+          const functionId = '0x00000000000000000000000000000001::starcoin_account::transfer';
+          const tyArgs = [];
+          const amountSCSHex = (function () {
+            const se = new bcs.BcsSerializer();
+            // eslint-disable-next-line no-undef
+            se.serializeU64(BigInt(sendAmount));
+            return hexlify(se.getBytes());
+          })();
+          const args = [arrayify(receiverAddressHex), arrayify(amountSCSHex)];
+          scriptFunction = utils.tx.encodeScriptFunction(functionId, tyArgs, args);
+        } else {
+          // VM1: use TransferScripts::peer_to_peer_v2 with u128 amount
+          const functionId = '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2';
+          const tyArgs = [{ Struct: { address: '0x1', module: 'STC', name: 'STC', type_params: [] } }];
+          const amountSCSHex = (function () {
+            const se = new bcs.BcsSerializer();
+            // eslint-disable-next-line no-undef
+            se.serializeU128(BigInt(sendAmount));
+            return hexlify(se.getBytes());
+          })();
+          const args = [arrayify(receiverAddressHex), arrayify(amountSCSHex)];
+          scriptFunction = utils.tx.encodeScriptFunction(functionId, tyArgs, args);
+        }
         payload = scriptFunction;
       } else if (txParams.data) {
         const bytes = arrayify(txParams.data);
