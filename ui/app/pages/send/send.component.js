@@ -354,7 +354,8 @@ export default class SendTransactionScreen extends Component {
     });
   }
 
-  updateGas({ to: updatedToAddress, amount: value, data } = {}) {
+  updateGas({ to: updatedToAddress, amount: value, data, vmType } = {}) {
+    console.log('send.component updateGas vmType:', vmType);
     const {
       amount,
       blockGasLimit,
@@ -379,6 +380,7 @@ export default class SendTransactionScreen extends Component {
       toReceiptIdentifier,
       value: value || amount,
       data,
+      vmType,
     });
   }
 

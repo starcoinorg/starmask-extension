@@ -8,30 +8,51 @@ import { defaultNetworksData } from '../../ui/app/pages/settings/networks-tab/ne
  * @returns {boolean} true if transaction matches the network
  */
 export function transactionMatchesNetwork(transaction, chainId, networkId) {
+  // Check chainId first if it exists
   if (typeof transaction.chainId !== 'undefined') {
-    return transaction.chainId === chainId;
+    const matches = transaction.chainId === chainId;
+    if (!matches) {
+      console.log('transactionMatchesNetwork: chainId mismatch', {
+        txId: transaction.id,
+        txChainId: transaction.chainId,
+        currentChainId: chainId,
+        txChainIdType: typeof transaction.chainId,
+        currentChainIdType: typeof chainId
+      });
+    }
+    return matches;
   }
   
   // Handle object comparison for metamaskNetworkId
   // networkId from chain.id RPC is an object: { name: chainId, id: Number }
   const txNetworkId = transaction.metamaskNetworkId;
   
+  let result;
   if (typeof txNetworkId === 'object' && txNetworkId !== null &&
       typeof networkId === 'object' && networkId !== null) {
     // Compare by name (chainId string) or id (numeric chain id)
-    return txNetworkId.name === networkId.name || txNetworkId.id === networkId.id;
+    result = txNetworkId.name === networkId.name || txNetworkId.id === networkId.id;
+  } else if (typeof txNetworkId === 'object' && txNetworkId !== null) {
+    // Handle mixed comparisons (object vs string/number)
+    result = txNetworkId.name === networkId || txNetworkId.id === networkId;
+  } else if (typeof networkId === 'object' && networkId !== null) {
+    result = txNetworkId === networkId.name || txNetworkId === networkId.id;
+  } else {
+    // Fallback to direct comparison for primitive types
+    result = txNetworkId === networkId;
   }
   
-  // Handle mixed comparisons (object vs string/number)
-  if (typeof txNetworkId === 'object' && txNetworkId !== null) {
-    return txNetworkId.name === networkId || txNetworkId.id === networkId;
-  }
-  if (typeof networkId === 'object' && networkId !== null) {
-    return txNetworkId === networkId.name || txNetworkId === networkId.id;
+  if (!result) {
+    console.log('transactionMatchesNetwork: networkId mismatch', {
+      txId: transaction.id,
+      txNetworkId,
+      currentNetworkId: networkId,
+      txNetworkIdType: typeof txNetworkId,
+      currentNetworkIdType: typeof networkId
+    });
   }
   
-  // Fallback to direct comparison for primitive types
-  return txNetworkId === networkId;
+  return result;
 }
 
 /**

@@ -114,7 +114,9 @@ function mapDispatchToProps(dispatch) {
       toReceiptIdentifier,
       value,
       data,
+      vmType,
     }) => {
+      console.log('send.container updateAndSetGasLimit vmType:', vmType);
       editingTransactionId
         ? dispatch(setGasTotal(calcGasTotal(gasLimit, gasPrice)))
         : dispatch(
@@ -127,6 +129,7 @@ function mapDispatchToProps(dispatch) {
             toReceiptIdentifier,
             value,
             data,
+            vmType,
           }),
         );
     },

@@ -132,7 +132,17 @@ export default class PendingTransactionTracker extends EventEmitter {
 
     try {
       const transactionReceipt = await this._getTransactionReceipt(txHash, isVM2);
-      if (transactionReceipt?.block_number || (['dev', 'test', 'main'].includes(network) && transactionReceipt?.success)) {
+      log.debug('checkUnknownTx got receipt', { txId, txHash, isVM2, transactionReceipt: JSON.stringify(transactionReceipt) });
+      // Check for confirmation - handle different RPC response formats
+      // VM1: chain.get_transaction_info returns block_hash, status, gas_used, etc.
+      // VM2: chain.get_transaction_info2 returns similar structure
+      if (transactionReceipt && (
+        transactionReceipt.block_number || 
+        transactionReceipt.block_hash ||
+        transactionReceipt.status === 'Executed' ||
+        (['dev', 'test', 'main'].includes(network) && transactionReceipt?.success)
+      )) {
+        log.debug('checkUnknownTx emitting tx:confirmed', { txId });
         this.emit('tx:confirmed', txId, transactionReceipt);
         return;
       }
@@ -278,7 +288,14 @@ export default class PendingTransactionTracker extends EventEmitter {
     
     const isVM2 = txMeta.txParams && txMeta.txParams.vmType === 'vm2';
     
-    log.debug('_checkPendingTx called', { txId, txHash, network, isVM2, status: txMeta.status });
+    log.debug('_checkPendingTx called', { 
+      txId, 
+      txHash, 
+      network, 
+      isVM2, 
+      vmType: txMeta.txParams?.vmType,
+      status: txMeta.status 
+    });
     
     // Only check submitted txs
     if (txMeta.status !== TRANSACTION_STATUSES.SUBMITTED) {
@@ -300,11 +317,21 @@ export default class PendingTransactionTracker extends EventEmitter {
     // First, check on-chain status - this should take priority
     try {
       const transactionReceipt = await this._getTransactionReceipt(txHash, isVM2);
-      log.debug('_checkPendingTx got receipt', { txId, txHash, isVM2, transactionReceipt });
+      log.debug('_checkPendingTx got receipt', { txId, txHash, isVM2, transactionReceipt: JSON.stringify(transactionReceipt) });
       
       // Check if transaction is confirmed on chain
-      if (transactionReceipt?.block_number || transactionReceipt?.status === 'Executed') {
-        log.debug('_checkPendingTx confirming tx', { txId, block_number: transactionReceipt?.block_number, status: transactionReceipt?.status });
+      // Handle different RPC response formats: block_number, block_hash, or status
+      if (transactionReceipt && (
+        transactionReceipt.block_number || 
+        transactionReceipt.block_hash ||
+        transactionReceipt.status === 'Executed'
+      )) {
+        log.debug('_checkPendingTx confirming tx', { 
+          txId, 
+          block_number: transactionReceipt?.block_number, 
+          block_hash: transactionReceipt?.block_hash,
+          status: transactionReceipt?.status 
+        });
         this.emit('tx:confirmed', txId, transactionReceipt);
         return;
       }
@@ -469,6 +496,7 @@ export default class PendingTransactionTracker extends EventEmitter {
         return this.query.sendAsync(
           { method: 'chain.get_transaction_info2', params: [txHash] },
           (err, res) => {
+            log.debug('_getTransactionReceipt VM2 result', { txHash, err: err?.message, res: JSON.stringify(res) });
             if (err) return reject(err);
             return resolve(res);
           },
@@ -480,6 +508,7 @@ export default class PendingTransactionTracker extends EventEmitter {
       return this.query.sendAsync(
         { method: 'chain.get_transaction_info', params: [txHash] },
         (err, res) => {
+          log.debug('_getTransactionReceipt VM1 result', { txHash, err: err?.message, res: JSON.stringify(res) });
           if (err) return reject(err);
           return resolve(res);
         },

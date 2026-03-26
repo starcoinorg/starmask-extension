@@ -47,9 +47,20 @@ export const selectedAddressTxListSelector = createSelector(
   getSelectedAddress,
   currentNetworkTxListSelector,
   (selectedAddress, transactions = []) => {
-    return transactions.filter(
+    const filtered = transactions.filter(
       ({ txParams }) => txParams.from === selectedAddress,
     );
+    // Debug: Log VM2 transactions filtering
+    const vm2Txs = transactions.filter(tx => tx.txParams?.vmType === 'vm2');
+    const vm2Filtered = filtered.filter(tx => tx.txParams?.vmType === 'vm2');
+    if (vm2Txs.length > 0 || vm2Filtered.length > 0) {
+      console.log('selectedAddressTxListSelector: selectedAddress=', selectedAddress,
+        'totalTx=', transactions.length,
+        'vm2BeforeFilter=', vm2Txs.length,
+        'vm2AfterFilter=', vm2Filtered.length,
+        'vm2Details=', vm2Txs.map(tx => ({ id: tx.id, from: tx.txParams?.from, status: tx.status })));
+    }
+    return filtered;
   },
 );
 
@@ -101,21 +112,35 @@ export const transactionsSelector = createSelector(
 );
 
 /**
+ * @name getNonceFromKey
+ * @private
+ * @description Extracts the nonce hex value from a nonceKey (format: "vm1:0x22" or "vm2:0x22")
+ * @param {string} nonceKey - The nonce key containing vmType prefix
+ * @returns {string} The nonce hex value
+ */
+const getNonceFromKey = (nonceKey) => {
+  const parts = nonceKey.split(':');
+  return parts.length > 1 ? parts[1] : nonceKey;
+};
+
+/**
  * @name insertOrderedNonce
  * @private
- * @description Inserts (mutates) a nonce into an array of ordered nonces, sorted in ascending
- * order.
- * @param {string[]} nonces - Array of nonce strings in hex
- * @param {string} nonceToInsert - Nonce string in hex to be inserted into the array of nonces.
+ * @description Inserts (mutates) a nonce key into an array of ordered nonce keys, sorted in ascending
+ * order by nonce value (VM1 and VM2 are separated by their prefixes).
+ * @param {string[]} nonces - Array of nonce key strings (format: "vm1:0x22" or "vm2:0x22")
+ * @param {string} nonceToInsert - Nonce key to be inserted into the array.
  * @returns {string[]}
  */
 const insertOrderedNonce = (nonces, nonceToInsert) => {
   let insertIndex = nonces.length;
+  const nonceValueToInsert = getNonceFromKey(nonceToInsert);
 
   for (let i = 0; i < nonces.length; i++) {
     const nonce = nonces[i];
+    const nonceValue = getNonceFromKey(nonce);
 
-    if (Number(hexToDecimal(nonce)) > Number(hexToDecimal(nonceToInsert))) {
+    if (Number(hexToDecimal(nonceValue)) > Number(hexToDecimal(nonceValueToInsert))) {
       insertIndex = i;
       break;
     }
@@ -226,11 +251,14 @@ export const nonceSortedTransactionsSelector = createSelector(
     transactions
       .forEach((transaction) => {
         const {
-          txParams: { nonce } = {},
+          txParams: { nonce, vmType } = {},
           status,
           type,
           time: txTime,
         } = transaction;
+        // Use vmType + nonce as the key because VM1 and VM2 have independent nonce sequences
+        const nonceKey = vmType === 'vm2' ? `vm2:${nonce}` : `vm1:${nonce}`;
+        
         if (typeof nonce === 'undefined' || type === TRANSACTION_TYPES.INCOMING) {
           const transactionGroup = {
             transactions: [transaction],
@@ -248,8 +276,8 @@ export const nonceSortedTransactionsSelector = createSelector(
               transactionGroup,
             );
           }
-        } else if (nonce in nonceToTransactionsMap) {
-          const nonceProps = nonceToTransactionsMap[nonce];
+        } else if (nonceKey in nonceToTransactionsMap) {
+          const nonceProps = nonceToTransactionsMap[nonceKey];
           insertTransactionByTime(nonceProps.transactions, transaction);
 
           const {
@@ -290,8 +318,8 @@ export const nonceSortedTransactionsSelector = createSelector(
             nonceProps.hasCancelled = true;
           }
         } else {
-          nonceToTransactionsMap[nonce] = {
-            nonce,
+          nonceToTransactionsMap[nonceKey] = {
+            nonce: nonceKey,
             transactions: [transaction],
             initialTransaction: transaction,
             primaryTransaction: transaction,
@@ -299,12 +327,12 @@ export const nonceSortedTransactionsSelector = createSelector(
             hasCancelled: transaction.type === TRANSACTION_TYPES.CANCEL,
           };
 
-          insertOrderedNonce(orderedNonces, nonce);
+          insertOrderedNonce(orderedNonces, nonceKey);
         }
       });
 
     const orderedTransactionGroups = orderedNonces.map(
-      (nonce) => nonceToTransactionsMap[nonce],
+      (nonceKey) => nonceToTransactionsMap[nonceKey],
     );
     mergeNonNonceTransactionGroups(
       orderedTransactionGroups,

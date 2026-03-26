@@ -734,12 +734,14 @@ export function updateGasData({
   toReceiptIdentifier,
   value,
   data,
+  vmType: vmTypeParam,
 }) {
   return (dispatch, getState) => {
     dispatch(gasLoadingStarted());
 
     const state = getState();
-    const vmType = state.starmask.send.vmType || 'vm1';
+    const vmType = vmTypeParam || state.starmask.send.vmType || 'vm1';
+    console.log('updateGasData vmTypeParam:', vmTypeParam, 'state.vmType:', state.starmask.send.vmType, 'final vmType:', vmType);
 
     if (to) {
       const rpcPrefs = getRpcPrefsForCurrentProvider(

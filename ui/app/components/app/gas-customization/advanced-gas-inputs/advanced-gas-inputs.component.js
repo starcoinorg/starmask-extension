@@ -69,11 +69,9 @@ export default class AdvancedGasInputs extends Component {
   };
 
   hasChangeGasLimitCheck = () => {
-    setTimeout(() => {
-      if(this.state.gasLimit === 0) {
-        this.changeGasLimitEvent(100)
-      }
-    }, 0);
+    // Don't force gasLimit to 100, let the gas estimation work properly
+    // Just return a default display value without modifying state
+    return '';
   }
 
   changeGasLimit = (e) => {

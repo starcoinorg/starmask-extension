@@ -46,7 +46,11 @@ export default class SendContent extends Component {
     }
   }
 
-  updateGas = (updateData) => this.props.updateGas(updateData);
+  updateGas = (updateData = {}) => {
+    const { vmType } = this.props;
+    console.log('send-content updateGas updateData:', updateData, 'props.vmType:', vmType);
+    this.props.updateGas({ ...updateData, vmType: updateData.vmType || vmType });
+  };
 
   render() {
     const { warning, error, gasIsExcessive, sendNFT, vmType, ticker, setVMType } = this.props;
@@ -63,8 +67,9 @@ export default class SendContent extends Component {
               <select
                 value={vmType || 'vm1'}
                 onChange={(e) => {
-                  setVMType(e.target.value);
-                  this.updateGas();
+                  const newVmType = e.target.value;
+                  setVMType(newVmType);
+                  this.updateGas({ vmType: newVmType });
                 }}
                 style={{ padding: '4px 8px', borderRadius: '4px', border: '1px solid #ccc', fontSize: '14px' }}
               >

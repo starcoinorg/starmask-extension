@@ -209,6 +209,7 @@ async function estimateGasForSend({
   ticker,
   vmType,
 }) {
+  console.log('estimateGasForSend vmType:', vmType, 'ticker:', ticker);
   const paramsForGasEstimate = { from: selectedAddress, to, toReceiptIdentifier, value, gasPrice };
 
   if (vmType) {
@@ -255,7 +256,10 @@ async function estimateGasForSend({
       paramsForGasEstimate.data = data;
     }
 
-    if (!value || value === '0') {
+    // Check for zero value in various formats (undefined, null, '0', '0x0', '0x00', etc.)
+    const valueNum = parseInt(value || '0', 16);
+    if (!valueNum) {
+      // Use a non-zero value for gas estimation to get accurate results
       paramsForGasEstimate.value = '0xff';
     }
   }

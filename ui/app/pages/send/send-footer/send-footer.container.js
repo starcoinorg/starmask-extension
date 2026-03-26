@@ -91,6 +91,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(transferNFT(meta, body, id, to));
     },
     sign: async ({ sendToken, to, toReceiptIdentifier, amount, from, gas, gasPrice, data, ticker, vmType }) => {
+      console.log('send-footer sign called', { vmType, sendToken: !!sendToken, ticker });
       const txParams = constructTxParams({
         amount,
         data,
@@ -102,6 +103,7 @@ function mapDispatchToProps(dispatch) {
         toReceiptIdentifier,
         vmType,
       });
+      console.log('send-footer txParams', { vmType: txParams.vmType, keys: Object.keys(txParams) });
 
       sendToken
         ? dispatch(signTokenTx(sendToken, to, amount, txParams, ticker))
