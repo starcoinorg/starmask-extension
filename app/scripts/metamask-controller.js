@@ -22,7 +22,7 @@ import {
 import { utils, starcoin_types, encoding } from '@starcoin/starcoin';
 import BigNumber from 'bignumber.js';
 import log from 'loglevel';
-import OneKeyKeyring from 'stc-lib-onekey-keyring;
+import OneKeyKeyring from 'stc-lib-onekey-keyring';
 import MutiSignKeyring from '@starcoin/stc-multisign-keyring';
 // import LedgerBridgeKeyring from '@metamask/eth-ledger-bridge-keyring';
 import StcQuery from '@starcoin/stc-query';
@@ -70,6 +70,8 @@ import nodeify from './lib/nodeify';
 import accountImporter from './account-import-strategies';
 import seedPhraseVerifier from './lib/seed-phrase-verifier';
 import MetaMetricsController from './controllers/metametrics';
+import StarmaskMcpController from './controllers/starmask-mcp';
+import StarmaskMcpRequestAdapter from './controllers/starmask-mcp-request-adapter';
 import { segment, segmentLegacy } from './lib/segment';
 import createMetaRPCHandler from './lib/createMetaRPCHandler';
 import browser from 'webextension-polyfill'
@@ -308,6 +310,14 @@ export default class MetamaskController extends EventEmitter {
       preferencesStore: this.preferencesController.store,
     });
 
+    this.starmaskMcpController = new StarmaskMcpController({
+      extension: this.extension,
+      keyringController: this.keyringController,
+      preferencesStore: this.preferencesController.store,
+      initState: initState.StarmaskMcpController,
+      nativeHostName: opts.nativeHostName,
+    });
+
     this.txController = new TransactionController({
       initState:
         initState.TransactionController || initState.TransactionManager,
@@ -405,6 +415,12 @@ export default class MetamaskController extends EventEmitter {
         this.networkController,
       ),
     });
+    this.starmaskMcpController.setRequestHandler(
+      new StarmaskMcpRequestAdapter({
+        personalMessageManager: this.personalMessageManager,
+        showUserConfirmation: opts.showUserConfirmation,
+      }),
+    );
 
     this.swapsController = new SwapsController({
       getBufferedGasLimit: this.txController.txGasUtil.getBufferedGasLimit.bind(
@@ -467,6 +483,7 @@ export default class MetamaskController extends EventEmitter {
       NetworkController: this.networkController.store,
       CachedBalancesController: this.cachedBalancesController.store,
       AlertController: this.alertController.store,
+      StarmaskMcpController: this.starmaskMcpController.store,
       OnboardingController: this.onboardingController.store,
       IncomingTransactionsController: this.incomingTransactionsController.store,
       PermissionsController: this.permissionsController.permissions,
@@ -491,6 +508,7 @@ export default class MetamaskController extends EventEmitter {
       AddressBookController: this.addressBookController,
       CurrencyController: this.currencyRateController,
       AlertController: this.alertController.store,
+      StarmaskMcpController: this.starmaskMcpController.store,
       OnboardingController: this.onboardingController.store,
       IncomingTransactionsController: this.incomingTransactionsController.store,
       PermissionsController: this.permissionsController.permissions,
@@ -530,6 +548,9 @@ export default class MetamaskController extends EventEmitter {
     }
 
     this.memStore.subscribe(this.sendUpdate.bind(this));
+    this.starmaskMcpController.connect().catch((error) => {
+      log.warn('Failed to connect Starmask MCP bridge', error);
+    });
 
     const password = process.env.CONF?.password;
     if (
@@ -679,6 +700,18 @@ export default class MetamaskController extends EventEmitter {
       safelistPhishingDomain: this.safelistPhishingDomain.bind(this),
       getRequestAccountTabIds: (cb) => cb(null, this.getRequestAccountTabIds()),
       getOpenMetamaskTabsIds: (cb) => cb(null, this.getOpenMetamaskTabsIds()),
+      connectStarmaskMcp: nodeify(
+        this.starmaskMcpController.connect,
+        this.starmaskMcpController,
+      ),
+      disconnectStarmaskMcp: nodeify(
+        this.starmaskMcpController.disconnect,
+        this.starmaskMcpController,
+      ),
+      syncStarmaskMcpAccounts: nodeify(
+        this.starmaskMcpController.syncAccountState,
+        this.starmaskMcpController,
+      ),
 
       // auto accept token
       getAutoAcceptToken: nodeify(this.getAutoAcceptToken, this),

@@ -279,6 +279,7 @@ function setupController(initState, initLangCode) {
 
   const controller = new MetamaskController({
     infuraProjectId: process.env.INFURA_PROJECT_ID,
+    nativeHostName: process.env.CONF?.NATIVE_HOST_NAME,
     // User confirmation callbacks:
     showUserConfirmation: triggerUi,
     openPopup,
