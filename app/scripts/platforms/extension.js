@@ -78,7 +78,12 @@ export default class ExtensionPlatform {
   }
 
   showTransactionNotification(txMeta, rpcPrefs) {
-    const { status, txReceipt: { status: receiptStatus, success } = {}, metamaskNetworkId: { name: network } } = txMeta;
+    const { status, txReceipt: { status: receiptStatus, success } = {}, metamaskNetworkId } = txMeta;
+    // Handle both object and string formats for metamaskNetworkId
+    const network = typeof metamaskNetworkId === 'object' && metamaskNetworkId !== null
+      ? metamaskNetworkId.name
+      : metamaskNetworkId;
+    
     if (status === TRANSACTION_STATUSES.CONFIRMED) {
       // There was an on-chain failure
       (['devnet', 'testnet', 'mainnet'].includes(network) ? !success : receiptStatus !== 'Executed')
@@ -122,7 +127,12 @@ export default class ExtensionPlatform {
     const url = getBlockExplorerUrlForTx(txMeta, rpcPrefs);
     const nonce = parseInt(txMeta.txParams.nonce, 16);
     const title = 'Confirmed transaction';
-    const { metamaskNetworkId: { name: network } } = txMeta;
+    
+    // Handle both object and string formats for metamaskNetworkId
+    const metamaskNetworkId = txMeta.metamaskNetworkId;
+    const network = typeof metamaskNetworkId === 'object' && metamaskNetworkId !== null
+      ? metamaskNetworkId.name
+      : metamaskNetworkId;
 
     const message = `Transaction ${ nonce } confirmed! ${ url.length ? `View on ${ ['devnet', 'testnet', 'mainnet'].includes(network) ? 'Aptos Explorer' : 'StcScan' }` : '' }`;
     this._showNotification(title, message, url);

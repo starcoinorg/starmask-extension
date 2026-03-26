@@ -948,24 +948,34 @@ export default class TransactionController extends EventEmitter {
     // get the txReceipt before marking the transaction confirmed
     // to ensure the receipt is gotten before the ui revives the tx
     const txMeta = this.txStateManager.getTx(txId);
+    
+    log.debug('confirmTransaction called', { txId, txReceipt, hasTxMeta: !!txMeta });
 
     if (!txMeta) {
+      log.warn('confirmTransaction: txMeta not found for txId', txId);
       return;
     }
 
     try {
       // It seems that sometimes the numerical values being returned from
       // this.query.getTransactionReceipt are BN instances and not strings.
-      const gasUsed =
-        typeof txReceipt.gas_used === 'string'
-          ? txReceipt.gas_used
-          : txReceipt.gas_used.toString(16);
+      // Handle undefined/null gas_used gracefully
+      let gasUsed = '0';
+      if (txReceipt.gas_used !== undefined && txReceipt.gas_used !== null) {
+        gasUsed =
+          typeof txReceipt.gas_used === 'string'
+            ? txReceipt.gas_used
+            : txReceipt.gas_used.toString(16);
+      }
+      
+      log.debug('confirmTransaction: processing receipt', { txId, gasUsed, status: txReceipt.status });
 
       txMeta.txReceipt = {
         ...txReceipt,
         gasUsed,
       };
       this.txStateManager.setTxStatusConfirmed(txId);
+      log.debug('confirmTransaction: status set to confirmed', { txId });
       this._markNonceDuplicatesDropped(txId);
 
       this.txStateManager.updateTx(
@@ -1006,7 +1016,7 @@ export default class TransactionController extends EventEmitter {
         this._trackSwapsMetrics(latestTxMeta, approvalTxMeta);
       }
     } catch (err) {
-      log.error(err);
+      log.error('confirmTransaction error:', err, { txId, txReceipt });
     }
   }
 
@@ -1370,7 +1380,7 @@ export default class TransactionController extends EventEmitter {
 
   /**
     Sets other txMeta statuses to dropped if the txMeta that has been confirmed has other transactions
-    in the list have the same nonce
+    in the list have the same nonce AND same VM type (VM1 and VM2 have separate nonce sequences)
 
     @param {number} txId - the txId of the transaction that has been confirmed in a block
   */
@@ -1378,13 +1388,21 @@ export default class TransactionController extends EventEmitter {
     // get the confirmed transactions nonce and from address
     const txMeta = this.txStateManager.getTx(txId);
     const { nonce, from } = txMeta.txParams;
+    // Normalize vmType: undefined or anything other than 'vm2' is treated as 'vm1'
+    const isVM2 = txMeta.txParams.vmType === 'vm2';
     const sameNonceTxs = this.txStateManager.getFilteredTxList({ nonce, from });
     if (!sameNonceTxs.length) {
       return;
     }
     // mark all same nonce transactions as dropped and give it a replacedBy hash
+    // Only consider transactions with the same VM type (VM1 and VM2 have independent nonce sequences)
     sameNonceTxs.forEach((otherTxMeta) => {
       if (otherTxMeta.id === txId) {
+        return;
+      }
+      // Skip if VM type doesn't match (VM1 and VM2 have separate nonce sequences)
+      const otherIsVM2 = otherTxMeta.txParams.vmType === 'vm2';
+      if (otherIsVM2 !== isVM2) {
         return;
       }
       otherTxMeta.replacedBy = txMeta.hash;
