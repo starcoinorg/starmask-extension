@@ -33,7 +33,7 @@ export const APTOS_TESTNET_CHAIN_ID = '0x2';
 export const APTOS_MAINNET_CHAIN_ID = '0x1';
 
 export const getRpcUrl = ({ network, impl }) =>
-  impl === APTOS_SYMBOL ? `https://fullnode.${ network }.aptoslabs.com` : `https://${ network }-seed.starcoin.org`;
+  impl === APTOS_SYMBOL ? `https://fullnode.${ network }.aptoslabs.com` : `http://${ network }.seed.starcoin.org`;
 
 export const MAINNET_RPC_URL = getRpcUrl({ network: MAINNET, impl: STC_SYMBOL });
 export const BARNARD_RPC_URL = getRpcUrl({ network: BARNARD, impl: STC_SYMBOL });
