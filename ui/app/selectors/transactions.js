@@ -47,20 +47,9 @@ export const selectedAddressTxListSelector = createSelector(
   getSelectedAddress,
   currentNetworkTxListSelector,
   (selectedAddress, transactions = []) => {
-    const filtered = transactions.filter(
+    return transactions.filter(
       ({ txParams }) => txParams.from === selectedAddress,
     );
-    // Debug: Log VM2 transactions filtering
-    const vm2Txs = transactions.filter(tx => tx.txParams?.vmType === 'vm2');
-    const vm2Filtered = filtered.filter(tx => tx.txParams?.vmType === 'vm2');
-    if (vm2Txs.length > 0 || vm2Filtered.length > 0) {
-      console.log('selectedAddressTxListSelector: selectedAddress=', selectedAddress,
-        'totalTx=', transactions.length,
-        'vm2BeforeFilter=', vm2Txs.length,
-        'vm2AfterFilter=', vm2Filtered.length,
-        'vm2Details=', vm2Txs.map(tx => ({ id: tx.id, from: tx.txParams?.from, status: tx.status })));
-    }
-    return filtered;
   },
 );
 

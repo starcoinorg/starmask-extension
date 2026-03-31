@@ -71,8 +71,6 @@ export default class TransactionStateManager extends EventEmitter {
     const network = this.getNetwork();
     const chainId = this.getCurrentChainId();
     const fullTxList = this.getFullTxList();
-    
-    console.log('getTxList: network=', network, 'chainId=', chainId, 'fullTxList.length=', fullTxList.length);
 
     const nonces = new Set();
     const txs = [];
@@ -80,14 +78,6 @@ export default class TransactionStateManager extends EventEmitter {
       const txMeta = fullTxList[i];
       const matches = transactionMatchesNetwork(txMeta, chainId, network);
       if (!matches) {
-        console.log('getTxList: tx not matching network', {
-          txId: txMeta.id,
-          txChainId: txMeta.chainId,
-          txNetworkId: txMeta.metamaskNetworkId,
-          currentChainId: chainId,
-          currentNetwork: network,
-          vmType: txMeta.txParams?.vmType
-        });
         continue;
       }
 
@@ -104,7 +94,6 @@ export default class TransactionStateManager extends EventEmitter {
 
       txs.unshift(txMeta);
     }
-    console.log('getTxList: returning txs.length=', txs.length);
     return txs;
   }
 

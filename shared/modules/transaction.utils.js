@@ -11,15 +11,6 @@ export function transactionMatchesNetwork(transaction, chainId, networkId) {
   // Check chainId first if it exists
   if (typeof transaction.chainId !== 'undefined') {
     const matches = transaction.chainId === chainId;
-    if (!matches) {
-      console.log('transactionMatchesNetwork: chainId mismatch', {
-        txId: transaction.id,
-        txChainId: transaction.chainId,
-        currentChainId: chainId,
-        txChainIdType: typeof transaction.chainId,
-        currentChainIdType: typeof chainId
-      });
-    }
     return matches;
   }
   
@@ -40,16 +31,6 @@ export function transactionMatchesNetwork(transaction, chainId, networkId) {
   } else {
     // Fallback to direct comparison for primitive types
     result = txNetworkId === networkId;
-  }
-  
-  if (!result) {
-    console.log('transactionMatchesNetwork: networkId mismatch', {
-      txId: transaction.id,
-      txNetworkId,
-      currentNetworkId: networkId,
-      txNetworkIdType: typeof txNetworkId,
-      currentNetworkIdType: typeof networkId
-    });
   }
   
   return result;

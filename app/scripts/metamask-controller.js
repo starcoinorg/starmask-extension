@@ -2177,10 +2177,8 @@ export default class MetamaskController extends EventEmitter {
   }
 
   estimateGas(estimateGasParams) {
-    console.log('estimateGas called with:', JSON.stringify(estimateGasParams));
     return new Promise((resolve, reject) => {
       const { network } = this.networkController.store.getState();
-      console.log('estimateGas network:', network);
       if (['devnet', 'testnet', 'mainnet'].includes(network.name)) {
         let payload
         if (estimateGasParams.code) {
@@ -2236,15 +2234,12 @@ export default class MetamaskController extends EventEmitter {
         const transferScript = isVM2
           ? '0x00000000000000000000000000000001::starcoin_account::transfer'
           : '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2';
-        console.log('estimateGas STC branch: isVM2=', isVM2, 'tokenCode=', tokenCode, 'transferScript=', transferScript);
         return this.keyringController.getPublicKeyFor(estimateGasParams.from)
           .then((publicKey) => {
-            console.log('estimateGas got publicKey:', publicKey);
             const gas_unit_price = 1
             const max_gas_amount = 10000000
             let gas_used = 0
             if (!estimateGasParams.to) {
-              console.log('estimateGas no to address, returning early');
               return resolve({ gas_unit_price, gas_used });
             }
             // VM2 uses u64 amount with no type_args, VM1 uses u128 with type_args
@@ -2263,15 +2258,12 @@ export default class MetamaskController extends EventEmitter {
                   : [estimateGasParams.to, `${ hexToDecimal(estimateGasParams.value || '0x0') }u128`]
               },
             };
-            console.log('estimateGas params:', JSON.stringify(params));
             if (isVM2) {
               // Bypass StcQuery to avoid automatic explained_status.Error conversion
               // Use provider directly so we can handle errors gracefully with fallbacks
-              console.log('estimateGas calling contract2.dry_run');
               return this.txController.txGasUtil.query.currentProvider.sendAsync(
                 { jsonrpc: '2.0', id: Date.now(), method: 'contract2.dry_run', params: [params] },
                 (err, response) => {
-                  console.log('estimateGas contract2.dry_run result:', err, response);
                   if (err || response.error) {
                     log.warn('VM2 contract2.dry_run failed, using defaults:', err || response.error);
                     return resolve({ gas_unit_price, gas_used: 1000000, max_gas_amount });
@@ -2287,21 +2279,18 @@ export default class MetamaskController extends EventEmitter {
                 },
               );
             }
-            console.log('estimateGas calling VM1 estimateGas (contract.dry_run_raw)');
             return this.txController.txGasUtil.query.estimateGas(
               params,
               (err, res) => {
-                console.log('estimateGas VM1 result:', err, res);
                 if (err) {
                   return reject(err);
                 }
                 gas_used = parseInt(res.gas_used, 10);
-                console.log('estimateGas VM1 gas_used:', gas_used);
                 return resolve({ gas_unit_price, gas_used, max_gas_amount });
               },
             );
           }).catch((err) => {
-            console.error('estimateGas error in promise chain:', err);
+            log.error('estimateGas error:', err);
             reject(err);
           });
       }

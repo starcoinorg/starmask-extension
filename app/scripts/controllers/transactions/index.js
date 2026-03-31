@@ -1455,13 +1455,6 @@ export default class TransactionController extends EventEmitter {
     const currentNetworkTxList = this.txStateManager.getTxList(
       MAX_MEMSTORE_TX_LIST_SIZE,
     );
-    // Debug: Log VM2 transactions in the list
-    const vm2Txs = currentNetworkTxList.filter(tx => tx.txParams?.vmType === 'vm2');
-    const confirmedVm2Txs = vm2Txs.filter(tx => tx.status === 'confirmed');
-    console.log('_updateMemstore: total=', currentNetworkTxList.length, 
-      'vm2Count=', vm2Txs.length, 
-      'confirmedVm2=', confirmedVm2Txs.length,
-      'vm2Ids=', vm2Txs.map(tx => ({ id: tx.id, status: tx.status, from: tx.txParams?.from })));
     this.memStore.updateState({ unapprovedTxs, currentNetworkTxList });
   }
 
