@@ -64,6 +64,14 @@ function isBalanceSufficient({
     toNumericBase: 'hex',
   });
 
+  console.log('=== isBalanceSufficient internal ===');
+  console.log('amount:', amount);
+  console.log('gasTotal:', gasTotal);
+  console.log('totalAmount (calculated):', totalAmount);
+  console.log('balance:', balance);
+  console.log('conversionRate:', conversionRate);
+  console.log('primaryCurrency:', primaryCurrency);
+
   const balanceIsSufficient = conversionGTE(
     {
       value: balance,
@@ -78,6 +86,9 @@ function isBalanceSufficient({
       fromCurrency: primaryCurrency,
     },
   );
+
+  console.log('balanceIsSufficient result:', balanceIsSufficient);
+  console.log('=== end isBalanceSufficient internal ===');
 
   return balanceIsSufficient;
 }

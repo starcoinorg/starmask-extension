@@ -411,6 +411,8 @@ export default class AccountTracker {
   async _updateVM2Resources(address) {
     const { accounts, assets, nfts, nftIdentifier } = this.store.getState();
     const resourceType = '0x00000000000000000000000000000001::account::Account';
+    const ticker = this.getCurrentNetworkTicker && this.getCurrentNetworkTicker() || 'unknown';
+    console.warn('_updateVM2Resources: starting for', address, 'ticker:', ticker);
 
     try {
       // First check if account exists on VM2

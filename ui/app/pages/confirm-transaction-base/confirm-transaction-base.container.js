@@ -102,9 +102,26 @@ const mapStateToProps = (state, ownProps) => {
   const accounts = getMetaMaskAccounts(state);
   const assetImage = assetImages[txParamsToAddress];
 
-  const { balance } = accounts[fromAddress];
+  const { balance } = accounts[fromAddress] || {};
   const vm2Balance = accounts[fromAddress] && accounts[fromAddress].vm2Balance || '0x0';
+  // Debug: log all balance calculation values
   const effectiveBalance = txVmType === 'vm2' ? vm2Balance : balance;
+  const debugGasTotal = calcGasTotal(gasLimit, gasPrice);
+  console.log('=== confirm-tx balance check ===');
+  console.log('txVmType:', txVmType);
+  console.log('VM1 balance (raw):', balance);
+  console.log('VM2 balance (raw):', vm2Balance);
+  console.log('effectiveBalance:', effectiveBalance);
+  console.log('amount (txParams.value):', amount);
+  console.log('gasPrice:', gasPrice);
+  console.log('gasLimit:', gasLimit);
+  console.log('gasTotal (calculated):', debugGasTotal);
+  // Convert to decimal for easier reading
+  console.log('effectiveBalance (decimal):', parseInt(effectiveBalance, 16));
+  console.log('amount (decimal):', parseInt(amount, 16));
+  console.log('gasTotal (decimal):', parseInt(debugGasTotal, 16));
+  console.log('total needed (decimal):', parseInt(amount, 16) + parseInt(debugGasTotal, 16));
+  console.log('=== end balance check ===');
   const { name: fromName } = identities[fromAddress];
   const toAddress = propsToAddress || txParamsToAddress;
 
@@ -137,9 +154,18 @@ const mapStateToProps = (state, ownProps) => {
     .reduce((acc, key) => ({ ...acc, [key]: unapprovedTxs[key] }), {});
   const unapprovedTxCount = valuesFor(currentNetworkUnapprovedTxs).length;
 
+  const gasTotal = calcGasTotal(gasLimit, gasPrice);
+  console.log('=== isBalanceSufficient inputs ===');
+  console.log('amount:', amount, 'decimal:', parseInt(amount, 16));
+  console.log('gasTotal:', gasTotal, 'decimal:', parseInt(gasTotal, 16));
+  console.log('effectiveBalance:', effectiveBalance, 'decimal:', parseInt(effectiveBalance, 16));
+  console.log('conversionRate:', conversionRate);
+  console.log('total needed:', parseInt(amount, 16) + parseInt(gasTotal, 16));
+  console.log('balance sufficient?', parseInt(effectiveBalance, 16) >= parseInt(amount, 16) + parseInt(gasTotal, 16));
+  console.log('=== end isBalanceSufficient inputs ===');
   const insufficientBalance = !isBalanceSufficient({
     amount,
-    gasTotal: calcGasTotal(gasLimit, gasPrice),
+    gasTotal,
     balance: effectiveBalance,
     conversionRate,
   });
@@ -159,7 +185,7 @@ const mapStateToProps = (state, ownProps) => {
   const gasPriceIsExtendMax = isCustomPriceExtendMax(state, gasPrice);
   const gasLimitIsExtendMax = isCustomLimitExtendMax(state, gasLimit);
   return {
-    balance,
+    balance: effectiveBalance, // Use effectiveBalance (VM2 if vmType=vm2, otherwise VM1)
     fromAddress,
     fromName,
     toAddress,

@@ -40,8 +40,16 @@ export function getAveragePriceEstimateInHexWEI(state) {
   if (['devnet', 'testnet', 'mainnet'].includes(name)) {
     return addHexPrefix(decimalToHex(150))
   } else {
+    // For other networks (e.g., localhost), use a reasonable default
+    // Don't use getGasPriceInHexWei which converts from MILLISTC to NANOSTC
+    // as this can result in very large gas prices that cause "insufficient balance" errors
+    // Default to 1 nano STC which is the typical VM2 gas unit price
     const averagePriceEstimate = state.gas.basicEstimates.average;
-    return getGasPriceInHexWei(averagePriceEstimate || '0x0');
+    if (averagePriceEstimate && averagePriceEstimate !== '0x0') {
+      return getGasPriceInHexWei(averagePriceEstimate);
+    }
+    // Fallback to a reasonable default (1 nano STC)
+    return addHexPrefix(decimalToHex(1));
   }
 }
 

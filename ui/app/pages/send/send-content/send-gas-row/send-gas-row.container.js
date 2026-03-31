@@ -12,7 +12,6 @@ import {
   gasFeeIsInError,
   getGasButtonGroupShown,
   getAdvancedInlineGasShown,
-  getCurrentEthBalance,
   getSendToken,
   getBasicGasEstimateLoadingStatus,
   getRenderableEstimateDataForSmallButtonsFromGWEI,
@@ -58,10 +57,24 @@ function mapStateToProps(state) {
 
   const gasTotal = getGasTotal(state);
   const conversionRate = getConversionRate(state);
-  const balance = getCurrentEthBalance(state);
+  // Use getSendFromBalance which correctly handles VM2 balance
+  const balance = getSendFromBalance(state);
+  const sendAmount = getSendToken(state) ? '0x0' : getSendAmount(state);
+
+  // Debug: log all values for balance check
+  console.log('=== send-gas-row balance check ===');
+  console.log('gasPrice:', gasPrice);
+  console.log('gasLimit:', gasLimit);
+  console.log('gasTotal:', gasTotal);
+  console.log('balance:', balance);
+  console.log('amount:', sendAmount);
+  console.log('gasTotal (decimal):', parseInt(gasTotal, 16));
+  console.log('balance (decimal):', parseInt(balance, 16));
+  console.log('amount (decimal):', parseInt(sendAmount, 16));
+  console.log('=== end send-gas-row ===');
 
   const insufficientBalance = !isBalanceSufficient({
-    amount: getSendToken(state) ? '0x0' : getSendAmount(state),
+    amount: sendAmount,
     gasTotal,
     balance,
     conversionRate,

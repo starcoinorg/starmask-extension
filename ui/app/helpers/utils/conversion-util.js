@@ -45,10 +45,10 @@ const toNormalizedDenomination = {
   NANOAPT: (bigNumber) => bigNumber.div(BIG_NUMBER_NANO_APT_MULTIPLIER),
 };
 const toSpecifiedDenomination = {
-  NANOSTC: (bigNumber) => bigNumber.times(BIG_NUMBER_NANO_STC_MULTIPLIER).dp(9),
-  MILLISTC: (bigNumber) => bigNumber.times(BIG_NUMBER_MILLI_STC_MULTIPLIER).dp(9),
-  STC: (bigNumber) => bigNumber.times(BIG_NUMBER_STC_MULTIPLIER).dp(9),
-  NANOAPT: (bigNumber) => bigNumber.times(BIG_NUMBER_NANO_APT_MULTIPLIER).dp(8),
+  NANOSTC: (bigNumber) => bigNumber.times(BIG_NUMBER_NANO_STC_MULTIPLIER).round(9),
+  MILLISTC: (bigNumber) => bigNumber.times(BIG_NUMBER_MILLI_STC_MULTIPLIER).round(9),
+  STC: (bigNumber) => bigNumber.times(BIG_NUMBER_STC_MULTIPLIER).round(9),
+  NANOAPT: (bigNumber) => bigNumber.times(BIG_NUMBER_NANO_APT_MULTIPLIER).round(8),
 
 };
 const baseChange = {
@@ -134,15 +134,15 @@ const converter = ({
     }
   }
 
-  if (numberOfDecimals !== undefined && numberOfDecimals !== null && numberOfDecimals !== false) {
-    convertedValue = convertedValue.dp(
-      Number(numberOfDecimals),
+  if (numberOfDecimals) {
+    convertedValue = convertedValue.round(
+      numberOfDecimals,
       BigNumber.ROUND_HALF_DOWN,
     );
   }
 
-  if (roundDown !== undefined && roundDown !== null && roundDown !== false) {
-    convertedValue = convertedValue.dp(Number(roundDown), BigNumber.ROUND_DOWN);
+  if (roundDown) {
+    convertedValue = convertedValue.round(roundDown, BigNumber.ROUND_DOWN);
   }
 
   if (toNumericBase) {
@@ -199,7 +199,7 @@ const addCurrencies = (a, b, options = {}) => {
     throw new Error('Must specify valid aBase and bBase');
   }
 
-  const value = getBigNumber(a, aBase).plus(getBigNumber(b, bBase));
+  const value = getBigNumber(a, aBase).add(getBigNumber(b, bBase));
 
   return converter({
     value,
@@ -265,13 +265,13 @@ const conversionMax = ({ ...firstProps }, { ...secondProps }) => {
 const conversionGTE = ({ ...firstProps }, { ...secondProps }) => {
   const firstValue = converter({ ...firstProps });
   const secondValue = converter({ ...secondProps });
-  return firstValue.isGreaterThanOrEqualTo(secondValue);
+  return firstValue.greaterThanOrEqualTo(secondValue);
 };
 
 const conversionLTE = ({ ...firstProps }, { ...secondProps }) => {
   const firstValue = converter({ ...firstProps });
   const secondValue = converter({ ...secondProps });
-  return firstValue.isLessThanOrEqualTo(secondValue);
+  return firstValue.lessThanOrEqualTo(secondValue);
 };
 
 const toNegative = (n, options = {}) => {
