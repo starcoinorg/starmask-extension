@@ -305,7 +305,13 @@ export default class TxGasUtil {
       }
       throw new Error(`Starmask: ${methodName} failed. Error: ${ errorMsg }`)
     }
-    const result = { estimatedGasHex, tokenChanges, gasUsed, gasUnitPrice };
+    const result = {
+      estimatedGasHex,
+      tokenChanges,
+      gasUsed,
+      gasUnitPrice,
+      maxGasAmount,
+    };
     return result;
   }
 
