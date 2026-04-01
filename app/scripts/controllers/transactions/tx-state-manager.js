@@ -76,7 +76,8 @@ export default class TransactionStateManager extends EventEmitter {
     const txs = [];
     for (let i = fullTxList.length - 1; i > -1; i--) {
       const txMeta = fullTxList[i];
-      if (transactionMatchesNetwork(txMeta, chainId, network) === false) {
+      const matches = transactionMatchesNetwork(txMeta, chainId, network);
+      if (!matches) {
         continue;
       }
 

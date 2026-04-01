@@ -41,7 +41,7 @@ const copyTargets = [
     dest: ``,
   },
   {
-    src: `./node_modules/globalthis/dist/browser.js`,
+    src: `./app/scripts/globalthis-polyfill.js`,
     dest: `globalthis.js`,
   },
   {

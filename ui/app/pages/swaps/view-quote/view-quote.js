@@ -143,7 +143,7 @@ export default function ViewQuote() {
 
   const usedGasLimitWithMultiplier = new BigNumber(gasLimitForMax, 16)
     .times(usedQuote?.gasMultiplier || FALLBACK_GAS_MULTIPLIER, 10)
-    .round(0)
+    .dp(0)
     .toString(16);
 
   const nonCustomMaxGasLimit = usedQuote?.gasEstimate

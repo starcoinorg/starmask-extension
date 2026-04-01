@@ -64,6 +64,7 @@ const EthOverview = ({ className }) => {
   const showFiat = useSelector(getShouldShowFiat);
   const selectedAccount = useSelector(getSelectedAccount);
   const { balance } = selectedAccount;
+  const vm2Balance = selectedAccount.vm2Balance || '0x0';
   const isMainnetChain = useSelector(getIsMainnet);
   const isTestnetChain = useSelector(getIsTestnet);
   const isSwapsChain = useSelector(getIsSwapsChain);
@@ -88,6 +89,7 @@ const EthOverview = ({ className }) => {
         >
           <div className="eth-overview__balance">
             <div className="eth-overview__primary-container">
+              <span style={{ fontSize: '10px', color: '#6a737d', marginRight: '4px', fontWeight: 'bold' }}>VM1</span>
               <UserPreferencedCurrencyDisplay
                 className={classnames('eth-overview__primary-balance', {
                   'eth-overview__cached-balance': balanceIsCached,
@@ -115,6 +117,16 @@ const EthOverview = ({ className }) => {
                 hideTitle
               />
             )}
+            <div className="eth-overview__vm2-balance" style={{ marginTop: '6px', display: 'flex', alignItems: 'center' }}>
+              <span style={{ fontSize: '10px', color: '#6a737d', marginRight: '4px', fontWeight: 'bold' }}>VM2</span>
+              <UserPreferencedCurrencyDisplay
+                className="eth-overview__primary-balance"
+                value={vm2Balance}
+                type={PRIMARY}
+                ethNumberOfDecimals={4}
+                hideTitle
+              />
+            </div>
           </div>
         </Tooltip>
       }

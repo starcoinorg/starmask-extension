@@ -207,11 +207,17 @@ async function estimateGasForSend({
   gasPrice,
   estimateGasMethod,
   ticker,
+  vmType,
 }) {
   const paramsForGasEstimate = { from: selectedAddress, to, toReceiptIdentifier, value, gasPrice };
+
+  if (vmType) {
+    paramsForGasEstimate.vmType = vmType;
+  }
+
   // if recipient has no code, gas is 21k max:
   if (!sendToken && !data) {
-    if (ticker === 'STC') {
+    if (ticker === 'STC' && vmType !== 'vm2') {
       const code = await new Promise((resolve, reject) => {
         return global.stcQuery.getCode('0x00000000000000000000000000000001::Account', (error, result) => {
           if (error) {
@@ -249,7 +255,10 @@ async function estimateGasForSend({
       paramsForGasEstimate.data = data;
     }
 
-    if (!value || value === '0') {
+    // Check for zero value in various formats (undefined, null, '0', '0x0', '0x00', etc.)
+    const valueNum = parseInt(value || '0', 16);
+    if (!valueNum) {
+      // Use a non-zero value for gas estimation to get accurate results
       paramsForGasEstimate.value = '0xff';
     }
   }
@@ -272,14 +281,14 @@ async function estimateGasForSend({
   // run tx
   try {
     // get sequence_number from contract.get_resource
-    const sequenceNumber = await getSequenceNumber(paramsForGasEstimate.from, ticker)
+    const sequenceNumber = await getSequenceNumber(paramsForGasEstimate.from, ticker, vmType)
     paramsForGasEstimate.sequenceNumber = sequenceNumber;
     // get gas_used from contract.dry_run_raw
     const { gas_unit_price, gas_used: estimatedGas, max_gas_amount } = await estimateGasMethod(paramsForGasEstimate);
     const estimateWithBuffer = addGasBuffer(
       estimatedGas.toString(16),
       ticker === 'STC' ? blockGasLimit : parseInt(max_gas_amount, 10).toString(16),
-      1.5,
+      2.0,
     );
     return { gasPrice: addHexPrefix(gas_unit_price.toString(16)), gas: addHexPrefix(estimateWithBuffer) };
   } catch (error) {
@@ -344,8 +353,23 @@ function addGasBuffer(
   return upperGasLimit;
 }
 
-async function getSequenceNumber(from, ticker) {
+async function getSequenceNumber(from, ticker, vmType) {
   if (ticker === 'STC') {
+    if (vmType === 'vm2') {
+      const sequenceNumber = await new Promise((resolve, reject) => {
+        return global.stcQuery.sendAsync(
+          { method: 'state2.get_resource', params: [from, '0x00000000000000000000000000000001::account::Account', { decode: true }] },
+          (err, res) => {
+            if (err) {
+              return reject(err);
+            }
+            const sequence_number = res && res.json && res.json.sequence_number || 0;
+            return resolve(new BigNumber(sequence_number, 10).toNumber());
+          },
+        );
+      });
+      return sequenceNumber;
+    }
     const sequenceNumber = await new Promise((resolve, reject) => {
       return global.stcQuery.getResource(
         from,
@@ -382,13 +406,16 @@ function generateTokenPalyloadData({
   amount = '0x0',
   sendToken,
   ticker = 'STC',
+  vmType = 'vm1',
 }) {
   if (!sendToken) {
     return undefined;
   }
   let payload
   if (ticker === 'STC') {
-    const functionId = '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2';
+    const functionId = vmType === 'vm2'
+      ? '0x00000000000000000000000000000001::transfer_scripts::peer_to_peer_v2'
+      : '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2';
     const strTypeArgs = [sendToken.code];
     const tyArgs = utils.tx.encodeStructTypeTags(strTypeArgs);
 

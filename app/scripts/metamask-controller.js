@@ -22,7 +22,7 @@ import {
 import { utils, starcoin_types, encoding } from '@starcoin/starcoin';
 import BigNumber from 'bignumber.js';
 import log from 'loglevel';
-import OneKeyKeyring from '@starcoin/stc-onekey-keyring';
+// import OneKeyKeyring from '@starcoin/stc-onekey-keyring';
 import MutiSignKeyring from '@starcoin/stc-multisign-keyring';
 // import LedgerBridgeKeyring from '@metamask/eth-ledger-bridge-keyring';
 import StcQuery from '@starcoin/stc-query';
@@ -261,7 +261,7 @@ export default class MetamaskController extends EventEmitter {
     });
 
     // const additionalKeyrings = [TrezorKeyring, LedgerBridgeKeyring];
-    const additionalKeyrings = [OneKeyKeyring, MutiSignKeyring];
+    const additionalKeyrings = [MutiSignKeyring];
     this.keyringController = new KeyringController({
       keyringTypes: additionalKeyrings,
       initState: initState.KeyringController,
@@ -1119,7 +1119,12 @@ export default class MetamaskController extends EventEmitter {
       const cached = this.accountTracker.store.getState().accounts[address];
 
       if (cached && cached.balance) {
-        resolve(cached.balance);
+        // Also consider VM2 balance for account discovery
+        if (cached.balance === '0x0' && cached.vm2Balance && cached.vm2Balance !== '0x0') {
+          resolve(cached.vm2Balance);
+        } else {
+          resolve(cached.balance);
+        }
       } else {
         stcQuery.getResource(
           address,
@@ -1141,7 +1146,22 @@ export default class MetamaskController extends EventEmitter {
               }
               const balanceHex = new BigNumber(balanceDecimal, 10).toString(16);
               const balance = addHexPrefix(balanceHex);
-              resolve(balance || '0x0');
+              if (!balance || balance === '0x0') {
+                // VM1 balance is zero, check if account exists on VM2
+                stcQuery.sendAsync(
+                  { method: 'state2.get_resource', params: [address, '0x00000000000000000000000000000001::account::Account'] },
+                  (err2, res2) => {
+                    if (err2 || !res2) {
+                      resolve('0x0');
+                    } else {
+                      // Account exists on VM2, treat as non-zero for discovery
+                      resolve('0x1');
+                    }
+                  },
+                );
+              } else {
+                resolve(balance);
+              }
             }
           },
         );
@@ -1358,9 +1378,9 @@ export default class MetamaskController extends EventEmitter {
   async getKeyringForDevice(deviceName, hdPath = null) {
     let keyringName = null;
     switch (deviceName) {
-      case 'onekey':
-        keyringName = OneKeyKeyring.type;
-        break;
+      // case 'onekey':
+      //   keyringName = OneKeyKeyring.type;
+      //   break;
       // case 'ledger':
       //   keyringName = LedgerBridgeKeyring.type;
       //   break;
@@ -2206,7 +2226,14 @@ export default class MetamaskController extends EventEmitter {
         // network = 0xfe for `Localhost 9850`
         // network = { name: XXX, id: XXX_NETWORK_ID } for others
         const chainId = network.id ? network.id : Number(hexToDecimal(network));
-        const tokenCode = estimateGasParams.code ? estimateGasParams.code : '0x00000000000000000000000000000001::STC::STC'
+        const isVM2 = estimateGasParams.vmType === 'vm2';
+        const defaultTokenCode = isVM2
+          ? '0x00000000000000000000000000000001::starcoin_coin::STC'
+          : '0x00000000000000000000000000000001::STC::STC';
+        const tokenCode = estimateGasParams.code ? estimateGasParams.code : defaultTokenCode;
+        const transferScript = isVM2
+          ? '0x00000000000000000000000000000001::starcoin_account::transfer'
+          : '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2';
         return this.keyringController.getPublicKeyFor(estimateGasParams.from)
           .then((publicKey) => {
             const gas_unit_price = 1
@@ -2215,6 +2242,7 @@ export default class MetamaskController extends EventEmitter {
             if (!estimateGasParams.to) {
               return resolve({ gas_unit_price, gas_used });
             }
+            // VM2 uses u64 amount with no type_args, VM1 uses u128 with type_args
             const params = {
               chain_id: chainId,
               gas_unit_price,
@@ -2223,11 +2251,34 @@ export default class MetamaskController extends EventEmitter {
               sequence_number: estimateGasParams.sequenceNumber,
               max_gas_amount,
               script: {
-                code: '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2',
-                type_args: [tokenCode],
-                args: [estimateGasParams.to, `${ hexToDecimal(estimateGasParams.gas) }u128`]
+                code: transferScript,
+                type_args: isVM2 ? [] : [tokenCode],
+                args: isVM2
+                  ? [estimateGasParams.to, `${ hexToDecimal(estimateGasParams.value || '0x0') }u64`]
+                  : [estimateGasParams.to, `${ hexToDecimal(estimateGasParams.value || '0x0') }u128`]
               },
             };
+            if (isVM2) {
+              // Bypass StcQuery to avoid automatic explained_status.Error conversion
+              // Use provider directly so we can handle errors gracefully with fallbacks
+              return this.txController.txGasUtil.query.currentProvider.sendAsync(
+                { jsonrpc: '2.0', id: Date.now(), method: 'contract2.dry_run', params: [params] },
+                (err, response) => {
+                  if (err || response.error) {
+                    log.warn('VM2 contract2.dry_run failed, using defaults:', err || response.error);
+                    return resolve({ gas_unit_price, gas_used: 1000000, max_gas_amount });
+                  }
+                  const res = response.result;
+                  if (res && res.status === 'Executed') {
+                    gas_used = parseInt(res.gas_used, 10);
+                    return resolve({ gas_unit_price, gas_used, max_gas_amount });
+                  }
+                  // Handle non-Executed status (e.g., explained_status.Error)
+                  log.warn('VM2 contract2.dry_run status:', res && res.status, res && res.explained_status);
+                  return resolve({ gas_unit_price, gas_used: 1000000, max_gas_amount });
+                },
+              );
+            }
             return this.txController.txGasUtil.query.estimateGas(
               params,
               (err, res) => {
@@ -2238,6 +2289,9 @@ export default class MetamaskController extends EventEmitter {
                 return resolve({ gas_unit_price, gas_used, max_gas_amount });
               },
             );
+          }).catch((err) => {
+            log.error('estimateGas error:', err);
+            reject(err);
           });
       }
 

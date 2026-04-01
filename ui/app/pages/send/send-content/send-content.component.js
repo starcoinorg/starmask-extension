@@ -25,6 +25,9 @@ export default class SendContent extends Component {
     warning: PropTypes.string,
     error: PropTypes.string,
     gasIsExcessive: PropTypes.bool.isRequired,
+    vmType: PropTypes.string,
+    ticker: PropTypes.string,
+    setVMType: PropTypes.func,
   };
 
   state = {
@@ -43,10 +46,14 @@ export default class SendContent extends Component {
     }
   }
 
-  updateGas = (updateData) => this.props.updateGas(updateData);
+  updateGas = (updateData = {}) => {
+    const { vmType } = this.props;
+    console.log('send-content updateGas updateData:', updateData, 'props.vmType:', vmType);
+    this.props.updateGas({ ...updateData, vmType: updateData.vmType || vmType });
+  };
 
   render() {
-    const { warning, error, gasIsExcessive, sendNFT } = this.props;
+    const { warning, error, gasIsExcessive, sendNFT, vmType, ticker, setVMType } = this.props;
     return error ? (
       this.renderError()
     ) : (
@@ -54,6 +61,23 @@ export default class SendContent extends Component {
         <div className="send-v2__form">
           {gasIsExcessive && this.renderError(true)}
           {warning && this.renderWarning()}
+          {ticker === 'STC' && (
+            <div className="send-v2__form-row" style={{ padding: '6px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <span style={{ fontSize: '14px', color: '#333' }}>VM Type</span>
+              <select
+                value={vmType || 'vm1'}
+                onChange={(e) => {
+                  const newVmType = e.target.value;
+                  setVMType(newVmType);
+                  this.updateGas({ vmType: newVmType });
+                }}
+                style={{ padding: '4px 8px', borderRadius: '4px', border: '1px solid #ccc', fontSize: '14px' }}
+              >
+                <option value="vm1">VM1 (Move)</option>
+                <option value="vm2">VM2 (Move)</option>
+              </select>
+            </div>
+          )}
           {/* {this.maybeRenderAddContact()} */}
           {sendNFT ? <SendNFTRow /> : this.renderAsset()}
           {this.props.showHexData && (

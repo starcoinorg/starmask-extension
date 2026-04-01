@@ -794,10 +794,10 @@ function getMedianEthValueQuote(_quotes) {
   quotes.sort((quoteA, quoteB) => {
     const overallValueOfQuoteA = new BigNumber(quoteA.overallValueOfQuote, 10);
     const overallValueOfQuoteB = new BigNumber(quoteB.overallValueOfQuote, 10);
-    if (overallValueOfQuoteA.equals(overallValueOfQuoteB)) {
+    if (overallValueOfQuoteA.isEqualTo(overallValueOfQuoteB)) {
       return 0;
     }
-    return overallValueOfQuoteA.lessThan(overallValueOfQuoteB) ? -1 : 1;
+    return overallValueOfQuoteA.isLessThan(overallValueOfQuoteB) ? -1 : 1;
   });
 
   if (quotes.length % 2 === 1) {

@@ -13,6 +13,7 @@ import {
   getCurrentAccountWithSendEtherInfo,
   getNativeCurrency,
   getShouldShowFiat,
+  getSelectedAccount,
 } from '../../../selectors';
 import { useCurrencyDisplay } from '../../../hooks/useCurrencyDisplay';
 
@@ -21,6 +22,8 @@ const AssetList = ({ onClickAsset }) => {
   const selectedAccountBalance = useSelector(
     (state) => getCurrentAccountWithSendEtherInfo(state).balance,
   );
+  const selectedAccount = useSelector(getSelectedAccount);
+  const vm2Balance = selectedAccount ? selectedAccount.vm2Balance || '0x0' : '0x0';
   const nativeCurrency = useSelector(getNativeCurrency);
   const showFiat = useSelector(getShouldShowFiat);
   const selectTokenEvent = useMetricEvent({
@@ -63,6 +66,14 @@ const AssetList = ({ onClickAsset }) => {
     },
   );
 
+  const [, vm2PrimaryCurrencyProperties] = useCurrencyDisplay(
+    vm2Balance,
+    {
+      numberOfDecimals: primaryNumberOfDecimals,
+      currency: primaryCurrency,
+    },
+  );
+
   const image = `/images/${ nativeCurrency.toLowerCase() }.svg`
   return (
     <>
@@ -70,8 +81,15 @@ const AssetList = ({ onClickAsset }) => {
         onClick={() => onClickAsset(nativeCurrency)}
         data-testid="wallet-balance"
         primary={primaryCurrencyProperties.value}
-        tokenSymbol={primaryCurrencyProperties.suffix}
+        tokenSymbol={`${primaryCurrencyProperties.suffix}-VM1`}
         secondary={showFiat ? secondaryCurrencyDisplay : undefined}
+        tokenImage={image}
+      />
+      <AssetListItem
+        onClick={() => onClickAsset(nativeCurrency)}
+        data-testid="wallet-balance-vm2"
+        primary={vm2PrimaryCurrencyProperties.value}
+        tokenSymbol={`${vm2PrimaryCurrencyProperties.suffix}-VM2`}
         tokenImage={image}
       />
       <TokenList

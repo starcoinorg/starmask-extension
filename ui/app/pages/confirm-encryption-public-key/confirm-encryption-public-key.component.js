@@ -111,7 +111,7 @@ export default class ConfirmEncryptionPublicKey extends Component {
     const { conversionRate } = this.props;
     const { t } = this.context;
     const {
-      fromAccount: { balance },
+      fromAccount: { balance, vm2Balance },
     } = this.state;
 
     const balanceInStc = conversionUtil(balance, {
@@ -122,13 +122,31 @@ export default class ConfirmEncryptionPublicKey extends Component {
       conversionRate,
     });
 
+    const hasVm2Balance = vm2Balance && vm2Balance !== '0x0';
+    const vm2BalanceInStc = hasVm2Balance
+      ? conversionUtil(vm2Balance, {
+          fromNumericBase: 'hex',
+          toNumericBase: 'dec',
+          fromDenomination: 'NANOSTC',
+          numberOfDecimals: 6,
+          conversionRate,
+        })
+      : null;
+
     return (
       <div className="request-encryption-public-key__balance">
         <div className="request-encryption-public-key__balance-text">
           {`${t('balance')}:`}
         </div>
         <div className="request-encryption-public-key__balance-value">
-          {`${balanceInStc} STC`}
+          {hasVm2Balance ? (
+            <div>
+              <div>{`VM1: ${balanceInStc} STC`}</div>
+              <div>{`VM2: ${vm2BalanceInStc} STC`}</div>
+            </div>
+          ) : (
+            `${balanceInStc} STC`
+          )}
         </div>
       </div>
     );

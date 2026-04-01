@@ -734,11 +734,16 @@ export function updateGasData({
   toReceiptIdentifier,
   value,
   data,
+  vmType: vmTypeParam,
 }) {
   return (dispatch, getState) => {
     dispatch(gasLoadingStarted());
+
+    const state = getState();
+    const vmType = vmTypeParam || state.starmask.send.vmType || 'vm1';
+    console.log('updateGasData vmTypeParam:', vmTypeParam, 'state.vmType:', state.starmask.send.vmType, 'final vmType:', vmType);
+
     if (to) {
-      const state = getState();
       const rpcPrefs = getRpcPrefsForCurrentProvider(
         state,
       );
@@ -752,7 +757,8 @@ export function updateGasData({
         value,
         estimateGasPrice: gasPrice,
         data,
-        ticker: rpcPrefs.ticker,
+        ticker: rpcPrefs.ticker || getState().starmask.provider.ticker,
+        vmType,
       })
         .then(({ gasPrice, gas }) => {
           dispatch(setGasPrice(gasPrice));
@@ -766,6 +772,8 @@ export function updateGasData({
           dispatch(updateSendErrors({ gasLoadingError: err.message }));
           dispatch(gasLoadingFinished());
         });
+    } else {
+      dispatch(gasLoadingFinished());
     }
   };
 }

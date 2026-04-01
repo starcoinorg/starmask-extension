@@ -12,6 +12,7 @@ export function constructTxParams({
   from,
   gas,
   gasPrice,
+  vmType,
 }) {
   const txParams = {
     data,
@@ -30,6 +31,11 @@ export function constructTxParams({
   }
 
   const txParamsFinal = addHexPrefixToObjectValues(txParams);
+
+  // vmType must be added AFTER addHexPrefixToObjectValues to avoid '0xvm2' corruption
+  if (vmType && vmType !== 'vm1') {
+    txParamsFinal.vmType = vmType;
+  }
 
   if (!sendToken && toReceiptIdentifier) {
     // receiptIdentifier start with 'stc', should not adding '0x' as prefix.

@@ -393,7 +393,7 @@ export default class TransactionController extends EventEmitter {
     const gasLimit = this.txGasUtil.addGasBuffer(
       gasUsed,
       blockGasLimit,
-      txMeta.txParams.addGasBufferMultiplier && parseFloat(txMeta.txParams.addGasBufferMultiplier) > 0 ? parseFloat(txMeta.txParams.addGasBufferMultiplier) : 1.5
+      txMeta.txParams.addGasBufferMultiplier && parseFloat(txMeta.txParams.addGasBufferMultiplier) > 0 ? parseFloat(txMeta.txParams.addGasBufferMultiplier) : 2.0
     );
     return { gasUsed, gasUnitPrice, gasLimit, tokenChanges, simulationFails };
   }
@@ -531,26 +531,31 @@ export default class TransactionController extends EventEmitter {
       // get next nonce
       const txMeta = this.txStateManager.getTx(txId);
       const isAppendMultiSign = txMeta.txParams.multiSignData
+      const isVM2 = txMeta.txParams.vmType === 'vm2';
       if (!isAppendMultiSign) {
         const fromAddress = txMeta.txParams.from;
-        // wait for a nonce
-        let { customNonceValue } = txMeta;
-        customNonceValue = Number(customNonceValue);
-        nonceLock = await this.nonceTracker.getNonceLock(fromAddress, networkTicker);
-        // add nonce to txParams
-        // if txMeta has lastGasPrice then it is a retry at same nonce with higher
-        // gas price transaction and therefor the nonce should not be calculated
-        const nonce = txMeta.lastGasPrice
-          ? txMeta.txParams.nonce
-          : nonceLock.nextNonce;
-        const customOrNonce =
-          customNonceValue === 0 ? customNonceValue : customNonceValue || nonce;
-
-        txMeta.txParams.nonce = addHexPrefix(customOrNonce.toString(16));
-        // add nonce debugging information to txMeta
-        txMeta.nonceDetails = nonceLock.nonceDetails;
-        if (customNonceValue) {
-          txMeta.nonceDetails.customNonceValue = customNonceValue;
+        if (isVM2) {
+          // For VM2, get sequence number from VM2 state directly
+          const sequenceNumber = await this._getVM2SequenceNumber(fromAddress);
+          txMeta.txParams.nonce = addHexPrefix(sequenceNumber.toString(16));
+        } else {
+          // For VM1, also get sequence number directly from chain to avoid stale NonceTracker data
+          let { customNonceValue } = txMeta;
+          customNonceValue = Number(customNonceValue);
+          
+          let nonce;
+          if (txMeta.lastGasPrice) {
+            // Retry transaction - keep existing nonce
+            nonce = txMeta.txParams.nonce;
+          } else if (customNonceValue || customNonceValue === 0) {
+            // Custom nonce provided
+            nonce = customNonceValue;
+          } else {
+            // Get sequence number directly from chain (like VM2)
+            nonce = await this._getVM1SequenceNumber(fromAddress);
+          }
+          
+          txMeta.txParams.nonce = addHexPrefix(nonce.toString(16));
         }
       }
       this.txStateManager.updateTx(txMeta, 'transactions#approveTransaction');
@@ -582,7 +587,11 @@ export default class TransactionController extends EventEmitter {
           this.txStateManager.setTxStatusMultiSign(txId);
         }
         if (!isMultiSign || isEnoughMultiSignatures) {
-          await this.publishTransaction(txId, signedTransactionHex);
+          if (isVM2) {
+            await this.publishTransactionV2(txId, signedTransactionHex);
+          } else {
+            await this.publishTransaction(txId, signedTransactionHex);
+          }
         }
       } else if (networkTicker === 'APT') {
         const signedTransaction = await this.signTransactionAptos(txId);
@@ -697,15 +706,12 @@ export default class TransactionController extends EventEmitter {
       const expirationTimestampSecs = await this.txGasUtil.getExpirationTimestampSecs(txParams);
 
 
+      const isVM2 = txParams.vmType === 'vm2';
       let payload;
       if (
         txMeta.type === TRANSACTION_TYPES.SENT_ETHER ||
         (txMeta.type === TRANSACTION_TYPES.RETRY && !txParams.data)
       ) {
-        const functionId = '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2';
-
-        const tyArgs = [{ Struct: { address: '0x1', module: 'STC', name: 'STC', type_params: [] } }];
-
         const receiver = txParams.toReceiptIdentifier ? txParams.toReceiptIdentifier : txParams.to;
         let receiverAddressHex;
 
@@ -716,21 +722,32 @@ export default class TransactionController extends EventEmitter {
           receiverAddressHex = receiver;
         }
 
-        // Multiple BcsSerializers should be used in different closures, otherwise, the latter will be contaminated by the former.
-        const amountSCSHex = (function () {
-          const se = new bcs.BcsSerializer();
-          // eslint-disable-next-line no-undef
-          se.serializeU128(BigInt(sendAmount));
-          return hexlify(se.getBytes());
-        })();
-
-        const args = [arrayify(receiverAddressHex), arrayify(amountSCSHex)];
-
-        const scriptFunction = utils.tx.encodeScriptFunction(
-          functionId,
-          tyArgs,
-          args,
-        );
+        let scriptFunction;
+        if (isVM2) {
+          // VM2: use starcoin_account::transfer with u64 amount, no type args
+          const functionId = '0x00000000000000000000000000000001::starcoin_account::transfer';
+          const tyArgs = [];
+          const amountSCSHex = (function () {
+            const se = new bcs.BcsSerializer();
+            // eslint-disable-next-line no-undef
+            se.serializeU64(BigInt(sendAmount));
+            return hexlify(se.getBytes());
+          })();
+          const args = [arrayify(receiverAddressHex), arrayify(amountSCSHex)];
+          scriptFunction = utils.tx.encodeScriptFunction(functionId, tyArgs, args);
+        } else {
+          // VM1: use TransferScripts::peer_to_peer_v2 with u128 amount
+          const functionId = '0x00000000000000000000000000000001::TransferScripts::peer_to_peer_v2';
+          const tyArgs = [{ Struct: { address: '0x1', module: 'STC', name: 'STC', type_params: [] } }];
+          const amountSCSHex = (function () {
+            const se = new bcs.BcsSerializer();
+            // eslint-disable-next-line no-undef
+            se.serializeU128(BigInt(sendAmount));
+            return hexlify(se.getBytes());
+          })();
+          const args = [arrayify(receiverAddressHex), arrayify(amountSCSHex)];
+          scriptFunction = utils.tx.encodeScriptFunction(functionId, tyArgs, args);
+        }
         payload = scriptFunction;
       } else if (txParams.data) {
         const bytes = arrayify(txParams.data);
@@ -741,15 +758,51 @@ export default class TransactionController extends EventEmitter {
         log.error('payload is undefined');
         throw new Error('StarMask - signTransaction: payload is undefined');
       }
-      rawUserTransaction = utils.tx.generateRawUserTransaction(
-        fromAddress,
-        payload,
-        maxGasAmount,
-        gasUnitPrice,
-        nonce,
-        expirationTimestampSecs,
-        chainId,
-      );
+      
+      // For VM2 transactions, we need to use a different gas_token_code
+      if (isVM2) {
+        // VM2 requires gas_token_code = '0x1::starcoin_coin::STC' (not '0x1::STC::STC')
+        // Also, addressToSCS() only handles 16-byte addresses.
+        // If fromAddress is a 32-byte VM2 format address, we need to extract the 16-byte portion.
+        // Starcoin address is 16 bytes, which is the last half of SHA3-256(pubkey || 0x00)
+        let senderAddressForTx = fromAddress;
+        const addressBytes = arrayify(fromAddress);
+        log.debug(`VM2 signTransaction: fromAddress=${fromAddress}, bytes.length=${addressBytes.length}`);
+        
+        if (addressBytes.length === 32) {
+          // VM2 32-byte format: [16 zeros padding][16 bytes real address]
+          // Extract the last 16 bytes which should be the actual Starcoin address
+          senderAddressForTx = hexlify(addressBytes.slice(16));
+          log.debug(`VM2: Extracted 16-byte sender from 32-byte: ${senderAddressForTx}`);
+        } else if (addressBytes.length !== 16) {
+          // Unexpected address length - log warning but try to proceed
+          log.warn(`VM2: Unexpected sender address length: ${addressBytes.length} bytes`);
+        }
+        
+        const senderSCS = encoding.addressToSCS(senderAddressForTx);
+        const vm2GasTokenCode = '0x1::starcoin_coin::STC';
+        rawUserTransaction = new starcoin_types.RawUserTransaction(
+          senderSCS,
+          BigInt(nonce),
+          payload,
+          BigInt(maxGasAmount),
+          BigInt(gasUnitPrice),
+          vm2GasTokenCode,
+          BigInt(expirationTimestampSecs),
+          new starcoin_types.ChainId(chainId)
+        );
+      } else {
+        // VM1 uses the standard generateRawUserTransaction
+        rawUserTransaction = utils.tx.generateRawUserTransaction(
+          fromAddress,
+          payload,
+          maxGasAmount,
+          gasUnitPrice,
+          nonce,
+          expirationTimestampSecs,
+          chainId,
+        );
+      }
     }
     const signedTransactionHex = await this.signEthTx(
       rawUserTransaction,
@@ -830,6 +883,44 @@ export default class TransactionController extends EventEmitter {
     this.txStateManager.setTxStatusSubmitted(txId);
   }
 
+  /**
+    publishes a VM2 transaction via txpool.submit_hex_transaction2
+    @param {number} txId - the tx's Id
+    @param {string} signedTransactionHex - the hex string of the serialized signed transaction
+    @returns {Promise<void>}
+  */
+  async publishTransactionV2(txId, signedTransactionHex) {
+    const txMeta = this.txStateManager.getTx(txId);
+    txMeta.rawTx = signedTransactionHex;
+    this.txStateManager.updateTx(txMeta, 'transactions#publishTransactionV2');
+    let txHash;
+    try {
+      txHash = await new Promise((resolve, reject) => {
+        return this.query.sendAsync(
+          { method: 'txpool.submit_hex_transaction2', params: [signedTransactionHex] },
+          (err, res) => {
+            if (err) {
+              return reject(err);
+            }
+            return resolve(res);
+          },
+        );
+      });
+    } catch (error) {
+      if (error.message.toLowerCase().includes('known transaction')) {
+        txHash = ethUtil
+          .sha3(addHexPrefix(signedTransactionHex))
+          .toString('hex');
+        txHash = addHexPrefix(txHash);
+      } else {
+        throw error;
+      }
+    }
+    this.setTxHash(txId, txHash);
+
+    this.txStateManager.setTxStatusSubmitted(txId);
+  }
+
   async publishTransactionAptos(txId, signedTransaction) {
     const txMeta = this.txStateManager.getTx(txId);
     txMeta.rawTx = hexlify(signedTransaction);
@@ -857,24 +948,34 @@ export default class TransactionController extends EventEmitter {
     // get the txReceipt before marking the transaction confirmed
     // to ensure the receipt is gotten before the ui revives the tx
     const txMeta = this.txStateManager.getTx(txId);
+    
+    log.debug('confirmTransaction called', { txId, txReceipt, hasTxMeta: !!txMeta });
 
     if (!txMeta) {
+      log.warn('confirmTransaction: txMeta not found for txId', txId);
       return;
     }
 
     try {
       // It seems that sometimes the numerical values being returned from
       // this.query.getTransactionReceipt are BN instances and not strings.
-      const gasUsed =
-        typeof txReceipt.gas_used === 'string'
-          ? txReceipt.gas_used
-          : txReceipt.gas_used.toString(16);
+      // Handle undefined/null gas_used gracefully
+      let gasUsed = '0';
+      if (txReceipt.gas_used !== undefined && txReceipt.gas_used !== null) {
+        gasUsed =
+          typeof txReceipt.gas_used === 'string'
+            ? txReceipt.gas_used
+            : txReceipt.gas_used.toString(16);
+      }
+      
+      log.debug('confirmTransaction: processing receipt', { txId, gasUsed, status: txReceipt.status });
 
       txMeta.txReceipt = {
         ...txReceipt,
         gasUsed,
       };
       this.txStateManager.setTxStatusConfirmed(txId);
+      log.debug('confirmTransaction: status set to confirmed', { txId });
       this._markNonceDuplicatesDropped(txId);
 
       this.txStateManager.updateTx(
@@ -915,7 +1016,7 @@ export default class TransactionController extends EventEmitter {
         this._trackSwapsMetrics(latestTxMeta, approvalTxMeta);
       }
     } catch (err) {
-      log.error(err);
+      log.error('confirmTransaction error:', err, { txId, txReceipt });
     }
   }
 
@@ -993,6 +1094,85 @@ export default class TransactionController extends EventEmitter {
     /** see txStateManager */
     this.getFilteredTxList = (opts) =>
       this.txStateManager.getFilteredTxList(opts);
+  }
+
+  /**
+    Fetches the sequence number for a VM1 account from chain RPC,
+    accounting for locally pending VM1 transactions to avoid nonce conflicts.
+    @param {string} address - the account address
+    @returns {Promise<number>} the sequence number
+  */
+  async _getVM1SequenceNumber(address) {
+    const chainNonce = await new Promise((resolve, reject) => {
+      this.query.sendAsync(
+        { method: 'contract.get_resource', params: [address, '0x1::Account::Account'] },
+        (err, res) => {
+          if (err) {
+            return reject(err);
+          }
+          // Parse sequence_number from value array: [["sequence_number", {"U64": "10"}], ...]
+          let sequenceNumber = 0;
+          if (res && res.value && Array.isArray(res.value)) {
+            const seqEntry = res.value.find(([key]) => key === 'sequence_number');
+            if (seqEntry && seqEntry[1] && seqEntry[1].U64) {
+              sequenceNumber = seqEntry[1].U64;
+            }
+          }
+          return resolve(new BigNumber(sequenceNumber, 10).toNumber());
+        },
+      );
+    });
+
+    // Check pending VM1 transactions for this address to avoid nonce conflicts
+    const pendingTxs = this.txStateManager.getFilteredTxList({
+      from: address,
+      status: TRANSACTION_STATUSES.SUBMITTED,
+    }).filter((tx) => tx.txParams && tx.txParams.vmType !== 'vm2');
+
+    if (pendingTxs.length > 0) {
+      const maxPendingNonce = Math.max(
+        ...pendingTxs.map((tx) => parseInt(tx.txParams.nonce, 16) || 0),
+      );
+      return Math.max(chainNonce, maxPendingNonce + 1);
+    }
+
+    return chainNonce;
+  }
+
+  /**
+    Fetches the sequence number for a VM2 account from state2 RPC,
+    accounting for locally pending VM2 transactions to avoid nonce conflicts.
+    @param {string} address - the account address
+    @returns {Promise<number>} the sequence number
+  */
+  async _getVM2SequenceNumber(address) {
+    const chainNonce = await new Promise((resolve, reject) => {
+      this.query.sendAsync(
+        { method: 'state2.get_resource', params: [address, '0x00000000000000000000000000000001::account::Account', { decode: true }] },
+        (err, res) => {
+          if (err) {
+            return reject(err);
+          }
+          const sequenceNumber = res && res.json && res.json.sequence_number || 0;
+          return resolve(new BigNumber(sequenceNumber, 10).toNumber());
+        },
+      );
+    });
+
+    // Check pending VM2 transactions for this address to avoid nonce conflicts
+    const pendingTxs = this.txStateManager.getFilteredTxList({
+      from: address,
+      status: TRANSACTION_STATUSES.SUBMITTED,
+    }).filter((tx) => tx.txParams && tx.txParams.vmType === 'vm2');
+
+    if (pendingTxs.length > 0) {
+      const maxPendingNonce = Math.max(
+        ...pendingTxs.map((tx) => parseInt(tx.txParams.nonce, 16) || 0),
+      );
+      return Math.max(chainNonce, maxPendingNonce + 1);
+    }
+
+    return chainNonce;
   }
 
   // called once on startup
@@ -1200,7 +1380,7 @@ export default class TransactionController extends EventEmitter {
 
   /**
     Sets other txMeta statuses to dropped if the txMeta that has been confirmed has other transactions
-    in the list have the same nonce
+    in the list have the same nonce AND same VM type (VM1 and VM2 have separate nonce sequences)
 
     @param {number} txId - the txId of the transaction that has been confirmed in a block
   */
@@ -1208,13 +1388,21 @@ export default class TransactionController extends EventEmitter {
     // get the confirmed transactions nonce and from address
     const txMeta = this.txStateManager.getTx(txId);
     const { nonce, from } = txMeta.txParams;
+    // Normalize vmType: undefined or anything other than 'vm2' is treated as 'vm1'
+    const isVM2 = txMeta.txParams.vmType === 'vm2';
     const sameNonceTxs = this.txStateManager.getFilteredTxList({ nonce, from });
     if (!sameNonceTxs.length) {
       return;
     }
     // mark all same nonce transactions as dropped and give it a replacedBy hash
+    // Only consider transactions with the same VM type (VM1 and VM2 have independent nonce sequences)
     sameNonceTxs.forEach((otherTxMeta) => {
       if (otherTxMeta.id === txId) {
+        return;
+      }
+      // Skip if VM type doesn't match (VM1 and VM2 have separate nonce sequences)
+      const otherIsVM2 = otherTxMeta.txParams.vmType === 'vm2';
+      if (otherIsVM2 !== isVM2) {
         return;
       }
       otherTxMeta.replacedBy = txMeta.hash;
@@ -1292,7 +1480,7 @@ export default class TransactionController extends EventEmitter {
         const quoteVsExecutionRatio = `${ new BigNumber(tokensReceived, 10)
           .div(txMeta.swapMetaData.token_to_amount, 10)
           .times(100)
-          .round(2) }%`;
+          .dp(2) }%`;
 
         const estimatedVsUsedGasRatio = `${ new BigNumber(
           txMeta.txReceipt.gasUsed,
@@ -1300,7 +1488,7 @@ export default class TransactionController extends EventEmitter {
         )
           .div(txMeta.swapMetaData.estimated_gas, 10)
           .times(100)
-          .round(2) }%`;
+          .dp(2) }%`;
 
         this._trackMetaMetricsEvent({
           event: 'Swap Completed',

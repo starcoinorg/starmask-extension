@@ -198,6 +198,9 @@ export function useTransactionDisplayData(transactionGroup) {
     title = t('receive');
     prefix = '';
     subtitle = t('fromAddress', [shortenAddress(senderAddress)]);
+    // Show STC-VM1 or STC-VM2 based on vmType
+    const vmType = initialTransaction?.txParams?.vmType;
+    primarySuffix = vmType === 'vm2' ? 'STC-VM2' : 'STC-VM1';
   } else if (
     type === TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER_FROM ||
     type === TRANSACTION_TYPES.TOKEN_METHOD_TRANSFER
@@ -210,6 +213,9 @@ export function useTransactionDisplayData(transactionGroup) {
     category = TRANSACTION_GROUP_CATEGORIES.SEND;
     title = t('send');
     subtitle = t('toAddress', [shortenAddress(recipientAddress)]);
+    // Show STC-VM1 or STC-VM2 based on vmType
+    const vmType = initialTransaction?.txParams?.vmType;
+    primarySuffix = vmType === 'vm2' ? 'STC-VM2' : 'STC-VM1';
   } else if (type === TRANSACTION_TYPES.CANCEL) {
     category = TRANSACTION_GROUP_CATEGORIES.INTERACTION;
     title = t('cancel');

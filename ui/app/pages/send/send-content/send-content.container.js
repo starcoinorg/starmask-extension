@@ -2,10 +2,13 @@ import { connect } from 'react-redux';
 import {
   getGasLoadingError,
   getSendTo,
+  getSendVMType,
   accountsWithSendEtherInfoSelector,
   getAddressBookEntry,
+  getTickerForCurrentProvider,
 } from '../../../selectors';
 
+import { updateSend } from '../../../store/actions';
 import * as actions from '../../../store/actions';
 import SendContent from './send-content.component';
 
@@ -21,6 +24,8 @@ function mapStateToProps(state) {
     contact: getAddressBookEntry(state, to),
     gasLoadingError: getGasLoadingError(state),
     to,
+    vmType: getSendVMType(state),
+    ticker: getTickerForCurrentProvider(state),
   };
 }
 
@@ -33,6 +38,7 @@ function mapDispatchToProps(dispatch) {
           recipient,
         }),
       ),
+    setVMType: (vmType) => dispatch(updateSend({ vmType })),
   };
 }
 
@@ -41,6 +47,7 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
   return {
     ...ownProps,
     ...restStateProps,
+    ...dispatchProps,
     showAddToAddressBookModal: () =>
       dispatchProps.showAddToAddressBookModal(to),
   };

@@ -2641,35 +2641,6 @@
   resolved "https://registry.yarnpkg.com/@starcoin/contract-metadata/-/contract-metadata-0.6.0.tgz#b991c5172ca2e39e0b8d09426dfc7034d6bb7de7"
   integrity sha512-UedJUdWORITz0sK/gApNsbwhK2z+BVRbcMlquyyfXzPzn++jTT4qXSo9SfSFia0bUQCiBDJKErtjacjoF2QRzQ==
 
-"@starcoin/starcoin@2.3.1":
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/@starcoin/starcoin/-/starcoin-2.3.1.tgz#f927bdbd19861b57c2e2a62191f7b5ffbec6434b"
-  integrity sha512-eKZwAbKmVpn9UEqpKPSkwhT3ULn1maeoHINi0Mh0zhV3rNgMJ9xseoHs5kdiM6+Jf0VBBRaSuO11sl0HxPQfGw==
-  dependencies:
-    "@ethersproject/basex" "^5.0.4"
-    "@ethersproject/bignumber" "^5.0"
-    "@ethersproject/bytes" "^5.0.6"
-    "@ethersproject/hash" "^5.0.6"
-    "@ethersproject/keccak256" "^5.0.5"
-    "@ethersproject/logger" "^5.0.6"
-    "@ethersproject/properties" "^5.0.4"
-    "@ethersproject/sha2" "^5.0.4"
-    "@ethersproject/web" "^5.0.9"
-    "@noble/ed25519" "^1.6.0"
-    bech32 "^2.0.0"
-    ethereumjs-util "5.1.0"
-    fs "^0.0.1-security"
-    is-alphabetical "^1.0.4"
-    is-alphanumerical "^1.0.4"
-    is-decimal "^1.0.4"
-    is-hexadecimal "^1.0.4"
-    is-whitespace-character "^1.0.4"
-    is-word-character "^1.0.4"
-    js-sha3 "^0.8.0"
-    jssha "^3.2.0"
-    lodash "^4.17.21"
-    ws "7.2.3"
-
 "@starcoin/starcoin@^1.2.1":
   version "1.4.2"
   resolved "https://registry.npmjs.org/@starcoin/starcoin/-/starcoin-1.4.2.tgz#4327fdccfe963ad2fe30ab8bbe5f9081adea7400"
@@ -2758,6 +2729,34 @@
     read-bigint "^0.1.6"
     ws "7.2.3"
 
+"@starcoin/starcoin@starcoinorg/starcoin.js#dio/support_vm2":
+  version "2.4.0"
+  resolved "https://codeload.github.com/starcoinorg/starcoin.js/tar.gz/1f076cc89cd8ee4a27ea37a3f09d2bec245f958f"
+  dependencies:
+    "@ethersproject/basex" "^5.0.4"
+    "@ethersproject/bignumber" "^5.0"
+    "@ethersproject/bytes" "^5.0.6"
+    "@ethersproject/hash" "^5.0.6"
+    "@ethersproject/keccak256" "^5.0.5"
+    "@ethersproject/logger" "^5.0.6"
+    "@ethersproject/properties" "^5.0.4"
+    "@ethersproject/sha2" "^5.0.4"
+    "@ethersproject/web" "^5.0.9"
+    "@noble/ed25519" "^1.6.0"
+    bech32 "^2.0.0"
+    ethereumjs-util "5.1.0"
+    fs "^0.0.1-security"
+    is-alphabetical "^1.0.4"
+    is-alphanumerical "^1.0.4"
+    is-decimal "^1.0.4"
+    is-hexadecimal "^1.0.4"
+    is-whitespace-character "^1.0.4"
+    is-word-character "^1.0.4"
+    js-sha3 "^0.8.0"
+    jssha "^3.2.0"
+    lodash "^4.17.21"
+    ws "7.2.3"
+
 "@starcoin/stc-block-tracker@^0.1.0":
   version "0.1.0"
   resolved "https://registry.npmjs.org/@starcoin/stc-block-tracker/-/stc-block-tracker-0.1.0.tgz"
@@ -2841,10 +2840,9 @@
     pify "^3.0.0"
     safe-event-emitter "^1.0.1"
 
-"@starcoin/stc-json-rpc@^0.2.4":
+"@starcoin/stc-json-rpc@starcoinorg/stc-json-rpc#dio/support_vm2":
   version "0.2.4"
-  resolved "https://registry.yarnpkg.com/@starcoin/stc-json-rpc/-/stc-json-rpc-0.2.4.tgz#fed07f4a76a771d72274bd5215736f6aa4c12fde"
-  integrity sha512-9hHOmfblEt6lTFNk0eWMSul995G/EjHx4T4KvJ6V1rISNqk9pe6/AqaIdzGyardecUCA7F+XuC0kpzWzhrH9ew==
+  resolved "https://codeload.github.com/starcoinorg/stc-json-rpc/tar.gz/cf175def2113bb4a48cb7f41d673c7db128dd1e1"
   dependencies:
     eth-json-rpc-middleware "^6.0.0"
     eth-rpc-errors "^3.0.0"
@@ -3537,7 +3535,7 @@
     bigi "^1.4.0"
     bip66 "^1.1.0"
     bitcoin-ops "^1.3.0"
-    blake2b "https://registry.npmjs.org/@bitgo/blake2b/-/blake2b-3.2.1.tgz"
+    blake2b "https://github.com/BitGo/blake2b#6268e6dd678661e0acc4359e9171b97eb1ebf8ac"
     bs58check "^2.0.0"
     create-hash "^1.1.0"
     create-hmac "^1.1.3"
@@ -3562,7 +3560,7 @@
     bigi "^1.4.0"
     bip66 "^1.1.0"
     bitcoin-ops "^1.3.0"
-    blake2b "https://registry.npmjs.org/@bitgo/blake2b/-/blake2b-3.2.1.tgz"
+    blake2b "https://github.com/BitGo/blake2b#6268e6dd678661e0acc4359e9171b97eb1ebf8ac"
     bs58check "^2.0.0"
     create-hash "^1.1.0"
     create-hmac "^1.1.3"
@@ -6112,17 +6110,17 @@ bl@^1.2.1:
     safe-buffer "^5.1.1"
 
 "blake2b-wasm@https://registry.npmjs.org/@bitgo/blake2b-wasm/-/blake2b-wasm-3.2.0.tgz":
-  version "2.0.0"
+  version "3.2.0"
   resolved "https://registry.npmjs.org/@bitgo/blake2b-wasm/-/blake2b-wasm-3.2.0.tgz"
   dependencies:
     nanoassert "^1.0.0"
 
 "blake2b@https://registry.npmjs.org/@bitgo/blake2b/-/blake2b-3.2.1.tgz":
-  version "2.1.3"
+  version "3.2.1"
   resolved "https://registry.npmjs.org/@bitgo/blake2b/-/blake2b-3.2.1.tgz"
   dependencies:
-    blake2b-wasm "https://registry.npmjs.org/@bitgo/blake2b-wasm/-/blake2b-wasm-3.2.0.tgz"
-    nanoassert "^1.0.0"
+    "@bitgo/blake2b-wasm" "^3.2.0"
+    nanoassert "^2.0.0"
 
 blakejs@^1.1.0:
   version "1.1.0"

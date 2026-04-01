@@ -200,11 +200,28 @@ export default class AccountMenu extends Component {
           <Identicon address={identity.address} diameter={24} />
           <div className="account-menu__account-info">
             <div className="account-menu__name">{identity.name || ''}</div>
-            <UserPreferencedCurrencyDisplay
-              className="account-menu__balance"
-              value={identity.balance}
-              type={PRIMARY}
-            />
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                {identity.vm2Balance && identity.vm2Balance !== '0x0' ? (
+                  <span style={{ fontSize: '9px', color: '#6a737d', marginRight: '3px', fontWeight: 'bold' }}>VM1</span>
+                ) : null}
+                <UserPreferencedCurrencyDisplay
+                  className="account-menu__balance"
+                  value={identity.balance}
+                  type={PRIMARY}
+                />
+              </div>
+              {identity.vm2Balance && identity.vm2Balance !== '0x0' ? (
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <span style={{ fontSize: '9px', color: '#6a737d', marginRight: '3px', fontWeight: 'bold' }}>VM2</span>
+                  <UserPreferencedCurrencyDisplay
+                    className="account-menu__balance"
+                    value={identity.vm2Balance}
+                    type={PRIMARY}
+                  />
+                </div>
+              ) : null}
+            </div>
           </div>
           {this.renderKeyringType(keyring)}
           {iconAndNameForOpenDomain ? (

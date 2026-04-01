@@ -29,9 +29,14 @@ const mapStateToProps = (state, ownProps) => {
       id: transactionId,
       txParams: { to: tokenAddress, data } = {},
       code: tokenCode,
-      metamaskNetworkId: { name: network } = {},
+      metamaskNetworkId,
     } = {},
   } = confirmTransaction;
+  
+  // Handle both object and string formats for metamaskNetworkId
+  const network = typeof metamaskNetworkId === 'object' && metamaskNetworkId !== null
+    ? metamaskNetworkId.name
+    : metamaskNetworkId;
 
   const transaction =
     currentNetworkTxList.find(

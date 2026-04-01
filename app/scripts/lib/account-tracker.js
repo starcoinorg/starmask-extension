@@ -194,7 +194,11 @@ export default class AccountTracker {
     if (!currentBlock) {
       return;
     }
-    const currentBlockGasLimit = currentBlock.gasLimit;
+    // Starcoin blocks don't have gasLimit (unlike Ethereum).
+    // Use a reasonable default max_gas_amount for Starcoin (10M).
+    // Ethereum blocks have gasLimit, Starcoin uses per-tx max_gas_amount.
+    const STARCOIN_DEFAULT_GAS_LIMIT = '0x989680'; // 10000000 in hex
+    const currentBlockGasLimit = currentBlock.gasLimit || STARCOIN_DEFAULT_GAS_LIMIT;
     this.store.updateState({ currentBlockGasLimit });
 
     try {
@@ -265,7 +269,7 @@ export default class AccountTracker {
 
     if (accountLength === 64 && ticker === 'APT') {
       await this._updateAccountAptos(address)
-    } else if (accountLength === 32 && ticker === 'STC') {
+    } else if (accountLength === 32) {
       await this._updateAccountStarcoin(address)
     }
   }
@@ -387,6 +391,214 @@ export default class AccountTracker {
     //   return;
     // }
     this.store.updateState({ accounts, assets, nfts, nftIdentifier });
+
+    // Also query VM2 STC balance for this address
+    try {
+      await this._updateVM2Resources(address);
+    } catch (err) {
+      log.debug('_updateVM2Resources skipped', err.message || err);
+    }
+  }
+
+  /**
+   * Queries VM2 resources via state2.list_resource and stores VM2 balance, tokens, and NFTs
+   * @param {string} address - the account address
+   */
+  async _updateVM2Resources(address) {
+    const { accounts, assets, nfts, nftIdentifier } = this.store.getState();
+    const resourceType = '0x00000000000000000000000000000001::account::Account';
+    const ticker = this.getCurrentNetworkTicker && this.getCurrentNetworkTicker() || 'unknown';
+
+    try {
+      // First check if account exists on VM2
+      const accountRes = await new Promise((resolve, reject) => {
+        this._query.sendAsync(
+          { method: 'state2.get_resource', params: [address, resourceType] },
+          (err, res) => {
+            if (err) {
+              return reject(err);
+            }
+            return resolve(res);
+          },
+        );
+      });
+
+      if (!accountRes) {
+        if (accounts[address]) {
+          accounts[address].vm2Balance = '0x0';
+        }
+        this.store.updateState({ accounts });
+        return;
+      }
+
+      // Query real VM2 STC balance via contract2.call_v2 (coin::balance)
+      // This is needed because CoinStore uses aggregators and raw decode shows 0
+      try {
+        const balResult = await new Promise((resolve, reject) => {
+          this._query.sendAsync(
+            {
+              method: 'contract2.call_v2',
+              params: [{
+                function_id: '0x1::coin::balance',
+                type_args: ['0x1::starcoin_coin::STC'],
+                args: [address],
+              }],
+            },
+            (err, res2) => {
+              if (err) return reject(err);
+              return resolve(res2);
+            },
+          );
+        });
+        if (balResult && Array.isArray(balResult) && balResult.length > 0) {
+          const balanceDecimal = balResult[0];
+          const balanceHex = new BigNumber(balanceDecimal, 10).toString(16);
+          if (accounts[address]) {
+            accounts[address].vm2Balance = addHexPrefix(balanceHex);
+          }
+        }
+      } catch (balErr) {
+        log.debug('_updateVM2Resources: coin::balance error', balErr.message || balErr);
+      }
+
+      // Query all VM2 resources via state2.list_resource
+      // Include primary_fungible_store to get FungibleStore balance for STC
+      const res = await new Promise((resolve, reject) => {
+        this._query.sendAsync(
+          {
+            method: 'state2.list_resource',
+            params: [address, {
+              decode: true,
+              primary_fungible_store: { token_code: '0x1::starcoin_coin::STC' },
+            }],
+          },
+          (err, listRes) => {
+            if (err) {
+              return reject(err);
+            }
+            return resolve(listRes);
+          },
+        );
+      });
+
+      if (!res || !res.resources) {
+        // Only set vm2Balance=0x0 if coin::balance didn't already set it
+        if (accounts[address] && !accounts[address].vm2Balance) {
+          accounts[address].vm2Balance = '0x0';
+        }
+        this.store.updateState({ accounts });
+        return;
+      }
+
+      const { resources } = res;
+      const ACCOUNT_BALANCE = '0x00000000000000000000000000000001::Account::Balance';
+      const FUNGIBLE_STORE = '0x00000000000000000000000000000001::fungible_asset::FungibleStore';
+      const NFT_GALLERY = '0x00000000000000000000000000000001::NFTGallery::NFTGallery';
+      const NFT_ID = '0x00000000000000000000000000000001::IdentifierNFT::IdentifierNFT';
+
+      const vm2Tokens = {};
+      const vm2NFTGallery = [];
+      const vm2NFTIdentifier = [];
+
+      // Track whether coin::balance already set the balance
+      const hasBalanceFromCallV2 = accounts[address] && accounts[address].vm2Balance && accounts[address].vm2Balance !== '0x0';
+
+      Object.keys(resources).forEach((key) => {
+        if (key === FUNGIBLE_STORE) {
+          // VM2 primary fungible store balance - only use if coin::balance didn't set it
+          if (!hasBalanceFromCallV2) {
+            const balanceDecimal = resources[key].json.balance;
+            const balanceHex = new BigNumber(balanceDecimal, 10).toString(16);
+            const balance = addHexPrefix(balanceHex);
+            if (accounts[address]) {
+              accounts[address].vm2Balance = balance;
+            }
+          }
+        } else if (key.startsWith(ACCOUNT_BALANCE)) {
+          const balanceDecimal = resources[key].json.token.value;
+          const token = key.substr(
+            ACCOUNT_BALANCE.length + 1,
+            key.length - ACCOUNT_BALANCE.length - 2,
+          );
+          const balanceHex = new BigNumber(balanceDecimal, 10).toString(16);
+          const balance = addHexPrefix(balanceHex);
+          if (token === '0x00000000000000000000000000000001::STC::STC') {
+            // Only use if coin::balance didn't set it
+            if (!hasBalanceFromCallV2 && accounts[address]) {
+              accounts[address].vm2Balance = balance;
+            }
+          } else {
+            vm2Tokens[`vm2::${token}`] = balance;
+          }
+        } else if (key.startsWith(NFT_GALLERY)) {
+          try {
+            const T2 = key.substr(
+              NFT_GALLERY.length + 1,
+              key.length - NFT_GALLERY.length - 2,
+            );
+            const T2Arr = T2.split(',');
+            const meta = T2Arr[0].trim();
+            const body = T2Arr[1].trim();
+            const items = resources[key].json.items.map((item) => ({
+              id: item.id,
+              name: decodeNFTMeta(item.base_meta.name),
+              description: decodeNFTMeta(item.base_meta.description),
+              image: decodeNFTMeta(item.base_meta.image),
+              imageData: decodeNFTMeta(item.base_meta.image_data),
+            }));
+            vm2NFTGallery.push({ meta, body, items, vmType: 'vm2' });
+          } catch (e) {
+            log.info('VM2 NFT gallery parse error', e);
+          }
+        } else if (key.startsWith(NFT_ID)) {
+          try {
+            const T2 = key.substr(
+              NFT_ID.length + 1,
+              key.length - NFT_ID.length - 2,
+            );
+            const T2Arr = T2.split(',');
+            const meta = T2Arr[0].trim();
+            const body = T2Arr[1].trim();
+            const items = resources[key].json.nft.vec.map((item) => ({
+              id: item.id,
+              name: decodeNFTMeta(item.base_meta.name),
+              description: decodeNFTMeta(item.base_meta.description),
+              image: decodeNFTMeta(item.base_meta.image),
+              imageData: decodeNFTMeta(item.base_meta.image_data),
+            }));
+            vm2NFTIdentifier.push({ meta, body, items, vmType: 'vm2' });
+          } catch (e) {
+            log.info('VM2 NFT identifier parse error', e);
+          }
+        }
+      });
+
+      // Merge VM2 tokens into assets (prefixed with vm2:: to distinguish)
+      if (assets[address]) {
+        Object.assign(assets[address], vm2Tokens);
+      }
+
+      // Merge VM2 NFTs
+      if (nfts[address]) {
+        nfts[address] = nfts[address].filter((n) => n.vmType !== 'vm2').concat(vm2NFTGallery);
+      }
+      if (nftIdentifier[address]) {
+        nftIdentifier[address] = nftIdentifier[address].filter((n) => n.vmType !== 'vm2').concat(vm2NFTIdentifier);
+      }
+
+      // Set default vm2Balance if not found
+      if (accounts[address] && !accounts[address].vm2Balance) {
+        accounts[address].vm2Balance = '0x0';
+      }
+
+      this.store.updateState({ accounts, assets, nfts, nftIdentifier });
+    } catch (err) {
+      log.debug('_updateVM2Resources error', err.message || err);
+      if (accounts[address]) {
+        accounts[address].vm2Balance = '0x0';
+      }
+      this.store.updateState({ accounts });
+    }
   }
 
   async _updateAccountAptos(address) {

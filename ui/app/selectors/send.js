@@ -69,6 +69,10 @@ export function getSendHexData(state) {
   return state.starmask.send.data;
 }
 
+export function getSendVMType(state) {
+  return state.starmask.send.vmType || 'vm1';
+}
+
 export function getSendHexDataFeatureFlagState(state) {
   return state.starmask.featureFlags.sendHexData;
 }
@@ -91,7 +95,16 @@ export function getSendFrom(state) {
 
 export function getSendFromBalance(state) {
   const fromAccount = getSendFromObject(state);
+  const vmType = getSendVMType(state);
+  if (vmType === 'vm2' && fromAccount.vm2Balance && fromAccount.vm2Balance !== '0x0') {
+    return fromAccount.vm2Balance;
+  }
   return fromAccount.balance;
+}
+
+export function getSendFromVM2Balance(state) {
+  const fromAccount = getSendFromObject(state);
+  return fromAccount.vm2Balance || '0x0';
 }
 
 export function getSendFromObject(state) {

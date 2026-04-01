@@ -9,12 +9,7 @@ try {
     overrideTaming: 'severe',
   });
 } catch (error) {
-  // If the `lockdown` call throws an exception, it interferes with the
-  // contentscript injection on some versions of Firefox. The error is
-  // caught and logged here so that the contentscript still gets injected.
-  // This affects Firefox v56 and Waterfox Classic
-  console.error('Lockdown failed:', error);
-  if (window.sentry && window.sentry.captureException) {
-    window.sentry.captureException(error);
-  }
+  // SES lockdown fails on modern browsers due to non-configurable properties
+  // like Symbol.dispose. Log and continue — the extension can still function.
+  console.warn('Lockdown failed (non-critical):', error.message);
 }

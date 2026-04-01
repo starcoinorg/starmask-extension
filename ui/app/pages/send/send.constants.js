@@ -6,7 +6,8 @@ import { addHexPrefix } from '../../../../app/scripts/lib/util';
 
 const MIN_GAS_PRICE_DEC = '0';
 const MIN_GAS_PRICE_HEX = parseInt(MIN_GAS_PRICE_DEC, 10).toString(16);
-const MIN_GAS_LIMIT_DEC = '100';
+// Starcoin simple transfers use ~100,000 gas, set minimum to 10,000
+const MIN_GAS_LIMIT_DEC = '10000';
 const MIN_GAS_LIMIT_HEX = parseInt(MIN_GAS_LIMIT_DEC, 10).toString(16);
 
 const MIN_GAS_PRICE_GWEI = addHexPrefix(

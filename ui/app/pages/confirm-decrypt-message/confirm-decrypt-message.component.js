@@ -130,7 +130,7 @@ export default class ConfirmDecryptMessage extends Component {
   renderBalance = () => {
     const { conversionRate } = this.props;
     const {
-      fromAccount: { balance },
+      fromAccount: { balance, vm2Balance },
     } = this.state;
     const { t } = this.context;
 
@@ -142,13 +142,31 @@ export default class ConfirmDecryptMessage extends Component {
       conversionRate,
     });
 
+    const hasVm2Balance = vm2Balance && vm2Balance !== '0x0';
+    const vm2BalanceInStc = hasVm2Balance
+      ? conversionUtil(vm2Balance, {
+          fromNumericBase: 'hex',
+          toNumericBase: 'dec',
+          fromDenomination: 'NANOSTC',
+          numberOfDecimals: 6,
+          conversionRate,
+        })
+      : null;
+
     return (
       <div className="request-decrypt-message__balance">
         <div className="request-decrypt-message__balance-text">
           {`${t('balance')}:`}
         </div>
         <div className="request-decrypt-message__balance-value">
-          {`${balanceInStc} STC`}
+          {hasVm2Balance ? (
+            <div>
+              <div>{`VM1: ${balanceInStc} STC`}</div>
+              <div>{`VM2: ${vm2BalanceInStc} STC`}</div>
+            </div>
+          ) : (
+            `${balanceInStc} STC`
+          )}
         </div>
       </div>
     );

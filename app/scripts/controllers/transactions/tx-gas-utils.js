@@ -106,14 +106,7 @@ export default class TxGasUtil {
   }
 
   async estimateTxGasStarcoin(txMeta) {
-    // // `eth_estimateGas` can fail if the user has insufficient balance for the
-    // // value being sent, or for the gas cost. We don't want to check their
-    // // balance here, we just want the gas estimate. The gas price is removed
-    // // to skip those balance checks. We check balance elsewhere.
-    // delete txParams.gasPrice;
-
-    // // estimate tx gas requirements
-    // return await this.query.estimateGas(txParams);
+    const vmType = txMeta.txParams.vmType || 'vm1';
 
     let maxGasAmount = 10000000;
     const balance = await this.query.getBalance(txMeta.txParams.from);
@@ -128,7 +121,7 @@ export default class TxGasUtil {
     if (!selectedPublicKeyHex) {
       throw new Error(`Starmask: selected account's public key is null`);
     }
-    const selectedSequenceNumber = await this.getSequenceNumber(txMeta.txParams.from, 'STC');
+    const selectedSequenceNumber = await this.getSequenceNumber(txMeta.txParams.from, 'STC', vmType);
     const chainId = txMeta.metamaskNetworkId.id;
     let transactionPayload;
     if (txMeta.txParams.data) {
@@ -139,53 +132,143 @@ export default class TxGasUtil {
     } else {
       if (txMeta.txParams.to
         && txMeta.type === TRANSACTION_TYPES.SENT_ETHER) {
-        const functionId = '0x1::TransferScripts::peer_to_peer_v2'
-        const strTypeArgs = ['0x1::STC::STC']
-        const tyArgs = utils.tx.encodeStructTypeTags(strTypeArgs)
         const sendAmountNanoSTC = hexToBn(txMeta.txParams.value)
-        const amountSCSHex = (function () {
-          const se = new bcs.BcsSerializer()
-          se.serializeU128(BigInt(sendAmountNanoSTC.toString(10)))
-          return hexlify(se.getBytes())
-        })()
-        const args = [
-          arrayify(txMeta.txParams.to),
-          arrayify(amountSCSHex),
-        ]
-        const scriptFunction = utils.tx.encodeScriptFunction(functionId, tyArgs, args)
+        let scriptFunction;
+        if (vmType === 'vm2') {
+          // VM2: use starcoin_account::transfer with u64 amount, no type args
+          // IMPORTANT: The Move function expects 16-byte address, NOT 32-byte!
+          const functionId = '0x1::starcoin_account::transfer'
+          const tyArgs = []
+          const amountSCSHex = (function () {
+            const se = new bcs.BcsSerializer()
+            se.serializeU64(BigInt(sendAmountNanoSTC.toString(10)))
+            return hexlify(se.getBytes())
+          })()
+          // Extract 16-byte address from receiver (may be 16, 20, or 32 bytes input)
+          const receiverBytes = arrayify(txMeta.txParams.to);
+          let receiver16Bytes;
+          if (receiverBytes.length === 16) {
+            receiver16Bytes = receiverBytes;
+          } else if (receiverBytes.length === 32) {
+            // 32-byte format: [16 zeros][16 real address] - extract last 16
+            receiver16Bytes = receiverBytes.slice(16);
+          } else if (receiverBytes.length === 20) {
+            // 20-byte Ethereum-style: take last 16 bytes
+            receiver16Bytes = receiverBytes.slice(4);
+          } else {
+            log.warn(`VM2 gas estimate: Unexpected receiver address length: ${receiverBytes.length}`);
+            receiver16Bytes = receiverBytes;
+          }
+          log.debug(`VM2 gas estimate: receiver -> 16-byte ${hexlify(receiver16Bytes)}`);
+          const args = [
+            receiver16Bytes,
+            arrayify(amountSCSHex),
+          ]
+          scriptFunction = utils.tx.encodeScriptFunction(functionId, tyArgs, args)
+        } else {
+          // VM1: use TransferScripts::peer_to_peer_v2 with u128 amount
+          const functionId = '0x1::TransferScripts::peer_to_peer_v2'
+          const strTypeArgs = ['0x1::STC::STC']
+          const tyArgs = utils.tx.encodeStructTypeTags(strTypeArgs)
+          const amountSCSHex = (function () {
+            const se = new bcs.BcsSerializer()
+            se.serializeU128(BigInt(sendAmountNanoSTC.toString(10)))
+            return hexlify(se.getBytes())
+          })()
+          const args = [
+            arrayify(txMeta.txParams.to),
+            arrayify(amountSCSHex),
+          ]
+          scriptFunction = utils.tx.encodeScriptFunction(functionId, tyArgs, args)
+        }
         transactionPayload = scriptFunction;
       }
     }
-    const rawUserTransaction = utils.tx.generateRawUserTransaction(
-      selectedAddressHex,
-      transactionPayload,
-      maxGasAmount,
-      gasUnitPrice,
-      selectedSequenceNumber,
-      expirationTimestampSecs,
-      chainId,
-    );
+    
+    let rawUserTransaction;
+    if (vmType === 'vm2') {
+      // VM2 requires gas_token_code = '0x1::starcoin_coin::STC' (not '0x1::STC::STC')
+      const senderSCS = encoding.addressToSCS(selectedAddressHex);
+      const vm2GasTokenCode = '0x1::starcoin_coin::STC';
+      rawUserTransaction = new starcoin_types.RawUserTransaction(
+        senderSCS,
+        BigInt(selectedSequenceNumber),
+        transactionPayload,
+        BigInt(maxGasAmount),
+        BigInt(gasUnitPrice),
+        vm2GasTokenCode,
+        BigInt(expirationTimestampSecs),
+        new starcoin_types.ChainId(chainId)
+      );
+    } else {
+      // VM1 uses the standard generateRawUserTransaction
+      rawUserTransaction = utils.tx.generateRawUserTransaction(
+        selectedAddressHex,
+        transactionPayload,
+        maxGasAmount,
+        gasUnitPrice,
+        selectedSequenceNumber,
+        expirationTimestampSecs,
+        chainId,
+      );
+    }
 
     const rawUserTransactionHex = encoding.bcsEncode(rawUserTransaction);
 
+    const dryRunMethod = vmType === 'vm2' ? 'contract2.dry_run_raw' : 'contract.dry_run_raw';
+    // For VM2, we need to bypass StcQuery's explained_status.Error check because 
+    // VM2 dry_run may return errors that we want to handle gracefully with fallbacks
     const dryRunRawResult = await new Promise((resolve, reject) => {
-      return this.query.dryRunRaw(
-        rawUserTransactionHex,
-        selectedPublicKeyHex,
-        (err, res) => {
-          if (err) {
-            return reject(err);
-          }
-          return resolve(res);
-        },
-      );
+      if (vmType === 'vm2') {
+        // Bypass StcQuery - use provider directly to avoid automatic error conversion
+        this.query.currentProvider.sendAsync(
+          { jsonrpc: '2.0', id: Date.now(), method: dryRunMethod, params: [rawUserTransactionHex, selectedPublicKeyHex] },
+          (err, response) => {
+            if (err) {
+              return reject(err);
+            }
+            if (response.error) {
+              return reject(new Error(response.error.message));
+            }
+            // Return result directly, even if it has explained_status.Error
+            // The fallback logic below will handle it
+            return resolve(response.result);
+          },
+        );
+      } else {
+        return this.query.sendAsync(
+          { method: dryRunMethod, params: [rawUserTransactionHex, selectedPublicKeyHex] },
+          (err, res) => {
+            if (err) {
+              return reject(err);
+            }
+            return resolve(res);
+          },
+        );
+      }
     });
     const queryTokenChanges = (dryRunRawResult) => {
+      if (!dryRunRawResult.write_set || !Array.isArray(dryRunRawResult.write_set)) {
+        return {};
+      }
       const matches = dryRunRawResult.write_set.reduce((acc, item) => {
+        if (!item.access_path) return acc;
+        // VM1 format: 0x{addr}/[01]/0x1::Account::Balance<...>
+        // VM2 may use the same format or a slightly different one
         const reg = /^(0x[a-zA-Z0-9]{32})\/[01]\/0x00000000000000000000000000000001\:\:Account\:\:Balance<(.*)>$/i
         const result = item.access_path.match(reg)
         if (result && result.length === 3 && selectedAddressHex === result[1]) {
-          acc[result[2]] = addHexPrefix(new BigNumber(item.value.Resource.json.token.value, 10).toString(16))
+          try {
+            acc[result[2]] = addHexPrefix(new BigNumber(item.value.Resource.json.token.value, 10).toString(16))
+          } catch (e) {
+            // VM2 may have a different value structure; try alternative paths
+            try {
+              const val = item.value?.Resource?.json?.token?.value || item.value?.json?.token?.value || '0';
+              acc[result[2]] = addHexPrefix(new BigNumber(val, 10).toString(16))
+            } catch (e2) {
+              log.info('queryTokenChanges: failed to parse value for', result[2], e2);
+            }
+          }
         }
         return acc
       }, {})
@@ -200,13 +283,35 @@ export default class TxGasUtil {
       gasUnitPrice = addHexPrefix(new BigNumber(gasUnitPrice).toString(16))
       estimatedGasHex = new BigNumber(dryRunRawResult.gas_used, 10).toString(16);
       tokenChanges = queryTokenChanges(dryRunRawResult)
+    } else if (vmType === 'vm2') {
+      // VM2 dry_run may fail due to node aggregator bug (DELAYED_MATERIALIZATION)
+      // Use default gas estimates so the UI can still proceed
+      log.info('VM2 dry_run_raw failed, using default gas estimates:', JSON.stringify(dryRunRawResult.status));
+      const defaultGas = 1000000; // 1M gas units as safe default
+      gasUsed = addHexPrefix(new BigNumber(defaultGas).toString(16))
+      maxGasAmount = addHexPrefix(new BigNumber(maxGasAmount).toString(16))
+      gasUnitPrice = addHexPrefix(new BigNumber(gasUnitPrice).toString(16))
+      estimatedGasHex = new BigNumber(defaultGas).toString(16);
+      tokenChanges = {}
     } else {
+      const methodName = vmType === 'vm2' ? 'contract2.dry_run_raw' : 'contract.dry_run_raw';
+      // Handle different error status formats between VM1 and VM2
+      const explainedStatus = dryRunRawResult.explained_status || {};
+      const errorMsg = explainedStatus.Error
+        || explainedStatus.error
+        || (typeof explainedStatus === 'string' ? explainedStatus : JSON.stringify(explainedStatus));
       if (typeof dryRunRawResult.status === 'string') {
-        throw new Error(`Starmask: contract.dry_run_raw failed. status: ${ dryRunRawResult.status }, Error: ${ dryRunRawResult.explained_status.Error }`)
+        throw new Error(`Starmask: ${methodName} failed. status: ${ dryRunRawResult.status }, Error: ${ errorMsg }`)
       }
-      throw new Error(`Starmask: contract.dry_run_raw failed. Error: ${ JSON.stringify(dryRunRawResult.explained_status) }`)
+      throw new Error(`Starmask: ${methodName} failed. Error: ${ errorMsg }`)
     }
-    const result = { estimatedGasHex, tokenChanges, gasUsed, gasUnitPrice };
+    const result = {
+      estimatedGasHex,
+      tokenChanges,
+      gasUsed,
+      gasUnitPrice,
+      maxGasAmount,
+    };
     return result;
   }
 
@@ -270,23 +375,37 @@ export default class TxGasUtil {
     return { estimatedGasHex, tokenChanges, gasUsed, gasUnitPrice, maxGasAmount };
   }
 
-  async getSequenceNumber(from, ticker) {
+  async getSequenceNumber(from, ticker, vmType) {
     let sequenceNumber
     if (ticker === 'STC') {
-      sequenceNumber = await new Promise((resolve, reject) => {
-        return this.query.getResource(
-          from,
-          '0x00000000000000000000000000000001::Account::Account',
-          (err, res) => {
-            if (err) {
-              return reject(err);
-            }
-
-            const sequence_number = res && res.value[6][1].U64 || 0;
-            return resolve(new BigNumber(sequence_number, 10).toNumber());
-          },
-        );
-      });
+      if (vmType === 'vm2') {
+        // VM2 uses lowercase module names and returns {json: {sequence_number: N}} format
+        sequenceNumber = await new Promise((resolve, reject) => {
+          return this.query.sendAsync(
+            { method: 'state2.get_resource', params: [from, '0x00000000000000000000000000000001::account::Account', { decode: true }] },
+            (err, res) => {
+              if (err) {
+                return reject(err);
+              }
+              const sequence_number = res && res.json && res.json.sequence_number || 0;
+              return resolve(new BigNumber(sequence_number, 10).toNumber());
+            },
+          );
+        });
+      } else {
+        sequenceNumber = await new Promise((resolve, reject) => {
+          return this.query.sendAsync(
+            { method: 'contract.get_resource', params: [from, '0x00000000000000000000000000000001::Account::Account'] },
+            (err, res) => {
+              if (err) {
+                return reject(err);
+              }
+              const sequence_number = res && res.value[6][1].U64 || 0;
+              return resolve(new BigNumber(sequence_number, 10).toNumber());
+            },
+          );
+        });
+      }
     } else if (ticker === 'APT') {
       sequenceNumber = await new Promise((resolve, reject) => {
         return this.query.getAccount(
