@@ -36,6 +36,8 @@ const { arrayify, hexlify } = ethers.utils;
 // const hstInterface = new ethers.utils.Interface(abi);
 
 const SIMPLE_GAS_COST = '0x2710'; // Hex for 10000, cost of a simple send.
+// Hex for 10000000, fallback when gas estimation is unavailable.
+const DEFAULT_GAS_LIMIT = '0x989680';
 const MAX_MEMSTORE_TX_LIST_SIZE = 100; // Number of transactions (by unique nonces) to keep in memory
 
 /**
@@ -388,6 +390,16 @@ export default class TransactionController extends EventEmitter {
       tokenChanges,
       simulationFails,
     } = await this.txGasUtil.analyzeGasUsage(txMeta);
+
+    if (!gasUsed) {
+      return {
+        gasUsed,
+        gasUnitPrice,
+        gasLimit: DEFAULT_GAS_LIMIT,
+        tokenChanges,
+        simulationFails,
+      };
+    }
 
     // add additional gas buffer to our estimation for safety
     const gasLimit = this.txGasUtil.addGasBuffer(

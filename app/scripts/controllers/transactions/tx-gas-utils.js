@@ -76,7 +76,9 @@ export default class TxGasUtil {
       gasUnitPrice = result.gasUnitPrice;
       estimatedGasHex = result.estimatedGasHex;
       tokenChanges = result.tokenChanges;
-      block.gasLimit = result.maxGasAmount
+      if (result.maxGasAmount) {
+        block.gasLimit = result.maxGasAmount;
+      }
     } catch (error) {
       log.warn({ error });
       simulationFails = {
@@ -206,7 +208,7 @@ export default class TxGasUtil {
       }
       throw new Error(`Starmask: contract.dry_run_raw failed. Error: ${ JSON.stringify(dryRunRawResult.explained_status) }`)
     }
-    const result = { estimatedGasHex, tokenChanges, gasUsed, gasUnitPrice };
+    const result = { estimatedGasHex, tokenChanges, gasUsed, gasUnitPrice, maxGasAmount };
     return result;
   }
 
