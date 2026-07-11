@@ -44,18 +44,17 @@ log.setDefaultLevel(process.env.STARMASK_DEBUG ? 'debug' : 'warn');
 // setup plugin communication
 //
 
-if (shouldInjectProvider()) {
+if (shouldInjectProvider() && !window.starcoin?.isStarMask) {
   // setup background connection
-const starmaskStream = new LocalMessageDuplexStream({
-  name: 'starmask-inpage',
-  target: 'starmask-contentscript',
-});
+  const starmaskStream = new LocalMessageDuplexStream({
+    name: 'starmask-inpage',
+    target: 'starmask-contentscript',
+  });
 
   initializeProvider({
     connectionStream: starmaskStream,
     jsonRpcStreamName: 'starmask-provider',
     logger: log,
     shouldSendMetadata: false,
-  });  
+  });
 }
-

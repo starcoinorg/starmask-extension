@@ -40,34 +40,22 @@ function importAllScripts() {
   tryImport(...files);
 }
 
+const unregisterDynamicInPageContentScript = async () => {
+  if (!chrome.scripting?.unregisterContentScripts) {
+    return;
+  }
+
+  try {
+    await chrome.scripting.unregisterContentScripts({ ids: ['inpages'] });
+  } catch (_) {
+    // Best-effort cleanup for old dynamic registration; manifest injection is authoritative.
+  }
+};
+
+unregisterDynamicInPageContentScript();
+
 importAllScripts();
 
 chrome.runtime.onStartup.addListener(() => {
   globalThis.isFirstTimeProfileLoaded = true;
 });
-
-
-const registerInPageContentScript = async () => {
-  try {
-    const registeredScripts = await chrome.scripting.getRegisteredContentScripts({
-      ids: ['inpages'],
-    });
-    if (registeredScripts.length > 0) {
-      return;
-    }
-
-    await chrome.scripting.registerContentScripts([
-      {
-        id: 'inpages',
-        matches: ['file://*/*', 'http://*/*', 'https://*/*'],
-        js: ['inpage.js'],
-        runAt: 'document_start',
-        world: 'MAIN',
-      },
-    ]);
-  } catch (err) {
-    console.error(`Failed to register inpage content script. ${err}`);
-  }
-};
-
-registerInPageContentScript();

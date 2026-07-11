@@ -28,6 +28,15 @@ function createManifestTasks({ browserPlatforms }) {
           ),
         );
         const result = merge(cloneDeep(baseManifest), platformModifications);
+        if (platform === 'chrome') {
+          result.content_scripts.unshift({
+            matches: ['file://*/*', 'http://*/*', 'https://*/*'],
+            js: ['inpage.js'],
+            run_at: 'document_start',
+            all_frames: true,
+            world: 'MAIN',
+          });
+        }
         const dir = path.join('.', 'dist', platform);
         await fs.mkdir(dir, { recursive: true });
         await writeJson(result, path.join(dir, 'manifest.json'));
