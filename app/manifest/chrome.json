@@ -5,5 +5,5 @@
   "externally_connectable": {
     "matches": ["https://*.starcoin.org/*"]
   },
-  "minimum_chrome_version": "102"
+  "minimum_chrome_version": "111"
 }

@@ -14,16 +14,15 @@ import PortStream from 'extension-port-stream';
 import { captureException } from '@sentry/browser';
 import browser from 'webextension-polyfill';
 import { checkForLastErrorAndLog } from '../../shared/modules/browser-runtime.utils';
-import { deferredPromise, getPlatform } from './lib/util';
-
-
 import {
   ENVIRONMENT_TYPE_POPUP,
   ENVIRONMENT_TYPE_NOTIFICATION,
   ENVIRONMENT_TYPE_FULLSCREEN,
   EXTENSION_MESSAGES,
-  PLATFORM_FIREFOX
+  PLATFORM_FIREFOX,
 } from '../../shared/constants/app';
+import { deferredPromise, getPlatform } from './lib/util';
+
 import migrations from './migrations';
 import Migrator from './lib/migrator';
 import ExtensionPlatform from './platforms/extension';
@@ -68,6 +67,7 @@ if (inTest || process.env.STARMASK_DEBUG) {
 const {
   promise: isInitialized,
   resolve: resolveInitialization,
+  reject: rejectInitialization,
 } = deferredPromise();
 
 let connectRemote;
@@ -91,57 +91,60 @@ browser.runtime.onMessage.addListener((message) => {
   return undefined;
 });
 
-  /**
+/**
  * Sends a message to the dapp(s) content script to signal it can connect to MetaMask background as
  * the backend is not active. It is required to re-connect dapps after service worker re-activates.
  * For non-dapp pages, the message will be sent and ignored.
  */
-  const sendReadyMessageToTabs = async () => {
-    const tabs = await browser.tabs
-      .query({
-        /**
-         * Only query tabs that our extension can run in. To do this, we query for all URLs that our
-         * extension can inject scripts in, which is by using the "<all_urls>" value and __without__
-         * the "tabs" manifest permission. If we included the "tabs" permission, this would also fetch
-         * URLs that we'd not be able to inject in, e.g. chrome://pages, chrome://extension, which
-         * is not what we'd want.
-         *
-         * You might be wondering, how does the "url" param work without the "tabs" permission?
-         *
-         * @see {@link https://bugs.chromium.org/p/chromium/issues/detail?id=661311#c1}
-         *  "If the extension has access to inject scripts into Tab, then we can return the url
-         *   of Tab (because the extension could just inject a script to message the location.href)."
-         */
-        url: '<all_urls>',
-        windowType: 'normal',
+const sendReadyMessageToTabs = async () => {
+  const tabs = await browser.tabs
+    .query({
+      /**
+       * Only query tabs that our extension can run in. To do this, we query for all URLs that our
+       * extension can inject scripts in, which is by using the "<all_urls>" value and __without__
+       * the "tabs" manifest permission. If we included the "tabs" permission, this would also fetch
+       * URLs that we'd not be able to inject in, e.g. chrome://pages, chrome://extension, which
+       * is not what we'd want.
+       *
+       * You might be wondering, how does the "url" param work without the "tabs" permission?
+       *
+       * @see {@link https://bugs.chromium.org/p/chromium/issues/detail?id=661311#c1}
+       *  "If the extension has access to inject scripts into Tab, then we can return the url
+       *   of Tab (because the extension could just inject a script to message the location.href)."
+       */
+      url: '<all_urls>',
+      windowType: 'normal',
+    })
+    .then((result) => {
+      checkForLastErrorAndLog();
+      return result;
+    })
+    .catch(() => {
+      checkForLastErrorAndLog();
+    });
+
+  /** @todo we should only sendMessage to dapp tabs, not all tabs. */
+  for (const tab of tabs) {
+    browser.tabs
+      .sendMessage(tab.id, {
+        name: EXTENSION_MESSAGES.READY,
       })
-      .then((result) => {
+      .then(() => {
         checkForLastErrorAndLog();
-        return result;
       })
       .catch(() => {
+        // An error may happen if the contentscript is blocked from loading,
+        // and thus there is no runtime.onMessage handler to listen to the message.
         checkForLastErrorAndLog();
       });
-  
-    /** @todo we should only sendMessage to dapp tabs, not all tabs. */
-    for (const tab of tabs) {
-      browser.tabs
-        .sendMessage(tab.id, {
-          name: EXTENSION_MESSAGES.READY,
-        })
-        .then(() => {
-          checkForLastErrorAndLog();
-        })
-        .catch(() => {
-          // An error may happen if the contentscript is blocked from loading,
-          // and thus there is no runtime.onMessage handler to listen to the message.
-          checkForLastErrorAndLog();
-        });
-    }
-  };
+  }
+};
 
 // initialization flow
-initialize().catch(log.error);
+initialize().catch((error) => {
+  log.error(error);
+  rejectInitialization(error);
+});
 
 /**
  * @typedef {import('../../shared/constants/transaction').TransactionMeta} TransactionMeta
@@ -326,10 +329,7 @@ function setupController(initState, initLangCode) {
     }
 
     heartbeatInterval = setInterval(() => {
-      if (
-        !controller.isUnlocked() ||
-        Date.now() >= unlockedSessionExpiresAt
-      ) {
+      if (!controller.isUnlocked() || Date.now() >= unlockedSessionExpiresAt) {
         stopUnlockedSessionHeartbeat();
         return;
       }
@@ -441,12 +441,12 @@ function setupController(initState, initLangCode) {
       ? new URL(remotePort.sender.url)
       : null;
 
-      if (sourcePlatform === PLATFORM_FIREFOX) {
-        isMetaMaskInternalProcess = metamaskInternalProcessHash[processName];
-      } else {
-        isMetaMaskInternalProcess =
-          senderUrl?.origin === `chrome-extension://${browser.runtime.id}`;
-      }
+    if (sourcePlatform === PLATFORM_FIREFOX) {
+      isMetaMaskInternalProcess = metamaskInternalProcessHash[processName];
+    } else {
+      isMetaMaskInternalProcess =
+        senderUrl?.origin === `chrome-extension://${browser.runtime.id}`;
+    }
 
     if (isMetaMaskInternalProcess) {
       const portStream = new PortStream(remotePort);
