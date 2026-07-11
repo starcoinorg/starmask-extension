@@ -10,7 +10,9 @@ import StreamProvider from 'web3-stream-provider';
 import log from 'loglevel';
 import {
   ENVIRONMENT_TYPE_FULLSCREEN,
+  ENVIRONMENT_TYPE_NOTIFICATION,
   ENVIRONMENT_TYPE_POPUP,
+  EXTENSION_MESSAGES,
 } from '../../shared/constants/app';
 import ExtensionPlatform from './platforms/extension';
 import { setupMultiplex } from './lib/stream-utils';
@@ -20,25 +22,7 @@ import browser from 'webextension-polyfill';
 import launchMetaMaskUi, { updateBackgroundConnection } from '../../ui';
 
 
-const ONE_SECOND_IN_MILLISECONDS = 1_000;
-
-// Service Worker Keep Alive Message Constants
-const WORKER_KEEP_ALIVE_INTERVAL = ONE_SECOND_IN_MILLISECONDS;
-const WORKER_KEEP_ALIVE_MESSAGE = 'WORKER_KEEP_ALIVE_MESSAGE';
-const ACK_KEEP_ALIVE_WAIT_TIME = 60_000; // 1 minute
-const ACK_KEEP_ALIVE_MESSAGE = 'ACK_KEEP_ALIVE_MESSAGE';
-
-let lastMessageReceivedTimestamp = Date.now();
-
 let extensionPort;
-let ackTimeoutToDisplayError;
-
-const ackKeepAliveListener = (message) => {
-  if (message.name === ACK_KEEP_ALIVE_MESSAGE) {
-    lastMessageReceivedTimestamp = Date.now();
-    clearTimeout(ackTimeoutToDisplayError);
-  }
-};
 
 function displayCriticalError(container, err) {
   container.innerHTML =
@@ -48,31 +32,6 @@ function displayCriticalError(container, err) {
   throw err;
 }
 
-const keepAliveInterval = setInterval(() => {
-  browser.runtime.sendMessage({ name: WORKER_KEEP_ALIVE_MESSAGE });
-
-  if (extensionPort !== null && extensionPort !== undefined) {
-    extensionPort.postMessage({ name: WORKER_KEEP_ALIVE_MESSAGE });
-
-    if (extensionPort.onMessage.hasListener(ackKeepAliveListener) === false) {
-      extensionPort.onMessage.addListener(ackKeepAliveListener);
-    }
-  }
-
-  ackTimeoutToDisplayError = setTimeout(() => {
-    if (
-      Date.now() - lastMessageReceivedTimestamp >
-      ACK_KEEP_ALIVE_WAIT_TIME
-    ) {
-      clearInterval(keepAliveInterval);
-      displayCriticalError(
-        'somethingIsWrong',
-        new Error("Something's gone wrong. Try reloading the page."),
-      );
-    }
-  }, ACK_KEEP_ALIVE_WAIT_TIME);
-}, WORKER_KEEP_ALIVE_INTERVAL);
-
 start().catch(log.error);
 
 async function start() {
@@ -81,6 +40,19 @@ async function start() {
 
   // identify window type (popup, notification)
   const windowType = getEnvironmentType();
+
+  if (
+    windowType === ENVIRONMENT_TYPE_POPUP ||
+    windowType === ENVIRONMENT_TYPE_NOTIFICATION
+  ) {
+    const heartbeat = () => {
+      browser.runtime
+        .sendMessage({ name: EXTENSION_MESSAGES.WORKER_HEARTBEAT })
+        .catch(() => undefined);
+    };
+    heartbeat();
+    setInterval(heartbeat, 20_000);
+  }
 
   let isUIInitialised = false;
 
@@ -92,7 +64,6 @@ async function start() {
   // initializeUiWithTab(activeTab);
 
   const messageListener = async (message) => {
-    console.log('message listener', message, 'isUIInitialised', isUIInitialised)
     if (message?.data?.method === 'startUISync') {
       if (isUIInitialised) {
         // Currently when service worker is revived we create new streams
@@ -109,10 +80,6 @@ async function start() {
     extensionPort.onDisconnect.removeListener(
       resetExtensionStreamAndListeners,
     );
-
-    // message below will try to activate service worker
-    // in MV3 is likely that reason of stream closing is service worker going in-active
-    browser.runtime.sendMessage({ name: WORKER_KEEP_ALIVE_MESSAGE });
 
     extensionPort = browser.runtime.connect({ name: windowType });
     connectionStream = new PortStream(extensionPort);

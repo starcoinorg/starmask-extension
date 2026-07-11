@@ -65,14 +65,31 @@ if (inTest || process.env.STARMASK_DEBUG) {
   global.metamaskGetState = localStore.get.bind(localStore);
 }
 
-const ACK_KEEP_ALIVE_MESSAGE = 'ACK_KEEP_ALIVE_MESSAGE';
-const WORKER_KEEP_ALIVE_MESSAGE = 'WORKER_KEEP_ALIVE_MESSAGE';
-
 const {
   promise: isInitialized,
   resolve: resolveInitialization,
-  reject: rejectInitialization,
 } = deferredPromise();
+
+let connectRemote;
+let connectExternal;
+let extendUnlockedSession = () => undefined;
+
+browser.runtime.onConnect.addListener((remotePort) => {
+  isInitialized.then(() => connectRemote(remotePort)).catch(log.error);
+});
+browser.runtime.onConnectExternal.addListener((remotePort) => {
+  isInitialized.then(() => connectExternal(remotePort)).catch(log.error);
+});
+browser.runtime.onMessage.addListener((message) => {
+  if (
+    message?.name === EXTENSION_MESSAGES.WORKER_HEARTBEAT ||
+    message?.name === EXTENSION_MESSAGES.WORKER_WAKE
+  ) {
+    extendUnlockedSession();
+    return false;
+  }
+  return undefined;
+});
 
   /**
  * Sends a message to the dapp(s) content script to signal it can connect to MetaMask background as
@@ -187,16 +204,6 @@ initialize().catch(log.error);
 async function initialize() {
   const initState = await loadStateFromPersistence();
   const initLangCode = await getFirstPreferredLangCode();
-  let isFirstMetaMaskControllerSetup;
-
-  const sessionData = await browser.storage.session.get([
-    'isFirstMetaMaskControllerSetup',
-  ]);
-
-  isFirstMetaMaskControllerSetup =
-    sessionData?.isFirstMetaMaskControllerSetup === undefined;
-  await browser.storage.session.set({ isFirstMetaMaskControllerSetup });
-
   setupController(initState, initLangCode);
   await sendReadyMessageToTabs();
   log.debug('StarMask initialization complete.');
@@ -297,6 +304,42 @@ function setupController(initState, initLangCode) {
     },
   });
 
+  const heartbeatIntervalMs = 20 * 1000;
+  const unlockedSessionLifetimeMs = 45 * 60 * 1000;
+  let heartbeatInterval;
+  let unlockedSessionExpiresAt = 0;
+
+  const stopUnlockedSessionHeartbeat = () => {
+    clearInterval(heartbeatInterval);
+    heartbeatInterval = undefined;
+    unlockedSessionExpiresAt = 0;
+  };
+
+  extendUnlockedSession = () => {
+    if (!controller.isUnlocked()) {
+      return;
+    }
+
+    unlockedSessionExpiresAt = Date.now() + unlockedSessionLifetimeMs;
+    if (heartbeatInterval) {
+      return;
+    }
+
+    heartbeatInterval = setInterval(() => {
+      if (
+        !controller.isUnlocked() ||
+        Date.now() >= unlockedSessionExpiresAt
+      ) {
+        stopUnlockedSessionHeartbeat();
+        return;
+      }
+      browser.runtime.getPlatformInfo().catch(log.error);
+    }, heartbeatIntervalMs);
+  };
+
+  controller.on('unlock', extendUnlockedSession);
+  controller.keyringController.on('lock', stopUnlockedSessionHeartbeat);
+
   setupEnsIpfsResolver({
     getCurrentChainId: controller.networkController.getCurrentChainId.bind(
       controller.networkController,
@@ -357,9 +400,6 @@ function setupController(initState, initLangCode) {
   //
   // connect to other contexts
   //
-  browser.runtime.onConnect.addListener(connectRemote);
-  browser.runtime.onConnectExternal.addListener(connectExternal);
-
   const metamaskInternalProcessHash = {
     [ENVIRONMENT_TYPE_POPUP]: true,
     [ENVIRONMENT_TYPE_NOTIFICATION]: true,
@@ -388,7 +428,7 @@ function setupController(initState, initLangCode) {
    * This method identifies trusted (MetaMask) interfaces, and connects them differently from untrusted (web pages).
    * @param {Port} remotePort - The port provided by a new context.
    */
-  function connectRemote(remotePort) {
+  connectRemote = function (remotePort) {
     const processName = remotePort.name;
 
     if (metamaskBlockedPorts.includes(remotePort.name)) {
@@ -413,13 +453,6 @@ function setupController(initState, initLangCode) {
       // communication with popup
       controller.isClientOpen = true;
       controller.setupTrustedCommunication(portStream, remotePort.sender);
-
-      remotePort.onMessage.addListener((message) => {
-        if (message.name === WORKER_KEEP_ALIVE_MESSAGE) {
-          // To test un-comment this line and wait for 1 minute. An error should be shown on MetaMask UI.
-          remotePort.postMessage({ name: ACK_KEEP_ALIVE_MESSAGE });
-        }
-      });
 
       if (processName === ENVIRONMENT_TYPE_POPUP) {
         popupIsOpen = true;
@@ -462,13 +495,13 @@ function setupController(initState, initLangCode) {
       }
       connectExternal(remotePort);
     }
-  }
+  };
 
   // communication with page or other extension
-  function connectExternal(remotePort) {
+  connectExternal = function (remotePort) {
     const portStream = new PortStream(remotePort);
     controller.setupUntrustedCommunication(portStream, remotePort.sender);
-  }
+  };
 
   //
   // User Interface setup

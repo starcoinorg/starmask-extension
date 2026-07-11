@@ -1,12 +1,12 @@
+/* global chrome, globalThis */
+/* eslint-disable import/unambiguous */
 
 let scriptsLoadInitiated = false;
 
 function tryImport(...fileNames) {
   try {
-    const startTime = new Date().getTime();
     // eslint-disable-next-line
     importScripts(...fileNames);
-    const endTime = new Date().getTime();
 
     return true;
   } catch (e) {
@@ -40,12 +40,7 @@ function importAllScripts() {
   tryImport(...files);
 }
 
-self.addEventListener('install', importAllScripts);
-
-chrome.runtime.onMessage.addListener(() => {
-  importAllScripts();
-  return false;
-});
+importAllScripts();
 
 chrome.runtime.onStartup.addListener(() => {
   globalThis.isFirstTimeProfileLoaded = true;
@@ -54,6 +49,13 @@ chrome.runtime.onStartup.addListener(() => {
 
 const registerInPageContentScript = async () => {
   try {
+    const registeredScripts = await chrome.scripting.getRegisteredContentScripts({
+      ids: ['inpages'],
+    });
+    if (registeredScripts.length > 0) {
+      return;
+    }
+
     await chrome.scripting.registerContentScripts([
       {
         id: 'inpages',
@@ -64,14 +66,7 @@ const registerInPageContentScript = async () => {
       },
     ]);
   } catch (err) {
-    /**
-     * An error occurs when app-init.js is reloaded. Attempts to avoid the duplicate script error:
-     * 1. registeringContentScripts inside runtime.onInstalled - This caused a race condition
-     *    in which the provider might not be loaded in time.
-     * 2. await chrome.scripting.getRegisteredContentScripts() to check for an existing
-     *    inpage script before registering - The provider is not loaded on time.
-     */
-    console.warn(`Dropped attempt to register inpage content script. ${err}`);
+    console.error(`Failed to register inpage content script. ${err}`);
   }
 };
 

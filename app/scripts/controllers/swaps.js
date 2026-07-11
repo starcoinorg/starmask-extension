@@ -113,8 +113,6 @@ export default class SwapsController {
         this.ethersProvider = new ethers.providers.Web3Provider(provider);
       }
     });
-
-    // this._setupSwapsLivenessFetching();
   }
 
   // Sets the refresh rate for quote updates from the MetaSwap API
@@ -685,48 +683,6 @@ export default class SwapsController {
   }
 
   /**
-   * Sets up the fetching of the swaps feature liveness flag from our API.
-   * Performs an initial fetch when called, then fetches on a 10-minute
-   * interval.
-   *
-   * If the browser goes offline, the interval is cleared and swaps are disabled
-   * until the value can be fetched again.
-   */
-  _setupSwapsLivenessFetching() {
-    const TEN_MINUTES_MS = 10 * 60 * 1000;
-    let intervalId = null;
-
-    const fetchAndSetupInterval = () => {
-      if (window.navigator.onLine && intervalId === null) {
-        // Set the interval first to prevent race condition between listener and
-        // initial call to this function.
-        intervalId = setInterval(
-          this._fetchAndSetSwapsLiveness.bind(this),
-          TEN_MINUTES_MS,
-        );
-        this._fetchAndSetSwapsLiveness();
-      }
-    };
-
-    window.addEventListener('online', fetchAndSetupInterval);
-    window.addEventListener('offline', () => {
-      if (intervalId !== null) {
-        clearInterval(intervalId);
-        intervalId = null;
-
-        const { swapsState } = this.store.getState();
-        if (swapsState.swapsFeatureIsLive) {
-          this.setSwapsLiveness(false);
-        }
-      }
-    });
-
-    fetchAndSetupInterval();
-  }
-
-  /**
-   * This function should only be called via _setupSwapsLivenessFetching.
-   *
    * Attempts to fetch the swaps feature liveness flag from our API. Tries
    * to fetch three times at 5-second intervals before giving up, in which
    * case the value defaults to 'false'.

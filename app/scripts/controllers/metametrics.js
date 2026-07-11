@@ -161,7 +161,7 @@ export default class MetaMetricsController {
         name: 'StarMask Extension',
         version: this.version,
       },
-      userAgent: window.navigator.userAgent,
+      userAgent: global.navigator.userAgent,
       page,
       referrer,
     };

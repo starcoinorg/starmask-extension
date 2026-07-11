@@ -12,8 +12,6 @@ import { EXTENSION_MESSAGES } from '../../../shared/constants/app';
 export function setupMultiplex(connectionStream) {
   const mux = new ObjectMultiplex();
   mux.ignoreStream(EXTENSION_MESSAGES.CONNECTION_READY);
-  mux.ignoreStream('ACK_KEEP_ALIVE_MESSAGE');
-  mux.ignoreStream('WORKER_KEEP_ALIVE_MESSAGE');
   pump(connectionStream, mux, connectionStream, (err) => {
     if (err) {
       console.error(err);
