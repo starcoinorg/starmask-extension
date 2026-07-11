@@ -12,6 +12,21 @@ import {
   HALLEY_CHAIN_ID,
 } from '../../../../shared/constants/network';
 
+/**
+ * Clears sensitive text from the system clipboard after a recovery phrase is
+ * pasted. Clipboard access can be unavailable or rejected, so failures are
+ * intentionally ignored.
+ *
+ * @returns {Promise<void>} A promise that settles after the clear attempt.
+ */
+export function clearClipboard() {
+  if (!navigator.clipboard?.writeText) {
+    return Promise.resolve();
+  }
+
+  return navigator.clipboard.writeText('').catch(() => undefined);
+}
+
 // formatData :: ( date: <Unix Timestamp> ) -> String
 export function formatDate(date, format = "M/d/y 'at' T") {
   return DateTime.fromMillis(date).toFormat(format);

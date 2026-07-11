@@ -684,6 +684,13 @@ describe('MetaMaskController', function () {
       assert.equal(defaultMetaMaskCurrency, 'usd');
     });
 
+    it('initializes the native currency from the selected network', function () {
+      assert.equal(
+        metamaskController.currencyRateController.state.nativeCurrency,
+        'STC',
+      );
+    });
+
     it('sets currency to JPY', function () {
       metamaskController.setCurrentCurrency('JPY', noop);
       assert.equal(

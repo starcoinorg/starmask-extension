@@ -96,7 +96,6 @@ export default class MetamaskController extends EventEmitter {
    */
   constructor(opts) {
     super();
-    const { isFirstStarMaskControllerSetup } = opts;
     this.defaultMaxListeners = 20;
 
     this.sendUpdate = debounce(this.privateSendUpdate.bind(this), 200);
@@ -394,7 +393,9 @@ export default class MetamaskController extends EventEmitter {
       );
     });
     const { ticker } = this.networkController.getProviderConfig();
-    this.currencyRateController.configure({ nativeCurrency: ticker ?? 'STC' });
+    const currencyState = { nativeCurrency: ticker ?? 'STC' };
+    this.currencyRateController.update(currencyState);
+    this.currencyRateController.configure(currencyState);
     this.networkController.lookupNetwork();
     this.messageManager = new MessageManager();
     this.personalMessageManager = new PersonalMessageManager();
@@ -499,38 +500,6 @@ export default class MetamaskController extends EventEmitter {
       EnsController: this.ensController.store,
       ApprovalController: this.approvalController,
     });
-
-    // if this is the first time, clear the state of by calling these methods
-    const resetMethods = [
-      this.accountTracker.resetState,
-      this.txController.resetState,
-      this.messageManager.resetState,
-      this.personalMessageManager.resetState,
-      this.decryptMessageManager.resetState,
-      this.encryptionPublicKeyManager.resetState,
-      this.typedMessageManager.resetState,
-      this.swapsController.resetState,
-      this.ensController.resetState,
-      this.approvalController.clear.bind(this.approvalController),
-      // WE SHOULD ADD TokenListController.resetState here too. But it's not implemented yet.
-    ];
-
-    /*
-    if (globalThis.isFirstTimeProfileLoaded === true) {
-      this.resetStates(resetMethods);
-    }*/
-    if (isManifestV3) {
-      if (isFirstStarMaskControllerSetup === true) {
-        this.resetStates(resetMethods);
-        this.extension.storage.session.set({
-          isFirstStarMaskControllerSetup: false,
-        });
-      }
-    } else {
-      // it's always the first time in MV2
-      this.resetStates(resetMethods);
-    }
-
 
     // Automatic login via config password or loginToken
     if (

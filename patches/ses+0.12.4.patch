@@ -1,0 +1,26 @@
+diff --git a/node_modules/ses/dist/lockdown.cjs b/node_modules/ses/dist/lockdown.cjs
+--- a/node_modules/ses/dist/lockdown.cjs
++++ b/node_modules/ses/dist/lockdown.cjs
+@@ -590,7 +590,9 @@ const whitelist = {
+   Symbol: {
+     // Properties of the Symbol Constructor
+     '[[Proto]]': '%FunctionPrototype%',
++    asyncDispose: 'symbol',
+     asyncIterator: 'symbol',
++    dispose: 'symbol',
+     for: fn,
+     hasInstance: 'symbol',
+     isConcatSpreadable: 'symbol',
+diff --git a/node_modules/ses/src/whitelist.js b/node_modules/ses/src/whitelist.js
+--- a/node_modules/ses/src/whitelist.js
++++ b/node_modules/ses/src/whitelist.js
+@@ -486,7 +486,9 @@ export const whitelist = {
+   Symbol: {
+     // Properties of the Symbol Constructor
+     '[[Proto]]': '%FunctionPrototype%',
++    asyncDispose: 'symbol',
+     asyncIterator: 'symbol',
++    dispose: 'symbol',
+     for: fn,
+     hasInstance: 'symbol',
+     isConcatSpreadable: 'symbol',
